@@ -13,4 +13,3 @@ sourceUrl: https://www.xedotnet.org/soci/
 ---
 
 Sono sempre stato affascinato dal mondo dell'IT, in particolare quando l'Information Technology può essere applicata per il benessere della società, aiutando le persone a migliorare la loro condizione e il loro stile di vita. Come ASP.NET developer sto cercando di rendere il Web sempre più vicino ai bisogni di ognuno.
-

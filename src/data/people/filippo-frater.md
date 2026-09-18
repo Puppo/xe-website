@@ -15,4 +15,3 @@ sourceUrl: https://www.xedotnet.org/soci/
 ---
 
 Sviluppatore con una forte esperienza in .NET e un interesse costante per architetture moderne, DevOps e clean code. Mi piace condividere idee, sperimentare nuove soluzioni e confrontarmi con altri professionisti per crescere insieme. Ho lavorato anche in React e Angular con JavaScript e TypeScript.
-

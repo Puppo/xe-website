@@ -18,4 +18,3 @@ Lavoro principalmente su ambienti ibridi, con forte focus su modernizzazione di 
 Esperienza su contesti retail, logistica e Industria 4.0.
 
 Nel tempo libero sono papà di due bambini, esperienza che mi ha insegnato ancora di più il valore della pazienza, dell’adattabilità e della gestione delle priorità.
-

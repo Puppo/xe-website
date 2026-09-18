@@ -13,4 +13,3 @@ sourceUrl: https://www.xedotnet.org/soci/
 ---
 
 ASP.NET & Blazor Developer. Amo sperimentare e studiare nuove tecnologie e metodologie di sviluppo. Per me scrivere codice è un'arte e per questo serve metterci molta passione nel farlo.
-

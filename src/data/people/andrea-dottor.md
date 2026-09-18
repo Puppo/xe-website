@@ -19,4 +19,3 @@ sourceUrl: https://www.xedotnet.org/soci/
 ---
 
 Ho iniziato la mia attività da sviluppatore in ambito di automazione industriale nel 2002, ma è stato nel 2005, quando mi sono avvicinato allo sviluppo web, che il lavoro si è mescolato alla passione. Tutt'ora la mia principale attività è basata sullo sviluppo web con ASP.NET ed i vari framework JavaScript (AngularJS, Knockout, jQuery, ...).Seguendo le evoluzioni del mercato mi sono approcciato al mondo mobile con l'uso di Cordova e Ionic Framework, sviluppando applicazioni sia per Tablet che per Smartphone.Dal 2008 ad oggi ricevo da Microsoft il riconoscimento di Microsoft MVP per la categoria ASP.NET. Sono uno dei soci fondatori di XeDotNet, e da quest'anno (2016) ne ricopro il ruolo di presidente.
-

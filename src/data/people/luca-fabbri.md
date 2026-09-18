@@ -19,4 +19,3 @@ sourceUrl: https://www.xedotnet.org/soci/
 ---
 
 Analisi e progettazione di soluzioni distribuite cloud e mobile, gestione di gruppi lavoro in modalità agile.
-

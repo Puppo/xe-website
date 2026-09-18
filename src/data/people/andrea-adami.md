@@ -21,4 +21,3 @@ sourceUrl: https://www.xedotnet.org/soci/
 ---
 
 Architetto di software e di sistemi che traduce la visione del cliente in soluzione e gestisce il gruppo di lavoro atto a concretizzarlo
-

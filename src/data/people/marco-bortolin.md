@@ -20,4 +20,3 @@ Sono un imprenditore e da sempre appassionato di tecnologia: oltre a sviluppare 
 Ho cominciato a muovere i primi passi con VB e adesso sviluppo principalmente in C# in abito sia Web che Desktop. Negli ultimi anni mi sono appassionato di metodologie agili quali SCRUM oltre che di architettura software con particolare interesse sul Domain Driven Design.
 
 Credo fortemente nel valore delle community come XeDotNet in quanto sono motivo di confronto e valorizzazione della nostra professione, ma soprattuto per la birra a fine serata tutti assieme.
-

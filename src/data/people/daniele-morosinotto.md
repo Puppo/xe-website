@@ -19,4 +19,3 @@ La mia avventura da sviluppatore inizia nel 2000 in ambito desktop (con VB6 e Ac
 Ma ormai da 10 anni ho trovato un "nuovo amore" scoprendo e abbracciando il mondo Javascript, perché lo ritengo l'unico linguaggio veramente "cross-TUTTO": frontend, backend e mobile cross-platform!
 
 Seguo attivamente lo sviluppo dei progetti TypeScript e Angular fin dal loro inizio, ma continuo a scoprire ed indagare ogni giorno nuove soluzioni e framework che aprono le porte a nuovi ambiti di utilizzo per Javascript! Se non si fosse capito, amo "diffondere il verbo" ed insegnare queste tecnologie a ogni persona che incontro, rischiando a volte di diventare anche logorroico.
-
