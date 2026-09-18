@@ -1,0 +1,28 @@
+---
+title: XE Community Meeting - SQL & NoSQL
+description: Un punto fermo per tutti gli sviluppatori e appassionati che vogliono condividere la loro conoscenza e passione per la tecnologia.
+date: 2017-05-05
+eventType: Giornata
+venue:
+  name: Confartigianato Vicenza
+  url: https://goo.gl/maps/tJ6jVDvkkLD2
+  online: false
+sessions:
+  - time: 15:00 - 16:30
+    title: "L’epoca moderna della gestione del dato: l’approccio relazionale e sua trasformazione nel tempo"
+    speakers:
+      - Alessandro Alpi
+    description: Fin dalla nascinta dell’informatica, si è sempre discusso su come organizzare le nostre informazioni. Ancora oggi se ne parla di continuo e tutto cambia repentinamente. Ciò che non cambia è che il “dato” è considerato un elemento fondamentale. In questa sessione parleremo di come esso sia stato trattato e gestito nel corso dei tempi, focalizzandoci in primis sull’approccio relazionale. Parleremo delle abitudini, delle buone e delle peggiori pratiche, delle applicazioni reali e della trasformazione delle esigenze basandoci sulla piattaforma Microsoft SQL Server. Daremo poi un’occhiata a come oggi stanno cambiando le cose, introducendo i concetti di polyglot persistency, e preparandoci al potenziale passaggio a database NoSQL.
+  - time: 16:30 - 18:00
+    title: Gestire dati moderni con i database nosql
+    speakers:
+      - Lorenzo Speranzoni
+    description: In questo talk, Lorenzo, parlerà dei database nosql cercando di porre l’attenzione sulle ragioni per le quali sia più opportuno utilizzarli rispetto ai tradizionali RDBMS. Comprenderemo come sono fatti i dati che oggi dobbiamo persistere e successivamente analizzare, quali sono le quattro grandi categorie di database nosql, il loro data model e le loro caratteristiche architetturali. Infine con un esempio live! faremo un approfondimento sul database a grafo per meglio comprendere le potenzialità di queste tecnologie enterprise ready.
+materials: []
+registration:
+  status: closed
+sourceUrl: https://www.xedotnet.org/eventi/sql-nosql/
+draft: false
+---
+
+EVENTO ANNULLATO

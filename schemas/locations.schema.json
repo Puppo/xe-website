@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string"
+      },
+      "count": {
+        "type": "integer",
+        "exclusiveMinimum": 0,
+        "maximum": 9007199254740991
+      },
+      "x": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 100
+      },
+      "y": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 100
+      },
+      "id": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "required": [
+      "name",
+      "count",
+      "x",
+      "y",
+      "id"
+    ]
+  },
+  "$id": "https://www.xedotnet.org/schemas/locations.schema.json",
+  "title": "Località aggregate XeDotNet"
+}

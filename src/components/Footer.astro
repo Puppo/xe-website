@@ -1,0 +1,32 @@
+---
+import NewsletterForm from './NewsletterForm.astro';
+
+interface Props {
+  site: {
+    email: string;
+    address: string;
+    fiscalCode: string;
+    newsletterAction: string;
+    newsletterHoneypot: string;
+    socials: Array<{ label: string; url: string }>;
+  };
+}
+const { site } = Astro.props;
+---
+
+<footer class="site-footer">
+  <div class="shell footer-grid">
+    <div>
+      <h2>Restiamo in contatto</h2>
+      <p>Eventi, incontri e occasioni per crescere insieme come sviluppatori.</p>
+      <ul class="inline-list" role="list">
+        {site.socials.map((social) => <li><a href={social.url} rel="me noreferrer">{social.label}</a></li>)}
+      </ul>
+    </div>
+    <NewsletterForm action={site.newsletterAction} honeypot={site.newsletterHoneypot} />
+  </div>
+  <div class="shell legal-line">
+    <p>XeDotNet · {site.address} · CF {site.fiscalCode}</p>
+    <p><a href="/privacy-policy/">Informativa sulla privacy</a> · <a href={`mailto:${site.email}`}>{site.email}</a></p>
+  </div>
+</footer>

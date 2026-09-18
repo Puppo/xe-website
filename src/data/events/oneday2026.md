@@ -1,0 +1,88 @@
+---
+title: XE OneDay 2026 - Happy Birthday 20th - Architettura del Software
+description: "Quest’anno XE celebra vent’anni di community, crescita e condivisione, e abbiamo deciso di farlo nel modo che più ci rappresenta: una giornata interamente dedicata all’architettura del software, raccontata da professionisti che hanno segnato la storia del nostro gruppo. Sarà un viaggio attraverso id"
+date: 2026-05-22
+eventType: Giornata
+venue:
+  name: Belstay Venezia Mestre
+  url: https://maps.app.goo.gl/7eN5ptsqGvadmFvh7
+  online: false
+image: /media/1020-hunext-hrsolutions-200x100.png
+sessions:
+  - time: 08:30 - 09:20
+    title: Registrazione
+    speakers: []
+  - time: 09:20 - 09:40
+    title: Benvenuto & Introduzione
+    speakers:
+      - XE
+  - time: 09:40 - 10:30
+    title: Comunica finché non avrai più bisogno di presentazioni
+    speakers:
+      - Lorenzo Barbieri
+    description: Non basta più essere degli ottimi professionisti, è necessario anche convincere gli altri del valore del proprio lavoro. Il rischio è che cada nell’oblio e non venga percepito per quello che è. Il rischio è far parte della massa indistinta. Perché dovrebbero scegliere te in mezzo ai milioni di sviluppatori, soprattutto ora che l'AI generativa fa un sacco di lavoro al posto nostro?A cosa serve essere un genio se oltre alle mura della tua azienda non ti conosce nessuno?Imparerai strategie utili per affinare la tua comunicazione, curare il personal branding e migliorare la percezione che gli altri hanno di te e del tuo lavoro.
+  - time: 10:30 - 11:00
+    title: Coffee break
+    speakers: []
+  - time: 11:00 - 11:50
+    title: L’AI scrive codice. Ma chi capisce il dominio?
+    speakers:
+      - Alberto Acerbis
+    description: "Nell'era dei modelli degli LLM, scrivere codice non è mai stato così veloce e accessibile. Tuttavia, la produzione di codice ad alta velocità spesso nasconde un rischio fondamentale: un sottile disallineamento con il dominio aziendale. Sebbene gli agenti di IA eccellano nella generazione di testi plausibili, mancano di una comprensione duratura del contesto, colmando spesso le ambiguità umane con ipotesi statistiche.Questa sessione esplora il motivo per cui il Domain-Driven Design non è solo una tecnica di modellazione tradizionale, ma il “sistema operativo” essenziale per uno sviluppo assistito dall'IA di successo. Approfondiremo come un linguaggio ubiquitario disciplinato funga da volante, riducendo lo spazio per le interpretazioni errate dell'IA e stabilizzando il processo di generazione attraverso chiari vincoli linguistici.Inoltre, esamineremo la sinergia tra la Documentazione Vivente e lo Sviluppo Guidato dalle Specifiche. Come trattare le specifiche come una “banca dati”, una costituzione non negoziabile che guida gli agenti di IA, e come la Documentazione Vivente preservi una profonda conoscenza del dominio che il codice da solo non può catturare.Passando dalla codifica manuale all'ingegneria del linguaggio, discuteremo di come costruire architetture evolutive che consentano ai team di rimanere più a lungo nello Spazio del Problema, assicurando che il software che generiamo non sia solo veloce, ma significativo."
+  - time: 11:55 - 12:45
+    title: From CRUD to messages
+    speakers:
+      - Alessandro Melchiori
+    description: "Il CRUD funziona… finché non smette di farlo.Quando la complessità cresce, il modello si rompe: logica dispersa, accoppiamento forte, evoluzione lenta. In questo talk vedremo come passare da un monolite fragile a un’architettura message-driven usando DDD, CQRS e domain events."
+  - time: 12:45 - 14:15
+    title: Pranzo
+    speakers: []
+  - time: 14:15 - 15:05
+    title: Architettura ai tempi dell'AI
+    speakers:
+      - Gian Maria Ricci
+    description: Lavorando da molto con assistenti AI per la scrittura del codice, si nota che il modo di concepire il codice cambia, talvolta in modo sottile, talvolta in modo radicale.L'architettura del software non fa eccezione, ora che sempre più codice è scritto da una intelligenza artificiale, ci si interroga sul come deve evolvere il concetto di architettura, ma soprattutto se serva ancora.Argomento controverso, ma mai cosi attuale.
+  - time: 15:10 - 16:00
+    title: Storia dell'architettura del software e del perché non abbiamo ancora capito
+    speakers:
+      - Mauro Servienti
+    description: "Dagli anni '60 ad oggi abbiamo collezionato un numero impressionante di paradigmi rivoluzionari, ognuno accompagnato dalla certezza di aver finalmente trovato la soluzione. Eppure, eccoci ancora qui.In questa presentazione faremo un giro veloce attraverso le tappe principali dell'architettura del software: cosa promettevano, cosa hanno mantenuto e perché continuiamo a ripetere gli stessi errori. Perché, parafrasando Fred Brooks, non esiste il proiettile d'argento — e la maggior parte dei fallimenti architetturali non nasce da scelte tecnologiche sbagliate, ma dall'aver anteposto i fronzoli tecnici ai requisiti di business.Vedremo come un approccio modulare orientato ai servizi, progettato attorno ai confini del dominio, sia la risposta più onesta che abbiamo finora trovato. Non perché sia perfetta, ma perché riconosce la complessità invece di nasconderla sotto un'astrazione in più."
+  - time: 16:00 - 16:20
+    title: Coffee break
+    speakers: []
+  - time: 16:20 - 17:10
+    title: Polyglot data, meno complessità
+    speakers:
+      - Gianluca Hotz
+    description: "Polyglot non è solo una questione di linguaggi: è una realtà dei dati. Il rischio è trasformare il “best-of-breed” in una collezione di attriti: più connessioni, più policy, più integrazioni, più failure mode. Parliamo di come un database relazionale poliglotta possa assorbire molte esigenze moderne (documenti, storico, audit, relazioni, automazioni, file) riducendo superficie architetturale e complessità. Con esempi e trade-off, dal punto di vista di chi deve consegnare funzionalità e poi mantenerle."
+  - time: 17:10 - 17:40
+    title: Brindisi
+    speakers: []
+materials:
+  - label: Slide
+    url: https://drive.google.com/drive/folders/1KVw6XpFhyxtOHzqGnmc1bsAJMtJQXo7x?usp=sharing
+registration:
+  status: closed
+sourceUrl: https://www.xedotnet.org/eventi/oneday2026/
+draft: false
+---
+
+Quest’anno XE celebra **vent’anni di community, crescita e condivisione**, e abbiamo deciso di farlo nel modo che più ci rappresenta: una giornata interamente dedicata all’**architettura del software**, raccontata da professionisti che hanno segnato la storia del nostro gruppo.
+
+Sarà un viaggio attraverso idee, esperienze e prospettive diverse: dalla comunicazione alle evoluzioni dell’AI, dai modelli architetturali che continuano a sfidarci alle pratiche che possono rendere i nostri sistemi più solidi, moderni e sostenibili.
+
+Abbiamo costruito un’agenda che alterna visione, tecnica e pragmatismo, con l’obiettivo di offrirti **spunti immediatamente applicabili** e, perché no, qualche sana provocazione. Preparati a una giornata intensa, ricca di contenuti e di confronti, pensata per chi vuole crescere come sviluppatore, architetto o semplicemente come professionista curioso.
+
+-   **Il materiale è disponibile al seguente link:** [Slide](https://drive.google.com/drive/folders/1KVw6XpFhyxtOHzqGnmc1bsAJMtJQXo7x?usp=sharing)
+
+* * *
+
+### Main sponsor
+
+[![](/media/1020-hunext-hrsolutions-200x100.png)](https://www.hunext.com/ "HUNEXT")
+
+#### sponsor tecnici
+
+[![](/media/1202-packt.png)](https://www.packtpub.com/)
+
+Siamo alla ricerca di sponsor per l'evento, se siete interessati, non indugiate! [Contattateci](/contatti/)!

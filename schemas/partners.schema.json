@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string"
+      },
+      "url": {
+        "type": "string",
+        "format": "uri"
+      },
+      "image": {
+        "type": "string"
+      },
+      "kind": {
+        "type": "string",
+        "enum": [
+          "sponsor",
+          "supporter"
+        ]
+      },
+      "id": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "required": [
+      "name",
+      "url",
+      "kind",
+      "id"
+    ]
+  },
+  "$id": "https://www.xedotnet.org/schemas/partners.schema.json",
+  "title": "Partner XeDotNet"
+}

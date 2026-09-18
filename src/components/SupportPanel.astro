@@ -1,0 +1,30 @@
+---
+interface Props { membershipButtonId: string; donationButtonId: string }
+const { membershipButtonId, donationButtonId } = Astro.props;
+---
+
+<section class="support-panel">
+  <div>
+    <h2>Costruiamo XE insieme</h2>
+    <p>La quota associativa annuale di 50 € mantiene gratuiti gli eventi e sostiene le attività della community.</p>
+    <ul>
+      <li>Gruppo privato su Slack</li>
+      <li>Accesso anticipato agli eventi con posti limitati</li>
+      <li>Profilo pubblico sul sito</li>
+      <li>Gadget di benvenuto</li>
+    </ul>
+  </div>
+  <div class="support-actions">
+    <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+      <input type="hidden" name="cmd" value="_s-xclick" />
+      <input type="hidden" name="hosted_button_id" value={membershipButtonId} />
+      <button type="submit">Diventa socio</button>
+    </form>
+    <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+      <input type="hidden" name="cmd" value="_s-xclick" />
+      <input type="hidden" name="hosted_button_id" value={donationButtonId} />
+      <button class="button-secondary" type="submit">Fai una donazione</button>
+    </form>
+    <p class="form-note">IBAN: <span class="nowrap">IT47 E084 5236 1800 0000 0109 908</span></p>
+  </div>
+</section>

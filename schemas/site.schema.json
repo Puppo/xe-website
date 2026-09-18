@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string"
+      },
+      "description": {
+        "type": "string"
+      },
+      "email": {
+        "type": "string",
+        "format": "email",
+        "pattern": "^(?:[A-Za-z0-9_'+\\-]+\\.)*[A-Za-z0-9_'+\\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+      },
+      "address": {
+        "type": "string"
+      },
+      "fiscalCode": {
+        "type": "string"
+      },
+      "navigation": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string"
+            },
+            "href": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "label",
+            "href"
+          ]
+        }
+      },
+      "socials": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string"
+            },
+            "url": {
+              "type": "string",
+              "format": "uri"
+            }
+          },
+          "required": [
+            "label",
+            "url"
+          ]
+        }
+      },
+      "newsletterAction": {
+        "type": "string",
+        "format": "uri"
+      },
+      "newsletterHoneypot": {
+        "type": "string"
+      },
+      "membershipButtonId": {
+        "type": "string"
+      },
+      "donationButtonId": {
+        "type": "string"
+      },
+      "id": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "required": [
+      "name",
+      "description",
+      "email",
+      "address",
+      "fiscalCode",
+      "navigation",
+      "socials",
+      "newsletterAction",
+      "newsletterHoneypot",
+      "membershipButtonId",
+      "donationButtonId",
+      "id"
+    ]
+  },
+  "$id": "https://www.xedotnet.org/schemas/site.schema.json",
+  "title": "Configurazione XeDotNet"
+}

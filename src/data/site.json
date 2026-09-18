@@ -1,0 +1,26 @@
+[
+  {
+    "id": "main",
+    "name": "XE - Development user group",
+    "description": "La community del Nord-Est dedicata a sviluppo software, tecnologia e condivisione.",
+    "email": "staff@xedotnet.org",
+    "address": "Via G. L. Bernini 72, 30034 Mira VE, Italia",
+    "fiscalCode": "94111660265",
+    "navigation": [
+      { "label": "Home", "href": "/" },
+      { "label": "Chi siamo", "href": "/chi-siamo/" },
+      { "label": "Eventi", "href": "/eventi/" },
+      { "label": "Soci", "href": "/soci/" },
+      { "label": "Contatti", "href": "/contatti/" }
+    ],
+    "socials": [
+      { "label": "Facebook", "url": "https://www.facebook.com/ugxedotnet" },
+      { "label": "X", "url": "https://twitter.com/xedotnet" },
+      { "label": "Flickr", "url": "https://www.flickr.com/photos/xedotnet/" }
+    ],
+    "newsletterAction": "https://xedotnet.us3.list-manage.com/subscribe/post?u=24168eb4a554fd92fb0eb80bd&id=05f90c9132&f_id=00463fe2f0",
+    "newsletterHoneypot": "b_24168eb4a554fd92fb0eb80bd_05f90c9132",
+    "membershipButtonId": "UGBFVE3T96F2Y",
+    "donationButtonId": "5ADXWWH82ZSBY"
+  }
+]

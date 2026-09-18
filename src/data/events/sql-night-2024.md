@@ -1,0 +1,34 @@
+---
+title: SQL Night 2024
+description: "Data API Builder: scenari d’uso; La mia applicazione è lenta: e adesso?"
+date: 2024-03-15
+eventType: Evento serale
+venue:
+  name: Training Center - Banchina dell'Azoto 15
+  url: https://goo.gl/maps/TsUuEDT75SC2
+  online: false
+sessions:
+  - time: 20:00 - 21:15
+    title: "Data API Builder: scenari d’uso"
+    speakers:
+      - Danilo Dominici
+    description: "Data API Builder semplifica la creazione di API basandosi sul modello dati presente in un database (diversi in realtà: può usare SQL Server, PostgreSQL, MySQL e CosmosDB). E lo fa sia per tecnologia REST che GraphQL.Come funziona? In quali scenari è utile? Come si implementa la sicurezza? Si può usare on-prem? Scopriamolo insieme!"
+  - time: 21:30 - 22:45
+    title: "La mia applicazione è lenta: e adesso?"
+    speakers:
+      - Gianluca Sartori
+    description: "Ci risiamo: ho appena terminato la migliore applicazione di sempre, che cambierà il corso della storia dell'informatica, ma adesso che sono in produzione le cose non vanno come avevo sperato. Alcune form sono lente, a volte aspetto per diversi secondi, altre volte è tutto veloce, ma non capisco perché. Non so nemmeno se sia colpa del database, ma sospetto che lo sia. Come faccio a saperlo? Ci sono degli strumenti che mi possono aiutare? C'è una metodologia per capire come individuare e risolvere i problemi di performance?Scopriamolo insieme in questa sessione!"
+materials:
+  - label: Slide e codice
+    url: https://drive.google.com/drive/folders/1ThBcHnQdPFyKNLoTMzsJAZyUR6ECIx8T?usp=sharing
+registration:
+  status: closed
+sourceUrl: https://www.xedotnet.org/eventi/sql-night-2024/
+draft: false
+---
+
+In questa serata abbiamo invitato **Danilo Dominici** e **Gianluca Sartori**, due esperti DBA, a parlare di database e accesso ai dati, ma con un occhio di riguardo a noi sviluppatori.   
+È innegabile che i database siano una risorsa fondamentale per noi sviluppatori e dovremmo sfruttarli al massimo delle loro potenzialità.  
+Queste le premesse di questa SQL Night.
+
+-   **Il materiale è disponibile al seguente link:** [Slide e codice](https://drive.google.com/drive/folders/1ThBcHnQdPFyKNLoTMzsJAZyUR6ECIx8T?usp=sharing)

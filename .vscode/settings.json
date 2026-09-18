@@ -1,0 +1,20 @@
+{
+  "json.schemas": [
+    {
+      "fileMatch": ["/src/data/people/*.json"],
+      "url": "./schemas/person.schema.json"
+    },
+    {
+      "fileMatch": ["/src/data/partners.json"],
+      "url": "./schemas/partners.schema.json"
+    },
+    {
+      "fileMatch": ["/src/data/locations.json"],
+      "url": "./schemas/locations.schema.json"
+    },
+    {
+      "fileMatch": ["/src/data/site.json"],
+      "url": "./schemas/site.schema.json"
+    }
+  ]
+}

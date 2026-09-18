@@ -1,0 +1,88 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import EventCard from '../../../components/EventCard.astro';
+import { eventYear, formatEventDate, registrationMessage, sortDescending, type EventEntry } from '../../../lib/events';
+
+type Props =
+  | { kind: 'year'; year: number; events: EventEntry[] }
+  | { kind: 'event'; event: EventEntry };
+
+export async function getStaticPaths() {
+  const events = await getCollection('events', ({ data }) => !data.draft);
+  const years = [...new Set(events.map(eventYear))];
+  return [
+    ...events.map((event) => ({ params: { slug: event.id }, props: { kind: 'event' as const, event } })),
+    ...years.map((year) => ({
+      params: { slug: String(year) },
+      props: { kind: 'year' as const, year, events: events.filter((event) => eventYear(event) === year).sort(sortDescending) }
+    }))
+  ];
+}
+
+const props = Astro.props as Props;
+let Content: Awaited<ReturnType<typeof render>>['Content'] | undefined;
+if (props.kind === 'event') ({ Content } = await render(props.event));
+const event = props.kind === 'event' ? props.event : undefined;
+const eventStructuredData = event ? {
+  '@context': 'https://schema.org',
+  '@type': 'Event',
+  name: event.data.title,
+  description: event.data.description,
+  startDate: event.data.date.toISOString(),
+  endDate: event.data.endDate?.toISOString(),
+  eventAttendanceMode: event.data.venue?.online ? 'https://schema.org/OnlineEventAttendanceMode' : 'https://schema.org/OfflineEventAttendanceMode',
+  eventStatus: 'https://schema.org/EventScheduled',
+  location: event.data.venue ? { '@type': event.data.venue.online ? 'VirtualLocation' : 'Place', name: event.data.venue.name, url: event.data.venue.url } : undefined,
+  url: new URL(`/eventi/${event.id}/`, Astro.site).href
+} : undefined;
+---
+
+{props.kind === 'year' ? (
+  <BaseLayout title={`Eventi ${props.year}`} description={`Archivio degli eventi XeDotNet organizzati nel ${props.year}.`}>
+    <header class="page-hero"><div class="shell"><p class="breadcrumbs"><a href="/">Home</a> / <a href="/eventi/">Eventi</a> / {props.year}</p><h1>Eventi del {props.year}</h1><p>{props.events.length} {props.events.length === 1 ? 'appuntamento' : 'appuntamenti'} nell’archivio XE.</p></div></header>
+    <section class="section shell"><ol class="event-list">{props.events.map((item) => <li><EventCard event={item} /></li>)}</ol></section>
+  </BaseLayout>
+) : event && Content ? (
+  <BaseLayout title={event.data.title} description={event.data.description} image={event.data.image} type="article" structuredData={eventStructuredData}>
+    <header class="page-hero">
+      <div class="shell">
+        <p class="breadcrumbs"><a href="/">Home</a> / <a href="/eventi/">Eventi</a> / {eventYear(event)}</p>
+        <h1>{event.data.title}</h1>
+        <p>{formatEventDate(event.data.date)}</p>
+      </div>
+    </header>
+    <div class="section shell detail-grid">
+      <article>
+        <div class="prose"><Content /></div>
+        {event.data.sessions.length > 0 && (
+          <section class="section-tight">
+            <h2>Programma</h2>
+            <ol class="agenda">
+              {event.data.sessions.map((session) => (
+                <li class="session">
+                  <div class="session-time">{session.time || 'Orario da definire'}</div>
+                  <div><h3>{session.title}</h3>{session.speakers.length > 0 && <p><strong>{session.speakers.join(', ')}</strong></p>}{session.description && <p>{session.description}</p>}</div>
+                </li>
+              ))}
+            </ol>
+          </section>
+        )}
+        {event.data.materials.length > 0 && <section><h2>Materiali</h2><ul>{event.data.materials.map((material) => <li><a href={material.url} rel="noreferrer">{material.label}</a></li>)}</ul></section>}
+      </article>
+      <aside class="detail-aside">
+        <h2>Dettagli</h2>
+        <dl>
+          <div><dt>Data</dt><dd>{formatEventDate(event.data.date)}</dd></div>
+          {event.data.eventType && <div><dt>Tipo</dt><dd>{event.data.eventType}</dd></div>}
+          {event.data.venue && <div><dt>Luogo</dt><dd>{event.data.venue.url ? <a href={event.data.venue.url} rel="noreferrer">{event.data.venue.name}</a> : event.data.venue.name}</dd></div>}
+        </dl>
+        <div class="registration">
+          <h2>Iscrizione</h2>
+          <p>{registrationMessage(event.data.registration.status)}</p>
+          {event.data.registration.status === 'open' && event.data.registration.url && <a class="button" href={event.data.registration.url} rel="noreferrer">{event.data.registration.label ?? 'Iscriviti all’evento'}</a>}
+        </div>
+      </aside>
+    </div>
+  </BaseLayout>
+) : null}

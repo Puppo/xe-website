@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "sortName": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "bio": {
+      "default": "",
+      "type": "string"
+    },
+    "image": {
+      "type": "string"
+    },
+    "roles": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "member",
+          "speaker"
+        ]
+      }
+    },
+    "links": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "label",
+          "url"
+        ]
+      }
+    },
+    "published": {
+      "default": true,
+      "type": "boolean"
+    },
+    "sourceUrl": {
+      "type": "string",
+      "format": "uri"
+    }
+  },
+  "required": [
+    "name",
+    "sortName",
+    "roles"
+  ],
+  "$id": "https://www.xedotnet.org/schemas/person.schema.json",
+  "title": "Profilo pubblico XeDotNet"
+}

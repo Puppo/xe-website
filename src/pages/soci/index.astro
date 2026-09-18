@@ -1,0 +1,21 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { initials } from '../../lib/text';
+const members = (await getCollection('people', ({ data }) => data.published && data.roles.includes('member'))).sort((a, b) => a.data.sortName.localeCompare(b.data.sortName, 'it'));
+---
+
+<BaseLayout title="Soci" description="Le persone che sostengono XeDotNet e rendono possibili le attività della community.">
+  <header class="page-hero"><div class="shell"><p class="breadcrumbs"><a href="/">Home</a> / Soci</p><h1>Soci</h1><p>Le persone che permettono a XE di mantenere gratuiti eventi e attività.</p></div></header>
+  <section class="section shell">
+    <p>Profili pubblici in ordine alfabetico: {members.length} {members.length === 1 ? 'socio' : 'soci'}.</p>
+    <ul class="people-grid" role="list">
+      {members.map((member) => (
+        <li><article class="person-card"><a href={`/soci/${member.id}/`}>
+          {member.data.image ? <img class="person-photo" src={member.data.image} alt="" width="600" height="450" loading="lazy" /> : <span class="person-placeholder" aria-hidden="true">{initials(member.data.name)}</span>}
+          <div class="person-card-copy"><h2>{member.data.name}</h2>{member.data.title && <p>{member.data.title}</p>}</div>
+        </a></article></li>
+      ))}
+    </ul>
+  </section>
+</BaseLayout>

@@ -1,0 +1,63 @@
+---
+import { getCollection } from 'astro:content';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '@fontsource/atkinson-hyperlegible-next/latin-400.css';
+import '@fontsource/atkinson-hyperlegible-next/latin-700.css';
+import '@fontsource/barlow-condensed/latin-600.css';
+import '@fontsource/barlow-condensed/latin-700.css';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  type?: 'website' | 'article';
+  structuredData?: Record<string, unknown>;
+}
+
+const { title, description, image = '/images/social-card.svg', type = 'website', structuredData } = Astro.props;
+const [site] = await getCollection('site');
+const canonicalPath = Astro.url.pathname === '/404/' ? '/404.html' : Astro.url.pathname;
+const canonical = new URL(canonicalPath, Astro.site);
+const fullTitle = title === site.data.name ? title : `${title} | ${site.data.name}`;
+const fullImage = new URL(image, Astro.site);
+const organization = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: site.data.name,
+  url: Astro.site,
+  email: site.data.email,
+  address: site.data.address,
+  sameAs: site.data.socials.map((social) => social.url)
+};
+---
+
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#c52d36" />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:locale" content="it_IT" />
+    <meta property="og:type" content={type} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={fullImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>{fullTitle}</title>
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData ?? organization)} />
+  </head>
+  <body>
+    <a class="skip-link" href="#contenuto">Vai al contenuto</a>
+    <Header navigation={site.data.navigation} />
+    <main id="contenuto" tabindex="-1">
+      <slot />
+    </main>
+    <Footer site={site.data} />
+  </body>
+</html>

@@ -1,0 +1,23 @@
+---
+import type { EventEntry } from '../lib/events';
+import { formatEventDate } from '../lib/events';
+
+interface Props { event: EventEntry; featured?: boolean }
+const { event, featured = false } = Astro.props;
+---
+
+<article class:list={['event-card', { featured }]}>
+  <time datetime={event.data.date.toISOString()}>
+    <span class="date-day">{new Intl.DateTimeFormat('it-IT', { day: '2-digit', timeZone: 'Europe/Rome' }).format(event.data.date)}</span>
+    <span>{new Intl.DateTimeFormat('it-IT', { month: 'short', year: 'numeric', timeZone: 'Europe/Rome' }).format(event.data.date)}</span>
+  </time>
+  <div class="event-card-body">
+    {event.data.eventType && <p class="event-type">{event.data.eventType}</p>}
+    <h2><a href={`/eventi/${event.id}/`}>{event.data.title}</a></h2>
+    <p>{event.data.description}</p>
+    <dl class="event-facts">
+      <div><dt class="visually-hidden">Data</dt><dd>{formatEventDate(event.data.date)}</dd></div>
+      {event.data.venue && <div><dt class="visually-hidden">Luogo</dt><dd>{event.data.venue.name}</dd></div>}
+    </dl>
+  </div>
+</article>

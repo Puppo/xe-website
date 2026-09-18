@@ -1,0 +1,27 @@
+---
+interface Props {
+  navigation: Array<{ label: string; href: string }>;
+}
+const { navigation } = Astro.props;
+const currentPath = Astro.url.pathname;
+---
+
+<header class="site-header">
+  <div class="shell header-inner">
+    <a class="brand" href="/" aria-label="XeDotNet, pagina iniziale">
+      <span class="brand-mark" aria-hidden="true">XE</span>
+      <span class="brand-name">Development user group</span>
+    </a>
+    <nav aria-label="Principale">
+      <ul class="nav-list" role="list">
+        {navigation.map((item) => (
+          <li>
+            <a href={item.href} aria-current={currentPath.startsWith(item.href) && item.href !== '/' || currentPath === item.href ? 'page' : undefined}>
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+</header>

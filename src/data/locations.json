@@ -1,0 +1,7 @@
+[
+  { "id": "treviso", "name": "Treviso e provincia", "count": 5, "x": 62, "y": 25 },
+  { "id": "venezia", "name": "Venezia e provincia", "count": 3, "x": 71, "y": 42 },
+  { "id": "padova", "name": "Padova e provincia", "count": 3, "x": 48, "y": 49 },
+  { "id": "pordenone", "name": "Pordenone e provincia", "count": 2, "x": 74, "y": 16 },
+  { "id": "vicenza", "name": "Vicenza e provincia", "count": 1, "x": 34, "y": 43 }
+]

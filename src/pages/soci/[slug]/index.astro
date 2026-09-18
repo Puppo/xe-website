@@ -1,0 +1,23 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { initials, paragraphs } from '../../../lib/text';
+
+export async function getStaticPaths() {
+  const members = await getCollection('people', ({ data }) => data.published && data.roles.includes('member'));
+  return members.map((member) => ({ params: { slug: member.id }, props: { member } }));
+}
+const { member } = Astro.props;
+---
+
+<BaseLayout title={member.data.name} description={member.data.bio || `${member.data.name}, socio di XeDotNet.`}>
+  <header class="page-hero"><div class="shell"><p class="breadcrumbs"><a href="/">Home</a> / <a href="/soci/">Soci</a> / {member.data.name}</p><h1>{member.data.name}</h1>{member.data.title && <p>{member.data.title}</p>}</div></header>
+  <article class="section shell person-profile">
+    <div>{member.data.image ? <img class="person-photo" src={member.data.image} alt={`Ritratto di ${member.data.name}`} width="600" height="450" /> : <span class="person-placeholder" aria-hidden="true">{initials(member.data.name)}</span>}</div>
+    <div class="prose">
+      {paragraphs(member.data.bio).map((paragraph) => <p>{paragraph}</p>)}
+      {member.data.links.length > 0 && <><h2>Collegamenti</h2><ul>{member.data.links.map((link) => <li><a href={link.url} rel="me noreferrer">{link.label}</a></li>)}</ul></>}
+      <p><a href="/soci/">Torna all’elenco dei soci</a></p>
+    </div>
+  </article>
+</BaseLayout>

@@ -1,0 +1,31 @@
+---
+interface Location { id: string; data: { name: string; count: number; x: number; y: number } }
+interface Props { locations: Location[] }
+const { locations } = Astro.props;
+const total = locations.reduce((sum, location) => sum + location.data.count, 0);
+---
+
+<div class="map-layout">
+  <figure class="community-map">
+    <svg viewBox="0 0 100 68" role="img" aria-labelledby="map-title map-description">
+      <title id="map-title">Distribuzione territoriale dei soci XE</title>
+      <desc id="map-description">Mappa schematica del Nord-Est con dati aggregati per provincia.</desc>
+      <path class="map-land" d="M8 51 13 28 26 18 41 15 54 5 77 9 91 23 87 43 73 51 64 63 39 59 26 66Z" />
+      <path class="map-route" d="M14 47 C33 37 41 50 57 35 S74 23 88 27" />
+      {locations.map(({ data }) => (
+        <g class="map-marker" transform={`translate(${data.x} ${data.y})`}>
+          <circle r={Math.min(3.2 + data.count * 0.45, 6)} />
+          <text y="1.2" text-anchor="middle">{data.count}</text>
+          <title>{data.name}: {data.count} {data.count === 1 ? 'socio' : 'soci'}</title>
+        </g>
+      ))}
+    </svg>
+    <figcaption>Dati pubblicati in forma aggregata: {total} presenze territoriali, senza indirizzi personali.</figcaption>
+  </figure>
+  <div>
+    <h3>Il Nord-Est è il nostro punto di partenza</h3>
+    <ul class="location-list">
+      {locations.map(({ data }) => <li><span>{data.name}</span><strong>{data.count}</strong></li>)}
+    </ul>
+  </div>
+</div>

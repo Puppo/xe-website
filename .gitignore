@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.astro/
+.DS_Store
+playwright-report/
+test-results/
+coverage/
+.env
+core.*

@@ -1,0 +1,20 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SupportPanel from '../../components/SupportPanel.astro';
+import CommunityMap from '../../components/CommunityMap.astro';
+
+const [page] = await getCollection('pages', ({ id }) => id === 'chi-siamo');
+const { Content } = await render(page);
+const [site] = await getCollection('site');
+const locations = await getCollection('locations');
+---
+
+<BaseLayout title={page.data.title} description={page.data.description}>
+  <header class="page-hero"><div class="shell"><p class="breadcrumbs"><a href="/">Home</a> / Chi siamo</p><h1>Chi siamo</h1><p>{page.data.description}</p></div></header>
+  <section class="section shell detail-grid">
+    <article class="prose"><Content /></article>
+    <aside><SupportPanel membershipButtonId={site.data.membershipButtonId} donationButtonId={site.data.donationButtonId} /></aside>
+  </section>
+  <section class="section surface"><div class="shell"><div class="section-heading"><h2>Da dove vengono alcuni soci</h2></div><CommunityMap locations={locations} /></div></section>
+</BaseLayout>

@@ -1,0 +1,21 @@
+---
+interface Props { action: string; honeypot: string }
+const { action, honeypot } = Astro.props;
+---
+
+<form class="newsletter" action={action} method="post">
+  <h2>Newsletter</h2>
+  <p id="newsletter-help">Ricevi soltanto aggiornamenti sulle attività di XE.</p>
+  <div class="form-row">
+    <div class="field">
+      <label for="newsletter-email">Email <span aria-hidden="true">*</span></label>
+      <input id="newsletter-email" name="EMAIL" type="email" inputmode="email" autocomplete="email" spellcheck="false" aria-describedby="newsletter-help" required />
+    </div>
+    <button type="submit">Iscriviti</button>
+  </div>
+  <div class="honeypot" aria-hidden="true">
+    <label for="newsletter-check">Lascia vuoto questo campo</label>
+    <input id="newsletter-check" name={honeypot} type="text" tabindex="-1" autocomplete="off" />
+  </div>
+  <p class="form-note">Iscrivendoti accetti il trattamento descritto nell’<a href="/privacy-policy/">informativa sulla privacy</a>.</p>
+</form>
