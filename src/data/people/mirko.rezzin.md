@@ -1,0 +1,13 @@
+---
+name: Mirko Rezzin
+sortName: Mirko Rezzin
+title: .Net Developer
+roles:
+  - member
+links:
+  - label: linkedin.com
+    url: https://www.linkedin.com/in/mirkorezzin
+published: true
+sourceUrl: https://www.xedotnet.org/soci/
+---
+

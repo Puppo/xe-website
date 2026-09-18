@@ -15,7 +15,7 @@ const events = defineCollection({
 });
 
 const people = defineCollection({
-  loader: glob({ pattern: '**/*.json', base: './src/data/people' }),
+  loader: glob({ pattern: '**/*.md', base: './src/data/people' }),
   schema: personSchema
 });
 

@@ -11,10 +11,6 @@
     "title": {
       "type": "string"
     },
-    "bio": {
-      "default": "",
-      "type": "string"
-    },
     "image": {
       "type": "string"
     },

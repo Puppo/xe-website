@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { eventYear, formatEventDate, isPastEvent, registrationMessage, sortAscending, type EventEntry } from '../src/lib/events';
+import { markdownExcerpt } from '../src/lib/text';
 
 function event(date: string): EventEntry {
   return { id: date, data: { date: new Date(`${date}T12:00:00Z`) } } as unknown as EventEntry;
@@ -29,5 +30,21 @@ describe('eventi', () => {
     expect(registrationMessage('open')).toContain('sono aperte');
     expect(registrationMessage('sold-out')).toContain('esauriti');
     expect(registrationMessage('closed')).toContain('chiuse');
+  });
+});
+
+describe('profili', () => {
+  it('crea una descrizione SEO dal contenuto Markdown', () => {
+    expect(markdownExcerpt('## Sviluppatore\n\nLavora con **.NET** e [Astro](https://astro.build).'))
+      .toBe('Sviluppatore Lavora con .NET e Astro.');
+  });
+
+  it('tronca la descrizione senza spezzare le parole', () => {
+    expect(markdownExcerpt('Una descrizione sufficientemente lunga per essere accorciata.', 32))
+      .toBe('Una descrizione sufficientemente…');
+  });
+
+  it('mantiene vuota una biografia assente', () => {
+    expect(markdownExcerpt('')).toBe('');
   });
 });

@@ -52,3 +52,12 @@ test('un evento storico è raggiungibile dall’archivio', async ({ page }) => {
   await firstEvent.click();
   await expect(page.getByRole('heading', { level: 2, name: 'Dettagli' })).toBeVisible();
 });
+
+test('le biografie dei soci sono renderizzate dal Markdown', async ({ page }) => {
+  await page.goto('/soci/daniele-morosinotto/');
+  await expect(page.locator('.person-profile .prose > p')).toHaveCount(5);
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /Sono un appassionato di tecnologia/);
+
+  await page.goto('/soci/alessandro-calzavara/');
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', 'Alessandro Calzavara, socio di XeDotNet.');
+});

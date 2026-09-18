@@ -1,0 +1,12 @@
+---
+name: Matteo Bortolazzo
+sortName: Matteo Bortolazzo
+roles:
+  - member
+links:
+  - label: linkedin.com
+    url: https://www.linkedin.com/in/matteobortolazzo/
+published: true
+sourceUrl: https://www.xedotnet.org/soci/
+---
+

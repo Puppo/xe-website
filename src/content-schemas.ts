@@ -43,7 +43,6 @@ export const personSchema = z.object({
   name: z.string(),
   sortName: z.string(),
   title: z.string().optional(),
-  bio: z.string().default(''),
   image: z.string().optional(),
   roles: z.array(z.enum(['member', 'speaker'])).min(1),
   links: z.array(linkSchema).default([]),

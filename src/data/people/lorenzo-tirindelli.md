@@ -1,0 +1,14 @@
+---
+name: Lorenzo Tirindelli
+sortName: Lorenzo Tirindelli
+title: Developer
+image: /media/1215-tirindelli.png
+roles:
+  - member
+links:
+  - label: linkedin.com
+    url: https://www.linkedin.com/in/lorenzo-tirindelli-629174138/
+published: true
+sourceUrl: https://www.xedotnet.org/soci/
+---
+

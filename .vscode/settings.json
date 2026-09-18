@@ -1,10 +1,6 @@
 {
   "json.schemas": [
     {
-      "fileMatch": ["/src/data/people/*.json"],
-      "url": "./schemas/person.schema.json"
-    },
-    {
       "fileMatch": ["/src/data/partners.json"],
       "url": "./schemas/partners.schema.json"
     },

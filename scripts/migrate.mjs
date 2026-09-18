@@ -215,22 +215,21 @@ async function migratePeople() {
     if (!name) continue;
     const title = clean(modal.find('[itemprop="jobTitle"]').first().text());
     const descriptionRoot = modal.find('[itemprop="description"]').first();
-    const bioParagraphs = descriptionRoot.find('p').toArray().map((paragraph) => clean($(paragraph).text())).filter(Boolean);
-    const bio = bioParagraphs.length ? bioParagraphs.join('\n\n') : clean(descriptionRoot.text());
+    const bio = turndown.turndown(descriptionRoot.html() || '').trim();
     const imageSource = modal.find('.modal-body img').first().attr('src') || card.find('img').first().attr('src');
     const image = imageSource && !/no_photo/i.test(imageSource) ? await saveAsset(imageSource) : undefined;
     const person = {
       name,
       sortName: name,
       ...(title && { title }),
-      bio,
       ...(image && { image }),
       roles: ['member'],
       links: externalLinks($, modal),
       published: true,
       sourceUrl: url
     };
-    await writeFile(join(PEOPLE_DIR, `${slug}.json`), `${JSON.stringify(person, null, 2)}\n`);
+    const frontmatter = toYaml(person, { lineWidth: 0 }).trim();
+    await writeFile(join(PEOPLE_DIR, `${slug}.md`), `---\n${frontmatter}\n---\n${bio ? `\n${bio}\n` : ''}`);
     report.routes.push({ source: `${url}#${slug}`, destination: `/soci/${slug}/`, kind: 'socio' });
   }
   report.people = seen.size;

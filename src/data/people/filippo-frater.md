@@ -1,0 +1,18 @@
+---
+name: Filippo Frater
+sortName: Filippo Frater
+title: Software developer
+image: /media/1216-frater.jpg
+roles:
+  - member
+links:
+  - label: linkedin.com
+    url: https://www.linkedin.com/in/filippofrater
+  - label: github.com
+    url: https://github.com/philbroz
+published: true
+sourceUrl: https://www.xedotnet.org/soci/
+---
+
+Sviluppatore con una forte esperienza in .NET e un interesse costante per architetture moderne, DevOps e clean code. Mi piace condividere idee, sperimentare nuove soluzioni e confrontarmi con altri professionisti per crescere insieme. Ho lavorato anche in React e Angular con JavaScript e TypeScript.
+

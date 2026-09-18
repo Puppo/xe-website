@@ -25,7 +25,7 @@ L’indirizzo pubblico è configurato con `SITE_URL`, includendo l’eventuale s
 ## Contenuti
 
 - Eventi Markdown: `src/data/events/`
-- Persone JSON: `src/data/people/`
+- Persone Markdown: `src/data/people/` (metadati nel frontmatter YAML e biografia nel corpo)
 - Pagine Markdown: `src/data/pages/`
 - Configurazione e dati condivisi: `src/data/*.json`
 
