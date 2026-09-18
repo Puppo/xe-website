@@ -21,11 +21,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+      - name: Leggi l’indirizzo di GitHub Pages
+        id: pages
+        uses: actions/configure-pages@v5
       - name: Verifica e prepara il sito
         uses: withastro/action@v6
         with:
           node-version: 24
+          build-cmd: npm test && npm run build && npm run check:build
         env:
+          SITE_URL: ${{ vars.SITE_URL || steps.pages.outputs.base_url }}
           PUBLIC_CONTACT_FORM_ACTION: ${{ vars.PUBLIC_CONTACT_FORM_ACTION }}
 
   deploy:

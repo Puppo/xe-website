@@ -1,4 +1,5 @@
 ---
+import { withBase } from '../lib/urls';
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import EventCard from '../components/EventCard.astro';
@@ -22,13 +23,13 @@ const faces = people.filter((person) => person.data.image).slice(0, 5);
         <h1>Le idee migliori<br />nascono insieme.</h1>
         <p class="hero-copy">Il codice è il punto di partenza. Le persone fanno il resto.<br class="desktop-break" /> Incontri gratuiti, esperienze vere e voglia di costruire, dal 2006.</p>
         <div class="hero-actions">
-          <a class="button" href="/eventi/">Scopri gli eventi</a>
-          <a class="button button-secondary" href="/chi-siamo/">Conosci XE</a>
+          <a class="button" href={withBase('/eventi/')}>Scopri gli eventi</a>
+          <a class="button button-secondary" href={withBase('/chi-siamo/')}>Conosci XE</a>
         </div>
       </div>
       <div class="hero-feature">
         <div class="hero-photo-wrap">
-          <img class="hero-photo" src="/media/1095-xedotnet-04.jpg" alt="Codice proiettato durante un incontro XeDotNet" width="1920" height="550" fetchpriority="high" />
+          <img class="hero-photo" src={withBase('/media/1095-xedotnet-04.jpg')} alt="Codice proiettato durante un incontro XeDotNet" width="1920" height="550" fetchpriority="high" />
           <div class="hero-photo-caption"><span>Ci vediamo al prossimo incontro.</span><span>Porta la tua curiosità.</span></div>
         </div>
         <div class="hero-stamp">
@@ -36,9 +37,9 @@ const faces = people.filter((person) => person.data.image).slice(0, 5);
           {nextEvent ? (
             <>
               <time datetime={nextEvent.data.date.toISOString()} aria-label={formatEventDate(nextEvent.data.date)}><strong>{new Intl.DateTimeFormat('it-IT', { day: '2-digit', month: 'short', timeZone: 'Europe/Rome' }).format(nextEvent.data.date)}</strong></time>
-              <h2><a href={`/eventi/${nextEvent.id}/`}>{nextEvent.data.title}</a></h2>
+              <h2><a href={withBase(`/eventi/${nextEvent.id}/`)}>{nextEvent.data.title}</a></h2>
               {nextEvent.data.venue && <p class="hero-venue">{nextEvent.data.venue.name}</p>}
-              <a class="event-details-link" href={`/eventi/${nextEvent.id}/`}>Programma e dettagli <span aria-hidden="true">↗</span></a>
+              <a class="event-details-link" href={withBase(`/eventi/${nextEvent.id}/`)}>Programma e dettagli <span aria-hidden="true">↗</span></a>
             </>
           ) : (
             <><strong>{events.length}</strong><p>eventi e una community in continuo movimento.</p></>
@@ -53,7 +54,7 @@ const faces = people.filter((person) => person.data.image).slice(0, 5);
   </section>
 
   <section class="section shell">
-    <div class="section-heading"><h2>Prossimi eventi</h2><a href="/eventi/">Calendario completo</a></div>
+    <div class="section-heading"><h2>Prossimi eventi</h2><a href={withBase('/eventi/')}>Calendario completo</a></div>
     {upcoming.length ? (
       <ol class="event-list event-grid">{upcoming.slice(0, 3).map((event) => <li><EventCard event={event} featured={event.id === nextEvent?.id} /></li>)}</ol>
     ) : (
@@ -64,16 +65,16 @@ const faces = people.filter((person) => person.data.image).slice(0, 5);
   <section class="section shell community-section">
     <div class="community-panel">
       <div class="community-message">
-        <div class="community-faces" aria-hidden="true">{faces.map((person) => <img src={person.data.image} alt="" width="64" height="64" loading="lazy" />)}</div>
+        <div class="community-faces" aria-hidden="true">{faces.map((person) => <img src={withBase(person.data.image ?? '')} alt="" width="64" height="64" loading="lazy" />)}</div>
         <h2>Dietro ogni riga di codice,<br />c’è una persona.</h2>
         <p>XE riunisce professionisti, studenti e appassionati. Gli eventi restano gratuiti grazie ai soci che scelgono di sostenerci.</p>
-        <a class="button button-secondary" href="/soci/">Conosci i {people.length} soci</a>
+        <a class="button button-secondary" href={withBase('/soci/')}>Conosci i {people.length} soci</a>
       </div>
       <div class="community-history">
         <p class="history-number">{events.length}</p>
         <h3>occasioni per crescere insieme.</h3>
         <p>Esplora gli incontri, i materiali e le idee che hanno fatto la storia di XE.</p>
-        <a href="/eventi/">Esplora il nostro archivio</a>
+        <a href={withBase('/eventi/')}>Esplora il nostro archivio</a>
       </div>
     </div>
     <div class="sponsor-strip">

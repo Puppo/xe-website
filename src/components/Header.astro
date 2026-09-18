@@ -1,4 +1,5 @@
 ---
+import { withBase } from '../lib/urls';
 interface Props {
   navigation: Array<{ label: string; href: string }>;
 }
@@ -8,15 +9,15 @@ const currentPath = Astro.url.pathname;
 
 <header class="site-header">
   <div class="shell header-inner">
-    <a class="brand" href="/" aria-label="XeDotNet, pagina iniziale">
-      <img class="brand-logo" src="/images/xe-logo-original.png" alt="XE" width="162" height="97" />
+    <a class="brand" href={withBase('/')} aria-label="XeDotNet, pagina iniziale">
+      <img class="brand-logo" src={withBase('/images/xe-logo-original.png')} alt="XE" width="162" height="97" />
       <span class="brand-name">Development user group</span>
     </a>
     <nav aria-label="Principale">
       <ul class="nav-list" role="list">
         {navigation.map((item) => (
           <li>
-            <a href={item.href} aria-current={currentPath.startsWith(item.href) && item.href !== '/' || currentPath === item.href ? 'page' : undefined}>
+            <a href={withBase(item.href)} aria-current={currentPath.startsWith(withBase(item.href)) && item.href !== '/' || currentPath === withBase(item.href) ? 'page' : undefined}>
               {item.label}
             </a>
           </li>

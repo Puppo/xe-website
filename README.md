@@ -20,6 +20,8 @@ I comandi principali sono:
 
 Per abilitare il form dei contatti, copia `.env.example` in `.env` e imposta `PUBLIC_CONTACT_FORM_ACTION` con l’endpoint Formspree pubblico. In assenza dell’endpoint viene mostrato un collegamento email utilizzabile.
 
+L’indirizzo pubblico è configurato con `SITE_URL`, includendo l’eventuale sottocartella: per esempio `https://puppo.github.io/xe-website/`. La build usa questo unico valore per asset, navigazione, URL canonici, sitemap e `robots.txt`. Nel workflow GitHub Pages il valore viene rilevato automaticamente; la variabile di repository `SITE_URL` può sovrascriverlo quando cambia il dominio. Per passare al dominio definitivo basta configurarlo nelle impostazioni GitHub Pages: non è necessario modificare il codice.
+
 ## Contenuti
 
 - Eventi Markdown: `src/data/events/`

@@ -1,4 +1,5 @@
 ---
+import { withBase } from '../lib/urls';
 import NewsletterForm from './NewsletterForm.astro';
 
 interface Props {
@@ -27,6 +28,6 @@ const { site } = Astro.props;
   </div>
   <div class="shell legal-line">
     <p>XeDotNet · {site.address} · CF {site.fiscalCode}</p>
-    <p><a href="/privacy-policy/">Informativa sulla privacy</a> · <a href={`mailto:${site.email}`}>{site.email}</a></p>
+    <p><a href={withBase('/privacy-policy/')}>Informativa sulla privacy</a> · <a href={`mailto:${site.email}`}>{site.email}</a></p>
   </div>
 </footer>

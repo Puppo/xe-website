@@ -1,4 +1,5 @@
 ---
+import { withBase } from '../lib/urls';
 import { getCollection } from 'astro:content';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
@@ -19,15 +20,15 @@ interface Props {
 
 const { title, description, image = '/images/social-card.svg', type = 'website', structuredData } = Astro.props;
 const [site] = await getCollection('site');
-const canonicalPath = Astro.url.pathname === '/404/' ? '/404.html' : Astro.url.pathname;
+const canonicalPath = Astro.url.pathname === withBase('/404/') ? withBase('/404.html') : Astro.url.pathname;
 const canonical = new URL(canonicalPath, Astro.site);
 const fullTitle = title === site.data.name ? title : `${title} | ${site.data.name}`;
-const fullImage = new URL(image, Astro.site);
+const fullImage = new URL(withBase(image), Astro.site);
 const organization = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: site.data.name,
-  url: Astro.site,
+  url: new URL(withBase('/'), Astro.site).href,
   email: site.data.email,
   address: site.data.address,
   sameAs: site.data.socials.map((social) => social.url)
@@ -44,7 +45,7 @@ const organization = {
     <ThemeScript />
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    <link rel="icon" href="/images/xe-logo-original.png" type="image/png" />
+    <link rel="icon" href={withBase('/images/xe-logo-original.png')} type="image/png" />
     <meta property="og:locale" content="it_IT" />
     <meta property="og:type" content={type} />
     <meta property="og:title" content={fullTitle} />

@@ -1,4 +1,5 @@
 ---
+import { withBase } from '../../../lib/urls';
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import EventCard from '../../../components/EventCard.astro';
@@ -34,20 +35,20 @@ const eventStructuredData = event ? {
   eventAttendanceMode: event.data.venue?.online ? 'https://schema.org/OnlineEventAttendanceMode' : 'https://schema.org/OfflineEventAttendanceMode',
   eventStatus: 'https://schema.org/EventScheduled',
   location: event.data.venue ? { '@type': event.data.venue.online ? 'VirtualLocation' : 'Place', name: event.data.venue.name, url: event.data.venue.url } : undefined,
-  url: new URL(`/eventi/${event.id}/`, Astro.site).href
+  url: new URL(withBase(`/eventi/${event.id}/`), Astro.site).href
 } : undefined;
 ---
 
 {props.kind === 'year' ? (
   <BaseLayout title={`Eventi ${props.year}`} description={`Archivio degli eventi XeDotNet organizzati nel ${props.year}.`}>
-    <header class="page-hero"><div class="shell"><p class="breadcrumbs"><a href="/">Home</a> / <a href="/eventi/">Eventi</a> / {props.year}</p><h1>Eventi del {props.year}</h1><p>{props.events.length} {props.events.length === 1 ? 'appuntamento' : 'appuntamenti'} nell’archivio XE.</p></div></header>
+    <header class="page-hero"><div class="shell"><p class="breadcrumbs"><a href={withBase('/')}>Home</a> / <a href={withBase('/eventi/')}>Eventi</a> / {props.year}</p><h1>Eventi del {props.year}</h1><p>{props.events.length} {props.events.length === 1 ? 'appuntamento' : 'appuntamenti'} nell’archivio XE.</p></div></header>
     <section class="section shell"><ol class="event-list">{props.events.map((item) => <li><EventCard event={item} /></li>)}</ol></section>
   </BaseLayout>
 ) : event && Content ? (
   <BaseLayout title={event.data.title} description={event.data.description} image={event.data.image} type="article" structuredData={eventStructuredData}>
     <header class="page-hero">
       <div class="shell">
-        <p class="breadcrumbs"><a href="/">Home</a> / <a href="/eventi/">Eventi</a> / {eventYear(event)}</p>
+        <p class="breadcrumbs"><a href={withBase('/')}>Home</a> / <a href={withBase('/eventi/')}>Eventi</a> / {eventYear(event)}</p>
         <h1>{event.data.title}</h1>
         <p>{formatEventDate(event.data.date)}</p>
       </div>

@@ -1,20 +1,21 @@
 ---
+import { withBase } from '../../lib/urls';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 const formAction = import.meta.env.PUBLIC_CONTACT_FORM_ACTION;
 ---
 
 <BaseLayout title="Contatti" description="Contatta lo staff di XeDotNet per proposte, collaborazioni e informazioni.">
-  <header class="page-hero"><div class="shell"><p class="breadcrumbs"><a href="/">Home</a> / Contatti</p><h1>Contatti</h1><p>Proponi un argomento, collabora con noi o raccontaci la tua idea.</p></div></header>
+  <header class="page-hero"><div class="shell"><p class="breadcrumbs"><a href={withBase('/')}>Home</a> / Contatti</p><h1>Contatti</h1><p>Proponi un argomento, collabora con noi o raccontaci la tua idea.</p></div></header>
   <section class="section shell detail-grid">
     <div>
       <h2>Scrivi allo staff</h2>
       {formAction ? (
         <form class="form-stack" action={formAction} method="post">
-          <input type="hidden" name="_next" value="https://www.xedotnet.org/grazie/" />
+          <input type="hidden" name="_next" value={new URL(withBase('/grazie/'), Astro.site).href} />
           <div class="field"><label for="name">Nome <span aria-hidden="true">*</span></label><input id="name" name="name" autocomplete="name" maxlength="80" required /></div>
           <div class="field"><label for="email">Email <span aria-hidden="true">*</span></label><input id="email" name="email" type="email" inputmode="email" autocomplete="email" spellcheck="false" maxlength="120" required /></div>
           <div class="field"><label for="message">Messaggio <span aria-hidden="true">*</span></label><p class="field-hint" id="message-help">Indica il contesto e come possiamo ricontattarti.</p><textarea id="message" name="message" aria-describedby="message-help" maxlength="5000" required></textarea></div>
-          <label class="checkbox" for="privacy"><input id="privacy" name="privacy" type="checkbox" value="accettata" required /><span>Ho letto l’<a href="/privacy-policy/">informativa sulla privacy</a> e acconsento al trattamento necessario per ricevere una risposta. <span aria-hidden="true">*</span></span></label>
+          <label class="checkbox" for="privacy"><input id="privacy" name="privacy" type="checkbox" value="accettata" required /><span>Ho letto l’<a href={withBase('/privacy-policy/')}>informativa sulla privacy</a> e acconsento al trattamento necessario per ricevere una risposta. <span aria-hidden="true">*</span></span></label>
           <div class="honeypot" aria-hidden="true"><label for="website">Sito web</label><input id="website" name="_gotcha" tabindex="-1" autocomplete="off" /></div>
           <button type="submit">Invia il messaggio</button>
         </form>

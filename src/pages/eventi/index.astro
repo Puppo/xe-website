@@ -1,4 +1,5 @@
 ---
+import { withBase } from '../../lib/urls';
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import EventCard from '../../components/EventCard.astro';
@@ -12,7 +13,7 @@ const counts = new Map(years.map((year) => [year, past.filter((event) => eventYe
 ---
 
 <BaseLayout title="Eventi" description="Prossimi appuntamenti e archivio degli eventi organizzati da XeDotNet.">
-  <header class="page-hero"><div class="shell"><p class="breadcrumbs"><a href="/">Home</a> / Eventi</p><h1>Eventi</h1><p>Incontri gratuiti per imparare, confrontarsi e far circolare idee utili.</p></div></header>
+  <header class="page-hero"><div class="shell"><p class="breadcrumbs"><a href={withBase('/')}>Home</a> / Eventi</p><h1>Eventi</h1><p>Incontri gratuiti per imparare, confrontarsi e far circolare idee utili.</p></div></header>
   <section class="section shell">
     <div class="section-heading"><h2>Prossimi appuntamenti</h2></div>
     {upcoming.length ? <ol class="event-list">{upcoming.map((event) => <li><EventCard event={event} /></li>)}</ol> : <p>Non ci sono ancora nuovi appuntamenti in calendario. Torna presto o iscriviti alla newsletter.</p>}
@@ -21,7 +22,7 @@ const counts = new Map(years.map((year) => [year, past.filter((event) => eventYe
     <div class="shell">
       <div class="section-heading"><h2>Archivio</h2><p>{past.length} eventi</p></div>
       <ul class="year-grid" role="list">
-        {years.map((year) => <li><a href={`/eventi/${year}/`}><strong>{year}</strong><span>{counts.get(year)} {counts.get(year) === 1 ? 'evento' : 'eventi'}</span></a></li>)}
+        {years.map((year) => <li><a href={withBase(`/eventi/${year}/`)}><strong>{year}</strong><span>{counts.get(year)} {counts.get(year) === 1 ? 'evento' : 'eventi'}</span></a></li>)}
       </ul>
     </div>
   </section>

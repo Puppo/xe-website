@@ -1,4 +1,5 @@
 ---
+import { withBase } from '../../lib/urls';
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 const [page] = await getCollection('pages', ({ id }) => id === 'privacy-policy');
@@ -6,6 +7,6 @@ const { Content } = await render(page);
 ---
 
 <BaseLayout title={page.data.title} description={page.data.description}>
-  <header class="page-hero"><div class="shell"><p class="breadcrumbs"><a href="/">Home</a> / Privacy</p><h1>{page.data.title}</h1><p>{page.data.description}</p></div></header>
+  <header class="page-hero"><div class="shell"><p class="breadcrumbs"><a href={withBase('/')}>Home</a> / Privacy</p><h1>{page.data.title}</h1><p>{page.data.description}</p></div></header>
   <article class="section shell prose"><Content /></article>
 </BaseLayout>
