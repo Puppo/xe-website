@@ -2,10 +2,11 @@
 import { getCollection } from 'astro:content';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import ThemeScript from '../components/ThemeScript.astro';
 import '@fontsource/atkinson-hyperlegible-next/latin-400.css';
 import '@fontsource/atkinson-hyperlegible-next/latin-700.css';
-import '@fontsource/barlow-condensed/latin-600.css';
-import '@fontsource/barlow-condensed/latin-700.css';
+import '@fontsource/manrope/latin-600.css';
+import '@fontsource/manrope/latin-700.css';
 import '../styles/global.css';
 
 interface Props {
@@ -38,10 +39,12 @@ const organization = {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#c52d36" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#f6f8f9" />
+    <ThemeScript />
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/images/xe-logo-original.png" type="image/png" />
     <meta property="og:locale" content="it_IT" />
     <meta property="og:type" content={type} />
     <meta property="og:title" content={fullTitle} />
