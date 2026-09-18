@@ -15,9 +15,34 @@ for (const path of representativePages) {
 
 test('la navigazione principale raggiunge gli eventi', async ({ page }) => {
   await page.goto('/');
+  const menuButton = page.getByRole('button', { name: 'Apri il menu' });
+  if (await menuButton.isVisible()) await menuButton.click();
   await page.getByRole('navigation', { name: 'Principale' }).getByRole('link', { name: 'Eventi' }).click();
   await expect(page).toHaveURL(/\/eventi\/$/);
   await expect(page.getByRole('heading', { level: 1, name: 'Eventi' })).toBeVisible();
+});
+
+test('il menu mobile si apre, si chiude e mantiene il focus', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'mobile', 'Comportamento specifico della navigazione mobile');
+  await page.goto('/');
+
+  const menuButton = page.locator('[data-menu-toggle]');
+  const navigation = page.getByRole('navigation', { name: 'Principale' });
+  await expect(menuButton).toBeVisible();
+  await expect(menuButton).toHaveAccessibleName('Apri il menu');
+  await expect(menuButton).toHaveAttribute('aria-expanded', 'false');
+  await expect(navigation).toBeHidden();
+
+  await menuButton.click();
+  await expect(menuButton).toHaveAccessibleName('Chiudi il menu');
+  await expect(menuButton).toHaveAttribute('aria-expanded', 'true');
+  await expect(navigation).toBeVisible();
+  await expect(navigation.getByRole('link', { name: 'Eventi' })).toBeVisible();
+
+  await page.keyboard.press('Escape');
+  await expect(navigation).toBeHidden();
+  await expect(menuButton).toHaveAttribute('aria-expanded', 'false');
+  await expect(menuButton).toBeFocused();
 });
 
 test('un evento storico è raggiungibile dall’archivio', async ({ page }) => {

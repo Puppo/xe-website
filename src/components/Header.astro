@@ -7,23 +7,33 @@ const { navigation } = Astro.props;
 const currentPath = Astro.url.pathname;
 ---
 
-<header class="site-header">
+<header class="site-header" data-site-header>
   <div class="shell header-inner">
     <a class="brand" href={withBase('/')} aria-label="XeDotNet, pagina iniziale">
       <img class="brand-logo" src={withBase('/images/xe-logo-original.png')} alt="XE" width="162" height="97" />
       <span class="brand-name">Development user group</span>
     </a>
-    <nav aria-label="Principale">
-      <ul class="nav-list" role="list">
-        {navigation.map((item) => (
-          <li>
-            <a href={withBase(item.href)} aria-current={currentPath.startsWith(withBase(item.href)) && item.href !== '/' || currentPath === withBase(item.href) ? 'page' : undefined}>
-              {item.label}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </nav>
+    <div class="nav-area" data-nav-area>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" data-menu-toggle>
+        <span class="visually-hidden" data-menu-label>Apri il menu</span>
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <circle cx="12" cy="5" r="2"></circle>
+          <circle cx="12" cy="12" r="2"></circle>
+          <circle cx="12" cy="19" r="2"></circle>
+        </svg>
+      </button>
+      <nav id="primary-navigation" aria-label="Principale">
+        <ul class="nav-list" role="list">
+          {navigation.map((item) => (
+            <li>
+              <a href={withBase(item.href)} aria-current={currentPath.startsWith(withBase(item.href)) && item.href !== '/' || currentPath === withBase(item.href) ? 'page' : undefined}>
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </div>
     <div class="theme-control" hidden>
       <label for="theme">Tema</label>
       <select id="theme" name="theme">
@@ -34,3 +44,44 @@ const currentPath = Astro.url.pathname;
     </div>
   </div>
 </header>
+
+<script>
+  const mobileNavigation = window.matchMedia('(max-width: 48rem)');
+
+  document.querySelectorAll<HTMLElement>('[data-site-header]').forEach((header) => {
+    const area = header.querySelector<HTMLElement>('[data-nav-area]');
+    const toggle = header.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+    const label = header.querySelector<HTMLElement>('[data-menu-label]');
+    const navigation = header.querySelector<HTMLElement>('#primary-navigation');
+    if (!area || !toggle || !label || !navigation) return;
+
+    area.dataset.menuReady = '';
+
+    const setOpen = (open: boolean, restoreFocus = false) => {
+      area.toggleAttribute('data-open', open);
+      toggle.setAttribute('aria-expanded', String(open));
+      label.textContent = open ? 'Chiudi il menu' : 'Apri il menu';
+      if (!open && restoreFocus) toggle.focus();
+    };
+
+    toggle.addEventListener('click', () => {
+      setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+    });
+
+    navigation.addEventListener('click', (event) => {
+      if ((event.target as Element).closest('a')) setOpen(false);
+    });
+
+    document.addEventListener('click', (event) => {
+      if (mobileNavigation.matches && !header.contains(event.target as Node)) setOpen(false);
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+        setOpen(false, true);
+      }
+    });
+
+    mobileNavigation.addEventListener('change', () => setOpen(false));
+  });
+</script>
