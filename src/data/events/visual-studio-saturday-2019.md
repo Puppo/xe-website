@@ -10,7 +10,6 @@ venue:
 sessions: []
 materials: []
 registration:
-  status: closed
   url: https://sessionize.com/api/v2/wnlvggtu/view/GridSmart
   label: Iscriviti all’evento
 sourceUrl: https://www.xedotnet.org/eventi/visual-studio-saturday-2019/

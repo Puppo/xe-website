@@ -18,8 +18,6 @@ sessions:
 materials:
   - label: download
     url: https://docs.google.com/presentation/d/1RfjPRfNbirComhBtQlrLJPGDX-zlQ3u6/edit?usp=sharing&ouid=101537442308490421078&rtpof=true&sd=true
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/fusioncache-hybrid-caching-in-net/
 draft: false
 ---

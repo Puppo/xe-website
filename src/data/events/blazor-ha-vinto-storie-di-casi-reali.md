@@ -17,8 +17,6 @@ sessions:
 materials:
   - label: Download
     url: https://drive.google.com/drive/folders/1lukZtVKtImvePQn1aIbOjg21Ca7LK_RT?usp=sharing
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/blazor-ha-vinto-storie-di-casi-reali/
 draft: false
 ---

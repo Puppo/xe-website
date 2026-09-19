@@ -23,8 +23,6 @@ materials:
     url: https://drive.google.com/drive/folders/0B5JUdKPfCebKWkRyd3FlUDNUOVk?resourcekey=0-x_C4e6mav-6OXIn8rjgJZw&usp=sharing
   - label: https://github.com/StackExchange/Dapper
     url: https://github.com/StackExchange/Dapper
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/async-night/
 draft: false
 ---

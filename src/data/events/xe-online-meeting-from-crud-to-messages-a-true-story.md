@@ -16,8 +16,6 @@ sessions:
     title: Chiacchierata con Alessandro
     speakers: []
 materials: []
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/xe-online-meeting-from-crud-to-messages-a-true-story/
 draft: false
 ---

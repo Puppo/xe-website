@@ -19,8 +19,6 @@ sessions:
 materials:
   - label: download
     url: https://drive.google.com/drive/folders/1w0qz3BrsFgXeDfOXG5ewhGJmYsqnJRU7?usp=sharing
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/dotnet-conf-2021-hot-topics/
 draft: false
 ---

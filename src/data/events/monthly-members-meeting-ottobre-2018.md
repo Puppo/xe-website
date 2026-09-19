@@ -17,8 +17,6 @@ sessions:
     speakers:
       - XE
 materials: []
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/monthly-members-meeting-ottobre-2018/
 draft: false
 ---

@@ -29,8 +29,6 @@ sessions:
     speakers:
       - Marco Bortolin
 materials: []
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/net-conf-2022-hot-topics/
 draft: false
 ---

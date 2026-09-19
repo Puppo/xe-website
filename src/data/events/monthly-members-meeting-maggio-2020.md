@@ -15,8 +15,6 @@ sessions:
     title: Birra virtuale
     speakers: []
 materials: []
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/monthly-members-meeting-maggio-2020/
 draft: false
 ---

@@ -21,8 +21,6 @@ sessions:
 materials:
   - label: download
     url: https://drive.google.com/drive/folders/0B5JUdKPfCebKSXFHUFVjNVpPemc?usp=sharing
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/ui-night-bootstrap-vs-angular-material/
 draft: false
 ---

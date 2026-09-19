@@ -16,8 +16,6 @@ sessions:
     title: Birra e panino
     speakers: []
 materials: []
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/monthly-members-meeting-novembre-2019/
 draft: false
 ---

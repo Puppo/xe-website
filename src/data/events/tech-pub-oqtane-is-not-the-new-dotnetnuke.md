@@ -15,8 +15,6 @@ sessions:
       - Alberto Zen
     description: "In questi ultimi anni Oqtane è diventato un CMS maturo basato su blazor: Opera dell'inossidabile Shaun Walker. Oltre ad essere un classico CMS è anche application Framework adattabile a vari scenari, anche quello industriale.Oqtane permette sia una modalita di sviluppo a Moduli: scrivo un plugin da installare su una installazione esistente; sia una modalità di sviluppo Application Framework sotto forma di pacchetto nuget da usare in un qualsiasi .net application startup.Vedremo insieme le caratteristiche che ci permettono di scrivere un modulo Oqtane e farlo girare sia in modalità webassembly che static-server-rendered, con lo stesso codice. Vedremo i vantaggi che oqtane offre rispetto a dei boilerplate starter projects."
 materials: []
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/tech-pub-oqtane-is-not-the-new-dotnetnuke/
 draft: false
 ---

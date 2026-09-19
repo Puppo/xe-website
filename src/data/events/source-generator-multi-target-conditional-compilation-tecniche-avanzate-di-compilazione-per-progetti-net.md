@@ -19,8 +19,6 @@ sessions:
     title: Q & A
     speakers: []
 materials: []
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/source-generator-multi-target-conditional-compilation-tecniche-avanzate-di-compilazione-per-progetti-net/
 draft: false
 ---

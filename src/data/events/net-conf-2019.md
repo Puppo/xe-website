@@ -15,8 +15,6 @@ sessions:
     title: Cena
     speakers: []
 materials: []
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/net-conf-2019/
 draft: false
 ---

@@ -18,8 +18,6 @@ materials:
     url: https://drive.google.com/folderview?id=0B5JUdKPfCebKQ0h5YTI3S2ctdW8&usp=sharing
   - label: https://ms-iot.github.io/content/en-US/Downloads.htm
     url: https://ms-iot.github.io/content/en-US/Downloads.htm
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/lab-windows-10-iot-core/
 draft: false
 ---

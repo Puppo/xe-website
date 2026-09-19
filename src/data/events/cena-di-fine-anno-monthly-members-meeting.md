@@ -17,8 +17,6 @@ sessions:
     speakers:
       - XE
 materials: []
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/cena-di-fine-anno-monthly-members-meeting/
 draft: false
 ---

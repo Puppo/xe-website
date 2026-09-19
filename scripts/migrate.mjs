@@ -152,15 +152,9 @@ async function parseEvent(url) {
   });
 
   const registrationWidget = $('.sidebar .widget').filter((_, element) => /iscriviti all.evento/i.test(clean($(element).text()))).first();
-  const registrationText = clean(registrationWidget.text()).toLowerCase();
-  let status = 'closed';
-  if (/non sono ancora|non è ancora/.test(registrationText)) status = 'not-open';
-  else if (/esaurit|sold.?out/.test(registrationText)) status = 'sold-out';
-  else if (!/chius/.test(registrationText) && registrationWidget.length) status = 'open';
   let registrationUrl = registrationWidget.find('a[href^="http"]').attr('href');
   if (!registrationUrl) registrationUrl = $('article.maincontent a[href*="eventbrite"], article.maincontent a[href*="sessionize"]').first().attr('href');
-  if (status === 'open' && !registrationUrl) {
-    status = 'not-open';
+  if (registrationWidget.length && !registrationUrl) {
     report.warnings.push(`${url}: iscrizione originariamente interna, serve un nuovo URL esterno.`);
   }
 
@@ -176,7 +170,7 @@ async function parseEvent(url) {
     ...(firstBodyImage && { image: firstBodyImage }),
     sessions,
     materials: [...materialMap].map(([materialUrl, label]) => ({ label, url: materialUrl })),
-    registration: { status, ...(registrationUrl && { url: new URL(registrationUrl, ORIGIN).href, label: 'Iscriviti all’evento' }) },
+    ...(registrationUrl && { registration: { url: new URL(registrationUrl, ORIGIN).href, label: 'Iscriviti all’evento' } }),
     sourceUrl: url,
     draft: false
   };

@@ -97,8 +97,6 @@ materials:
     url: https://drive.google.com/open?id=1uxtZeG2hYAcHrEVSQ4OmE54O_Lmk03Tr
   - label: Presentazione e codice disponibili su Github
     url: https://github.com/ghotz/Presentations/tree/master/One%20Day%20-%20Enterprise%20Application
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/one-day-enterprise-application/
 draft: false
 ---

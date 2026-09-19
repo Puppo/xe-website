@@ -21,8 +21,6 @@ sessions:
 materials:
   - label: download
     url: https://drive.google.com/drive/folders/1gfv8l8knlGHL4JClLOed7FogGfkJQ1uh?usp=sharing
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/electron-night/
 draft: false
 ---

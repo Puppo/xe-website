@@ -36,8 +36,6 @@ sessions:
 materials:
   - label: download
     url: https://drive.google.com/file/d/0B5JUdKPfCebKYnB3MmdnV01rMW8/view?usp=sharing&resourcekey=0-l35JmE3g_CRU7ac_S86P4Q
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/20170406-windows-real-time/
 draft: false
 ---

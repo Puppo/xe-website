@@ -15,8 +15,6 @@ sessions:
     title: Virtual birra
     speakers: []
 materials: []
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/xe-online-meeting-devops-gestione-dei-branch/
 draft: false
 ---

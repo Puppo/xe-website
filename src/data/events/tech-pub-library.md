@@ -13,8 +13,6 @@ sessions:
     speakers:
       - Enrico Giacomazzi
 materials: []
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/tech-pub-library/
 draft: false
 ---

@@ -19,8 +19,6 @@ sessions:
       - Simone Ferraro
     description: In questo talk esploreremo il concetto di osservabilità approfondendo come AWS fornisce una suite completa di strumenti per monitorare e comprendere il comportamento delle nostre applicazioni. Dalle metriche di CloudWatch ai log di CloudWatch Logs, passando per i trace di X-Ray, vedremo come correlare tutte le informazioni per ottenere una visione completa della nostra applicazione per individuare rapidamente le cause dei problemi.
 materials: []
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/observability-night/
 draft: false
 ---

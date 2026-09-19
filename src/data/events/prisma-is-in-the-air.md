@@ -19,8 +19,6 @@ materials:
     url: https://drive.google.com/drive/folders/1S0QSYP7TOX3Z1WLh1Z7Z0zWc_sTS5UzA?usp=sharing?usp=sharing
   - label: https://github.com/puppo/prisma-in-the-air
     url: https://github.com/puppo/prisma-in-the-air
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/prisma-is-in-the-air/
 draft: false
 ---

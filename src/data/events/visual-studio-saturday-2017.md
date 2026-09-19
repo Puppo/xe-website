@@ -9,8 +9,6 @@ venue:
   online: false
 sessions: []
 materials: []
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/visual-studio-saturday-2017/
 draft: false
 ---

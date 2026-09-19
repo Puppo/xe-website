@@ -13,8 +13,6 @@ sessions:
     speakers:
       - XE
 materials: []
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/github-copilot-bootcamp-venezia-marghera/
 draft: false
 ---

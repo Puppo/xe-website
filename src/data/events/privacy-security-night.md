@@ -21,8 +21,6 @@ sessions:
 materials:
   - label: download
     url: https://drive.google.com/open?id=0B5JUdKPfCebKNVgxQ0IyZnJaVmc
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/privacy-security-night/
 draft: false
 ---

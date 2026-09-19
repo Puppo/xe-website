@@ -15,8 +15,6 @@ sessions:
     title: Q & A
     speakers: []
 materials: []
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/build-a-visual-studio-code-extension/
 draft: false
 ---

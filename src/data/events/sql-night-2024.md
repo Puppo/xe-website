@@ -21,8 +21,6 @@ sessions:
 materials:
   - label: Slide e codice
     url: https://drive.google.com/drive/folders/1ThBcHnQdPFyKNLoTMzsJAZyUR6ECIx8T?usp=sharing
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/sql-night-2024/
 draft: false
 ---

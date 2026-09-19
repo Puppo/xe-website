@@ -1,9 +1,28 @@
 import { describe, expect, it } from 'vitest';
-import { eventYear, formatEventDate, isPastEvent, registrationMessage, sortAscending, type EventEntry } from '../src/lib/events';
+import { eventInputSchema } from '../src/content-schemas';
+import {
+  eventStructuredStatus,
+  eventYear,
+  formatEventDate,
+  isPastEvent,
+  nextScheduledEvent,
+  registrationMessage,
+  registrationState,
+  sortAscending,
+  type EventEntry
+} from '../src/lib/events';
 import { markdownExcerpt } from '../src/lib/text';
 
-function event(date: string): EventEntry {
-  return { id: date, data: { date: new Date(`${date}T12:00:00Z`) } } as unknown as EventEntry;
+function event(date: string, data: Record<string, unknown> = {}): EventEntry {
+  return {
+    id: date,
+    data: {
+      date: new Date(`${date}T12:00:00Z`),
+      status: 'scheduled',
+      registration: {},
+      ...data
+    }
+  } as unknown as EventEntry;
 }
 
 describe('eventi', () => {
@@ -25,11 +44,66 @@ describe('eventi', () => {
     expect(isPastEvent(event('2027-01-01'), new Date('2026-01-01T12:00:00Z'))).toBe(false);
   });
 
-  it('fornisce messaggi italiani per ogni stato di iscrizione', () => {
-    expect(registrationMessage('not-open')).toContain('non sono ancora aperte');
-    expect(registrationMessage('open')).toContain('sono aperte');
-    expect(registrationMessage('sold-out')).toContain('esauriti');
-    expect(registrationMessage('closed')).toContain('chiuse');
+  it('deriva lo stato di iscrizione da date inclusive nel fuso di Roma', () => {
+    const item = event('2026-10-20', {
+      registration: {
+        startDate: new Date('2026-10-01T00:00:00Z'),
+        endDate: new Date('2026-10-15T00:00:00Z'),
+        url: 'https://example.com/register'
+      }
+    });
+
+    expect(registrationState(item, new Date('2026-09-30T12:00:00Z'))).toBe('not-open');
+    expect(registrationState(item, new Date('2026-09-30T22:30:00Z'))).toBe('open');
+    expect(registrationState(item, new Date('2026-10-15T21:59:00Z'))).toBe('open');
+    expect(registrationState(item, new Date('2026-10-15T22:30:00Z'))).toBe('closed');
+    expect(registrationMessage(item, new Date('2026-09-30T12:00:00Z'))).toContain('1 ottobre 2026');
+    expect(registrationMessage(item, new Date('2026-10-10T12:00:00Z'))).toContain('15 ottobre 2026');
+  });
+
+  it('gestisce eventi senza periodo di iscrizione', () => {
+    expect(registrationState(event('2027-01-01'), new Date('2026-01-01T12:00:00Z'))).toBe('unavailable');
+    expect(registrationState(event('2025-01-01'), new Date('2026-01-01T12:00:00Z'))).toBe('closed');
+  });
+
+  it('dà precedenza all’annullamento e lo esclude dal prossimo incontro', () => {
+    const cancelled = event('2026-10-01', { status: 'cancelled' });
+    const scheduled = event('2026-11-01');
+
+    expect(registrationState(cancelled)).toBe('cancelled');
+    expect(registrationMessage(cancelled)).toContain('annullato');
+    expect(nextScheduledEvent([cancelled, scheduled])).toBe(scheduled);
+    expect(eventStructuredStatus(cancelled)).toBe('https://schema.org/EventCancelled');
+    expect(eventStructuredStatus(scheduled)).toBe('https://schema.org/EventScheduled');
+  });
+});
+
+describe('schema evento', () => {
+  const baseEvent = {
+    title: 'Evento di prova',
+    description: 'Descrizione',
+    date: '2026-10-20',
+    sourceUrl: 'https://example.com/event'
+  };
+
+  it('accetta un periodo di iscrizione valido', () => {
+    expect(eventInputSchema.safeParse({
+      ...baseEvent,
+      registration: {
+        startDate: '2026-10-01',
+        endDate: '2026-10-20',
+        url: 'https://example.com/register'
+      }
+    }).success).toBe(true);
+  });
+
+  it.each([
+    { registration: { startDate: '2026-10-01', url: 'https://example.com/register' } },
+    { registration: { startDate: '2026-10-01', endDate: '2026-10-10' } },
+    { registration: { startDate: '2026-10-10', endDate: '2026-10-01', url: 'https://example.com/register' } },
+    { registration: { startDate: '2026-10-01', endDate: '2026-10-21', url: 'https://example.com/register' } }
+  ])('rifiuta un periodo di iscrizione incoerente', (invalid) => {
+    expect(eventInputSchema.safeParse({ ...baseEvent, ...invalid }).success).toBe(false);
   });
 });
 

@@ -1,18 +1,19 @@
 ---
 import { withBase } from '../lib/urls';
 import type { EventEntry } from '../lib/events';
-import { formatEventDate } from '../lib/events';
+import { formatEventDate, isCancelled } from '../lib/events';
 
 interface Props { event: EventEntry; featured?: boolean }
 const { event, featured = false } = Astro.props;
 ---
 
-<article class:list={['event-card', { featured }]}>
+<article class:list={['event-card', { featured, cancelled: isCancelled(event) }]}>
   <time datetime={event.data.date.toISOString()}>
     <span class="date-day">{new Intl.DateTimeFormat('it-IT', { day: '2-digit', timeZone: 'Europe/Rome' }).format(event.data.date)}</span>
     <span>{new Intl.DateTimeFormat('it-IT', { month: 'short', year: 'numeric', timeZone: 'Europe/Rome' }).format(event.data.date)}</span>
   </time>
   <div class="event-card-body">
+    {isCancelled(event) && <p class="event-status">Evento annullato</p>}
     {event.data.eventType && <p class="event-type">{event.data.eventType}</p>}
     <h2><a href={withBase(`/eventi/${event.id}/`)}>{event.data.title}</a></h2>
     <p>{event.data.description}</p>

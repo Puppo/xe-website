@@ -23,8 +23,6 @@ materials:
     url: https://www.slideshare.net/melkio/how-to-searchbetter
   - label: https://www.slideshare.net/MauroRainis1/time-seriesdb-influx
     url: https://www.slideshare.net/MauroRainis1/time-seriesdb-influx
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/data-night-influxdb-elastic-search/
 draft: false
 ---

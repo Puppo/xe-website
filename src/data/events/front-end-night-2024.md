@@ -19,8 +19,6 @@ sessions:
       - Giorgio Boa
     description: React 19 è arrivato, portando con sé un'ondata di nuove funzionalità e un vortice di polemiche. La nuova versione del framework era attesa da anni, ma ha lasciato l'amaro in bocca per alcune novita' che hanno creato parecchio malumore all'interno della community. Unisciti a noi per una panoramica sugli ultimi aggiornamenti di React, esplorando le nuove entusiasmanti funzionalità e analizzando al contempo il dramma che circonda la recente versione.
 materials: []
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/front-end-night-2024/
 draft: false
 ---

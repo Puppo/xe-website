@@ -14,8 +14,6 @@ sessions:
     speakers:
       - XE
 materials: []
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/visual-studio-2019-launch/
 draft: false
 ---

@@ -36,8 +36,6 @@ sessions:
 materials:
   - label: Slide
     url: https://drive.google.com/drive/folders/1rp8RYy4oY294VvowVxJklMDxBBYDu8Bp?usp=sharing
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/sql-night-2025/
 draft: false
 ---

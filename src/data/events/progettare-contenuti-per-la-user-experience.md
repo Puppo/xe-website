@@ -18,8 +18,6 @@ sessions:
 materials:
   - label: Download
     url: https://drive.google.com/drive/folders/108y7HeviUwm-X2u4Qd3EsqFsb8bR2g0a?usp=share_link
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/progettare-contenuti-per-la-user-experience/
 draft: false
 ---

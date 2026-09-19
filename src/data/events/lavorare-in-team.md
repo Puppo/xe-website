@@ -19,8 +19,6 @@ sessions:
       - Davide Vernole
     description: Gestire il ciclo di vita dei nostri prodotti con strumenti evoluti a costo zero.
 materials: []
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/lavorare-in-team/
 draft: false
 ---

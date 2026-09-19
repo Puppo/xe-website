@@ -41,8 +41,6 @@ sessions:
     title: Saluti Finali
     speakers: []
 materials: []
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/global-azure-bootcamp-2016/
 draft: false
 ---

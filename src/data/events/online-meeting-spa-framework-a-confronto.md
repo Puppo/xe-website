@@ -36,8 +36,6 @@ materials:
     url: https://github.com/dmorosinotto/XE_FrameworkSPA_Vue
   - label: https://github.com/enricogiacomazzi/xe_confronto_spa_react
     url: https://github.com/enricogiacomazzi/xe_confronto_spa_react
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/online-meeting-spa-framework-a-confronto/
 draft: false
 ---

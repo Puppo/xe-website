@@ -15,8 +15,6 @@ sessions:
     title: Q & A
     speakers: []
 materials: []
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/angular-di-sei-veramente-sicuro-di-conoscerla/
 draft: false
 ---

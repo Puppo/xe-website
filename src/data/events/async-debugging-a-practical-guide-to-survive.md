@@ -15,8 +15,6 @@ sessions:
     title: Q & A
     speakers: []
 materials: []
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/async-debugging-a-practical-guide-to-survive/
 draft: false
 ---

@@ -15,8 +15,6 @@ sessions:
     title: Q & A
     speakers: []
 materials: []
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/modern-application-development-developers-azure-sql-a-growth-mindset/
 draft: false
 ---

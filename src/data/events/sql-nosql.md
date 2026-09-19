@@ -19,8 +19,6 @@ sessions:
       - Lorenzo Speranzoni
     description: In questo talk, Lorenzo, parlerà dei database nosql cercando di porre l’attenzione sulle ragioni per le quali sia più opportuno utilizzarli rispetto ai tradizionali RDBMS. Comprenderemo come sono fatti i dati che oggi dobbiamo persistere e successivamente analizzare, quali sono le quattro grandi categorie di database nosql, il loro data model e le loro caratteristiche architetturali. Infine con un esempio live! faremo un approfondimento sul database a grafo per meglio comprendere le potenzialità di queste tecnologie enterprise ready.
 materials: []
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/sql-nosql/
 draft: false
 ---

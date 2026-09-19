@@ -12,8 +12,6 @@ sessions:
     speakers: []
     description: presso Pizzeria Ae Oche Docks (Viale Ancona 18, Mestre)
 materials: []
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/xe-community-pizza-1072016/
 draft: false
 ---

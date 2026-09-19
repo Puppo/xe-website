@@ -4,11 +4,11 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import EventCard from '../components/EventCard.astro';
 import SupportPanel from '../components/SupportPanel.astro';
-import { formatEventDate, isPastEvent, sortAscending } from '../lib/events';
+import { formatEventDate, isPastEvent, nextScheduledEvent, sortAscending } from '../lib/events';
 
 const events = (await getCollection('events', ({ data }) => !data.draft)).sort(sortAscending);
 const upcoming = events.filter((event) => !isPastEvent(event));
-const nextEvent = upcoming[0];
+const nextEvent = nextScheduledEvent(upcoming);
 const [site] = await getCollection('site');
 const people = await getCollection('people', ({ data }) => data.published && data.roles.includes('member'));
 const partners = await getCollection('partners');

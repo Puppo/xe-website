@@ -19,8 +19,6 @@ sessions:
       - Davide Contin
     description: Lo sviluppo di un sito web moderno richiede necessariamente l’adozione di una piattaforma CMS (Content Management System). Sul mercato esistono moltissime soluzioni più o meno conosciute. Tra le piattaforme Open Source sviluppate con tecnologia .Net Umbraco è sicuramente uno dei progetti più importanti. Facilità d’utilizzo, versatilità e totale libertà nella realizzazione dell’interfaccia del sito solo tra le sue caratteristiche principali. In questa sessione vedremo assieme come configurare Umbraco per realizzare un semplice sito vetrina.
 materials: []
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/web-innovations-ordine-degli-ingegneri-di-padova/
 draft: false
 ---

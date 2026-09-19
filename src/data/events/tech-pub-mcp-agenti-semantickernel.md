@@ -24,8 +24,6 @@ sessions:
 materials:
   - label: Slide
     url: https://drive.google.com/drive/folders/1bwW6Dkv5yZHL4V3npKUH8YSpGPBxWHAm?usp=sharing
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/tech-pub-mcp-agenti-semantickernel/
 draft: false
 ---

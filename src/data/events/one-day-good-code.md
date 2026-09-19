@@ -54,8 +54,6 @@ sessions:
 materials:
   - label: download
     url: https://drive.google.com/open?id=1csLBDTapV14HTUnM-H-KOUffWpPq3g_6
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/one-day-good-code/
 draft: false
 ---

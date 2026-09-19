@@ -17,8 +17,6 @@ sessions:
     title: Q & A
     speakers: []
 materials: []
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/xe-quizzone-solid-priciples/
 draft: false
 ---

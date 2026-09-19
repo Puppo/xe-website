@@ -19,8 +19,6 @@ sessions:
       - Lorenzo Caldon
     description: In un mondo in cui l'agilità nello sviluppo è fondamentale, Fission offre una piattaforma serverless per Kubernetes che semplifica la gestione di funzioni on-demand senza preoccuparsi dell'infrastruttura sottostante. In questo talk esploreremo i concetti chiave di Fission, come creare ambienti personalizzati per .NET ed altri linguaggi, e come sfruttare al massimo questa combinazione per accelerare lo sviluppo e ridurre i costi operativi.
 materials: []
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/tech-pub-gennaio-2025/
 draft: false
 ---

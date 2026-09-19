@@ -21,8 +21,6 @@ materials:
     url: https://github.com/andreadottor/XeDemo_PizzeriaAPI
   - label: Slide e codice Daniele Morosinotto
     url: https://github.com/dmorosinotto/LearnJS_INGPD
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/javascript-da-0-a-es6-api-rest/
 draft: false
 ---

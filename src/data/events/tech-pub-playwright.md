@@ -19,8 +19,6 @@ sessions:
 materials:
   - label: Slide Luca Del Puppo
     url: https://slides.com/puppo92/write-one-time-test-everywhere-with-playwright/fullscreen
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/tech-pub-playwright/
 draft: false
 ---

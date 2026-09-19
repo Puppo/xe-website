@@ -13,8 +13,6 @@ sessions:
     speakers:
       - Alessandro Pezzato
 materials: []
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/coding-gym-ottobre-2022/
 draft: false
 ---

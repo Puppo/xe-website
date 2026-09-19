@@ -21,8 +21,6 @@ sessions:
 materials:
   - label: download
     url: https://drive.google.com/open?id=1Qz_3VoFv8_RS28rgVzlJO4K91hlS54WK
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/power-bi-deep-learning-night/
 draft: false
 ---

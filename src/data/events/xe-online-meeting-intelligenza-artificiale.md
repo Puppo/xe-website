@@ -8,8 +8,6 @@ venue:
   online: false
 sessions: []
 materials: []
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/xe-online-meeting-intelligenza-artificiale/
 draft: false
 ---

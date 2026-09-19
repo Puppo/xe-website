@@ -13,8 +13,6 @@ sessions:
     speakers:
       - Alessandro Melchiori
 materials: []
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/lab-from-0-to-docker/
 draft: false
 ---

@@ -33,8 +33,6 @@ materials:
     url: https://github.com/bortolin/XeDotNet.DemoConfigApp
   - label: Slide
     url: https://drive.google.com/file/d/1sFgybVoVV8pRd9J1To65oCxNGjp2YL5h/view?usp=share_link
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/one-day-app-modernization/
 draft: false
 ---

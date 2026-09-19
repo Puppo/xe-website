@@ -43,8 +43,6 @@ sessions:
       - Davide Senatore
     description: In questa sessione scopriremo come la nuova versione di Visual Studio permetta di creare applicazione multipiattaforma basate su standard facendo uso dell’IDE che tutti noi conosciamo. La produttività è assicurata da emulatori, debug e integrazioni con Visual Studio che permettono di realizzare app ibride in modo semplice e veloce.
 materials: []
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/visual-studio-2015-saturday/
 draft: false
 ---

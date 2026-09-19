@@ -21,8 +21,6 @@ materials:
     url: https://github.com/andreadottor/XE_AspNetCore
   - label: https://github.com/dmorosinotto/XE_Nodejs
     url: https://github.com/dmorosinotto/XE_Nodejs
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/aspnet-core-vs-nodejs/
 draft: false
 ---

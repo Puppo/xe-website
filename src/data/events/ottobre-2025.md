@@ -13,8 +13,6 @@ sessions:
     speakers:
       - Alessandro Pezzato
 materials: []
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/ottobre-2025/
 draft: false
 ---

@@ -54,8 +54,6 @@ sessions:
 materials:
   - label: download
     url: https://drive.google.com/open?id=12gM5tDMuby81lfPlLdXjQTBY3GG1Jc0t
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/one-day-performance-optimization/
 draft: false
 ---

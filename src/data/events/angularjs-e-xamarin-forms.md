@@ -26,8 +26,6 @@ sessions:
     title: Aperitivo di networking
     speakers: []
 materials: []
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/angularjs-e-xamarin-forms/
 draft: false
 ---

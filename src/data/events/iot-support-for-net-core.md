@@ -17,8 +17,6 @@ sessions:
 materials:
   - label: download
     url: https://drive.google.com/drive/folders/1OHgd68jCuRxF8oH-Ma7OWvObkF0eTsdm?usp=sharing
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/iot-support-for-net-core/
 draft: false
 ---

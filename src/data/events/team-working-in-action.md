@@ -17,8 +17,6 @@ sessions:
       - Enrico Illuminati
     description: Enrico Illuminati è Executive Coach accreditato a livello internazionale dall’International Coach Federation ed esperto di Intelligenza Emotiva e Team Member della MIP Coaching Academy - Graduate School of Business del MIP Politecnico di Milano.
 materials: []
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/team-working-in-action/
 draft: false
 ---

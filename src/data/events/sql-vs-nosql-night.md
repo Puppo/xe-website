@@ -19,8 +19,6 @@ sessions:
       - Lorenzo Speranzoni
     description: Nel famoso libro NoSQL Distilled, Martin Fowler - Chief Scientist di Thoughtworks, affermò "I’m confident to say that if you're starting a new strategic enterprise application you should no longer be assuming that your persistence should be relational. The relational option might be the right one - but you should seriously look at other alternatives. One of the interesting consequences of this is that we are gearing up for a shift to polyglot persistence where any decent sized enterprise will have a variety of different data storage technologies for different kinds of data”. Nel corso del suo intervento, Lorenzo illustrerà - anche attraverso alcuni esempi - le ragioni per le quali oggi stiamo assistendo a questo cambiamento di paradigma.
 materials: []
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/sql-vs-nosql-night/
 draft: false
 ---

@@ -26,8 +26,6 @@ sessions:
       - XE
     description: Vengono messe a disposizione 2 sale, in modo da poter erogare più sessioni in contemporanea.Ogni partecipante sarà libero di scegliere quali sessioni seguire.
 materials: []
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/unconference-web-saturday/
 draft: false
 ---

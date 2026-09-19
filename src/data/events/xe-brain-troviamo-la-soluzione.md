@@ -19,8 +19,6 @@ sessions:
       - XE
     description: Ogni gruppo avrà 15 minuti per presentare il proprio progetto spiegando i motivi delle scelte.
 materials: []
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/xe-brain-troviamo-la-soluzione/
 draft: false
 ---

@@ -20,8 +20,6 @@ materials:
     url: https://github.com/join
   - label: https://code.visualstudio.com/#alt-downloads
     url: https://code.visualstudio.com/#alt-downloads
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/lab-git-e-github/
 draft: false
 ---

@@ -9,8 +9,6 @@ venue:
   online: false
 sessions: []
 materials: []
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/monthly-members-meeting-luglio-2018/
 draft: false
 ---

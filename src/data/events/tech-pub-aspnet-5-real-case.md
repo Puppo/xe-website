@@ -15,8 +15,6 @@ sessions:
 materials:
   - label: download
     url: https://drive.google.com/folderview?id=0B5JUdKPfCebKQXlBUzJFX044ZjA&usp=sharing
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/tech-pub-aspnet-5-real-case/
 draft: false
 ---

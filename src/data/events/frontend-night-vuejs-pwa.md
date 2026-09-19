@@ -19,8 +19,6 @@ sessions:
       - Davide Contin
     description: Grazie ad un sempre maggiore supporto da parte dei browser questa tecnologia sta diventando un'alternativa concreta allo sviluppo di App.Vedremo quali sono i vantaggi di questa scelta e come trasformare una web application in una PWA.
 materials: []
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/frontend-night-vuejs-pwa/
 draft: false
 ---

@@ -19,8 +19,6 @@ sessions:
       - Andrea Cirioni
     description: Gestire il provisioning delle risorse in cloud tramite il nostro linguaggio di programmazione preferito non è più utopia. Una breve introduzione su questo tool, che consente di applicare le buone pratiche di sviluppo all'infrastruttura.
 materials: []
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/tech-pub-infrastructure-as-code/
 draft: false
 ---

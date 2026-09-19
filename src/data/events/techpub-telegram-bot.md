@@ -18,8 +18,6 @@ sessions:
     speakers: []
     description: Con questa serata andiamo a chiudere la programmazione degli eventi di XE per il 2019.Coglieremo quindi l'occasione mangiare una pizza tutti assieme e salutarci raccogliendo idee e spinti per il 2020.
 materials: []
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/techpub-telegram-bot/
 draft: false
 ---

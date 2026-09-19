@@ -17,8 +17,6 @@ sessions:
 materials:
   - label: download
     url: https://drive.google.com/drive/folders/1vdZvZ7OpRayqoJzuErKtlfeBg3PFcNIG?usp=sharing
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/xe-quizzone-design-pattern/
 draft: false
 ---

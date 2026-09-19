@@ -24,8 +24,6 @@ sessions:
 materials:
   - label: download
     url: https://drive.google.com/open?id=1RzzUx9oikAuRSXCLmZ9rilkrbiTn6p9K
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/grpc-and-c-optimising-night/
 draft: false
 ---

@@ -41,7 +41,6 @@ materials:
   - label: Slide
     url: https://drive.google.com/drive/folders/1Mz9J_gVwV269sroCN8x_Lqg_iKWwjSPZ?usp=sharing
 registration:
-  status: closed
   url: https://www.eventbrite.com/e/registrazione-net-conf-2025-xe-1740075636069?aff=oddtdtcreator
   label: Iscriviti all’evento
 sourceUrl: https://www.xedotnet.org/eventi/net-conf-2025-xe/

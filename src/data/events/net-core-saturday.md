@@ -37,8 +37,6 @@ sessions:
     speakers:
       - Emanuele Bartolesi
 materials: []
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/net-core-saturday/
 draft: false
 ---

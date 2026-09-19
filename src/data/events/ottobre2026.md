@@ -16,8 +16,6 @@ sessions:
     title: Q & A
     speakers: []
 materials: []
-registration:
-  status: not-open
 sourceUrl: https://www.xedotnet.org/eventi/ottobre2026/
 draft: false
 ---

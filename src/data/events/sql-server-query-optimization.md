@@ -17,8 +17,6 @@ sessions:
 materials:
   - label: download
     url: https://drive.google.com/drive/folders/1mCq7nHbZUBIEqp0VH_NGNjAGFzuo50xt?usp=sharing
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/sql-server-query-optimization/
 draft: false
 ---

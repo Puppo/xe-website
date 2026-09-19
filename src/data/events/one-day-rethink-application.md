@@ -11,8 +11,6 @@ sessions: []
 materials:
   - label: Slide e codice
     url: https://drive.google.com/drive/folders/184PUcbXMjmmSQgqJGXlx0VZDQFEau-X3?usp=sharing
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/one-day-rethink-application/
 draft: false
 ---

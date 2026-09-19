@@ -39,7 +39,6 @@ sessions:
     speakers: []
 materials: []
 registration:
-  status: closed
   url: https://www.eventbrite.it/e/registrazione-net-conf-2023-xe-730283035217
   label: Iscriviti all’evento
 sourceUrl: https://www.xedotnet.org/eventi/net-conf-2023-xe/

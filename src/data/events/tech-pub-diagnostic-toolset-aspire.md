@@ -19,8 +19,6 @@ sessions:
       - Marco Bortolin
     description: ".NET Aspire promette di rendere più semplice la vita degli sviluppatori… ma quanto funziona davvero quando lo porti dentro un’azienda, con i suoi limiti, le sue urgenze e i suoi sistemi già esistenti?In questo talk racconto casi reali di utilizzo di Aspire in progetti concreti: problemi veri che abbiamo incontrato e come Aspire ha fornito soluzioni immediate e pratiche.Un talk onesto, leggero, tecnico il giusto: perfetto per essere ascoltato con una birra in mano."
 materials: []
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/tech-pub-diagnostic-toolset-aspire/
 draft: false
 ---

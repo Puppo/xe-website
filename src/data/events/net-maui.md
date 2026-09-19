@@ -28,8 +28,6 @@ materials:
     url: https://github.com/bortolin/MauiBeerApp
   - label: MAUI Blazor hybrid
     url: https://github.com/andreadottor/maui-blazor-hybrid
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/net-maui/
 draft: false
 ---

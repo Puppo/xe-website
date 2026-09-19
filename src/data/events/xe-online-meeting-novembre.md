@@ -26,8 +26,6 @@ sessions:
 materials:
   - label: download
     url: https://drive.google.com/drive/folders/19ljtf3IQ-XedD2u4HGWf_NjlZ2hcZdA2?usp=sharing
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/xe-online-meeting-novembre/
 draft: false
 ---

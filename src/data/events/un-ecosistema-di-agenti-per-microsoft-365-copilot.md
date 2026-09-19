@@ -18,8 +18,6 @@ sessions:
 materials:
   - label: Slide
     url: https://drive.google.com/file/d/1phamwV3kezQFyb1q13Z2gWmAd52ZsPyd/view?usp=sharing
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/un-ecosistema-di-agenti-per-microsoft-365-copilot/
 draft: false
 ---

@@ -25,8 +25,6 @@ sessions:
 materials:
   - label: download
     url: https://drive.google.com/folderview?id=0B5JUdKPfCebKZS1QVHRZU3lMb2M&usp=sharing
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/web-api-ionic/
 draft: false
 ---

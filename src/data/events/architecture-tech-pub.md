@@ -14,8 +14,6 @@ sessions:
       - Marco Bortolin
     description: Il pattern architetturale Command Query Responsibility Segregation (CQRS) consente di segregare le operazioni di lettura dei dati dalle operazioni di aggiornamento dei dati attraverso l’utilizzo di interfacce separate. Confronto aperto su come applicare al meglio CQRS, al fine di ottimizzare prestazioni, scalabilità e sicurezza, e supportare l’evoluzione del sistema nel tempo grazie a una maggiore flessibilità.Lasciamo a casa la teoria e confrontiamoci su come affrontare le difficoltà dell’introduzione di CQRS in una applicazione reale, condividendo come ogni di noi ha affrontato i problemi nello sviluppo delle proprie applicazioni, davanti ad una birra in compagnia.
 materials: []
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/architecture-tech-pub/
 draft: false
 ---

@@ -3,7 +3,7 @@ import { withBase } from '../../../lib/urls';
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import EventCard from '../../../components/EventCard.astro';
-import { eventYear, formatEventDate, registrationMessage, sortDescending, type EventEntry } from '../../../lib/events';
+import { eventStructuredStatus, eventYear, formatEventDate, isCancelled, registrationMessage, registrationState, sortDescending, type EventEntry } from '../../../lib/events';
 
 type Props =
   | { kind: 'year'; year: number; events: EventEntry[] }
@@ -25,6 +25,7 @@ const props = Astro.props as Props;
 let Content: Awaited<ReturnType<typeof render>>['Content'] | undefined;
 if (props.kind === 'event') ({ Content } = await render(props.event));
 const event = props.kind === 'event' ? props.event : undefined;
+const currentRegistrationState = event ? registrationState(event) : undefined;
 const eventStructuredData = event ? {
   '@context': 'https://schema.org',
   '@type': 'Event',
@@ -33,7 +34,7 @@ const eventStructuredData = event ? {
   startDate: event.data.date.toISOString(),
   endDate: event.data.endDate?.toISOString(),
   eventAttendanceMode: event.data.venue?.online ? 'https://schema.org/OnlineEventAttendanceMode' : 'https://schema.org/OfflineEventAttendanceMode',
-  eventStatus: 'https://schema.org/EventScheduled',
+  eventStatus: eventStructuredStatus(event),
   location: event.data.venue ? { '@type': event.data.venue.online ? 'VirtualLocation' : 'Place', name: event.data.venue.name, url: event.data.venue.url } : undefined,
   url: new URL(withBase(`/eventi/${event.id}/`), Astro.site).href
 } : undefined;
@@ -49,6 +50,7 @@ const eventStructuredData = event ? {
     <header class="page-hero">
       <div class="shell">
         <p class="breadcrumbs"><a href={withBase('/')}>Home</a> / <a href={withBase('/eventi/')}>Eventi</a> / {eventYear(event)}</p>
+        {isCancelled(event) && <p class="event-status event-status-detail">Evento annullato</p>}
         <h1>{event.data.title}</h1>
         <p>{formatEventDate(event.data.date)}</p>
       </div>
@@ -80,8 +82,8 @@ const eventStructuredData = event ? {
         </dl>
         <div class="registration">
           <h2>Iscrizione</h2>
-          <p>{registrationMessage(event.data.registration.status)}</p>
-          {event.data.registration.status === 'open' && event.data.registration.url && <a class="button" href={event.data.registration.url} rel="noreferrer">{event.data.registration.label ?? 'Iscriviti all’evento'}</a>}
+          <p>{registrationMessage(event)}</p>
+          {currentRegistrationState === 'open' && event.data.registration.url && <a class="button" href={event.data.registration.url} rel="noreferrer">{event.data.registration.label ?? 'Iscriviti all’evento'}</a>}
         </div>
       </aside>
     </div>

@@ -16,8 +16,6 @@ sessions:
 materials:
   - label: Download
     url: https://drive.google.com/file/d/1SDdIyBDms8llBBmo3ezqpxqaIykXulNK/view?usp=sharing
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/ai-rimpiazzo-o-aiuto-per-gli-sviluppatori/
 draft: false
 ---

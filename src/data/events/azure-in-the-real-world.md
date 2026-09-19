@@ -19,8 +19,6 @@ sessions:
       - Alessio Biasiutti
     description: Azure Stream Analytics è un motore serverless che permette l'analisi dei dati in tempo reale di più flussi simultanei. Durante la sessione vedremo un esempio di come sia possibile determinare situazioni di allarme e notificarle via email.
 materials: []
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/azure-in-the-real-world/
 draft: false
 ---

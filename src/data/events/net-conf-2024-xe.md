@@ -39,7 +39,6 @@ sessions:
     speakers: []
 materials: []
 registration:
-  status: closed
   url: https://www.eventbrite.it/e/registrazione-net-conf-2024-xe-1042552601897
   label: Iscriviti all’evento
 sourceUrl: https://www.xedotnet.org/eventi/net-conf-2024-xe/

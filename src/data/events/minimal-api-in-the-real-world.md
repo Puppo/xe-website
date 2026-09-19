@@ -17,8 +17,6 @@ sessions:
 materials:
   - label: Download
     url: https://drive.google.com/drive/folders/1cZWjhwvZn-xDiwLiVSyFUxEPCwJKz9AX?usp=sharing
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/minimal-api-in-the-real-world/
 draft: false
 ---

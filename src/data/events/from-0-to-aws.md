@@ -19,8 +19,6 @@ sessions:
       - Tommaso Dri
     description: "L’approccio Serverless e la “promessa” di non dover gestire/manutenere l’infrastruttura fisica o virtuale per ospitare le nostre soluzioni SW.In questa sessione scopriremo i principali Servizi e Tips per approcciarsi all paradigma Serverless su AWS. Nello specifico esamineremo:"
 materials: []
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/from-0-to-aws/
 draft: false
 ---

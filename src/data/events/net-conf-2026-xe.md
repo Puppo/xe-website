@@ -9,8 +9,6 @@ venue:
   online: false
 sessions: []
 materials: []
-registration:
-  status: not-open
 sourceUrl: https://www.xedotnet.org/eventi/net-conf-2026-xe/
 draft: false
 ---

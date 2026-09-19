@@ -25,8 +25,6 @@ materials:
     url: https://github.com/nicolaparo/conferences/blob/main/2026-04-10-BlazorConf26/presentation.pdf
   - label: "From Legacy to Embedded: .NET and Blazor for Industrial IoT"
     url: https://github.com/simonetolotti/BlazorConf2026
-registration:
-  status: closed
 sourceUrl: https://www.xedotnet.org/eventi/blazorconf2026/
 draft: false
 ---
