@@ -324,12 +324,20 @@ p { max-inline-size: var(--text); }
 
 .map-layout { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(15rem, .8fr); align-items: center; gap: 2rem; }
 .community-map { margin: 0; }
-.community-map svg { inline-size: 100%; border-radius: var(--radius); background: var(--surface-strong); }
 .community-map figcaption { margin-block-start: .7rem; color: var(--muted); font-size: .9rem; }
-.map-land { fill: #344047; stroke: #84939a; stroke-width: .5; }
-.map-route { fill: none; stroke: #65747b; stroke-dasharray: 2 2; }
-.map-marker circle { fill: var(--signal); stroke: #fff; stroke-width: .7; }
-.map-marker text { fill: #fff; font-size: 3px; font-weight: 800; }
+.map-facade, .interactive-map { inline-size: 100%; min-block-size: 26.25rem; border: 1px solid var(--line-soft); border-radius: var(--radius); overflow: hidden; }
+.map-facade { display: grid; grid-template-columns: auto minmax(0, 30rem); place-content: center; align-items: center; gap: 1.5rem; padding: clamp(1.5rem, 5vw, 3rem); background: radial-gradient(circle at 30% 20%, var(--tint), var(--surface-strong)); }
+.map-facade[hidden], .interactive-map[hidden] { display: none; }
+.map-facade h3 { margin-block-end: .5rem; }
+.map-facade p { color: var(--muted); }
+.map-facade-pin { display: grid; place-items: center; inline-size: 4.5rem; block-size: 4.5rem; border: .35rem solid #fff; border-radius: 50% 50% 50% 0; rotate: -45deg; background: var(--signal); color: #fff; box-shadow: var(--shadow); font-size: 2rem; }
+.interactive-map { position: relative; z-index: 0; background: var(--surface-strong); }
+.interactive-map:focus-visible { outline: .2rem solid var(--focus); outline-offset: .2rem; }
+.map-status { min-block-size: 1.5em; margin: .6rem 0 0; color: var(--muted); font-size: .9rem; }
+.member-map-marker { display: grid; place-items: center; border: .2rem solid #fff; border-radius: 50% 50% 50% 0; rotate: -45deg; background: var(--signal); color: #fff; box-shadow: 0 .2rem .5rem rgb(0 0 0 / 35%); font-weight: 800; }
+.member-map-marker span { rotate: 45deg; }
+.leaflet-control-attribution { color: #222; }
+.leaflet-control-attribution a { color: #084b83; }
 .location-list { margin: 0; padding: 0; list-style: none; }
 .location-list li { display: flex; justify-content: space-between; gap: 1rem; border-block-end: 1px solid var(--line-soft); padding-block: .7rem; }
 
@@ -413,6 +421,9 @@ input:user-invalid, textarea:user-invalid { border-color: var(--red); }
     font-size: 1rem;
   }
   .hero-grid, .hero-feature, .detail-grid, .person-profile, .support-panel, .map-layout, .footer-grid, .event-grid, .community-panel { grid-template-columns: 1fr; }
+  .map-facade, .interactive-map { min-block-size: 20rem; }
+  .map-facade { grid-template-columns: 1fr; text-align: center; }
+  .map-facade-pin { margin-inline: auto; }
   .detail-aside { position: static; }
   .hero-photo-wrap { min-block-size: 14rem; }
   .community-history { border-inline-start: 0; border-block-start: 1px solid var(--line-soft); padding: 2rem 0 0; }
@@ -453,6 +464,6 @@ input:user-invalid, textarea:user-invalid { border-color: var(--red); }
 }
 
 @media (forced-colors: active) {
-  .brand-logo, .map-marker circle { forced-color-adjust: none; }
+  .brand-logo, .map-facade-pin, .member-map-marker { forced-color-adjust: none; }
   .person-card, .year-grid a, input, textarea { border-color: CanvasText; }
 }

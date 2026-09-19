@@ -1,31 +1,136 @@
 ---
-interface Location { id: string; data: { name: string; count: number; x: number; y: number } }
+import 'leaflet/dist/leaflet.css';
+
+interface Location {
+  id: string;
+  data: {
+    municipality: string;
+    province: string;
+    count: number;
+    latitude: number;
+    longitude: number;
+  };
+}
 interface Props { locations: Location[] }
 const { locations } = Astro.props;
 const total = locations.reduce((sum, location) => sum + location.data.count, 0);
+const mapLocations = locations.map(({ id, data }) => ({ id, ...data }));
+const tileUrl = import.meta.env.PUBLIC_MAP_TILE_URL ?? 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
 ---
 
-<div class="map-layout">
+<div
+  class="map-layout"
+  data-community-map
+  data-locations={JSON.stringify(mapLocations)}
+  data-tile-url={tileUrl}
+>
   <figure class="community-map">
-    <svg viewBox="0 0 100 68" role="img" aria-labelledby="map-title map-description">
-      <title id="map-title">Distribuzione territoriale dei soci XE</title>
-      <desc id="map-description">Mappa schematica del Nord-Est con dati aggregati per provincia.</desc>
-      <path class="map-land" d="M8 51 13 28 26 18 41 15 54 5 77 9 91 23 87 43 73 51 64 63 39 59 26 66Z" />
-      <path class="map-route" d="M14 47 C33 37 41 50 57 35 S74 23 88 27" />
-      {locations.map(({ data }) => (
-        <g class="map-marker" transform={`translate(${data.x} ${data.y})`}>
-          <circle r={Math.min(3.2 + data.count * 0.45, 6)} />
-          <text y="1.2" text-anchor="middle">{data.count}</text>
-          <title>{data.name}: {data.count} {data.count === 1 ? 'socio' : 'soci'}</title>
-        </g>
-      ))}
-    </svg>
-    <figcaption>Dati pubblicati in forma aggregata: {total} presenze territoriali, senza indirizzi personali.</figcaption>
+    <div class="map-facade" data-map-facade>
+      <div class="map-facade-pin" aria-hidden="true">●</div>
+      <div>
+        <h3>Mappa dei soci nel Nord-Est</h3>
+        <p id="map-privacy">La mappa usa tessere di OpenStreetMap e le carica soltanto dopo la tua scelta.</p>
+        <button class="button" type="button" data-map-activate aria-describedby="map-privacy">
+          Attiva la mappa interattiva
+        </button>
+      </div>
+    </div>
+    <div
+      class="interactive-map"
+      data-map-canvas
+      aria-label="Mappa interattiva della distribuzione territoriale dei soci XE"
+      hidden
+    ></div>
+    <p class="map-status" data-map-status aria-live="polite"></p>
+    <figcaption>
+      I pin indicano i capoluoghi delle aree provinciali e non indirizzi personali. Dati aggregati: {total} presenze territoriali.
+    </figcaption>
   </figure>
   <div>
     <h3>Il Nord-Est è il nostro punto di partenza</h3>
-    <ul class="location-list">
-      {locations.map(({ data }) => <li><span>{data.name}</span><strong>{data.count}</strong></li>)}
+    <ul class="location-list" role="list">
+      {locations.map(({ data }) => (
+        <li><span>{data.province}</span><strong>{data.count} {data.count === 1 ? 'socio' : 'soci'}</strong></li>
+      ))}
     </ul>
   </div>
 </div>
+
+<script>
+  interface MapLocation {
+    id: string;
+    municipality: string;
+    province: string;
+    count: number;
+    latitude: number;
+    longitude: number;
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-community-map]').forEach((container) => {
+    if (container.dataset.mapReady === 'true') return;
+    container.dataset.mapReady = 'true';
+
+    const button = container.querySelector<HTMLButtonElement>('[data-map-activate]');
+    const facade = container.querySelector<HTMLElement>('[data-map-facade]');
+    const canvas = container.querySelector<HTMLElement>('[data-map-canvas]');
+    const status = container.querySelector<HTMLElement>('[data-map-status]');
+    if (!button || !facade || !canvas || !status) return;
+
+    button.addEventListener('click', async () => {
+      button.disabled = true;
+
+      try {
+        const locations = JSON.parse(container.dataset.locations ?? '[]') as MapLocation[];
+        const { default: L } = await import('leaflet');
+
+        facade.hidden = true;
+        canvas.hidden = false;
+
+        const map = L.map(canvas, {
+          scrollWheelZoom: false,
+          zoomControl: true
+        });
+        const tiles = L.tileLayer(
+          container.dataset.tileUrl ?? 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+          {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            maxZoom: 19
+          }
+        );
+        tiles.once('tileerror', () => {
+          status.textContent = 'La cartografia non è disponibile. L’elenco delle località resta consultabile.';
+        });
+        tiles.addTo(map);
+
+        const bounds = L.latLngBounds([]);
+        locations.forEach((location) => {
+          const label = `${location.province}: ${location.count} ${location.count === 1 ? 'socio' : 'soci'}`;
+          const marker = L.marker([location.latitude, location.longitude], {
+            alt: label,
+            keyboard: true,
+            title: label,
+            icon: L.divIcon({
+              className: 'member-map-marker',
+              html: `<span aria-hidden="true">${location.count}</span>`,
+              iconAnchor: [18, 18],
+              iconSize: [36, 36]
+            })
+          }).addTo(map);
+          marker.getElement()?.setAttribute('aria-label', label);
+          const popup = document.createElement('p');
+          popup.textContent = label;
+          marker.bindPopup(popup);
+          bounds.extend([location.latitude, location.longitude]);
+        });
+
+        if (bounds.isValid()) map.fitBounds(bounds.pad(0.2), { maxZoom: 9 });
+        else map.setView([45.6, 12.1], 8);
+        status.textContent = 'Mappa interattiva attivata.';
+      } catch (error) {
+        console.error('Impossibile inizializzare la mappa', error);
+        button.disabled = false;
+        status.textContent = 'La mappa non è disponibile. L’elenco delle località resta consultabile.';
+      }
+    });
+  });
+</script>
