@@ -116,7 +116,7 @@ test('le biografie dei soci sono renderizzate dal Markdown', async ({ page }) =>
   await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', 'Alessandro Calzavara, socio di XeDotNet.');
 });
 
-test('la mappa dei soci tutela la privacy e mantiene un’alternativa testuale', async ({ page }) => {
+test('la mappa dei soci mostra subito la mappa con i pin e mantiene un’alternativa testuale', async ({ page }) => {
   const tileRequests: string[] = [];
   page.on('request', (request) => {
     if (request.url().includes('tile.openstreetmap.org')) tileRequests.push(request.url());
@@ -126,15 +126,11 @@ test('la mappa dei soci tutela la privacy e mantiene un’alternativa testuale',
   await page.goto('/chi-siamo/');
 
   const mapSection = page.locator('[data-community-map]');
-  const activate = mapSection.getByRole('button', { name: 'Attiva la mappa interattiva' });
-  await expect(activate).toBeVisible();
   await expect(mapSection.getByText('Treviso e provincia')).toBeVisible();
   await expect(mapSection.locator('.location-list li')).toHaveCount(5);
-  expect(tileRequests).toEqual([]);
-
-  await activate.click();
   await expect(mapSection.locator('.leaflet-container')).toBeVisible();
   await expect(mapSection.locator('.leaflet-marker-icon')).toHaveCount(5);
+  await expect.poll(() => tileRequests.length).toBeGreaterThan(0);
   const firstMarker = mapSection.locator('.leaflet-marker-icon').first();
   await expect(firstMarker).toHaveCSS('margin-left', '-18px');
   await expect(firstMarker).toHaveCSS('margin-top', '-44px');
@@ -142,7 +138,6 @@ test('la mappa dei soci tutela la privacy e mantiene un’alternativa testuale',
   expect(await firstMarker.evaluate((marker) => getComputedStyle(marker, '::before').rotate)).toBe('-45deg');
   await expect(mapSection.getByRole('link', { name: 'OpenStreetMap' })).toBeVisible();
   await expect(mapSection.getByText('Treviso e provincia')).toBeVisible();
-  await expect.poll(() => tileRequests.length).toBeGreaterThan(0);
 
   const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze();
   expect(results.violations).toEqual([]);
@@ -150,7 +145,6 @@ test('la mappa dei soci tutela la privacy e mantiene un’alternativa testuale',
 
 test('la mappa non causa overflow orizzontale', async ({ page }) => {
   await page.goto('/chi-siamo/');
-  await page.getByRole('button', { name: 'Attiva la mappa interattiva' }).click();
   await expect(page.locator('[data-map-canvas]')).toBeVisible();
   const hasOverflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth);
   expect(hasOverflow).toBe(false);
