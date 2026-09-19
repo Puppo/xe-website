@@ -59,12 +59,15 @@ test('il selettore del tema funziona con la tastiera', async ({ page }) => {
 test('il selettore del tema si adatta tra desktop e mobile', async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 720 });
   await page.goto('/');
+  const header = page.locator('[data-site-header]');
   const picker = page.locator('.theme-picker');
   const chevron = page.locator('.theme-chevron');
   const [pickerBox, chevronBox] = await Promise.all([picker.boundingBox(), chevron.boundingBox()]);
   expect(pickerBox).not.toBeNull();
   expect(chevronBox).not.toBeNull();
   expect(Math.abs((pickerBox?.y ?? 0) + (pickerBox?.height ?? 0) / 2 - (chevronBox?.y ?? 0) - (chevronBox?.height ?? 0) / 2)).toBeLessThan(1);
+  await expect(header.locator('svg')).toHaveCount(0);
+  expect(await header.locator('.icon-mask').evaluateAll((icons) => icons.every((icon) => getComputedStyle(icon).maskImage.includes('/images/icons/')))).toBe(true);
   await expect(page.locator('.theme-value')).toBeVisible();
 
   await page.setViewportSize({ width: 375, height: 667 });

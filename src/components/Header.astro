@@ -15,11 +15,7 @@ const currentPath = Astro.url.pathname;
     <div class="nav-area" data-nav-area>
       <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" data-menu-toggle>
         <span class="visually-hidden" data-menu-label>Apri il menu</span>
-        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-          <circle cx="12" cy="5" r="2"></circle>
-          <circle cx="12" cy="12" r="2"></circle>
-          <circle cx="12" cy="19" r="2"></circle>
-        </svg>
+        <span class="menu-icon icon-mask" style={`--icon-url: url(${withBase('/images/icons/menu.svg')})`} aria-hidden="true"></span>
       </button>
       <nav id="primary-navigation" aria-label="Principale">
         <ul class="nav-list" role="list">
@@ -37,22 +33,12 @@ const currentPath = Astro.url.pathname;
       <label class="visually-hidden" for="theme">Tema</label>
       <div class="theme-picker">
         <span class="theme-icons" aria-hidden="true">
-          <svg class="theme-icon" data-theme-icon="system" viewBox="0 0 24 24" focusable="false">
-            <rect x="3.5" y="4.5" width="17" height="12" rx="2"></rect>
-            <path d="M8 20h8M12 16.5V20"></path>
-          </svg>
-          <svg class="theme-icon" data-theme-icon="light" viewBox="0 0 24 24" focusable="false">
-            <circle cx="12" cy="12" r="3.5"></circle>
-            <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M18.7 5.3l-1.4 1.4M6.7 17.3l-1.4 1.4"></path>
-          </svg>
-          <svg class="theme-icon" data-theme-icon="dark" viewBox="0 0 24 24" focusable="false">
-            <path d="M20.2 15.1A8.5 8.5 0 0 1 8.9 3.8a8.5 8.5 0 1 0 11.3 11.3Z"></path>
-          </svg>
+          <span class="theme-icon icon-mask" data-theme-icon="system" style={`--icon-url: url(${withBase('/images/icons/theme-system.svg')})`}></span>
+          <span class="theme-icon icon-mask" data-theme-icon="light" style={`--icon-url: url(${withBase('/images/icons/theme-light.svg')})`}></span>
+          <span class="theme-icon icon-mask" data-theme-icon="dark" style={`--icon-url: url(${withBase('/images/icons/theme-dark.svg')})`}></span>
         </span>
         <span class="theme-value" aria-hidden="true">Sistema</span>
-        <svg class="theme-chevron" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-          <path d="m4 6 4 4 4-4"></path>
-        </svg>
+        <span class="theme-chevron icon-mask" style={`--icon-url: url(${withBase('/images/icons/chevron-down.svg')})`} aria-hidden="true"></span>
         <select id="theme" name="theme">
           <option value="system">Sistema</option>
           <option value="light">Chiaro</option>
