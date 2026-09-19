@@ -18,7 +18,6 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const EVENTS_DIR = join(ROOT, 'src/data/events');
 const PEOPLE_DIR = join(ROOT, 'src/data/people');
 const MEDIA_DIR = join(ROOT, 'public/media');
-const REPORT_PATH = join(ROOT, 'SPEAKER-IMPORT-REPORT.md');
 const WRITE = process.argv.includes('--write');
 const CONCURRENCY = 6;
 
@@ -238,5 +237,4 @@ const report = [
   ''
 ].join('\n');
 
-if (WRITE) await writeFile(REPORT_PATH, report);
 console.log(report);
