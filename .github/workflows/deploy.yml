@@ -1,4 +1,4 @@
-name: Pubblica su GitHub Pages
+name: Deploy to GitHub Pages
 
 on:
   push:
@@ -21,10 +21,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - name: Leggi l’indirizzo di GitHub Pages
+      - name: Read the GitHub Pages URL
         id: pages
         uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
-      - name: Verifica e prepara il sito
+      - name: Check and build the site
         uses: withastro/action@3eafd002e65cc31b4f0eae0bb05450d521562247 # v6.1.3
         with:
           node-version: 24
@@ -40,6 +40,6 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Pubblica
+      - name: Deploy
         id: deployment
         uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
