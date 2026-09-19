@@ -1,7 +1,7 @@
 ---
 import { withBase } from '../lib/urls';
 import type { EventEntry } from '../lib/events';
-import { formatEventDate, isCancelled } from '../lib/events';
+import { eventSlug, formatEventDate, isCancelled } from '../lib/events';
 
 interface Props { event: EventEntry; featured?: boolean }
 const { event, featured = false } = Astro.props;
@@ -15,7 +15,7 @@ const { event, featured = false } = Astro.props;
   <div class="event-card-body">
     {isCancelled(event) && <p class="event-status">Evento annullato</p>}
     {event.data.eventType && <p class="event-type">{event.data.eventType}</p>}
-    <h2><a href={withBase(`/eventi/${event.id}/`)}>{event.data.title}</a></h2>
+    <h2><a href={withBase(`/eventi/${eventSlug(event)}/`)}>{event.data.title}</a></h2>
     <p>{event.data.description}</p>
     <dl class="event-facts">
       <div><dt class="visually-hidden">Data</dt><dd>{formatEventDate(event.data.date)}</dd></div>

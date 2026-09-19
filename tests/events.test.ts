@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { eventInputSchema } from '../src/content-schemas';
 import {
   eventStructuredStatus,
+  eventSlug,
   eventYear,
   formatEventDate,
   isPastEvent,
@@ -32,6 +33,11 @@ describe('eventi', () => {
 
   it('ricava l’anno nel fuso di Roma', () => {
     expect(eventYear(event('2026-09-18'))).toBe(2026);
+  });
+
+  it('ricava lo slug pubblico dal percorso organizzato per anno e data', () => {
+    expect(eventSlug({ id: '2026/2026-09-18-serata-dotnet' } as EventEntry)).toBe('serata-dotnet');
+    expect(eventSlug({ id: 'serata-dotnet' } as EventEntry)).toBe('serata-dotnet');
   });
 
   it('ordina gli eventi dal meno recente', () => {

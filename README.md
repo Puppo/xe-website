@@ -24,7 +24,7 @@ L’indirizzo pubblico è configurato con `SITE_URL`, includendo l’eventuale s
 
 ## Contenuti
 
-- Eventi Markdown: `src/data/events/`
+- Eventi Markdown: `src/data/events/<anno>/<data>-<nome-evento>.md` (per esempio `2026/2026-04-10-blazorconf2026.md`)
 - Persone Markdown: `src/data/people/` (metadati nel frontmatter YAML e biografia nel corpo)
 - Pagine Markdown: `src/data/pages/`
 - Configurazione e dati condivisi: `src/data/*.json`

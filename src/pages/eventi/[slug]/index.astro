@@ -3,7 +3,7 @@ import { withBase } from '../../../lib/urls';
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import EventCard from '../../../components/EventCard.astro';
-import { eventStructuredStatus, eventYear, formatEventDate, isCancelled, registrationMessage, registrationState, sortDescending, type EventEntry } from '../../../lib/events';
+import { eventSlug, eventStructuredStatus, eventYear, formatEventDate, isCancelled, registrationMessage, registrationState, sortDescending, type EventEntry } from '../../../lib/events';
 
 type Props =
   | { kind: 'year'; year: number; events: EventEntry[] }
@@ -13,7 +13,7 @@ export async function getStaticPaths() {
   const events = await getCollection('events', ({ data }) => !data.draft);
   const years = [...new Set(events.map(eventYear))];
   return [
-    ...events.map((event) => ({ params: { slug: event.id }, props: { kind: 'event' as const, event } })),
+    ...events.map((event) => ({ params: { slug: eventSlug(event) }, props: { kind: 'event' as const, event } })),
     ...years.map((year) => ({
       params: { slug: String(year) },
       props: { kind: 'year' as const, year, events: events.filter((event) => eventYear(event) === year).sort(sortDescending) }
@@ -36,7 +36,7 @@ const eventStructuredData = event ? {
   eventAttendanceMode: event.data.venue?.online ? 'https://schema.org/OnlineEventAttendanceMode' : 'https://schema.org/OfflineEventAttendanceMode',
   eventStatus: eventStructuredStatus(event),
   location: event.data.venue ? { '@type': event.data.venue.online ? 'VirtualLocation' : 'Place', name: event.data.venue.name, url: event.data.venue.url } : undefined,
-  url: new URL(withBase(`/eventi/${event.id}/`), Astro.site).href
+  url: new URL(withBase(`/eventi/${eventSlug(event)}/`), Astro.site).href
 } : undefined;
 ---
 
