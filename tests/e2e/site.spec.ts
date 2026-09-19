@@ -60,12 +60,18 @@ test('gli speaker mostrano foto, fallback e collegamenti ai profili', async ({ p
   await expect(speakers.locator('.speaker-photo')).toHaveCount(2);
   const externalProfile = page.getByRole('link', { name: 'Emanuele Furlan' });
   await expect(externalProfile).toHaveAttribute('href', 'https://www.linkedin.com/in/emanuele-furlan-6aa9a4225');
+  await expect(externalProfile).toHaveAttribute('target', '_blank');
   await expect(externalProfile).toHaveAttribute('rel', 'noreferrer');
+  await expect(externalProfile.locator('.visually-hidden')).toHaveText('(si apre in una nuova scheda)');
   await expect(speakers.first().locator('img')).toHaveAttribute('width', '64');
   await expect(speakers.first().locator('img')).toHaveCSS('border-radius', '50%');
 
   await page.goto('/eventi/tech-pub-oqtane-is-not-the-new-dotnetnuke/');
-  await expect(page.getByRole('link', { name: 'Mauro Cavallin' })).toHaveAttribute('href', /\/soci\/mauro-cavallin\/$/);
+  const internalProfile = page.getByRole('link', { name: 'Mauro Cavallin' });
+  await expect(internalProfile).toHaveAttribute('href', /\/soci\/mauro-cavallin\/$/);
+  await expect(internalProfile).toHaveAttribute('target', '_blank');
+  await expect(internalProfile).toHaveAttribute('rel', 'noopener');
+  await expect(internalProfile.locator('.visually-hidden')).toHaveText('(si apre in una nuova scheda)');
   const alberto = page.locator('.speaker-identity').filter({ hasText: 'Alberto Zen' });
   await expect(alberto.locator('.speaker-placeholder')).toHaveText('AZ');
   await expect(alberto.locator('a')).toHaveCount(0);
