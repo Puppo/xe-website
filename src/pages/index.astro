@@ -4,7 +4,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import EventCard from '../components/EventCard.astro';
 import SupportPanel from '../components/SupportPanel.astro';
-import { formatEventDate, isPastEvent, nextScheduledEvent, sortAscending } from '../lib/events';
+import { eventSlug, formatEventDate, isPastEvent, nextScheduledEvent, sortAscending } from '../lib/events';
 
 const events = (await getCollection('events', ({ data }) => !data.draft)).sort(sortAscending);
 const upcoming = events.filter((event) => !isPastEvent(event));
@@ -37,9 +37,9 @@ const faces = people.filter((person) => person.data.image).slice(0, 5);
           {nextEvent ? (
             <>
               <time datetime={nextEvent.data.date.toISOString()} aria-label={formatEventDate(nextEvent.data.date)}><strong>{new Intl.DateTimeFormat('it-IT', { day: '2-digit', month: 'short', timeZone: 'Europe/Rome' }).format(nextEvent.data.date)}</strong></time>
-              <h2><a href={withBase(`/eventi/${nextEvent.id}/`)}>{nextEvent.data.title}</a></h2>
+              <h2><a href={withBase(`/eventi/${eventSlug(nextEvent)}/`)}>{nextEvent.data.title}</a></h2>
               {nextEvent.data.venue && <p class="hero-venue">{nextEvent.data.venue.name}</p>}
-              <a class="event-details-link" href={withBase(`/eventi/${nextEvent.id}/`)}>Programma e dettagli <span aria-hidden="true">↗</span></a>
+              <a class="event-details-link" href={withBase(`/eventi/${eventSlug(nextEvent)}/`)}>Programma e dettagli <span aria-hidden="true">↗</span></a>
             </>
           ) : (
             <><strong>{events.length}</strong><p>eventi e una community in continuo movimento.</p></>

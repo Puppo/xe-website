@@ -62,6 +62,11 @@ export function eventYear(event: EventEntry): number {
   }).format(event.data.date));
 }
 
+export function eventSlug(event: EventEntry): string {
+  const filename = event.id.split('/').at(-1) ?? event.id;
+  return filename.replace(/^\d{4}-\d{2}-\d{2}-/, '');
+}
+
 export function isCancelled(event: EventEntry): boolean {
   return event.data.status === 'cancelled';
 }

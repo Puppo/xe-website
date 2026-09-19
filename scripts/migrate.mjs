@@ -175,7 +175,10 @@ async function parseEvent(url) {
     draft: false
   };
   const frontmatter = toYaml(data, { lineWidth: 0 }).trim();
-  await writeFile(join(EVENTS_DIR, `${slug}.md`), `---\n${frontmatter}\n---\n\n${body || description}\n`);
+  const year = date.slice(0, 4);
+  const yearDirectory = join(EVENTS_DIR, year);
+  await mkdir(yearDirectory, { recursive: true });
+  await writeFile(join(yearDirectory, `${date}-${slug}.md`), `---\n${frontmatter}\n---\n\n${body || description}\n`);
   report.routes.push({ source: url, destination: `/eventi/${slug}/`, kind: 'evento', year: date.slice(0, 4) });
   report.eventCounts[date.slice(0, 4)] = (report.eventCounts[date.slice(0, 4)] || 0) + 1;
 }
