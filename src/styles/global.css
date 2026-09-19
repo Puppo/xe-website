@@ -379,13 +379,7 @@ p { max-inline-size: var(--text); }
 .map-layout { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(15rem, .8fr); align-items: center; gap: 2rem; }
 .community-map { margin: 0; }
 .community-map figcaption { margin-block-start: .7rem; color: var(--muted); font-size: .9rem; }
-.map-facade, .interactive-map { inline-size: 100%; min-block-size: 26.25rem; border: 1px solid var(--line-soft); border-radius: var(--radius); overflow: hidden; }
-.map-facade { display: grid; grid-template-columns: auto minmax(0, 30rem); place-content: center; align-items: center; gap: 1.5rem; padding: clamp(1.5rem, 5vw, 3rem); background: radial-gradient(circle at 30% 20%, var(--tint), var(--surface-strong)); }
-.map-facade[hidden], .interactive-map[hidden] { display: none; }
-.map-facade h3 { margin-block-end: .5rem; }
-.map-facade p { color: var(--muted); }
-.map-facade-pin { display: grid; place-items: center; inline-size: 4.5rem; block-size: 4.5rem; border: .35rem solid #fff; border-radius: 50% 50% 50% 0; rotate: -45deg; background: var(--signal); color: #fff; box-shadow: var(--shadow); font-size: 2rem; }
-.interactive-map { position: relative; z-index: 0; background: var(--surface-strong); }
+.interactive-map { position: relative; z-index: 0; background: var(--surface-strong); inline-size: 100%; min-block-size: 26.25rem; border: 1px solid var(--line-soft); border-radius: var(--radius); overflow: hidden; }
 .interactive-map:focus-visible { outline: .2rem solid var(--focus); outline-offset: .2rem; }
 .map-status { min-block-size: 1.5em; margin: .6rem 0 0; color: var(--muted); font-size: .9rem; }
 .member-map-marker { display: grid; place-items: center; color: #fff; font-weight: 800; }

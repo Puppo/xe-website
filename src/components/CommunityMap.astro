@@ -25,21 +25,10 @@ const tileUrl = import.meta.env.PUBLIC_MAP_TILE_URL ?? 'https://tile.openstreetm
   data-tile-url={tileUrl}
 >
   <figure class="community-map">
-    <div class="map-facade" data-map-facade>
-      <div class="map-facade-pin" aria-hidden="true">●</div>
-      <div>
-        <h3>Mappa dei soci nel Nord-Est</h3>
-        <p id="map-privacy">La mappa usa tessere di OpenStreetMap e le carica soltanto dopo la tua scelta.</p>
-        <button class="button" type="button" data-map-activate aria-describedby="map-privacy">
-          Attiva la mappa interattiva
-        </button>
-      </div>
-    </div>
     <div
       class="interactive-map"
       data-map-canvas
       aria-label="Mappa interattiva della distribuzione territoriale dei soci XE"
-      hidden
     ></div>
     <p class="map-status" data-map-status aria-live="polite"></p>
     <figcaption>
@@ -70,21 +59,14 @@ const tileUrl = import.meta.env.PUBLIC_MAP_TILE_URL ?? 'https://tile.openstreetm
     if (container.dataset.mapReady === 'true') return;
     container.dataset.mapReady = 'true';
 
-    const button = container.querySelector<HTMLButtonElement>('[data-map-activate]');
-    const facade = container.querySelector<HTMLElement>('[data-map-facade]');
     const canvas = container.querySelector<HTMLElement>('[data-map-canvas]');
     const status = container.querySelector<HTMLElement>('[data-map-status]');
-    if (!button || !facade || !canvas || !status) return;
+    if (!canvas || !status) return;
 
-    button.addEventListener('click', async () => {
-      button.disabled = true;
-
+    void (async () => {
       try {
         const locations = JSON.parse(container.dataset.locations ?? '[]') as MapLocation[];
         const { default: L } = await import('leaflet');
-
-        facade.hidden = true;
-        canvas.hidden = false;
 
         const map = L.map(canvas, {
           scrollWheelZoom: false,
@@ -128,12 +110,10 @@ const tileUrl = import.meta.env.PUBLIC_MAP_TILE_URL ?? 'https://tile.openstreetm
 
         if (bounds.isValid()) map.fitBounds(bounds.pad(0.2), { maxZoom: 9 });
         else map.setView([45.6, 12.1], 8);
-        status.textContent = 'Mappa interattiva attivata.';
       } catch (error) {
         console.error('Impossibile inizializzare la mappa', error);
-        button.disabled = false;
         status.textContent = 'La mappa non è disponibile. L’elenco delle località resta consultabile.';
       }
-    });
+    })();
   });
 </script>
