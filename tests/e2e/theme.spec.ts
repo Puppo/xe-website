@@ -72,8 +72,8 @@ test('il selettore del tema si adatta tra desktop e mobile', async ({ page }) =>
   await expect(chevron).toBeHidden();
   await expect(page.locator('.theme-control label')).toHaveCSS('clip-path', 'inset(50%)');
   await expect(page.locator('.theme-control label')).toHaveCSS('width', '1px');
-  await expect(picker).toHaveCSS('width', '48px');
-  await expect(picker).toHaveCSS('height', '48px');
+  await expect(picker).toHaveCSS('width', '44px');
+  await expect(picker).toHaveCSS('height', '44px');
   await expect(page.locator('[data-theme-icon="system"]')).toBeVisible();
 });
 

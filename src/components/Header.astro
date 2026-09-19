@@ -11,7 +11,6 @@ const currentPath = Astro.url.pathname;
   <div class="shell header-inner">
     <a class="brand" href={withBase('/')} aria-label="XeDotNet, pagina iniziale">
       <img class="brand-logo" src={withBase('/images/xe-logo-original.png')} alt="XE" width="162" height="97" />
-      <span class="brand-name">Development user group</span>
     </a>
     <div class="nav-area" data-nav-area>
       <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" data-menu-toggle>
@@ -35,7 +34,7 @@ const currentPath = Astro.url.pathname;
       </nav>
     </div>
     <div class="theme-control" data-theme-preference="system" hidden>
-      <label for="theme">Tema</label>
+      <label class="visually-hidden" for="theme">Tema</label>
       <div class="theme-picker">
         <span class="theme-icons" aria-hidden="true">
           <svg class="theme-icon" data-theme-icon="system" viewBox="0 0 24 24" focusable="false">
