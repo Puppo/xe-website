@@ -11,12 +11,12 @@ sessions:
   - time: 20:00 - 21:15
     title: "RDBMS: pregi e difetti"
     speakers:
-      - Gianluca Hotz
+      - person: gianluca-hotz
     description: Obiettivo di questa sessione è di introdurre le caratteristiche principali di un moderno sistema per la gestione delle basi di dati basato sul modello relazionale evidenziandone pregi e difetti. Prendendo Microsoft SQL Server come sistema di riferimento, vedremo quali sono i meccanismi per la gestione delle transazioni sia in termini di concorrenza, che di integrità, affrontando anche problemi di prestazioni e di controllo dello schema dinamico. Il tutto seguendo un filo conduttore che porterà in una successiva sessione alla valutazione di sistemi fondati su modelli differenti.
   - time: 21:30 - 22:45
     title: Implementare sistemi complessi con persistenza poliglotta
     speakers:
-      - Lorenzo Speranzoni
+      - person: lorenzo-speranzoni
     description: Nel famoso libro NoSQL Distilled, Martin Fowler - Chief Scientist di Thoughtworks, affermò "I’m confident to say that if you're starting a new strategic enterprise application you should no longer be assuming that your persistence should be relational. The relational option might be the right one - but you should seriously look at other alternatives. One of the interesting consequences of this is that we are gearing up for a shift to polyglot persistence where any decent sized enterprise will have a variety of different data storage technologies for different kinds of data”. Nel corso del suo intervento, Lorenzo illustrerà - anche attraverso alcuni esempi - le ragioni per le quali oggi stiamo assistendo a questo cambiamento di paradigma.
 materials: []
 sourceUrl: https://www.xedotnet.org/eventi/sql-vs-nosql-night/

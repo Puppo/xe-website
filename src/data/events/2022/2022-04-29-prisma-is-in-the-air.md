@@ -10,7 +10,7 @@ sessions:
   - time: 21:00 - 22:00
     title: Presentazione
     speakers:
-      - Luca Del Puppo
+      - person: luca-del-puppo
   - time: 22:00 - 23:00
     title: Q & A
     speakers: []

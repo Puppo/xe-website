@@ -10,19 +10,19 @@ sessions:
   - time: 21:00 - 21:20
     title: Desktop development
     speakers:
-      - Mirco Vanini
+      - person: mirco-vanini
   - time: 21:20 - 21:40
     title: Web development
     speakers:
-      - Andrea Dottor
+      - person: andrea-dottor
   - time: 21:40 - 22:00
     title: C# 9
     speakers:
-      - Daniele Morosinotto
+      - person: daniele-morosinotto
   - time: 22:00 - 22:15
     title: Xamarin
     speakers:
-      - Marco Bortolin
+      - person: marco-bortolin
 materials:
   - label: download
     url: https://drive.google.com/drive/folders/19ljtf3IQ-XedD2u4HGWf_NjlZ2hcZdA2?usp=sharing

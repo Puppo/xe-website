@@ -10,9 +10,9 @@ sessions:
   - time: 21:00 - 22:00
     title: SOLID principles - Quiz
     speakers:
-      - Mirco Vanini
-      - Andrea Dottor
-      - Andrea Agnoletto
+      - person: mirco-vanini
+      - person: andrea-dottor
+      - person: andrea-agnoletto
   - time: 22:00 - 23:00
     title: Q & A
     speakers: []

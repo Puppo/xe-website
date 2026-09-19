@@ -17,11 +17,11 @@ sessions:
   - time: 15:30 - 16:30
     title: AngularJS un framework per creare Single Page Application
     speakers:
-      - Daniele Morosinotto
+      - person: daniele-morosinotto
   - time: 16:30 - 17:30
     title: Creare applicazioni mobile con Visual Studio e Xamarin.Forms
     speakers:
-      - Davide Vernole
+      - person: davide-vernole
   - time: 18:00 - 19:00
     title: Aperitivo di networking
     speakers: []

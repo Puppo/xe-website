@@ -11,11 +11,11 @@ sessions:
   - time: 20:00 - 23:00
     title: ASP.NET Core
     speakers:
-      - Andrea Dottor
+      - person: andrea-dottor
   - time: 20:00 - 23:00
     title: Node.JS
     speakers:
-      - Daniele Morosinotto
+      - person: daniele-morosinotto
 materials:
   - label: https://github.com/andreadottor/XE_AspNetCore
     url: https://github.com/andreadottor/XE_AspNetCore

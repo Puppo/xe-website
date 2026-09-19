@@ -11,11 +11,11 @@ sessions:
   - time: 16:00 - 18:00
     title: Introduzione a JavaScript
     speakers:
-      - Daniele Morosinotto
+      - person: daniele-morosinotto
   - time: 18:00 - 20:00
     title: Pattern comunemente usati in JavaScript
     speakers:
-      - Daniele Morosinotto
+      - person: daniele-morosinotto
 materials:
   - label: Slide e codice Andrea Dottor
     url: https://github.com/andreadottor/XeDemo_PizzeriaAPI

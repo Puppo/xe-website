@@ -5,14 +5,21 @@ export const linkSchema = z.object({
   url: z.url()
 });
 
-export const sessionSchema = z.object({
+export const speakerInputSchema = z.union([
+  z.string(),
+  z.object({ person: z.string().min(1) })
+]);
+
+export const createSessionSchema = <T extends z.ZodType>(speakerSchema: T) => z.object({
   time: z.string().optional(),
   title: z.string(),
-  speakers: z.array(z.string()).default([]),
+  speakers: z.array(speakerSchema).default([]),
   description: z.string().optional()
 });
 
-const eventFields = <T extends z.ZodType>(dateSchema: T) => ({
+export const sessionSchema = createSessionSchema(speakerInputSchema);
+
+const eventFields = <T extends z.ZodType, U extends z.ZodType>(dateSchema: T, speakerSchema: U) => ({
   title: z.string(),
   description: z.string(),
   date: dateSchema,
@@ -25,7 +32,7 @@ const eventFields = <T extends z.ZodType>(dateSchema: T) => ({
     online: z.boolean().default(false)
   }).optional(),
   image: z.string().optional(),
-  sessions: z.array(sessionSchema).default([]),
+  sessions: z.array(createSessionSchema(speakerSchema)).default([]),
   materials: z.array(linkSchema).default([]),
   registration: z.object({
     startDate: dateSchema.optional(),
@@ -41,8 +48,8 @@ function dateValue(value: unknown): number {
   return value instanceof Date ? value.getTime() : new Date(String(value)).getTime();
 }
 
-function createEventSchema<T extends z.ZodType>(dateSchema: T) {
-  return z.object(eventFields(dateSchema)).superRefine((event, context) => {
+export function createEventSchema<T extends z.ZodType, U extends z.ZodType>(dateSchema: T, speakerSchema: U) {
+  return z.object(eventFields(dateSchema, speakerSchema)).superRefine((event, context) => {
     const eventData = event as unknown as {
       date: unknown;
       endDate?: unknown;
@@ -87,15 +94,16 @@ function createEventSchema<T extends z.ZodType>(dateSchema: T) {
   });
 }
 
-const eventDateSchema = z.coerce.date();
-export const eventSchema = createEventSchema(eventDateSchema);
-export const eventInputSchema = createEventSchema(z.iso.date());
+export const eventDateSchema = z.coerce.date();
+export const eventSchema = createEventSchema(eventDateSchema, speakerInputSchema);
+export const eventInputSchema = createEventSchema(z.iso.date(), speakerInputSchema);
 
 export const personSchema = z.object({
   name: z.string(),
   sortName: z.string(),
   title: z.string().optional(),
   image: z.string().optional(),
+  profileUrl: z.url().optional(),
   roles: z.array(z.enum(['member', 'speaker'])).min(1),
   links: z.array(linkSchema).default([]),
   published: z.boolean().default(true),

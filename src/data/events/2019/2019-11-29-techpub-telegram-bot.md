@@ -11,7 +11,7 @@ sessions:
   - time: 20:00 - 21:00
     title: Sviluppare Bot per Telegram
     speakers:
-      - Diano Bellio
+      - person: diano-bellio
     description: Durante la serata vedremo come creare un semplice bot su Telegram.Ripercorreremo un caso reale di utilizzo all'interno di una business logic aziendale.Come sempre succede nei Tech-Pub, dopo una introduzione iniziale, tutti potranno contribuire ponendo domande e portando la propria esperienza.
   - time: 21:00 - 22:30
     title: Cena di fine anno

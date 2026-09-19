@@ -1,9 +1,10 @@
 ---
 import { withBase } from '../../../lib/urls';
-import { getCollection, render } from 'astro:content';
+import { getCollection, getEntries, render, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import EventCard from '../../../components/EventCard.astro';
 import { eventSlug, eventStructuredStatus, eventYear, formatEventDate, isCancelled, registrationMessage, registrationState, sortDescending, type EventEntry } from '../../../lib/events';
+import { initials } from '../../../lib/text';
 
 type Props =
   | { kind: 'year'; year: number; events: EventEntry[] }
@@ -25,6 +26,33 @@ const props = Astro.props as Props;
 let Content: Awaited<ReturnType<typeof render>>['Content'] | undefined;
 if (props.kind === 'event') ({ Content } = await render(props.event));
 const event = props.kind === 'event' ? props.event : undefined;
+const speakerReferences = event
+  ? event.data.sessions.flatMap(({ speakers }) => speakers.flatMap((speaker) => typeof speaker === 'string' ? [] : [speaker.person]))
+  : [];
+const referencedPeople = await getEntries(speakerReferences);
+const peopleById = new Map(referencedPeople.map((person) => [person.id, person]));
+
+type SpeakerView = {
+  name: string;
+  image?: string;
+  href?: string;
+  external: boolean;
+};
+
+function speakerView(speaker: EventEntry['data']['sessions'][number]['speakers'][number]): SpeakerView {
+  if (typeof speaker === 'string') return { name: speaker, external: false };
+  const person = peopleById.get(speaker.person.id) as CollectionEntry<'people'>;
+  const internalHref = person.data.published && person.data.roles.includes('member')
+    ? withBase(`/soci/${person.id}/`)
+    : undefined;
+  return {
+    name: person.data.name,
+    image: person.data.image,
+    href: person.data.profileUrl ?? internalHref,
+    external: Boolean(person.data.profileUrl)
+  };
+}
+
 const currentRegistrationState = event ? registrationState(event) : undefined;
 const eventStructuredData = event ? {
   '@context': 'https://schema.org',
@@ -65,7 +93,26 @@ const eventStructuredData = event ? {
               {event.data.sessions.map((session) => (
                 <li class="session">
                   <div class="session-time">{session.time || 'Orario da definire'}</div>
-                  <div><h3>{session.title}</h3>{session.speakers.length > 0 && <p><strong>{session.speakers.join(', ')}</strong></p>}{session.description && <p>{session.description}</p>}</div>
+                  <div>
+                    <h3>{session.title}</h3>
+                    {session.speakers.length > 0 && (
+                      <ul class="session-speakers" aria-label="Speaker">
+                        {session.speakers.map((speaker) => {
+                          const profile = speakerView(speaker);
+                          const content = <>
+                            {profile.image
+                              ? <img class="speaker-photo" src={withBase(profile.image)} alt="" width="64" height="64" loading="lazy" decoding="async" />
+                              : <span class="speaker-placeholder" aria-hidden="true">{initials(profile.name)}</span>}
+                            <strong>{profile.name}</strong>
+                          </>;
+                          return <li>{profile.href
+                            ? <a class="speaker-link" href={profile.href} rel={profile.external ? 'noreferrer' : undefined}>{content}</a>
+                            : <span class="speaker-identity">{content}</span>}</li>;
+                        })}
+                      </ul>
+                    )}
+                    {session.description && <p>{session.description}</p>}
+                  </div>
                 </li>
               ))}
             </ol>

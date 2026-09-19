@@ -11,7 +11,7 @@ sessions:
   - time: 20:00 - 22:00
     title: AI, rimpiazzo o aiuto per gli sviluppatori?
     speakers:
-      - Gian Maria Ricci
+      - person: gian-maria-ricci
     description: In questo evento esploreremo le funzionalità che le AI stanno mettendo a dispozione degli sviluppatori negli utlimi mesi. GPT-3 prima e GPT-4 poi sembrano poter "sostituire" in alcuni casi gli sviluppatori / sistemisti, ma la realtà è probabilmente differente. Scopriamo quindi come usare al meglio ciò che la AI ha da offrire nel lavoro di tutti i giorni.
 materials:
   - label: Download

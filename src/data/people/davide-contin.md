@@ -4,6 +4,7 @@ sortName: Davide Contin
 image: /media/1132-davidecontin.jpg
 roles:
   - member
+  - speaker
 links:
   - label: qwertystudio.it
     url: http://www.qwertystudio.it/
@@ -13,6 +14,7 @@ links:
     url: https://www.linkedin.com/in/davide-contin-62516611
 published: true
 sourceUrl: https://www.xedotnet.org/soci/
+profileUrl: https://www.linkedin.com/in/davide-contin-62516611
 ---
 
 Dopo aver lavorato per alcuni anni nel mondo dello sviluppo desktop, ho voluto prendere la strada dello sviluppo web convito delle potenzialità della rete.Oggi, dopo più di 15 anni, posso dire che è stata una buona scelta, non solo per come la tecnologia si è evoluta, ma perchè continuo a divertirmi un sacco.Attualmente mi divido tra l'attività di sviluppo e la gestione di QWERTY Studio che ho contribuito a fondare nel 2008.

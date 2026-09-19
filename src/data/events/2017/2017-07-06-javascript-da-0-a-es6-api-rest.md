@@ -11,11 +11,11 @@ sessions:
   - time: 16:00 - 18:00
     title: Novità introdotte in ES6 / ES2015+
     speakers:
-      - Daniele Morosinotto
+      - person: daniele-morosinotto
   - time: 18:00 - 20:00
     title: Creare API pubbliche, come evitare gli errori comuni
     speakers:
-      - Andrea Dottor
+      - person: andrea-dottor
 materials:
   - label: Slide e codice Andrea Dottor
     url: https://github.com/andreadottor/XeDemo_PizzeriaAPI

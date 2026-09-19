@@ -14,7 +14,7 @@ sessions:
   - time: 09:15 - 10:15
     title: Sviluppare Azure Web Apps
     speakers:
-      - Andrea Dottor
+      - person: andrea-dottor
     description: TBD
   - time: 10:15 - 10:45
     title: Coffee Break
@@ -22,12 +22,12 @@ sessions:
   - time: 10:45 - 11:45
     title: Sviluppare database con SQL Azure
     speakers:
-      - Emanuele Zanchettin
+      - person: emanuele-zanchettin
     description: TBD
   - time: 11:45 - 12:45
     title: Sviluppare applicazioni scalabili con DocumentDb e con il Service Bus
     speakers:
-      - Marco Parenzan
+      - person: marco-parenzan
     description: TBD
   - time: 12:45 - 13:30
     title: Pizza e Coca Cola!

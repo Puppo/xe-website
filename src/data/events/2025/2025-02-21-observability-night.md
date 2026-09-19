@@ -11,12 +11,12 @@ sessions:
   - time: 20:00 - 21:15
     title: Observing applications from Dev to Production with .NET Aspire
     speakers:
-      - Alessandro Melchiori
+      - person: alessandro-melchiori
     description: Monitorare un'applicazione durante tutto il suo ciclo di vita, dalla fase di sviluppo alla produzione, è essenziale per garantire performance, affidabilità e una rapida risoluzione dei problemi. In questa sessione vedremo come trasformare i dati raccolti in insight utili per poter passare da "non ho idea di cosa stia succedendo" a "ho tutto sotto controllo" con .NET Aspire!
   - time: 21:30 - 22:45
     title: "Osservabilità end-to-end con AWS: dalla teoria alla pratica"
     speakers:
-      - Simone Ferraro
+      - person: simone-ferraro
     description: In questo talk esploreremo il concetto di osservabilità approfondendo come AWS fornisce una suite completa di strumenti per monitorare e comprendere il comportamento delle nostre applicazioni. Dalle metriche di CloudWatch ai log di CloudWatch Logs, passando per i trace di X-Ray, vedremo come correlare tutte le informazioni per ottenere una visione completa della nostra applicazione per individuare rapidamente le cause dei problemi.
 materials: []
 sourceUrl: https://www.xedotnet.org/eventi/observability-night/

@@ -10,7 +10,7 @@ sessions:
   - time: 21:00 - 22:00
     title: Presentazione
     speakers:
-      - Gianluca Sartori
+      - person: gianluca-sartori
   - time: 22:00 - 23:00
     title: Q & A
     speakers: []

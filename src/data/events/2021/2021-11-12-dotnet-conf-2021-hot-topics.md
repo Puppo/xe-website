@@ -10,9 +10,9 @@ sessions:
   - time: 21:00 - 22:30
     title: Presentazione
     speakers:
-      - Mirco Vanini
-      - Andrea Dottor
-      - Marco Bortolin
+      - person: mirco-vanini
+      - person: andrea-dottor
+      - person: marco-bortolin
   - time: 22:30 - 23:30
     title: Q & A
     speakers: []

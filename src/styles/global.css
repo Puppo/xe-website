@@ -299,6 +299,15 @@ p { max-inline-size: var(--text); }
 .session { display: grid; grid-template-columns: 7rem minmax(0, 1fr); gap: 1rem; border-block-start: 1px solid var(--line); padding-block-start: 1.2rem; }
 .session-time { color: var(--red); font-weight: 800; }
 .session h3 { margin-block-end: .35rem; }
+.session-speakers { display: flex; flex-wrap: wrap; gap: .75rem 1.25rem; margin: .8rem 0 1rem; padding: 0; list-style: none; }
+.session-speakers li { min-inline-size: 0; }
+.speaker-link, .speaker-identity { display: inline-flex; align-items: center; gap: .7rem; min-block-size: 4rem; color: var(--ink); text-decoration: none; }
+.speaker-link { border-radius: 100vmax; padding-inline-end: .85rem; }
+.speaker-link:hover { color: var(--red); background: var(--tint); }
+.speaker-link:focus-visible { outline: .2rem solid var(--focus); outline-offset: .2rem; }
+.speaker-photo, .speaker-placeholder { inline-size: 4rem; block-size: 4rem; flex: 0 0 4rem; border: .2rem solid var(--surface); border-radius: 50%; box-shadow: 0 0 0 1px var(--line-soft); }
+.speaker-photo { object-fit: cover; background: var(--surface-strong); }
+.speaker-placeholder { display: grid; place-items: center; background: var(--tint); color: var(--red); font-family: "Manrope", sans-serif; font-size: 1rem; font-weight: 800; }
 
 .people-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: 1rem; padding: 0; list-style: none; }
 .person-card { block-size: 100%; border: 1px solid var(--line-soft); border-radius: var(--radius); overflow: hidden; background: var(--surface); }

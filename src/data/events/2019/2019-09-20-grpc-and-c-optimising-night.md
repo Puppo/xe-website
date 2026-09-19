@@ -14,12 +14,12 @@ sessions:
   - time: 20:00 - 21:15
     title: Alla scoperta di gRPC
     speakers:
-      - Andrea Dottor
+      - person: andrea-dottor
     description: In ASP.NET Core 3.0 è stato introdotto il supporto a gRPC, una framework altamente performante per fare Remote Procedure Call (RPC). Leggero e molto efficiente, supportato da molti linguaggi, supporto ad una comunicazione bidirezionale, riduzione del consumo di banda...solo questi solo alcuni dei vantaggi che descrivono gRPC, e che durante la sessione cercheremo di capire se siano reali o meno.Fatto sta che è una tecnologia assolutamente da conoscere e sfruttare nello sviluppo di app moderno, e non solamente in ambito web.
   - time: 21:30 - 22:45
     title: Optimising Code Using Span<T>
     speakers:
-      - Mirco Vanini
+      - person: mirco-vanini
     description: "Span<T> è un nuovo tipo introdotto con C # 7.2 e supportato nel runtime .NET Core 2.1. Esiste un’implementazione .NET Standard ma è in .NET Core dove sono state apportate modifiche al runtime per supportare la migliore versione possibile nota anche come “span veloce”.Questo nuovo tipologia fornisce accesso type-safe ad un’area contigua di memoria, localizzata nell’heap, nello stack o addirittura formata da memoria non gestita.In questa sessione vedremmo come utilizzare al meglio questi nuovi tipi per ottenere prestazioni ottimali dal nostro codice."
 materials:
   - label: download

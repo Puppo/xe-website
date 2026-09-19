@@ -11,7 +11,7 @@ sessions:
   - time: 20:00 - 21:00
     title: Javascript Library
     speakers:
-      - Enrico Giacomazzi
+      - person: enrico-giacomazzi
 materials: []
 sourceUrl: https://www.xedotnet.org/eventi/tech-pub-library/
 draft: false

@@ -11,7 +11,7 @@ sessions:
   - time: 20:00 - 23:00
     title: Learn GIT and How to Contribute
     speakers:
-      - Daniele Morosinotto
+      - person: daniele-morosinotto
     description: 'Partendo dalle basi di GIT svolgeremo una serie di esercizi pratici che ci serviranno a conoscere i principali comandi di GIT. Proveremo assieme i più comuni flussi di sviluppo del codice: creeremo la nostra "repo" con le prime "commit" e ovviamente impareremo a risolvendo gli eventuali "merge conflict". Ci sposteremo poi online per provare a condividere il nostro progetto e a creare la nostra prima "pull request". Capiremo insieme perché questo strumento non sia più un semplice sistema di gestione del codice, ma grazie a GitHub, abbia assunto ormai una connotazione "social" abilitando la collaborazione di più persone, diventando il fulcro per tutto il mondo Open Source.Prerequisiti necessari per partecipare al Lab su GIT:'
 materials:
   - label: https://git-scm.com/downloads

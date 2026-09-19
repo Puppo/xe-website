@@ -21,36 +21,36 @@ sessions:
   - time: 09:30 - 10:30
     title: SQL Server to the MAX
     speakers:
-      - Andrea Benedetti
+      - person: andrea-benedetti
   - time: 09:30 - 10:30
     title: Ottimizzare il front-end. Per le prestazioni, per il SEO. - Il caso di studio di un'applicazione web isomorfica
     speakers:
-      - Andrea Coiutti
+      - person: andrea-coiutti
     description: Negli ultimi mesi un'applicazione web complessa ci ha messo di fronte a numerose sfide. Tra tutte, l'elevata aspettativa in termini di interattività da parte dell'utente e, al tempo stesso, l'altissima concorrenza dal punto di vista del SEO. Requisiti apparentemente agli antipodi, e spesso aghi della bilancia, in grado di far pendere la stessa più verso un'approccio maggiormente orientato al client, piuttosto che al server.In questo talk condivideremo esperienze pratiche concrete, dal perchè abbiamo deciso di utilizzare Mithril.js come framework (di cui introdurremo le caratteristiche salienti), alla risoluzione di problematiche comuni quali routing, localizzazione, autenticazione e stato condiviso fra server e client. Allo stesso tempo cercheremo di condividere i principi generali alla base delle nostre scelte, in modo da fornire idee e spunti anche a chi adotta uno stack tecnologico diverso
   - time: 11:00 - 12:00
     title: Debugging Performance Issues Using Visual Studio
     speakers:
-      - Mirco Vanini
+      - person: mirco-vanini
     description: In questa sessione verranno esposti gli strumenti messi a disposizione da Visual Studio per migliorare continuamente le prestazioni delle applicazioni durante il normale sviluppo di tuti i giorni.
   - time: 11:00 - 12:00
     title: Ottimizzare per ...gli esseri umani - Principi fondamentali di Interaction Design per sviluppatori
     speakers:
-      - Steve Maraspin
+      - person: steve-maraspin
     description: Ti è mai capitato di non riuscire a inviare una form, per poi scoprire che c'era un messaggio d'errore di cui non ti eri neppure accorto? Ti sei mai trovato di fronte a interfacce che apparivano chiare, e altre che apparivano confuse, senza che ti fosse chiaro cosa fosse a generare simili sensazioni?Se situazioni e domande come queste ti sono familiari, questo talk potrebbe fornirti qualche risposta. E magari anche qualche strumento per rendere più efficaci le interfacce dei sistemi su cui lavori. Passeremo in rassegna i principali elementi di psicologia cognitiva e design, in modo da capire come favorire l'interazione con un sistema digitale. Parleremo anche di User Experience. E capiremo come e perchè UX e UI sono cose diverse. Condivideremo spunti per poter migliorare entrambe.
   - time: 12:10 - 13:10
     title: ASP.NET, ottimizziamo con la cache
     speakers:
-      - Andrea Dottor
+      - person: andrea-dottor
     description: Cache, amica e nemica di molti dev.Uno dei modi per incrementare le performance di un'applicativo è l'utilizzo della cache, ma non è tutto oro quel che luccica.In questa sessione vedremo quali tipologie di cache esistono, ed il come poterle utilizzare al meglio. Output cache, cache applicativa, Redis, Memcached...cerchiamo di fare un pò di chiarezza e capiamo i pro e contro delle varie soluzioni.
   - time: 12:10 - 13:10
     title: Realizzare un sito web in un’ora con Umbraco CMS
     speakers:
-      - Davide Contin
+      - person: davide-contin
     description: A tutti noi è capitato almeno una volta di ricevere una richiesta urgente che "dobbiamo" soddisfare. In questi casi, avere a disposizione uno strumento che consenta di fare un buon lavoro in poco tempo ci può risolvere un problema. In questa sessione vedremo come Umbraco ci permetta di ottimizzare i tempi di realizzazione di un sito web.
   - time: 14:45 - 15:45
     title: "How to rock the stage: public speaking for geeks!"
     speakers:
-      - Lorenzo Barbieri
+      - person: lorenzo-barbieri
 materials:
   - label: download
     url: https://drive.google.com/open?id=12gM5tDMuby81lfPlLdXjQTBY3GG1Jc0t

@@ -4,6 +4,7 @@ sortName: Marco Bortolin
 image: /media/1047-bortolin-foto.jpg
 roles:
   - member
+  - speaker
 links:
   - label: hunext.com
     url: http://www.hunext.com/
@@ -13,6 +14,7 @@ links:
     url: https://twitter.com/marcobortolin
 published: true
 sourceUrl: https://www.xedotnet.org/soci/
+profileUrl: https://it.linkedin.com/in/marcobortolin
 ---
 
 Sono un imprenditore e da sempre appassionato di tecnologia: oltre a sviluppare applicazioni, mi occupo di Project Manager per business application in ambito HR con forte interesse per i progetti di innovazione.

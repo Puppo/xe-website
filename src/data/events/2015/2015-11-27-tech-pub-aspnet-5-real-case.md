@@ -10,7 +10,7 @@ sessions:
   - time: 20:00 - 22:00
     title: "Moving to ASP.NET 5: a real case of MVC application migration"
     speakers:
-      - Andrea Agnoletto
+      - person: andrea-agnoletto
     description: "In questa sessione partiremo da una reale applicazione ASP.NET MVC 5 (Framework .NET 4.5.1), il Portale EASTIN (www.eastin.eu), e percorreremo insieme passo per passo l’intero processo per migrarla ad un’applicazione ASP.NET 5 MVC 6. In particolare saranno messe in luce criticità e best-practices che riguardano la migrazione dei principali elementi di un’applicazione Web MVC: configurazione e routing, DAL e Services porting (Web services e WCF), server side “facilities” (Dependency Injection, Session, Cache), authentication, Razor UI e infine deployment su IIS. Impareremo insieme come evitare gli errori più comuni nell’approcciare la migrazione e come sfruttare al meglio le nuove potenzialità offerte da ASP.NET 5."
 materials:
   - label: download

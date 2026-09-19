@@ -9,7 +9,6 @@ const ROOT = new URL('../', import.meta.url).pathname;
 const EVENTS_DIR = join(ROOT, 'src/data/events');
 const PEOPLE_DIR = join(ROOT, 'src/data/people');
 const MEDIA_DIR = join(ROOT, 'public/media');
-const REPORT_PATH = join(ROOT, 'MIGRATION-REPORT.md');
 const years = Array.from({ length: 12 }, (_, index) => 2015 + index);
 const turndown = new TurndownService({ headingStyle: 'atx', bulletListMarker: '-' });
 const report = { routes: [], missingAssets: [], warnings: [], eventCounts: {}, people: 0 };
@@ -258,45 +257,6 @@ async function discoverEventUrls() {
   return [...urls].sort();
 }
 
-async function writeReport(eventTotal) {
-  const routes = report.routes.sort((a, b) => a.destination.localeCompare(b.destination));
-  const lines = [
-    '# Rapporto di migrazione',
-    '',
-    `Generato il ${new Intl.DateTimeFormat('it-IT', { dateStyle: 'long', timeStyle: 'short', timeZone: 'Europe/Rome' }).format(new Date())}.`,
-    '',
-    '## Riepilogo',
-    '',
-    `- Eventi migrati: ${eventTotal}`,
-    `- Soci pubblici migrati: ${report.people}`,
-    `- Asset locali scaricati: ${assetCache.size - report.missingAssets.length}`,
-    `- Asset mancanti: ${report.missingAssets.length}`,
-    `- Avvisi da verificare: ${report.warnings.length}`,
-    '',
-    '## Eventi per anno',
-    '',
-    '| Anno | Eventi |',
-    '| ---: | ---: |',
-    ...Object.entries(report.eventCounts).sort(([a], [b]) => Number(b) - Number(a)).map(([year, count]) => `| ${year} | ${count} |`),
-    '',
-    '## Avvisi',
-    '',
-    ...(report.warnings.length ? report.warnings.map((warning) => `- ${warning}`) : ['- Nessuno.']),
-    '',
-    '## Asset mancanti',
-    '',
-    ...(report.missingAssets.length ? report.missingAssets.map((asset) => `- ${asset}`) : ['- Nessuno.']),
-    '',
-    '## Mappatura degli URL',
-    '',
-    '| Tipo | Sorgente | Destinazione |',
-    '| --- | --- | --- |',
-    ...routes.map((route) => `| ${route.kind} | ${route.source} | ${route.destination} |`),
-    ''
-  ];
-  await writeFile(REPORT_PATH, lines.join('\n'));
-}
-
 async function main() {
   await Promise.all([mkdir(EVENTS_DIR, { recursive: true }), mkdir(PEOPLE_DIR, { recursive: true }), mkdir(MEDIA_DIR, { recursive: true })]);
   const eventUrls = await discoverEventUrls();
@@ -309,7 +269,6 @@ async function main() {
     saveAsset('/media/1223/logo_eventitech_200.png'),
     saveAsset('/media/1095/xedotnet_04.jpg')
   ]);
-  await writeReport(eventUrls.length);
   console.log(`Migrazione completata: ${eventUrls.length} eventi, ${report.people} soci.`);
 }
 

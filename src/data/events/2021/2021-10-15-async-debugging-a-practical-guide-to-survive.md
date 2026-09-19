@@ -10,7 +10,7 @@ sessions:
   - time: 21:00 - 22:00
     title: Presentazione
     speakers:
-      - Mirco Vanini
+      - person: mirco-vanini
   - time: 22:00 - 23:00
     title: Q & A
     speakers: []

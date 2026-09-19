@@ -11,12 +11,12 @@ sessions:
   - time: 20:00 - 20:30
     title: Copilot Diagnostics toolset for .NET In Visual Studio
     speakers:
-      - Mirco Vanini
+      - person: mirco-vanini
     description: Sei pronto a dire addio al debugging noioso e ai profiling infiniti? Con il nuovo toolset diagnostico di Copilot per .NET in Visual Studio, il tuo ambiente di sviluppo diventa un alleato intelligente che ti guida, ti suggerisce e ti semplifica la vita. Vieni a scoprire come Copilot trasforma la diagnostica in un’esperienza fluida, potente e persino divertente. Il futuro del debugging è già qui.
   - time: 20:30 - 21:00
     title: "Aspire perché sì: i problemi che mi ha risolto davvero (e quelli che non risolve)"
     speakers:
-      - Marco Bortolin
+      - person: marco-bortolin
     description: ".NET Aspire promette di rendere più semplice la vita degli sviluppatori… ma quanto funziona davvero quando lo porti dentro un’azienda, con i suoi limiti, le sue urgenze e i suoi sistemi già esistenti?In questo talk racconto casi reali di utilizzo di Aspire in progetti concreti: problemi veri che abbiamo incontrato e come Aspire ha fornito soluzioni immediate e pratiche.Un talk onesto, leggero, tecnico il giusto: perfetto per essere ascoltato con una birra in mano."
 materials: []
 sourceUrl: https://www.xedotnet.org/eventi/tech-pub-diagnostic-toolset-aspire/

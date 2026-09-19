@@ -14,7 +14,7 @@ sessions:
   - time: 20:00 - 22:30
     title: Team working in action
     speakers:
-      - Enrico Illuminati
+      - person: enrico-illuminati
     description: Enrico Illuminati è Executive Coach accreditato a livello internazionale dall’International Coach Federation ed esperto di Intelligenza Emotiva e Team Member della MIP Coaching Academy - Graduate School of Business del MIP Politecnico di Milano.
 materials: []
 sourceUrl: https://www.xedotnet.org/eventi/team-working-in-action/

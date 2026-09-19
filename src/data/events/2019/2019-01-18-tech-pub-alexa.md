@@ -11,7 +11,7 @@ sessions:
   - time: 20:00 - 21:00
     title: Sviluppare per Amazon Alexa utilizzando .NET Core
     speakers:
-      - Andrea Dottor
+      - person: andrea-dottor
     description: In questo XE Tech-Pub andremo in dettaglio sul come realizzare una skill di Alexa (l'assistente vocale di Amazon) sfruttando .NET Core (API sviluppate con ASP.NET Core, Azure Function, ...). Vedremo in primis come è stata realizzata la skill di XE (utile per rimanere informati sugli eventi che organizziamo), per poi passare ad esempi di skill più evolute, che permettono di recuperare informazioni/variabili dalla conversazione, fino ad arrivare al come pilotare dispositivi remoti utilizzando la voce.Dobbiamo essere pronti ad affrontare questa nuova evoluzione dei BOT, evoluzione che offre a noi sviluppatori nuovi tipi di interazione con gli utenti e nuove possibilità per i nostri prodotti.Se vuoi provare la Skill di XE, la puoi attivare al seguente link https://www.amazon.it/dp/B07M5LZLJ4/ per poi invocarla con "Alexa, apri eventi XE"
 materials: []
 sourceUrl: https://www.xedotnet.org/eventi/tech-pub-alexa/
