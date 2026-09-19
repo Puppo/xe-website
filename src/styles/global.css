@@ -334,8 +334,10 @@ p { max-inline-size: var(--text); }
 .interactive-map { position: relative; z-index: 0; background: var(--surface-strong); }
 .interactive-map:focus-visible { outline: .2rem solid var(--focus); outline-offset: .2rem; }
 .map-status { min-block-size: 1.5em; margin: .6rem 0 0; color: var(--muted); font-size: .9rem; }
-.member-map-marker { display: grid; place-items: center; border: .2rem solid #fff; border-radius: 50% 50% 50% 0; rotate: -45deg; background: var(--signal); color: #fff; box-shadow: 0 .2rem .5rem rgb(0 0 0 / 35%); font-weight: 800; }
-.member-map-marker span { rotate: 45deg; }
+.member-map-marker { display: grid; place-items: center; color: #fff; font-weight: 800; }
+.member-map-marker::before, .member-map-marker span { grid-area: 1 / 1; }
+.member-map-marker::before { content: ''; inline-size: 100%; block-size: 100%; border: .2rem solid #fff; border-radius: 50% 50% 50% 0; rotate: -45deg; background: var(--signal); box-shadow: 0 .2rem .5rem rgb(0 0 0 / 35%); }
+.member-map-marker span { position: relative; z-index: 1; }
 .leaflet-control-attribution { color: #222; }
 .leaflet-control-attribution a { color: #084b83; }
 .location-list { margin: 0; padding: 0; list-style: none; }
