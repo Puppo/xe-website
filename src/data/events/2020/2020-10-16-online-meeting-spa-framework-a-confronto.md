@@ -10,22 +10,22 @@ sessions:
   - time: 21:00 - 22:30
     title: Blazor
     speakers:
-      - Andrea Dottor
+      - person: andrea-dottor
     description: Link al repository con il codice della Demo e le slides:https://github.com/andreadottor/XE.Dottor.Demo.BlazorWebApp
   - time: 21:00 - 22:30
     title: Angular
     speakers:
-      - Alice Capponi
+      - person: alice-capponi
     description: Link al codice della Demo:https://github.com/Alyyc85/xe-post-app
   - time: 21:00 - 22:30
     title: Vue.js
     speakers:
-      - Daniele Morosinotto
+      - person: daniele-morosinotto
     description: Link al repository con il codice della Demo e le slides:https://github.com/dmorosinotto/XE_FrameworkSPA_Vue
   - time: 21:00 - 22:30
     title: React
     speakers:
-      - Enrico Giacomazzi
+      - person: enrico-giacomazzi
     description: Link al codice della Demo:https://github.com/enricogiacomazzi/xe_confronto_spa_react
 materials:
   - label: https://github.com/andreadottor/XE.Dottor.Demo.BlazorWebApp

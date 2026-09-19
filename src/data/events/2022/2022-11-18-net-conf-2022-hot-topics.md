@@ -11,23 +11,23 @@ sessions:
   - time: 20:00 - 20:30
     title: Performance improvement
     speakers:
-      - Mirco Vanini
+      - person: mirco-vanini
   - time: 20:30 - 21:00
     title: C#
     speakers:
-      - Daniele Morosinotto
+      - person: daniele-morosinotto
   - time: 21:00 - 21:30
     title: ASP.NET
     speakers:
-      - Davide Contin
+      - person: davide-contin
   - time: 21:30 - 22:00
     title: Blazor
     speakers:
-      - Andrea Dottor
+      - person: andrea-dottor
   - time: 22:00 - 22:30
     title: .NET MAUI
     speakers:
-      - Marco Bortolin
+      - person: marco-bortolin
 materials: []
 sourceUrl: https://www.xedotnet.org/eventi/net-conf-2022-hot-topics/
 draft: false

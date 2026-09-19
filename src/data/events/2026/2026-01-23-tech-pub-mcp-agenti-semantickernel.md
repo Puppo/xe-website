@@ -11,16 +11,16 @@ sessions:
   - time: 20:00 - 20:30
     title: Estendere gli LLM con .NET e OpenAPI
     speakers:
-      - Mirko Rezzin
+      - person: mirkorezzin
     description: In questa sessione esploriamo come integrare API .NET descritte in OpenAPI all’interno di un LLM per estenderne concretamente le capacità operative. Vedremo come esporre funzioni al modello, gestire autenticazione e autorizzazione e coordinare più servizi.
   - time: 20:30 - 21:00
     title: ".NET Agent Framework: Orchestrazione Agenti e Integrazione MCP Tools"
     speakers:
-      - Massimo Zaccarin
+      - person: massimo-zaccarin
   - time: 21:00 - 21:30
     title: "Da requisiti a codice production-ready: workflow AI-assisted con GitHub Copilot e MCP"
     speakers:
-      - Massimiliano De Savi
+      - person: massimiliano-de-savi
 materials:
   - label: Slide
     url: https://drive.google.com/drive/folders/1bwW6Dkv5yZHL4V3npKUH8YSpGPBxWHAm?usp=sharing

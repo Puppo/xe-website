@@ -11,12 +11,12 @@ sessions:
   - time: 20:00 - 21:15
     title: Debugger Tips and Tricks for .NET Developers with Microsoft Visual Studio 2015
     speakers:
-      - Mirco Vanini
+      - person: mirco-vanini
     description: Una parte considerevole della giornata di un sviluppatore è spesa in azioni di debug e test. In questa sessione vedremmo come ottenere il meglio dagli strumenti di debug e di diagnostica messi a disposizione da Visual Studio 2015.
   - time: 21:30 - 22:45
     title: Debugger Tips and Tricks for Fast SQL Developers
     speakers:
-      - Emanuele Zanchettin
+      - person: emanuele-zanchettin
     description: 'Un tema sempre scottante: intercettare gli errori e monitorare le prestazioni del proprio database. In questa sessione si vuole presentare il set di base degli strumenti "molto utili" e introdurre il concetto di analisi prestazionale: dalla "cura" nelle emergenze alla "prevenzione" delle problematiche. Alcuni esempi pratici per capire cosa e come fare nelle diverse situazioni che potrebbero verificarsi proprio domani (se non oggi stesso) sul database della tua applicazione.'
 materials:
   - label: download

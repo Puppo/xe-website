@@ -11,7 +11,7 @@ sessions:
   - time: 20:00 - 23:00
     title: Coding Gym
     speakers:
-      - Alessandro Pezzato
+      - person: alessandro-pezzato
 materials: []
 sourceUrl: https://www.xedotnet.org/eventi/coding-gym-gennaio-2023/
 draft: false

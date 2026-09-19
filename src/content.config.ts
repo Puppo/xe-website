@@ -1,7 +1,9 @@
-import { defineCollection } from 'astro:content';
+import { defineCollection, reference } from 'astro:content';
+import { z } from 'astro/zod';
 import { file, glob } from 'astro/loaders';
 import {
-  eventSchema,
+  createEventSchema,
+  eventDateSchema,
   locationSchema,
   pageSchema,
   partnerSchema,
@@ -11,7 +13,10 @@ import {
 
 const events = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/data/events' }),
-  schema: eventSchema
+  schema: createEventSchema(eventDateSchema, z.union([
+    z.string(),
+    z.object({ person: reference('people') })
+  ]))
 });
 
 const people = defineCollection({

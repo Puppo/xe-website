@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { eventInputSchema } from '../src/content-schemas';
+import { eventInputSchema, personSchema } from '../src/content-schemas';
 import {
   eventStructuredStatus,
   eventSlug,
@@ -103,6 +103,27 @@ describe('schema evento', () => {
     }).success).toBe(true);
   });
 
+  it('accetta speaker legacy e riferimenti a profili', () => {
+    expect(eventInputSchema.safeParse({
+      ...baseEvent,
+      sessions: [{
+        title: 'Sessione',
+        speakers: ['XE', { person: 'emanuele-furlan' }]
+      }]
+    }).success).toBe(true);
+  });
+
+  it.each([
+    { person: '' },
+    { person: 42 },
+    { name: 'Speaker senza riferimento' }
+  ])('rifiuta un riferimento speaker non valido: %o', (speaker) => {
+    expect(eventInputSchema.safeParse({
+      ...baseEvent,
+      sessions: [{ title: 'Sessione', speakers: [speaker] }]
+    }).success).toBe(false);
+  });
+
   it.each([
     { registration: { startDate: '2026-10-01', url: 'https://example.com/register' } },
     { registration: { startDate: '2026-10-01', endDate: '2026-10-10' } },
@@ -114,6 +135,17 @@ describe('schema evento', () => {
 });
 
 describe('profili', () => {
+  it('convalida il link principale del profilo', () => {
+    const profile = {
+      name: 'Ada Lovelace',
+      sortName: 'Lovelace, Ada',
+      roles: ['speaker'],
+      profileUrl: 'https://www.linkedin.com/in/ada-lovelace'
+    };
+    expect(personSchema.safeParse(profile).success).toBe(true);
+    expect(personSchema.safeParse({ ...profile, profileUrl: 'non-un-url' }).success).toBe(false);
+  });
+
   it('crea una descrizione SEO dal contenuto Markdown', () => {
     expect(markdownExcerpt('## Sviluppatore\n\nLavora con **.NET** e [Astro](https://astro.build).'))
       .toBe('Sviluppatore Lavora con .NET e Astro.');

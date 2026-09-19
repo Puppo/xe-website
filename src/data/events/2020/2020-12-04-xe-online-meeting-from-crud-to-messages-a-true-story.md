@@ -10,7 +10,7 @@ sessions:
   - time: 21:00 - 22:00
     title: "From CRUD to messages: a true story"
     speakers:
-      - Alessandro Melchiori
+      - person: alessandro-melchiori
     description: Come siamo passati da un'applicazione monolitica ad un sistema distribuito. Ma soprattutto perche' e come abbiamo fatto ad accorgerci che era "il passo giusto" da fare.
   - time: 22:00 - 23:00
     title: Chiacchierata con Alessandro

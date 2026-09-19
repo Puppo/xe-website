@@ -15,12 +15,12 @@ sessions:
   - time: 20:30 - 21:30
     title: Creare API pubbliche, come evitare gli errori comuni
     speakers:
-      - Andrea Dottor
+      - person: andrea-dottor
     description: "Cerchiamo di capire cosa vuol dire creare delle API pubbliche. Cerchiamo di capire cosa offre ad oggi ASP.NET, e come utilizzare al meglio la tecnologia. L'intenzione è di andare in dettaglio su problematiche spesso sottovalutate: serve sempre ASP.NET Web API? E' meglio WCF? Quali problematiche possono capitare? Come faccio il versionamento? Quali oggetti/classi espongo? E la documentazione?"
   - time: 21:45 - 22:45
     title: Practical Ionic
     speakers:
-      - Davide Senatore
+      - person: davide-senatore
     description: In questa sessione vedremo come impiegare Ionic Framework per interfacciarsi al Device Mobile e consumare in modo efficiente API remote. Impareremo quali sono le strategie più importanti quando si interagisce con servizi remoti e quali siano le best practices per interagire con l'utente. Vedremo inoltre quali strumenti mette a disposizione Ionic per implementare i pattern più interessanti tipo loading spinner, pull and refresh e infinite scrolling.
 materials:
   - label: download

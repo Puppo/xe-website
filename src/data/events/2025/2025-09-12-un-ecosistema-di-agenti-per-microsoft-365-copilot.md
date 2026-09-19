@@ -10,7 +10,7 @@ sessions:
   - time: 21:00 - 22:00
     title: Presentazione
     speakers:
-      - Matteo Pagani
+      - person: matteo-pagani
     description: "L’esperienza di Microsoft 365 Copilot si è recentemente arricchita di un vasto ecosistema di agenti: dai declarative agent, realizzati con strumenti come Copilot Studio o Microsoft 365 Agents Toolkit; ai custom engine agent, che possono essere sviluppati con Microsoft 365 Agents SDK, Teams AI Library, Semantic Kernel e Azure AI Foundry. Siete un po’ confusi? Niente paura, nel corso di questa sessione capiremo meglio le differenze e quali strumenti utilizzare in base allo scenario che si vuole implementare."
   - time: 22:00 - 23:00
     title: Q & A

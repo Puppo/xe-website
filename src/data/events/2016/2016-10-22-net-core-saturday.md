@@ -16,26 +16,26 @@ sessions:
   - time: 09:15 - 10:30
     title: Introduzione a .NET Core
     speakers:
-      - Marco Parenzan
+      - person: marco-parenzan
   - time: 11:00 - 12:15
     title: Introduzione a ASP.NET Core
     speakers:
-      - Andrea Dottor
+      - person: andrea-dottor
   - time: 12:15 - 13:30
     title: Introduzione a Entity Framework Core
     speakers:
-      - Michael Denny
+      - person: michael-denny
   - time: 13:30 - 14:15
     title: Pausa Pranzo
     speakers: []
   - time: 14:15 - 15:30
     title: Docker and Containers
     speakers:
-      - Alessandro Melchiori
+      - person: alessandro-melchiori
   - time: 15:30 - 16:45
     title: Deploy an ASP.NET Core application with Docker
     speakers:
-      - Emanuele Bartolesi
+      - person: emanuele-bartolesi
 materials: []
 sourceUrl: https://www.xedotnet.org/eventi/net-core-saturday/
 draft: false

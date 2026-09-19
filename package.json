@@ -11,6 +11,7 @@
     "preview": "astro preview",
     "check": "astro check",
     "migrate": "node scripts/migrate.mjs",
+    "enrich:speakers": "node scripts/enrich-event-speakers.mjs",
     "schemas": "node scripts/generate-json-schemas.mjs",
     "test": "vitest run",
     "test:e2e": "playwright test"

@@ -11,7 +11,7 @@ sessions:
   - time: 20:00 - 21:30
     title: "DbUp: a real case of database migration"
     speakers:
-      - Marco Bortolin
+      - person: marco-bortolin
     description: DbUp è una libreria .NET che facilita il deploy delle modifiche allo schema del database di una applicazione. Tiene traccia degli scripts SQL che sono già stati applicati ed esegue gli script di modifica, necessari ad effettuare la migrazione del database.In questa sessione partiremo con una panoramica sulla filosofia che sta alla base della libreria .NET DbUp. Vedremo come applicare un approccio pragmatico al deploy degli script di migrazione. Con il supporto di Andrea Cirioni della HUNEXT SOFTWARE condivideremo assieme come in azienda sono state risolte alcune problematiche reali, sfruttando le potenzialità di DbUp.
 materials: []
 sourceUrl: https://www.xedotnet.org/eventi/tech-pub-dbup/

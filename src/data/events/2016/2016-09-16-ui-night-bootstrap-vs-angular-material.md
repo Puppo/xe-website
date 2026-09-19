@@ -11,12 +11,12 @@ sessions:
   - time: 20:00 - 21:15
     title: Bootstrap
     speakers:
-      - Andrea Dottor
+      - person: andrea-dottor
     description: Bootstrap, il più popolare framework per lo sviluppo di front-end application. In questa sessione scopriremo come utilizzarlo al meglio, e come sfruttarlo per realizzare interfacce responsive all'apparenza complesse. Una serata dove parole come Less, Sass, Bower acquisteranno significato e valore.
   - time: 21:30 - 22:45
     title: Angular Material
     speakers:
-      - Davide Senatore
+      - person: davide-senatore
     description: Angular Material è l'implementazione delle linee guida di Material Design di Google. Grazie a questa libreria, è possibile creare applicazioni web moderne, responsive e basate su standard.Utilizzando Angular come strato di logica ed integrandosi con web service REST è possibile riutilizzare pattern ben conosciuti per realizzare applicazioni per desktop, tablet e smartphone.In questa sessione conosceremo la filosofia di Material Design e comprenderemo come la libreria Angular Material possa dare un contributo di produttività ai nostri progetti.
 materials:
   - label: download

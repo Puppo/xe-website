@@ -11,12 +11,12 @@ sessions:
   - time: 20:00 - 21:15
     title: Introduzione a Vue.JS
     speakers:
-      - Daniele Morosinotto
+      - person: daniele-morosinotto
     description: Un viaggio alla scoperta di Vue.js un "Progressive JS Framework" con interessanti caratteristiche che ovviamente impareremo ad usare e sfruttare con TypeScript ^_^
   - time: 21:30 - 22:45
     title: Progressive Web App nella pratica
     speakers:
-      - Davide Contin
+      - person: davide-contin
     description: Grazie ad un sempre maggiore supporto da parte dei browser questa tecnologia sta diventando un'alternativa concreta allo sviluppo di App.Vedremo quali sono i vantaggi di questa scelta e come trasformare una web application in una PWA.
 materials: []
 sourceUrl: https://www.xedotnet.org/eventi/frontend-night-vuejs-pwa/

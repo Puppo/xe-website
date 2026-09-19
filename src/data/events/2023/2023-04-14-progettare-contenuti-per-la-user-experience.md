@@ -10,7 +10,7 @@ sessions:
   - time: 21:00 - 22:00
     title: Presentazione
     speakers:
-      - Serena Giust
+      - person: serena-giust
     description: "[Serena Giust, originaria della provincia di Treviso, vive oggi nei Paesi Bassi. Svolge il ruolo di Content Design Manager per una delle aziende tech più famose al mondo.]"
   - time: 22:00 - 23:00
     title: Q & A

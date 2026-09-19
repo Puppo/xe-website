@@ -11,12 +11,12 @@ sessions:
   - time: 20:00 - 21:30
     title: "C# Async: surviving in an Async-First Development World"
     speakers:
-      - Mirco Vanini
+      - person: mirco-vanini
     description: Dopo una breve introduzione sui concetti fondamentali relativi alla programmazione asincrona saranno esposti vari tips & trick per la “soppravivenza” del programmatore che adotta questa tecnologia.
   - time: 21:30 - 23:00
     title: Dapper
     speakers:
-      - Davide Contin
+      - person: davide-contin
     description: Introduzione a Dapper, "a simple object mapper for .Net"https://github.com/StackExchange/Dapper
 materials:
   - label: download

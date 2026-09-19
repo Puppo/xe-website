@@ -10,7 +10,7 @@ sessions:
   - time: 21:00 - 22:00
     title: Presentazione
     speakers:
-      - Jody Donetti
+      - person: jody-donetti
     description: "Una panoramica sul caching in .NET: memory, distributed ed infine hybrid, con FusionCache.Scenari comuni e come sfruttare al meglio le sue feature per ottenere performance, robustezza e resilienza, il tutto in un package pronto all’uso.Chiudiamo infine con una piccola anteprima della nuova HybridCache di Microsoft in arrivo con .NET 9, e cos’abbia a che fare con FusionCache"
   - time: 22:00 - 23:00
     title: Q & A

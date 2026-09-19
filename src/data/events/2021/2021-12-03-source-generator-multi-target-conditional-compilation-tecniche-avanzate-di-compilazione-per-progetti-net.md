@@ -10,11 +10,11 @@ sessions:
   - time: 21:00 - 21:45
     title: Compilazione multi-target
     speakers:
-      - Andrea Agnoletto
+      - person: andrea-agnoletto
   - time: 21:45 - 22:30
     title: Source Generators
     speakers:
-      - Marco Bortolin
+      - person: marco-bortolin
   - time: 22:30 - 23:00
     title: Q & A
     speakers: []

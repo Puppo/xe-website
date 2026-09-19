@@ -10,7 +10,7 @@ sessions:
   - time: 21:00 - 22:30
     title: Chiaccherata con Gian Maria - gestione delle branch
     speakers:
-      - Gian Maria Ricci
+      - person: gian-maria-ricci
   - time: 22:30 - 23:00
     title: Virtual birra
     speakers: []

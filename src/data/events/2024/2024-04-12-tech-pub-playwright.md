@@ -11,11 +11,11 @@ sessions:
   - time: 20:00 - 20:30
     title: Playwright visto da due mondi paralleli - parte 1
     speakers:
-      - Marco Alquati
+      - person: marco-alquati
   - time: 20:30 - 21:00
     title: Playwright visto da due mondi paralleli - parte 2
     speakers:
-      - Luca Del Puppo
+      - person: luca-del-puppo
 materials:
   - label: Slide Luca Del Puppo
     url: https://slides.com/puppo92/write-one-time-test-everywhere-with-playwright/fullscreen

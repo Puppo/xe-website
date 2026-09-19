@@ -11,12 +11,12 @@ sessions:
   - time: 20:00 - 21:30
     title: "Time Series DB: perchè e quando? Introduzione a InfluxDB"
     speakers:
-      - Mauro Rainis
+      - person: mauro-rainis
     description: I db relazionali non sono sempre la soluzione ottimale per la gestione di serie temporali di dati. Analizzeremo perchè e quando un db TimeSeries potrebbe essere una scelta migliore, vedremo poi installazione e utilizzo di InfluxDb e del suo "TICK" stack.
   - time: 21:45 - 23:00
     title: How to search...better!
     speakers:
-      - Alessandro Melchiori
+      - person: alessandro-melchiori
     description: Elasticsearch e' uno dei progetti piu' popolari su Github con circa 400 contributors, piu' di 3,000 forks e decine di migliaia di commits. Ma cos'e' e a "cosa serve" ElasticSearch? Come "funziona"?
 materials:
   - label: https://www.slideshare.net/melkio/how-to-searchbetter

@@ -11,12 +11,12 @@ sessions:
   - time: 20:00 - 20:30
     title: Infrastructure as Code con Terraform
     speakers:
-      - Lorenzo Caldon
+      - person: lorenzo-caldon
     description: Negli ultimi anni abbiamo visto prendere piede l'idea di gestire l'infrastruttura cloud tramite codice anzichè manualmente.Terraform è uno dei tanti strumenti che abbiamo a disposizione per creare e gestire risorse su diversi provider cloud.In questo speech muoveremo i primi passi per utilizzarlo su AWS per realizzare i più comuni servizi.
   - time: 20:30 - 21:00
     title: Infrastructure as Code con Pulumi
     speakers:
-      - Andrea Cirioni
+      - person: andrea-cirioni
     description: Gestire il provisioning delle risorse in cloud tramite il nostro linguaggio di programmazione preferito non è più utopia. Una breve introduzione su questo tool, che consente di applicare le buone pratiche di sviluppo all'infrastruttura.
 materials: []
 sourceUrl: https://www.xedotnet.org/eventi/tech-pub-infrastructure-as-code/

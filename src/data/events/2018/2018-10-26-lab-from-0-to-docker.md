@@ -11,7 +11,7 @@ sessions:
   - time: 20:00 - 23:00
     title: From 0 to docker
     speakers:
-      - Alessandro Melchiori
+      - person: alessandro-melchiori
 materials: []
 sourceUrl: https://www.xedotnet.org/eventi/lab-from-0-to-docker/
 draft: false

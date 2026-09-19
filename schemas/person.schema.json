@@ -14,6 +14,10 @@
     "image": {
       "type": "string"
     },
+    "profileUrl": {
+      "type": "string",
+      "format": "uri"
+    },
     "roles": {
       "minItems": 1,
       "type": "array",

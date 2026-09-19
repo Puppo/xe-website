@@ -10,8 +10,8 @@ sessions:
   - time: 21:00 - 22:30
     title: Presentazione
     speakers:
-      - Gianni Rosa Gallina
-      - Clemente Giorio
+      - person: gianni-rosa-gallina
+      - person: clemente-giorio
     description: "Esploreremo lo stato dell’arte dell’IA generativa in vari scenari e casi d’uso: dopo una panoramica sui servizi più noti offerti da OpenAI, Microsoft, ElevenLabs e altri, vedremo insieme alcune demo pratiche per implementare servizi e applicazioni analoghe, utilizzando strumenti, framework e modelli pre-addestrati open-source, sfruttando la potenza computazionale delle nostre macchine e/o del cloud."
   - time: 22:30 - 23:30
     title: Q & A

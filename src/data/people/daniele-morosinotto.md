@@ -5,11 +5,13 @@ title: JavaScript enthusiast
 image: /media/1032-morosinotto-foto.jpg
 roles:
   - member
+  - speaker
 links:
   - label: twitter.com
     url: https://twitter.com/dmorosinotto
 published: true
 sourceUrl: https://www.xedotnet.org/soci/
+profileUrl: https://twitter.com/dmorosinotto
 ---
 
 Sono un appassionato di tecnologia che ama confrontarsi con le persone, l'unica costante nel mio percorso professionale è stato il continuo cambiamento e la voglia di imparare cose nuove ogni giorno!

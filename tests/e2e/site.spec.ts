@@ -1,7 +1,7 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
-const representativePages = ['/', '/eventi/', '/eventi/2025/', '/soci/', '/chi-siamo/', '/contatti/', '/privacy-policy/'];
+const representativePages = ['/', '/eventi/', '/eventi/2025/', '/eventi/tech-pub-gennaio-2025/', '/soci/', '/chi-siamo/', '/contatti/', '/privacy-policy/'];
 
 for (const path of representativePages) {
   test(`${path} non presenta violazioni axe`, async ({ page }) => {
@@ -51,6 +51,27 @@ test('un evento storico è raggiungibile dall’archivio', async ({ page }) => {
   await expect(firstEvent).toBeVisible();
   await firstEvent.click();
   await expect(page.getByRole('heading', { level: 2, name: 'Dettagli' })).toBeVisible();
+});
+
+test('gli speaker mostrano foto, fallback e collegamenti ai profili', async ({ page }) => {
+  await page.goto('/eventi/tech-pub-gennaio-2025/');
+  const speakers = page.locator('.session-speakers li');
+  await expect(speakers).toHaveCount(2);
+  await expect(speakers.locator('.speaker-photo')).toHaveCount(2);
+  const externalProfile = page.getByRole('link', { name: 'Emanuele Furlan' });
+  await expect(externalProfile).toHaveAttribute('href', 'https://www.linkedin.com/in/emanuele-furlan-6aa9a4225');
+  await expect(externalProfile).toHaveAttribute('rel', 'noreferrer');
+  await expect(speakers.first().locator('img')).toHaveAttribute('width', '64');
+  await expect(speakers.first().locator('img')).toHaveCSS('border-radius', '50%');
+
+  await page.goto('/eventi/tech-pub-oqtane-is-not-the-new-dotnetnuke/');
+  await expect(page.getByRole('link', { name: 'Mauro Cavallin' })).toHaveAttribute('href', /\/soci\/mauro-cavallin\/$/);
+  const alberto = page.locator('.speaker-identity').filter({ hasText: 'Alberto Zen' });
+  await expect(alberto.locator('.speaker-placeholder')).toHaveText('AZ');
+  await expect(alberto.locator('a')).toHaveCount(0);
+
+  const hasOverflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth);
+  expect(hasOverflow).toBe(false);
 });
 
 test('le biografie dei soci sono renderizzate dal Markdown', async ({ page }) => {
