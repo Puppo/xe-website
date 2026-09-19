@@ -2,6 +2,7 @@
 title: Coding Gym
 description: Coding Gym is a non-competitive programming lab format open to any language and developed for self-led improvement in technical and communication skills.
 date: 2024-02-16
+status: cancelled
 eventType: Coding Gym
 venue:
   name: Training Center - Banchina dell'Azoto 15
@@ -16,8 +17,6 @@ materials: []
 sourceUrl: https://www.xedotnet.org/eventi/coding-gym-febbraio-2024/
 draft: false
 ---
-
-**EVENTO RINVIATO**
 
 Coding Gym è un laboratorio nel quale, lavorando a coppie, si elaborano soluzioni per piccole, ma non sempre facili, sfide proposte dallo speaker.
 

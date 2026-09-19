@@ -2,6 +2,7 @@
 title: XE Community Meeting - SQL & NoSQL
 description: Un punto fermo per tutti gli sviluppatori e appassionati che vogliono condividere la loro conoscenza e passione per la tecnologia.
 date: 2017-05-05
+status: cancelled
 eventType: Giornata
 venue:
   name: Confartigianato Vicenza
@@ -22,5 +23,3 @@ materials: []
 sourceUrl: https://www.xedotnet.org/eventi/sql-nosql/
 draft: false
 ---
-
-EVENTO ANNULLATO
