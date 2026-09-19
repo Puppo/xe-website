@@ -7,3 +7,5 @@ test-results/
 coverage/
 .env
 core.*
+.lefthook-local/
+.lefthook-local.yml

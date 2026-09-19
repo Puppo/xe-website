@@ -1,0 +1,40 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["unicorn", "typescript", "oxc", "import"],
+  "categories": {
+    "correctness": "error",
+    "suspicious": "error",
+    "pedantic": "error",
+    "perf": "error",
+    "style": "error",
+    "restriction": "error",
+    "nursery": "error"
+  },
+  "rules": {
+    "no-console": "error"
+  },
+  "ignorePatterns": [
+    "node_modules",
+    "dist",
+    ".astro",
+    "playwright-report",
+    "test-results",
+    "coverage",
+    "schemas"
+  ],
+  "overrides": [
+    {
+      "files": ["scripts/**/*.mjs"],
+      "rules": {
+        "no-console": "off"
+      }
+    },
+    {
+      "files": ["tests/**/*.test.ts", "tests/**/*.ts"],
+      "rules": {
+        "no-console": "off",
+        "no-debugger": "off"
+      }
+    }
+  ]
+}
