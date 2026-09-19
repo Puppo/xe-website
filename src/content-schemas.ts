@@ -110,10 +110,11 @@ export const partnerSchema = z.object({
 });
 
 export const locationSchema = z.object({
-  name: z.string(),
+  municipality: z.string(),
+  province: z.string(),
   count: z.number().int().positive(),
-  x: z.number().min(0).max(100),
-  y: z.number().min(0).max(100)
+  latitude: z.number().min(-90).max(90),
+  longitude: z.number().min(-180).max(180)
 });
 
 export const pageSchema = z.object({
