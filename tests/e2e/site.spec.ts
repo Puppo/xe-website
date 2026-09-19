@@ -1,14 +1,25 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
-const representativePages = ['/', '/eventi/', '/eventi/2025/', '/eventi/tech-pub-gennaio-2025/', '/soci/', '/chi-siamo/', '/contatti/', '/privacy-policy/'];
+const representativePages = [
+  '/',
+  '/eventi/',
+  '/eventi/2025/',
+  '/eventi/tech-pub-gennaio-2025/',
+  '/soci/',
+  '/chi-siamo/',
+  '/contatti/',
+  '/privacy-policy/',
+];
 
 for (const path of representativePages) {
   test(`${path} non presenta violazioni axe`, async ({ page }) => {
     await page.goto(path);
     await expect(page.locator('html')).toHaveAttribute('lang', 'it');
     await expect(page.locator('h1')).toHaveCount(1);
-    const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze();
+    const results = await new AxeBuilder({ page })
+      .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
+      .analyze();
     expect(results.violations).toEqual([]);
   });
 }
@@ -16,45 +27,75 @@ for (const path of representativePages) {
 test('la navigazione principale raggiunge gli eventi', async ({ page }) => {
   await page.goto('/');
   const menuButton = page.getByRole('button', { name: 'Apri il menu' });
-  if (await menuButton.isVisible()) await menuButton.click();
-  await page.getByRole('navigation', { name: 'Principale' }).getByRole('link', { name: 'Eventi' }).click();
+  if (await menuButton.isVisible()) {
+    await menuButton.click();
+  }
+  await page
+    .getByRole('navigation', { name: 'Principale' })
+    .getByRole('link', { name: 'Eventi' })
+    .click();
   await expect(page).toHaveURL(/\/eventi\/$/);
-  await expect(page.getByRole('heading', { level: 1, name: 'Eventi' })).toBeVisible();
+  await expect(
+    page.getByRole('heading', { level: 1, name: 'Eventi' }),
+  ).toBeVisible();
 });
 
 test('la navigazione resta compatta e centrata', async ({ page }) => {
-  await page.setViewportSize({ width: 1280, height: 720 });
+  await page.setViewportSize({ height: 720, width: 1280 });
   await page.goto('/');
-  const header = page.locator('[data-site-header]');
-  const desktopBox = await header.boundingBox();
-  const desktopCenter = await page.evaluate(() => document.documentElement.clientWidth / 2);
+  const header = page.locator('[data-site-header]'),
+    desktopBox = await header.boundingBox(),
+    desktopCenter = await page.evaluate(
+      () => document.documentElement.clientWidth / 2,
+    );
   expect(desktopBox).not.toBeNull();
   expect(desktopBox?.width ?? Infinity).toBeLessThan(800);
   expect(desktopBox?.height ?? Infinity).toBeLessThan(64);
-  expect(Math.abs((desktopBox?.x ?? 0) + (desktopBox?.width ?? 0) / 2 - desktopCenter)).toBeLessThan(10);
+  expect(
+    Math.abs(
+      (desktopBox?.x ?? 0) + (desktopBox?.width ?? 0) / 2 - desktopCenter,
+    ),
+  ).toBeLessThan(10);
 
-  await page.setViewportSize({ width: 375, height: 667 });
-  const mobileBox = await header.boundingBox();
-  const mobileCenter = await page.evaluate(() => document.documentElement.clientWidth / 2);
+  await page.setViewportSize({ height: 667, width: 375 });
+  const mobileBox = await header.boundingBox(),
+    mobileCenter = await page.evaluate(
+      () => document.documentElement.clientWidth / 2,
+    );
   expect(mobileBox).not.toBeNull();
   expect(mobileBox?.width ?? Infinity).toBeLessThan(220);
   expect(mobileBox?.height ?? Infinity).toBeLessThan(64);
-  expect(Math.abs((mobileBox?.x ?? 0) + (mobileBox?.width ?? 0) / 2 - mobileCenter)).toBeLessThan(10);
+  expect(
+    Math.abs((mobileBox?.x ?? 0) + (mobileBox?.width ?? 0) / 2 - mobileCenter),
+  ).toBeLessThan(10);
 
   await page.locator('[data-menu-toggle]').click();
-  const menuBox = await page.getByRole('navigation', { name: 'Principale' }).boundingBox();
+  const menuBox = await page
+    .getByRole('navigation', { name: 'Principale' })
+    .boundingBox();
   expect(menuBox).not.toBeNull();
   expect(menuBox?.x ?? 0).toBeGreaterThanOrEqual(16);
-  expect((menuBox?.x ?? 0) + (menuBox?.width ?? Infinity)).toBeLessThanOrEqual(359);
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  expect((menuBox?.x ?? 0) + (menuBox?.width ?? Infinity)).toBeLessThanOrEqual(
+    359,
+  );
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth,
+    ),
+  ).toBe(true);
 });
 
-test('il menu mobile si apre, si chiude e mantiene il focus', async ({ page }, testInfo) => {
-  test.skip(testInfo.project.name !== 'mobile', 'Comportamento specifico della navigazione mobile');
+test('il menu mobile si apre, si chiude e mantiene il focus', async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== 'mobile',
+    'Comportamento specifico della navigazione mobile',
+  );
   await page.goto('/');
 
-  const menuButton = page.locator('[data-menu-toggle]');
-  const navigation = page.getByRole('navigation', { name: 'Principale' });
+  const menuButton = page.locator('[data-menu-toggle]'),
+    navigation = page.getByRole('navigation', { name: 'Principale' });
   await expect(menuButton).toBeVisible();
   await expect(menuButton).toHaveAccessibleName('Apri il menu');
   await expect(menuButton).toHaveAttribute('aria-expanded', 'false');
@@ -77,51 +118,88 @@ test('un evento storico è raggiungibile dall’archivio', async ({ page }) => {
   const firstEvent = page.locator('.event-card h2 a').first();
   await expect(firstEvent).toBeVisible();
   await firstEvent.click();
-  await expect(page.getByRole('heading', { level: 2, name: 'Dettagli' })).toBeVisible();
+  await expect(
+    page.getByRole('heading', { level: 2, name: 'Dettagli' }),
+  ).toBeVisible();
 });
 
-test('gli speaker mostrano foto, fallback e collegamenti ai profili', async ({ page }) => {
+test('gli speaker mostrano foto, fallback e collegamenti ai profili', async ({
+  page,
+}) => {
   await page.goto('/eventi/tech-pub-gennaio-2025/');
   const speakers = page.locator('.session-speakers li');
   await expect(speakers).toHaveCount(2);
   await expect(speakers.locator('.speaker-photo')).toHaveCount(2);
   const externalProfile = page.getByRole('link', { name: 'Emanuele Furlan' });
-  await expect(externalProfile).toHaveAttribute('href', 'https://www.linkedin.com/in/emanuele-furlan-6aa9a4225');
+  await expect(externalProfile).toHaveAttribute(
+    'href',
+    'https://www.linkedin.com/in/emanuele-furlan-6aa9a4225',
+  );
   await expect(externalProfile).toHaveAttribute('target', '_blank');
   await expect(externalProfile).toHaveAttribute('rel', 'noreferrer');
-  await expect(externalProfile.locator('.visually-hidden')).toHaveText('(si apre in una nuova scheda)');
+  await expect(externalProfile.locator('.visually-hidden')).toHaveText(
+    '(si apre in una nuova scheda)',
+  );
   await expect(speakers.first().locator('img')).toHaveAttribute('width', '64');
-  await expect(speakers.first().locator('img')).toHaveCSS('border-radius', '50%');
+  await expect(speakers.first().locator('img')).toHaveCSS(
+    'border-radius',
+    '50%',
+  );
 
   await page.goto('/eventi/tech-pub-oqtane-is-not-the-new-dotnetnuke/');
   const internalProfile = page.getByRole('link', { name: 'Mauro Cavallin' });
-  await expect(internalProfile).toHaveAttribute('href', /\/soci\/mauro-cavallin\/$/);
+  await expect(internalProfile).toHaveAttribute(
+    'href',
+    /\/soci\/mauro-cavallin\/$/,
+  );
   await expect(internalProfile).toHaveAttribute('target', '_blank');
   await expect(internalProfile).toHaveAttribute('rel', 'noopener');
-  await expect(internalProfile.locator('.visually-hidden')).toHaveText('(si apre in una nuova scheda)');
-  const alberto = page.locator('.speaker-identity').filter({ hasText: 'Alberto Zen' });
+  await expect(internalProfile.locator('.visually-hidden')).toHaveText(
+    '(si apre in una nuova scheda)',
+  );
+  const alberto = page
+    .locator('.speaker-identity')
+    .filter({ hasText: 'Alberto Zen' });
   await expect(alberto.locator('.speaker-placeholder')).toHaveText('AZ');
   await expect(alberto.locator('a')).toHaveCount(0);
 
-  const hasOverflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth);
+  const hasOverflow = await page.evaluate(
+    () =>
+      document.documentElement.scrollWidth >
+      document.documentElement.clientWidth,
+  );
   expect(hasOverflow).toBe(false);
 });
 
-test('le biografie dei soci sono renderizzate dal Markdown', async ({ page }) => {
+test('le biografie dei soci sono renderizzate dal Markdown', async ({
+  page,
+}) => {
   await page.goto('/soci/daniele-morosinotto/');
   await expect(page.locator('.person-profile .prose > p')).toHaveCount(5);
-  await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /Sono un appassionato di tecnologia/);
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+    'content',
+    /Sono un appassionato di tecnologia/,
+  );
 
   await page.goto('/soci/alessandro-calzavara/');
-  await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', 'Alessandro Calzavara, socio di XeDotNet.');
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+    'content',
+    'Alessandro Calzavara, socio di XeDotNet.',
+  );
 });
 
-test('la mappa dei soci mostra subito la mappa con i pin e mantiene un’alternativa testuale', async ({ page }) => {
+test('la mappa dei soci mostra subito la mappa con i pin e mantiene un’alternativa testuale', async ({
+  page,
+}) => {
   const tileRequests: string[] = [];
   page.on('request', (request) => {
-    if (request.url().includes('tile.openstreetmap.org')) tileRequests.push(request.url());
+    if (request.url().includes('tile.openstreetmap.org')) {
+      tileRequests.push(request.url());
+    }
   });
-  await page.route('https://tile.openstreetmap.org/**', (route) => route.abort());
+  await page.route('https://tile.openstreetmap.org/**', (route) =>
+    route.abort(),
+  );
 
   await page.goto('/chi-siamo/');
 
@@ -134,18 +212,32 @@ test('la mappa dei soci mostra subito la mappa con i pin e mantiene un’alterna
   const firstMarker = mapSection.locator('.leaflet-marker-icon').first();
   await expect(firstMarker).toHaveCSS('margin-left', '-18px');
   await expect(firstMarker).toHaveCSS('margin-top', '-44px');
-  expect(await firstMarker.evaluate((marker) => getComputedStyle(marker).rotate)).toBe('none');
-  expect(await firstMarker.evaluate((marker) => getComputedStyle(marker, '::before').rotate)).toBe('-45deg');
-  await expect(mapSection.getByRole('link', { name: 'OpenStreetMap' })).toBeVisible();
+  expect(
+    await firstMarker.evaluate((marker) => getComputedStyle(marker).rotate),
+  ).toBe('none');
+  expect(
+    await firstMarker.evaluate(
+      (marker) => getComputedStyle(marker, '::before').rotate,
+    ),
+  ).toBe('-45deg');
+  await expect(
+    mapSection.getByRole('link', { name: 'OpenStreetMap' }),
+  ).toBeVisible();
   await expect(mapSection.getByText('Treviso e provincia')).toBeVisible();
 
-  const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze();
+  const results = await new AxeBuilder({ page })
+    .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
+    .analyze();
   expect(results.violations).toEqual([]);
 });
 
 test('la mappa non causa overflow orizzontale', async ({ page }) => {
   await page.goto('/chi-siamo/');
   await expect(page.locator('[data-map-canvas]')).toBeVisible();
-  const hasOverflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth);
+  const hasOverflow = await page.evaluate(
+    () =>
+      document.documentElement.scrollWidth >
+      document.documentElement.clientWidth,
+  );
   expect(hasOverflow).toBe(false);
 });

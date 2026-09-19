@@ -54,13 +54,14 @@ Never commit `.env`, credentials, tokens, or private form endpoints.
 
 ## Code conventions
 
-- Follow the repository's existing ESM style, strict TypeScript configuration, two-space indentation, single quotes, and semicolons.
+- Follow the repository's existing ESM style, strict TypeScript configuration, two-space indentation, single quotes, and semicolons. The `.oxfmtrc.json` configuration is the source of truth for formatting; running `npm run format` applies it.
+- Strict linting is enforced via `oxlint` (configuration in `.oxlintrc.json` with every category enabled as `error`). Run `npm run lint` to inspect and `npm run lint:fix` to autofix. Both `oxlint` and `oxfmt` are wired into the pre-commit hook through `lefthook`, so every commit runs lint autofix, format, lint verify, and format verify on the staged JS/TS files before it is recorded. A commit that fails any of these checks is rejected.
+- `.astro` files are not yet supported by `oxlint` or `oxfmt`; they remain covered by `astro check` (see `npm run check`) and by hand-formatting to match the surrounding style.
 - Prefer small typed helpers in `src/lib/` and keep Astro components focused on rendering and progressive enhancement.
 - Reuse content schemas and shared URL/deployment helpers instead of recreating their rules in pages or components.
 - Preserve static output, trailing-slash URLs, and operation under both a root domain and a GitHub Pages subpath. Do not hard-code root-relative deployment assumptions.
 - Keep pages semantic and keyboard accessible. Every page should retain one meaningful `h1`; interactive controls need accessible names, visible focus behavior, and non-JavaScript or textual fallbacks where applicable.
 - Third-party resources with privacy implications, such as map tiles, must remain opt-in rather than loading before user activation.
-- There is currently no ESLint or Prettier setup. Do not invent `lint` or `format` commands, add unrelated formatting churn, or claim those checks ran.
 
 ## UI workflow
 
@@ -92,10 +93,14 @@ Use the smallest relevant check while iterating, then run every required check f
 ```sh
 npm test                       # all Vitest unit tests
 npm run check                  # Astro and TypeScript checks
+npm run lint                   # strict oxlint over every JS/TS source file
+npm run format:check           # verify oxfmt would not change any file
 npm run build                  # schemas, type checks, and static production build
 npm run check:build            # validate URLs in the completed dist/ build
 npm run test:e2e               # all Playwright projects; requires a completed dist/ build
 ```
+
+`lint` and `format:check` also run in the `Checks` GitHub Actions workflow (a dedicated `lint` job, parallel to `test` and `build`); both must be clean before a PR can merge.
 
 Useful focused commands:
 

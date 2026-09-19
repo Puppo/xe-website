@@ -1,8 +1,8 @@
 <script is:inline>
   (() => {
-    const key = 'xe-theme';
-    const system = window.matchMedia('(prefers-color-scheme: dark)');
-    const valid = (value) => ['light', 'dark'].includes(value) ? value : 'system';
+    const key = 'xe-theme',
+     system = window.matchMedia('(prefers-color-scheme: dark)'),
+     valid = (value) => ['light', 'dark'].includes(value) ? value : 'system';
     let preference = 'system';
     try { preference = valid(localStorage.getItem(key)); } catch { /* Storage can be disabled. */ }
 
@@ -12,14 +12,14 @@
       document.documentElement.style.colorScheme = theme;
       document.querySelector('meta[name="color-scheme"]').content = theme;
       document.querySelector('meta[name="theme-color"]').content = theme === 'dark' ? '#121618' : '#f6f8f9';
-      const control = document.getElementById('theme');
+      const control = document.querySelector('#theme');
       if (control) {
         control.value = preference;
         const container = control.closest('.theme-control');
         if (container) {
           container.dataset.themePreference = preference;
           const value = container.querySelector('.theme-value');
-          if (value) value.textContent = control.selectedOptions[0].textContent;
+          if (value) {value.textContent = control.selectedOptions[0].textContent;}
         }
       }
     }
@@ -32,15 +32,15 @@
       }
     });
     document.addEventListener('DOMContentLoaded', () => {
-      const control = document.getElementById('theme');
-      if (!control) return;
+      const control = document.querySelector('#theme');
+      if (!control) {return;}
       control.closest('.theme-control').hidden = false;
       apply();
       control.addEventListener('change', () => {
         preference = valid(control.value);
         try {
-          if (preference === 'system') localStorage.removeItem(key);
-          else localStorage.setItem(key, preference);
+          if (preference === 'system') {localStorage.removeItem(key);}
+          else {localStorage.setItem(key, preference);}
         } catch { /* The selection still works for this page. */ }
         apply();
       });

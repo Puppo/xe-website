@@ -1,0 +1,117 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["unicorn", "typescript", "oxc", "import"],
+  "categories": {
+    "correctness": "error",
+    "suspicious": "error",
+    "restriction": "error",
+    "perf": "warn",
+    "style": "warn",
+    "pedantic": "warn",
+    "nursery": "off"
+  },
+  "rules": {
+    "no-console": "error",
+    "no-magic-numbers": "warn",
+    "func-style": "off",
+    "sort-vars": "off",
+    "one-var": "off",
+    "no-ternary": "off",
+    "sort-imports": "off",
+    "sort-keys": "off",
+    "no-continue": "off",
+    "no-undefined": "off",
+    "prefer-named-capture-group": "off",
+    "id-length": "off",
+    "no-await-in-loop": "off",
+    "max-statements": "off",
+    "max-lines-per-function": "off",
+    "max-lines": "off",
+    "complexity": "off",
+    "init-declarations": "off",
+    "no-inline-comments": "off",
+    "no-plusplus": "off",
+    "no-nested-ternary": "off",
+    "no-useless-return": "off",
+    "no-void": "off",
+    "new-cap": "off",
+    "require-await": "off",
+    "curly": "off",
+    "no-duplicate-imports": "off",
+    "oxc/no-async-await": "off",
+    "oxc/no-optional-chaining": "off",
+    "oxc/no-rest-spread-properties": "off",
+    "oxc/no-map-spread": "off",
+    "typescript/explicit-function-return-type": "off",
+    "typescript/explicit-module-boundary-types": "off",
+    "import/no-relative-parent-imports": "off",
+    "import/no-named-export": "off",
+    "import/group-exports": "off",
+    "import/exports-last": "off",
+    "import/no-nodejs-modules": "off",
+    "import/no-default-export": "off",
+    "import/no-namespace": "off",
+    "import/prefer-default-export": "off",
+    "import/no-unassigned-import": "off",
+    "import/no-named-as-default": "off",
+    "import/unambiguous": "off",
+    "unicorn/no-array-sort": "off",
+    "unicorn/no-array-for-each": "off",
+    "unicorn/no-array-callback-reference": "off",
+    "unicorn/no-useless-undefined": "off",
+    "unicorn/filename-case": "off",
+    "unicorn/prefer-ternary": "off",
+    "unicorn/prefer-array-find": "off",
+    "unicorn/prefer-global-this": "off",
+    "unicorn/import-style": "off",
+    "unicorn/no-await-expression-member": "off",
+    "unicorn/no-array-method-this-argument": "off",
+    "unicorn/no-process-exit": "off",
+    "unicorn/no-null": "off",
+    "unicorn/no-hex-escape": "off",
+    "unicorn/consistent-function-scoping": "off",
+    "unicorn/max-nested-calls": "off",
+    "unicorn/escape-case": "off"
+  },
+  "ignorePatterns": [
+    "node_modules",
+    "dist",
+    ".astro",
+    "playwright-report",
+    "test-results",
+    "coverage",
+    "schemas",
+    "**/*.astro"
+  ],
+  "overrides": [
+    {
+      "files": ["scripts/migrate.mjs"],
+      "rules": {
+        "no-undef": "off",
+        "no-magic-numbers": "off",
+        "require-unicode-regexp": "off"
+      }
+    },
+    {
+      "files": ["tests/e2e/**/*.ts"],
+      "rules": {
+        "no-magic-numbers": "off",
+        "prefer-const": "off",
+        "typescript/no-non-null-assertion": "off"
+      }
+    },
+    {
+      "files": ["scripts/**/*.mjs"],
+      "rules": {
+        "no-console": "off"
+      }
+    },
+    {
+      "files": ["tests/**/*.test.ts", "tests/**/*.ts"],
+      "rules": {
+        "no-console": "off",
+        "no-debugger": "off"
+      }
+    }
+  ]
+}

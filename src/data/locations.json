@@ -1,7 +1,42 @@
 [
-  { "id": "treviso", "municipality": "Treviso", "province": "Treviso e provincia", "count": 5, "latitude": 45.6669, "longitude": 12.2430 },
-  { "id": "venezia", "municipality": "Venezia", "province": "Venezia e provincia", "count": 3, "latitude": 45.4408, "longitude": 12.3155 },
-  { "id": "padova", "municipality": "Padova", "province": "Padova e provincia", "count": 3, "latitude": 45.4064, "longitude": 11.8768 },
-  { "id": "pordenone", "municipality": "Pordenone", "province": "Pordenone e provincia", "count": 2, "latitude": 45.9564, "longitude": 12.6615 },
-  { "id": "vicenza", "municipality": "Vicenza", "province": "Vicenza e provincia", "count": 1, "latitude": 45.5455, "longitude": 11.5354 }
+  {
+    "id": "treviso",
+    "municipality": "Treviso",
+    "province": "Treviso e provincia",
+    "count": 5,
+    "latitude": 45.6669,
+    "longitude": 12.243
+  },
+  {
+    "id": "venezia",
+    "municipality": "Venezia",
+    "province": "Venezia e provincia",
+    "count": 3,
+    "latitude": 45.4408,
+    "longitude": 12.3155
+  },
+  {
+    "id": "padova",
+    "municipality": "Padova",
+    "province": "Padova e provincia",
+    "count": 3,
+    "latitude": 45.4064,
+    "longitude": 11.8768
+  },
+  {
+    "id": "pordenone",
+    "municipality": "Pordenone",
+    "province": "Pordenone e provincia",
+    "count": 2,
+    "latitude": 45.9564,
+    "longitude": 12.6615
+  },
+  {
+    "id": "vicenza",
+    "municipality": "Vicenza",
+    "province": "Vicenza e provincia",
+    "count": 1,
+    "latitude": 45.5455,
+    "longitude": 11.5354
+  }
 ]

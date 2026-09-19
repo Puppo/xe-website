@@ -12,10 +12,10 @@ interface Location {
   };
 }
 interface Props { locations: Location[] }
-const { locations } = Astro.props;
-const total = locations.reduce((sum, location) => sum + location.data.count, 0);
-const mapLocations = locations.map(({ id, data }) => ({ id, ...data }));
-const tileUrl = import.meta.env.PUBLIC_MAP_TILE_URL ?? 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+const { locations } = Astro.props,
+ total = locations.reduce((sum, location) => sum + location.data.count, 0),
+ mapLocations = locations.map(({ id, data }) => ({ id, ...data })),
+ tileUrl = import.meta.env.PUBLIC_MAP_TILE_URL ?? 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
 ---
 
 <div
@@ -56,23 +56,23 @@ const tileUrl = import.meta.env.PUBLIC_MAP_TILE_URL ?? 'https://tile.openstreetm
   }
 
   document.querySelectorAll<HTMLElement>('[data-community-map]').forEach((container) => {
-    if (container.dataset.mapReady === 'true') return;
+    if (container.dataset.mapReady === 'true') {return;}
     container.dataset.mapReady = 'true';
 
-    const canvas = container.querySelector<HTMLElement>('[data-map-canvas]');
-    const status = container.querySelector<HTMLElement>('[data-map-status]');
-    if (!canvas || !status) return;
+    const canvas = container.querySelector<HTMLElement>('[data-map-canvas]'),
+     status = container.querySelector<HTMLElement>('[data-map-status]');
+    if (!canvas || !status) {return;}
 
     void (async () => {
       try {
-        const locations = JSON.parse(container.dataset.locations ?? '[]') as MapLocation[];
-        const { default: L } = await import('leaflet');
+        const locations = JSON.parse(container.dataset.locations ?? '[]') as MapLocation[],
+         { default: L } = await import('leaflet'),
 
-        const map = L.map(canvas, {
+         map = L.map(canvas, {
           scrollWheelZoom: false,
           zoomControl: true
-        });
-        const tiles = L.tileLayer(
+        }),
+         tiles = L.tileLayer(
           container.dataset.tileUrl ?? 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
           {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -86,11 +86,9 @@ const tileUrl = import.meta.env.PUBLIC_MAP_TILE_URL ?? 'https://tile.openstreetm
 
         const bounds = L.latLngBounds([]);
         locations.forEach((location) => {
-          const label = `${location.province}: ${location.count} ${location.count === 1 ? 'socio' : 'soci'}`;
-          const marker = L.marker([location.latitude, location.longitude], {
+          const label = `${location.province}: ${location.count} ${location.count === 1 ? 'socio' : 'soci'}`,
+           marker = L.marker([location.latitude, location.longitude], {
             alt: label,
-            keyboard: true,
-            title: label,
             icon: L.divIcon({
               className: 'member-map-marker',
               html: `<span aria-hidden="true">${location.count}</span>`,
@@ -99,7 +97,9 @@ const tileUrl = import.meta.env.PUBLIC_MAP_TILE_URL ?? 'https://tile.openstreetm
               iconAnchor: [18, 44],
               popupAnchor: [0, -44],
               iconSize: [36, 36]
-            })
+            }),
+            keyboard: true,
+            title: label
           }).addTo(map);
           marker.getElement()?.setAttribute('aria-label', label);
           const popup = document.createElement('p');
@@ -108,8 +108,8 @@ const tileUrl = import.meta.env.PUBLIC_MAP_TILE_URL ?? 'https://tile.openstreetm
           bounds.extend([location.latitude, location.longitude]);
         });
 
-        if (bounds.isValid()) map.fitBounds(bounds.pad(0.2), { maxZoom: 9 });
-        else map.setView([45.6, 12.1], 8);
+        if (bounds.isValid()) {map.fitBounds(bounds.pad(0.2), { maxZoom: 9 });}
+        else {map.setView([45.6, 12.1], 8);}
       } catch (error) {
         console.error('Impossibile inizializzare la mappa', error);
         status.textContent = 'La mappa non è disponibile. L’elenco delle località resta consultabile.';

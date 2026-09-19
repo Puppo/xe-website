@@ -10,25 +10,27 @@ import {
   registrationMessage,
   registrationState,
   sortAscending,
-  type EventEntry
 } from '../src/lib/events';
+import type { EventEntry } from '../src/lib/events';
 import { markdownExcerpt } from '../src/lib/text';
 
 function event(date: string, data: Record<string, unknown> = {}): EventEntry {
   return {
-    id: date,
     data: {
       date: new Date(`${date}T12:00:00Z`),
-      status: 'scheduled',
       registration: {},
-      ...data
-    }
+      status: 'scheduled',
+      ...data,
+    },
+    id: date,
   } as unknown as EventEntry;
 }
 
 describe('eventi', () => {
   it('formatta le date in italiano', () => {
-    expect(formatEventDate(new Date('2026-09-18T12:00:00Z'))).toBe('venerdì 18 settembre 2026');
+    expect(formatEventDate(new Date('2026-09-18T12:00:00Z'))).toBe(
+      'venerdì 18 settembre 2026',
+    );
   });
 
   it('ricava l’anno nel fuso di Roma', () => {
@@ -36,101 +38,158 @@ describe('eventi', () => {
   });
 
   it('ricava lo slug pubblico dal percorso organizzato per anno e data', () => {
-    expect(eventSlug({ id: '2026/2026-09-18-serata-dotnet' } as EventEntry)).toBe('serata-dotnet');
-    expect(eventSlug({ id: 'serata-dotnet' } as EventEntry)).toBe('serata-dotnet');
+    expect(
+      eventSlug({ id: '2026/2026-09-18-serata-dotnet' } as EventEntry),
+    ).toBe('serata-dotnet');
+    expect(eventSlug({ id: 'serata-dotnet' } as EventEntry)).toBe(
+      'serata-dotnet',
+    );
   });
 
   it('ordina gli eventi dal meno recente', () => {
-    const items = [event('2026-10-01'), event('2026-09-01')].sort(sortAscending);
+    const items = [event('2026-10-01'), event('2026-09-01')].sort(
+      sortAscending,
+    );
     expect(items[0].id).toBe('2026-09-01');
   });
 
   it('considera passato un evento concluso prima di oggi', () => {
-    expect(isPastEvent(event('2025-01-01'), new Date('2026-01-01T12:00:00Z'))).toBe(true);
-    expect(isPastEvent(event('2027-01-01'), new Date('2026-01-01T12:00:00Z'))).toBe(false);
+    expect(
+      isPastEvent(event('2025-01-01'), new Date('2026-01-01T12:00:00Z')),
+    ).toBe(true);
+    expect(
+      isPastEvent(event('2027-01-01'), new Date('2026-01-01T12:00:00Z')),
+    ).toBe(false);
   });
 
   it('deriva lo stato di iscrizione da date inclusive nel fuso di Roma', () => {
     const item = event('2026-10-20', {
       registration: {
-        startDate: new Date('2026-10-01T00:00:00Z'),
         endDate: new Date('2026-10-15T00:00:00Z'),
-        url: 'https://example.com/register'
-      }
+        startDate: new Date('2026-10-01T00:00:00Z'),
+        url: 'https://example.com/register',
+      },
     });
 
-    expect(registrationState(item, new Date('2026-09-30T12:00:00Z'))).toBe('not-open');
-    expect(registrationState(item, new Date('2026-09-30T22:30:00Z'))).toBe('open');
-    expect(registrationState(item, new Date('2026-10-15T21:59:00Z'))).toBe('open');
-    expect(registrationState(item, new Date('2026-10-15T22:30:00Z'))).toBe('closed');
-    expect(registrationMessage(item, new Date('2026-09-30T12:00:00Z'))).toContain('1 ottobre 2026');
-    expect(registrationMessage(item, new Date('2026-10-10T12:00:00Z'))).toContain('15 ottobre 2026');
+    expect(registrationState(item, new Date('2026-09-30T12:00:00Z'))).toBe(
+      'not-open',
+    );
+    expect(registrationState(item, new Date('2026-09-30T22:30:00Z'))).toBe(
+      'open',
+    );
+    expect(registrationState(item, new Date('2026-10-15T21:59:00Z'))).toBe(
+      'open',
+    );
+    expect(registrationState(item, new Date('2026-10-15T22:30:00Z'))).toBe(
+      'closed',
+    );
+    expect(
+      registrationMessage(item, new Date('2026-09-30T12:00:00Z')),
+    ).toContain('1 ottobre 2026');
+    expect(
+      registrationMessage(item, new Date('2026-10-10T12:00:00Z')),
+    ).toContain('15 ottobre 2026');
   });
 
   it('gestisce eventi senza periodo di iscrizione', () => {
-    expect(registrationState(event('2027-01-01'), new Date('2026-01-01T12:00:00Z'))).toBe('unavailable');
-    expect(registrationState(event('2025-01-01'), new Date('2026-01-01T12:00:00Z'))).toBe('closed');
+    expect(
+      registrationState(event('2027-01-01'), new Date('2026-01-01T12:00:00Z')),
+    ).toBe('unavailable');
+    expect(
+      registrationState(event('2025-01-01'), new Date('2026-01-01T12:00:00Z')),
+    ).toBe('closed');
   });
 
   it('dà precedenza all’annullamento e lo esclude dal prossimo incontro', () => {
-    const cancelled = event('2026-10-01', { status: 'cancelled' });
-    const scheduled = event('2026-11-01');
+    const cancelled = event('2026-10-01', { status: 'cancelled' }),
+      scheduled = event('2026-11-01');
 
     expect(registrationState(cancelled)).toBe('cancelled');
     expect(registrationMessage(cancelled)).toContain('annullato');
     expect(nextScheduledEvent([cancelled, scheduled])).toBe(scheduled);
-    expect(eventStructuredStatus(cancelled)).toBe('https://schema.org/EventCancelled');
-    expect(eventStructuredStatus(scheduled)).toBe('https://schema.org/EventScheduled');
+    expect(eventStructuredStatus(cancelled)).toBe(
+      'https://schema.org/EventCancelled',
+    );
+    expect(eventStructuredStatus(scheduled)).toBe(
+      'https://schema.org/EventScheduled',
+    );
   });
 });
 
 describe('schema evento', () => {
   const baseEvent = {
-    title: 'Evento di prova',
-    description: 'Descrizione',
     date: '2026-10-20',
-    sourceUrl: 'https://example.com/event'
+    description: 'Descrizione',
+    sourceUrl: 'https://example.com/event',
+    title: 'Evento di prova',
   };
 
   it('accetta un periodo di iscrizione valido', () => {
-    expect(eventInputSchema.safeParse({
-      ...baseEvent,
-      registration: {
-        startDate: '2026-10-01',
-        endDate: '2026-10-20',
-        url: 'https://example.com/register'
-      }
-    }).success).toBe(true);
+    expect(
+      eventInputSchema.safeParse({
+        ...baseEvent,
+        registration: {
+          endDate: '2026-10-20',
+          startDate: '2026-10-01',
+          url: 'https://example.com/register',
+        },
+      }).success,
+    ).toBe(true);
   });
 
   it('accetta speaker legacy e riferimenti a profili', () => {
-    expect(eventInputSchema.safeParse({
-      ...baseEvent,
-      sessions: [{
-        title: 'Sessione',
-        speakers: ['XE', { person: 'emanuele-furlan' }]
-      }]
-    }).success).toBe(true);
+    expect(
+      eventInputSchema.safeParse({
+        ...baseEvent,
+        sessions: [
+          {
+            speakers: ['XE', { person: 'emanuele-furlan' }],
+            title: 'Sessione',
+          },
+        ],
+      }).success,
+    ).toBe(true);
   });
 
   it.each([
     { person: '' },
     { person: 42 },
-    { name: 'Speaker senza riferimento' }
+    { name: 'Speaker senza riferimento' },
   ])('rifiuta un riferimento speaker non valido: %o', (speaker) => {
-    expect(eventInputSchema.safeParse({
-      ...baseEvent,
-      sessions: [{ title: 'Sessione', speakers: [speaker] }]
-    }).success).toBe(false);
+    expect(
+      eventInputSchema.safeParse({
+        ...baseEvent,
+        sessions: [{ speakers: [speaker], title: 'Sessione' }],
+      }).success,
+    ).toBe(false);
   });
 
   it.each([
-    { registration: { startDate: '2026-10-01', url: 'https://example.com/register' } },
-    { registration: { startDate: '2026-10-01', endDate: '2026-10-10' } },
-    { registration: { startDate: '2026-10-10', endDate: '2026-10-01', url: 'https://example.com/register' } },
-    { registration: { startDate: '2026-10-01', endDate: '2026-10-21', url: 'https://example.com/register' } }
+    {
+      registration: {
+        startDate: '2026-10-01',
+        url: 'https://example.com/register',
+      },
+    },
+    { registration: { endDate: '2026-10-10', startDate: '2026-10-01' } },
+    {
+      registration: {
+        endDate: '2026-10-01',
+        startDate: '2026-10-10',
+        url: 'https://example.com/register',
+      },
+    },
+    {
+      registration: {
+        endDate: '2026-10-21',
+        startDate: '2026-10-01',
+        url: 'https://example.com/register',
+      },
+    },
   ])('rifiuta un periodo di iscrizione incoerente', (invalid) => {
-    expect(eventInputSchema.safeParse({ ...baseEvent, ...invalid }).success).toBe(false);
+    expect(
+      eventInputSchema.safeParse({ ...baseEvent, ...invalid }).success,
+    ).toBe(false);
   });
 });
 
@@ -138,22 +197,31 @@ describe('profili', () => {
   it('convalida il link principale del profilo', () => {
     const profile = {
       name: 'Ada Lovelace',
-      sortName: 'Lovelace, Ada',
+      profileUrl: 'https://www.linkedin.com/in/ada-lovelace',
       roles: ['speaker'],
-      profileUrl: 'https://www.linkedin.com/in/ada-lovelace'
+      sortName: 'Lovelace, Ada',
     };
     expect(personSchema.safeParse(profile).success).toBe(true);
-    expect(personSchema.safeParse({ ...profile, profileUrl: 'non-un-url' }).success).toBe(false);
+    expect(
+      personSchema.safeParse({ ...profile, profileUrl: 'non-un-url' }).success,
+    ).toBe(false);
   });
 
   it('crea una descrizione SEO dal contenuto Markdown', () => {
-    expect(markdownExcerpt('## Sviluppatore\n\nLavora con **.NET** e [Astro](https://astro.build).'))
-      .toBe('Sviluppatore Lavora con .NET e Astro.');
+    expect(
+      markdownExcerpt(
+        '## Sviluppatore\n\nLavora con **.NET** e [Astro](https://astro.build).',
+      ),
+    ).toBe('Sviluppatore Lavora con .NET e Astro.');
   });
 
   it('tronca la descrizione senza spezzare le parole', () => {
-    expect(markdownExcerpt('Una descrizione sufficientemente lunga per essere accorciata.', 32))
-      .toBe('Una descrizione sufficientemente…');
+    expect(
+      markdownExcerpt(
+        'Una descrizione sufficientemente lunga per essere accorciata.',
+        32,
+      ),
+    ).toBe('Una descrizione sufficientemente…');
   });
 
   it('mantiene vuota una biografia assente', () => {

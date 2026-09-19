@@ -6,13 +6,13 @@ import EventCard from '../components/EventCard.astro';
 import SupportPanel from '../components/SupportPanel.astro';
 import { eventSlug, formatEventDate, isPastEvent, nextScheduledEvent, sortAscending } from '../lib/events';
 
-const events = (await getCollection('events', ({ data }) => !data.draft)).sort(sortAscending);
-const upcoming = events.filter((event) => !isPastEvent(event));
-const nextEvent = nextScheduledEvent(upcoming);
-const [site] = await getCollection('site');
-const people = await getCollection('people', ({ data }) => data.published && data.roles.includes('member'));
-const partners = await getCollection('partners');
-const faces = people.filter((person) => person.data.image).slice(0, 5);
+const events = (await getCollection('events', ({ data }) => !data.draft)).sort(sortAscending),
+ upcoming = events.filter((event) => !isPastEvent(event)),
+ nextEvent = nextScheduledEvent(upcoming),
+ [site] = await getCollection('site'),
+ people = await getCollection('people', ({ data }) => data.published && data.roles.includes('member')),
+ partners = await getCollection('partners'),
+ faces = people.filter((person) => person.data.image).slice(0, 5);
 ---
 
 <BaseLayout title={site.data.name} description={site.data.description}>

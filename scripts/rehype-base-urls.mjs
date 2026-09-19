@@ -6,9 +6,13 @@ export default function rehypeBaseUrls({ base = '/' } = {}) {
     if (node.type === 'element') {
       for (const attribute of ['href', 'src', 'poster']) {
         const value = node.properties?.[attribute];
-        if (typeof value === 'string') node.properties[attribute] = prefixPath(value, base);
+        if (typeof value === 'string') {
+          node.properties[attribute] = prefixPath(value, base);
+        }
       }
     }
-    for (const child of node.children ?? []) transform(child);
+    for (const child of node.children ?? []) {
+      transform(child);
+    }
   };
 }
