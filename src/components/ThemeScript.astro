@@ -13,7 +13,15 @@
       document.querySelector('meta[name="color-scheme"]').content = theme;
       document.querySelector('meta[name="theme-color"]').content = theme === 'dark' ? '#121618' : '#f6f8f9';
       const control = document.getElementById('theme');
-      if (control) control.value = preference;
+      if (control) {
+        control.value = preference;
+        const container = control.closest('.theme-control');
+        if (container) {
+          container.dataset.themePreference = preference;
+          const value = container.querySelector('.theme-value');
+          if (value) value.textContent = control.selectedOptions[0].textContent;
+        }
+      }
     }
     apply();
     system.addEventListener('change', apply);

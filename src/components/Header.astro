@@ -11,16 +11,11 @@ const currentPath = Astro.url.pathname;
   <div class="shell header-inner">
     <a class="brand" href={withBase('/')} aria-label="XeDotNet, pagina iniziale">
       <img class="brand-logo" src={withBase('/images/xe-logo-original.png')} alt="XE" width="162" height="97" />
-      <span class="brand-name">Development user group</span>
     </a>
     <div class="nav-area" data-nav-area>
       <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" data-menu-toggle>
         <span class="visually-hidden" data-menu-label>Apri il menu</span>
-        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-          <circle cx="12" cy="5" r="2"></circle>
-          <circle cx="12" cy="12" r="2"></circle>
-          <circle cx="12" cy="19" r="2"></circle>
-        </svg>
+        <span class="menu-icon icon-mask" style={`--icon-url: url(${withBase('/images/icons/menu.svg')})`} aria-hidden="true"></span>
       </button>
       <nav id="primary-navigation" aria-label="Principale">
         <ul class="nav-list" role="list">
@@ -34,13 +29,22 @@ const currentPath = Astro.url.pathname;
         </ul>
       </nav>
     </div>
-    <div class="theme-control" hidden>
-      <label for="theme">Tema</label>
-      <select id="theme" name="theme">
-        <option value="system">Sistema</option>
-        <option value="light">Chiaro</option>
-        <option value="dark">Scuro</option>
-      </select>
+    <div class="theme-control" data-theme-preference="system" hidden>
+      <label class="visually-hidden" for="theme">Tema</label>
+      <div class="theme-picker">
+        <span class="theme-icons" aria-hidden="true">
+          <span class="theme-icon icon-mask" data-theme-icon="system" style={`--icon-url: url(${withBase('/images/icons/theme-system.svg')})`}></span>
+          <span class="theme-icon icon-mask" data-theme-icon="light" style={`--icon-url: url(${withBase('/images/icons/theme-light.svg')})`}></span>
+          <span class="theme-icon icon-mask" data-theme-icon="dark" style={`--icon-url: url(${withBase('/images/icons/theme-dark.svg')})`}></span>
+        </span>
+        <span class="theme-value" aria-hidden="true">Sistema</span>
+        <span class="theme-chevron icon-mask" style={`--icon-url: url(${withBase('/images/icons/chevron-down.svg')})`} aria-hidden="true"></span>
+        <select id="theme" name="theme">
+          <option value="system">Sistema</option>
+          <option value="light">Chiaro</option>
+          <option value="dark">Scuro</option>
+        </select>
+      </div>
     </div>
   </div>
 </header>

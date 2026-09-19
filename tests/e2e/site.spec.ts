@@ -22,6 +22,33 @@ test('la navigazione principale raggiunge gli eventi', async ({ page }) => {
   await expect(page.getByRole('heading', { level: 1, name: 'Eventi' })).toBeVisible();
 });
 
+test('la navigazione resta compatta e centrata', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 720 });
+  await page.goto('/');
+  const header = page.locator('[data-site-header]');
+  const desktopBox = await header.boundingBox();
+  const desktopCenter = await page.evaluate(() => document.documentElement.clientWidth / 2);
+  expect(desktopBox).not.toBeNull();
+  expect(desktopBox?.width ?? Infinity).toBeLessThan(800);
+  expect(desktopBox?.height ?? Infinity).toBeLessThan(64);
+  expect(Math.abs((desktopBox?.x ?? 0) + (desktopBox?.width ?? 0) / 2 - desktopCenter)).toBeLessThan(10);
+
+  await page.setViewportSize({ width: 375, height: 667 });
+  const mobileBox = await header.boundingBox();
+  const mobileCenter = await page.evaluate(() => document.documentElement.clientWidth / 2);
+  expect(mobileBox).not.toBeNull();
+  expect(mobileBox?.width ?? Infinity).toBeLessThan(220);
+  expect(mobileBox?.height ?? Infinity).toBeLessThan(64);
+  expect(Math.abs((mobileBox?.x ?? 0) + (mobileBox?.width ?? 0) / 2 - mobileCenter)).toBeLessThan(10);
+
+  await page.locator('[data-menu-toggle]').click();
+  const menuBox = await page.getByRole('navigation', { name: 'Principale' }).boundingBox();
+  expect(menuBox).not.toBeNull();
+  expect(menuBox?.x ?? 0).toBeGreaterThanOrEqual(16);
+  expect((menuBox?.x ?? 0) + (menuBox?.width ?? Infinity)).toBeLessThanOrEqual(359);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+});
+
 test('il menu mobile si apre, si chiude e mantiene il focus', async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== 'mobile', 'Comportamento specifico della navigazione mobile');
   await page.goto('/');
