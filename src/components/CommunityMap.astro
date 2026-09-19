@@ -112,7 +112,10 @@ const tileUrl = import.meta.env.PUBLIC_MAP_TILE_URL ?? 'https://tile.openstreetm
             icon: L.divIcon({
               className: 'member-map-marker',
               html: `<span aria-hidden="true">${location.count}</span>`,
-              iconAnchor: [18, 18],
+              // The rotated teardrop extends below its 36px layout box.
+              // Anchor its visible tip—not the box centre—to the coordinate.
+              iconAnchor: [18, 44],
+              popupAnchor: [0, -44],
               iconSize: [36, 36]
             })
           }).addTo(map);

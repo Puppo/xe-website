@@ -81,6 +81,11 @@ test('la mappa dei soci tutela la privacy e mantiene un’alternativa testuale',
   await activate.click();
   await expect(mapSection.locator('.leaflet-container')).toBeVisible();
   await expect(mapSection.locator('.leaflet-marker-icon')).toHaveCount(5);
+  const firstMarker = mapSection.locator('.leaflet-marker-icon').first();
+  await expect(firstMarker).toHaveCSS('margin-left', '-18px');
+  await expect(firstMarker).toHaveCSS('margin-top', '-44px');
+  expect(await firstMarker.evaluate((marker) => getComputedStyle(marker).rotate)).toBe('none');
+  expect(await firstMarker.evaluate((marker) => getComputedStyle(marker, '::before').rotate)).toBe('-45deg');
   await expect(mapSection.getByRole('link', { name: 'OpenStreetMap' })).toBeVisible();
   await expect(mapSection.getByText('Treviso e provincia')).toBeVisible();
   await expect.poll(() => tileRequests.length).toBeGreaterThan(0);
