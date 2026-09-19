@@ -226,7 +226,7 @@ p { max-inline-size: var(--text); }
   cursor: pointer;
 }
 .theme-icons { color: var(--red); pointer-events: none; }
-.theme-value { color: var(--ink); font-size: .9rem; font-weight: 700; line-height: 1.2; pointer-events: none; }
+.theme-value { color: var(--ink); font-size: .9rem; font-weight: 700; line-height: 1.2; min-inline-size: 4.5rem; text-align: start; pointer-events: none; }
 .theme-chevron { inline-size: .9rem; block-size: .9rem; pointer-events: none; }
 .theme-icon { display: none; inline-size: 1.1rem; block-size: 1.1rem; }
 .icon-mask {
