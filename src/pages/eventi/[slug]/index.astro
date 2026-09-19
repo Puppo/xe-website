@@ -106,7 +106,9 @@ const eventStructuredData = event ? {
                             <strong>{profile.name}</strong>
                           </>;
                           return <li>{profile.href
-                            ? <a class="speaker-link" href={profile.href} rel={profile.external ? 'noreferrer' : undefined}>{content}</a>
+                            ? <a class="speaker-link" href={profile.href} target="_blank" rel={profile.external ? 'noreferrer' : 'noopener'}>
+                                {content}<span class="visually-hidden"> (si apre in una nuova scheda)</span>
+                              </a>
                             : <span class="speaker-identity">{content}</span>}</li>;
                         })}
                       </ul>
