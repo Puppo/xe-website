@@ -18,6 +18,7 @@
     "test-results",
     "coverage",
     "schemas",
-    "**/*.astro"
+    "**/*.astro",
+    "**/*.md"
   ]
 }

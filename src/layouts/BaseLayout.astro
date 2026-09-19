@@ -18,20 +18,20 @@ interface Props {
   structuredData?: Record<string, unknown>;
 }
 
-const { title, description, image = '/images/social-card.svg', type = 'website', structuredData } = Astro.props;
-const [site] = await getCollection('site');
-const canonicalPath = Astro.url.pathname === withBase('/404/') ? withBase('/404.html') : Astro.url.pathname;
-const canonical = new URL(canonicalPath, Astro.site);
-const fullTitle = title === site.data.name ? title : `${title} | ${site.data.name}`;
-const fullImage = new URL(withBase(image), Astro.site);
-const organization = {
+const { title, description, image = '/images/social-card.svg', type = 'website', structuredData } = Astro.props,
+ [site] = await getCollection('site'),
+ canonicalPath = Astro.url.pathname === withBase('/404/') ? withBase('/404.html') : Astro.url.pathname,
+ canonical = new URL(canonicalPath, Astro.site),
+ fullTitle = title === site.data.name ? title : `${title} | ${site.data.name}`,
+ fullImage = new URL(withBase(image), Astro.site),
+ organization = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
-  name: site.data.name,
-  url: new URL(withBase('/'), Astro.site).href,
-  email: site.data.email,
   address: site.data.address,
-  sameAs: site.data.socials.map((social) => social.url)
+  email: site.data.email,
+  name: site.data.name,
+  sameAs: site.data.socials.map((social) => social.url),
+  url: new URL(withBase('/'), Astro.site).href
 };
 ---
 

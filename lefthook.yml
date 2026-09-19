@@ -7,50 +7,50 @@ pre-commit:
   jobs:
     - name: oxlint --fix
       glob:
-        - "*.ts"
-        - "*.tsx"
-        - "*.js"
-        - "*.jsx"
-        - "*.mjs"
-        - "*.mts"
-        - "*.cjs"
+        - '*.ts'
+        - '*.tsx'
+        - '*.js'
+        - '*.jsx'
+        - '*.mjs'
+        - '*.mts'
+        - '*.cjs'
       run: npx oxlint --fix {staged_files}
       stage_fixed: true
       fail_text: "oxlint could not autofix every issue. Run 'npm run lint:fix' to see what remains."
 
     - name: oxfmt
       glob:
-        - "*.ts"
-        - "*.tsx"
-        - "*.js"
-        - "*.jsx"
-        - "*.mjs"
-        - "*.mts"
-        - "*.cjs"
+        - '*.ts'
+        - '*.tsx'
+        - '*.js'
+        - '*.jsx'
+        - '*.mjs'
+        - '*.mts'
+        - '*.cjs'
       run: npx oxfmt {staged_files}
       stage_fixed: true
       fail_text: "oxfmt could not format every file. Run 'npm run format' to see the diff."
 
     - name: oxlint (verify)
       glob:
-        - "*.ts"
-        - "*.tsx"
-        - "*.js"
-        - "*.jsx"
-        - "*.mjs"
-        - "*.mts"
-        - "*.cjs"
+        - '*.ts'
+        - '*.tsx'
+        - '*.js'
+        - '*.jsx'
+        - '*.mjs'
+        - '*.mts'
+        - '*.cjs'
       run: npx oxlint {staged_files}
-      fail_text: "oxlint still reports errors after --fix. These require manual intervention."
+      fail_text: 'oxlint still reports errors after --fix. These require manual intervention.'
 
     - name: oxfmt --check (verify)
       glob:
-        - "*.ts"
-        - "*.tsx"
-        - "*.js"
-        - "*.jsx"
-        - "*.mjs"
-        - "*.mts"
-        - "*.cjs"
+        - '*.ts'
+        - '*.tsx'
+        - '*.js'
+        - '*.jsx'
+        - '*.mjs'
+        - '*.mts'
+        - '*.cjs'
       run: npx oxfmt --check {staged_files}
       fail_text: "oxfmt --check failed. Run 'npm run format' to apply formatting."

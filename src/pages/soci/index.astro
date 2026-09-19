@@ -3,6 +3,7 @@ import { withBase } from '../../lib/urls';
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { initials } from '../../lib/text';
+
 const members = (await getCollection('people', ({ data }) => data.published && data.roles.includes('member'))).sort((a, b) => a.data.sortName.localeCompare(b.data.sortName, 'it'));
 ---
 

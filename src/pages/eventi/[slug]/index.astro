@@ -1,9 +1,11 @@
 ---
 import { withBase } from '../../../lib/urls';
-import { getCollection, getEntries, render, type CollectionEntry } from 'astro:content';
+import { getCollection, getEntries, render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import EventCard from '../../../components/EventCard.astro';
-import { eventSlug, eventStructuredStatus, eventYear, formatEventDate, isCancelled, registrationMessage, registrationState, sortDescending, type EventEntry } from '../../../lib/events';
+import { eventSlug, eventStructuredStatus, eventYear, formatEventDate, isCancelled, registrationMessage, registrationState, sortDescending } from '../../../lib/events';
+import type { EventEntry } from '../../../lib/events';
 import { initials } from '../../../lib/text';
 
 type Props =
@@ -11,59 +13,59 @@ type Props =
   | { kind: 'event'; event: EventEntry };
 
 export async function getStaticPaths() {
-  const events = await getCollection('events', ({ data }) => !data.draft);
-  const years = [...new Set(events.map(eventYear))];
+  const events = await getCollection('events', ({ data }) => !data.draft),
+   years = [...new Set(events.map(eventYear))];
   return [
-    ...events.map((event) => ({ params: { slug: eventSlug(event) }, props: { kind: 'event' as const, event } })),
+    ...events.map((event) => ({ params: { slug: eventSlug(event) }, props: { event, kind: 'event' as const } })),
     ...years.map((year) => ({
       params: { slug: String(year) },
-      props: { kind: 'year' as const, year, events: events.filter((event) => eventYear(event) === year).sort(sortDescending) }
+      props: { events: events.filter((event) => eventYear(event) === year).sort(sortDescending), kind: 'year' as const, year }
     }))
   ];
 }
 
 const props = Astro.props as Props;
 let Content: Awaited<ReturnType<typeof render>>['Content'] | undefined;
-if (props.kind === 'event') ({ Content } = await render(props.event));
-const event = props.kind === 'event' ? props.event : undefined;
-const speakerReferences = event
+if (props.kind === 'event') {({ Content } = await render(props.event));}
+const event = props.kind === 'event' ? props.event : undefined,
+ speakerReferences = event
   ? event.data.sessions.flatMap(({ speakers }) => speakers.flatMap((speaker) => typeof speaker === 'string' ? [] : [speaker.person]))
-  : [];
-const referencedPeople = await getEntries(speakerReferences);
-const peopleById = new Map(referencedPeople.map((person) => [person.id, person]));
+  : [],
+ referencedPeople = await getEntries(speakerReferences),
+ peopleById = new Map(referencedPeople.map((person) => [person.id, person]));
 
-type SpeakerView = {
+interface SpeakerView {
   name: string;
   image?: string;
   href?: string;
   external: boolean;
-};
+}
 
 function speakerView(speaker: EventEntry['data']['sessions'][number]['speakers'][number]): SpeakerView {
-  if (typeof speaker === 'string') return { name: speaker, external: false };
-  const person = peopleById.get(speaker.person.id) as CollectionEntry<'people'>;
-  const internalHref = person.data.published && person.data.roles.includes('member')
+  if (typeof speaker === 'string') {return { name: speaker, external: false };}
+  const person = peopleById.get(speaker.person.id) as CollectionEntry<'people'>,
+   internalHref = person.data.published && person.data.roles.includes('member')
     ? withBase(`/soci/${person.id}/`)
     : undefined;
   return {
-    name: person.data.name,
-    image: person.data.image,
+    external: Boolean(person.data.profileUrl),
     href: person.data.profileUrl ?? internalHref,
-    external: Boolean(person.data.profileUrl)
+    image: person.data.image,
+    name: person.data.name
   };
 }
 
-const currentRegistrationState = event ? registrationState(event) : undefined;
-const eventStructuredData = event ? {
+const currentRegistrationState = event ? registrationState(event) : undefined,
+ eventStructuredData = event ? {
   '@context': 'https://schema.org',
   '@type': 'Event',
-  name: event.data.title,
   description: event.data.description,
-  startDate: event.data.date.toISOString(),
   endDate: event.data.endDate?.toISOString(),
   eventAttendanceMode: event.data.venue?.online ? 'https://schema.org/OnlineEventAttendanceMode' : 'https://schema.org/OfflineEventAttendanceMode',
   eventStatus: eventStructuredStatus(event),
   location: event.data.venue ? { '@type': event.data.venue.online ? 'VirtualLocation' : 'Place', name: event.data.venue.name, url: event.data.venue.url } : undefined,
+  name: event.data.title,
+  startDate: event.data.date.toISOString(),
   url: new URL(withBase(`/eventi/${eventSlug(event)}/`), Astro.site).href
 } : undefined;
 ---

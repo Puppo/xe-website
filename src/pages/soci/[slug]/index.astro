@@ -8,9 +8,9 @@ export async function getStaticPaths() {
   const members = await getCollection('people', ({ data }) => data.published && data.roles.includes('member'));
   return members.map((member) => ({ params: { slug: member.id }, props: { member } }));
 }
-const { member } = Astro.props;
-const { Content } = await render(member);
-const description = markdownExcerpt(member.body ?? '') || `${member.data.name}, socio di XeDotNet.`;
+const { member } = Astro.props,
+ { Content } = await render(member),
+ description = markdownExcerpt(member.body ?? '') || `${member.data.name}, socio di XeDotNet.`;
 ---
 
 <BaseLayout title={member.data.name} description={description}>

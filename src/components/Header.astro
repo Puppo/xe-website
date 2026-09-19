@@ -1,10 +1,11 @@
 ---
 import { withBase } from '../lib/urls';
+
 interface Props {
-  navigation: Array<{ label: string; href: string }>;
+  navigation: { label: string; href: string }[];
 }
-const { navigation } = Astro.props;
-const currentPath = Astro.url.pathname;
+const { navigation } = Astro.props,
+ currentPath = Astro.url.pathname;
 ---
 
 <header class="site-header" data-site-header>
@@ -53,11 +54,11 @@ const currentPath = Astro.url.pathname;
   const mobileNavigation = window.matchMedia('(max-width: 48rem)');
 
   document.querySelectorAll<HTMLElement>('[data-site-header]').forEach((header) => {
-    const area = header.querySelector<HTMLElement>('[data-nav-area]');
-    const toggle = header.querySelector<HTMLButtonElement>('[data-menu-toggle]');
-    const label = header.querySelector<HTMLElement>('[data-menu-label]');
-    const navigation = header.querySelector<HTMLElement>('#primary-navigation');
-    if (!area || !toggle || !label || !navigation) return;
+    const area = header.querySelector<HTMLElement>('[data-nav-area]'),
+     toggle = header.querySelector<HTMLButtonElement>('[data-menu-toggle]'),
+     label = header.querySelector<HTMLElement>('[data-menu-label]'),
+     navigation = header.querySelector<HTMLElement>('#primary-navigation');
+    if (!area || !toggle || !label || !navigation) {return;}
 
     area.dataset.menuReady = '';
 
@@ -65,7 +66,7 @@ const currentPath = Astro.url.pathname;
       area.toggleAttribute('data-open', open);
       toggle.setAttribute('aria-expanded', String(open));
       label.textContent = open ? 'Chiudi il menu' : 'Apri il menu';
-      if (!open && restoreFocus) toggle.focus();
+      if (!open && restoreFocus) {toggle.focus();}
     };
 
     toggle.addEventListener('click', () => {
@@ -73,11 +74,11 @@ const currentPath = Astro.url.pathname;
     });
 
     navigation.addEventListener('click', (event) => {
-      if ((event.target as Element).closest('a')) setOpen(false);
+      if ((event.target as Element).closest('a')) {setOpen(false);}
     });
 
     document.addEventListener('click', (event) => {
-      if (mobileNavigation.matches && !header.contains(event.target as Node)) setOpen(false);
+      if (mobileNavigation.matches && !header.contains(event.target as Node)) {setOpen(false);}
     });
 
     document.addEventListener('keydown', (event) => {

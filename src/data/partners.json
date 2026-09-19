@@ -1,8 +1,40 @@
 [
-  { "id": "sessionize", "name": "Sessionize", "url": "https://sessionize.com/", "image": "/media/1184-sessionize-logo.png", "kind": "sponsor" },
-  { "id": "eventitech", "name": "Eventitech", "url": "https://eventitech.it/", "image": "/media/1223-logo-eventitech-200.png", "kind": "sponsor" },
-  { "id": "jetbrains", "name": "JetBrains", "url": "https://www.jetbrains.com/", "kind": "supporter" },
-  { "id": "telerik", "name": "Telerik", "url": "https://www.telerik.com/", "kind": "supporter" },
-  { "id": "redgate", "name": "Redgate", "url": "https://www.red-gate.com/", "kind": "supporter" },
-  { "id": "hunext", "name": "Hunext", "url": "https://www.hunext.com/", "kind": "supporter" }
+  {
+    "id": "sessionize",
+    "name": "Sessionize",
+    "url": "https://sessionize.com/",
+    "image": "/media/1184-sessionize-logo.png",
+    "kind": "sponsor"
+  },
+  {
+    "id": "eventitech",
+    "name": "Eventitech",
+    "url": "https://eventitech.it/",
+    "image": "/media/1223-logo-eventitech-200.png",
+    "kind": "sponsor"
+  },
+  {
+    "id": "jetbrains",
+    "name": "JetBrains",
+    "url": "https://www.jetbrains.com/",
+    "kind": "supporter"
+  },
+  {
+    "id": "telerik",
+    "name": "Telerik",
+    "url": "https://www.telerik.com/",
+    "kind": "supporter"
+  },
+  {
+    "id": "redgate",
+    "name": "Redgate",
+    "url": "https://www.red-gate.com/",
+    "kind": "supporter"
+  },
+  {
+    "id": "hunext",
+    "name": "Hunext",
+    "url": "https://www.hunext.com/",
+    "kind": "supporter"
+  }
 ]

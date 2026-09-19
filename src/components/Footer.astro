@@ -9,7 +9,7 @@ interface Props {
     fiscalCode: string;
     newsletterAction: string;
     newsletterHoneypot: string;
-    socials: Array<{ label: string; url: string }>;
+    socials: { label: string; url: string }[];
   };
 }
 const { site } = Astro.props;

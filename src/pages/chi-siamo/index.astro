@@ -5,10 +5,10 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import SupportPanel from '../../components/SupportPanel.astro';
 import CommunityMap from '../../components/CommunityMap.astro';
 
-const [page] = await getCollection('pages', ({ id }) => id === 'chi-siamo');
-const { Content } = await render(page);
-const [site] = await getCollection('site');
-const locations = await getCollection('locations');
+const [page] = await getCollection('pages', ({ id }) => id === 'chi-siamo'),
+ { Content } = await render(page),
+ [site] = await getCollection('site'),
+ locations = await getCollection('locations');
 ---
 
 <BaseLayout title={page.data.title} description={page.data.description}>
