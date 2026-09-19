@@ -34,7 +34,7 @@
     "sharp": "^0.35.4",
     "svgo": "^4.1.0",
     "turndown": "^7.2.4",
-    "typescript": "^6.0.3",
+    "typescript": "^7.0.2",
     "vite-plugin-image-optimizer": "^2.0.3",
     "vitest": "^5.0.1",
     "yaml": "^2.9.1"
