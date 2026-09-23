@@ -4,6 +4,8 @@ import { getCollection, getEntries, render } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import EventCard from '../../../components/EventCard.astro';
+import WebMcpEventCatalog from '../../../components/WebMcpEventCatalog.astro';
+import WebMcpEventDetails from '../../../components/WebMcpEventDetails.astro';
 import { eventSlug, eventStructuredStatus, eventYear, formatEventDate, isCancelled, registrationMessage, registrationState, sortDescending } from '../../../lib/events';
 import type { EventEntry } from '../../../lib/events';
 import { initials } from '../../../lib/text';
@@ -67,16 +69,38 @@ const currentRegistrationState = event ? registrationState(event) : undefined,
   name: event.data.title,
   startDate: event.data.date.toISOString(),
   url: new URL(withBase(`/eventi/${eventSlug(event)}/`), Astro.site).href
+} : undefined,
+ webMcpEventDetails = event ? {
+  date: formatEventDate(event.data.date),
+  description: event.data.description,
+  endDate: event.data.endDate ? formatEventDate(event.data.endDate) : undefined,
+  eventType: event.data.eventType,
+  materials: event.data.materials,
+  registration: {
+    message: registrationMessage(event),
+    url: currentRegistrationState === 'open' ? event.data.registration.url : undefined
+  },
+  sessions: event.data.sessions.map((session) => ({
+    speakers: session.speakers.map((speaker) => speakerView(speaker).name),
+    time: session.time,
+    title: session.title
+  })),
+  status: event.data.status,
+  title: event.data.title,
+  url: new URL(withBase(`/eventi/${eventSlug(event)}/`), Astro.site).href,
+  venue: event.data.venue?.name
 } : undefined;
 ---
 
 {props.kind === 'year' ? (
   <BaseLayout title={`Eventi ${props.year}`} description={`Archivio degli eventi XeDotNet organizzati nel ${props.year}.`}>
+    <WebMcpEventCatalog events={props.events} />
     <header class="page-hero"><div class="shell"><p class="breadcrumbs"><a href={withBase('/')}>Home</a> / <a href={withBase('/eventi/')}>Eventi</a> / {props.year}</p><h1>Eventi del {props.year}</h1><p>{props.events.length} {props.events.length === 1 ? 'appuntamento' : 'appuntamenti'} nell’archivio XE.</p></div></header>
     <section class="section shell"><ol class="event-list">{props.events.map((item) => <li><EventCard event={item} /></li>)}</ol></section>
   </BaseLayout>
 ) : event && Content ? (
   <BaseLayout title={event.data.title} description={event.data.description} image={event.data.image} type="article" structuredData={eventStructuredData}>
+    {webMcpEventDetails && <WebMcpEventDetails details={webMcpEventDetails} />}
     <header class="page-hero">
       <div class="shell">
         <p class="breadcrumbs"><a href={withBase('/')}>Home</a> / <a href={withBase('/eventi/')}>Eventi</a> / {eventYear(event)}</p>

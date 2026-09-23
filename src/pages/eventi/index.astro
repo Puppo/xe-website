@@ -3,6 +3,7 @@ import { withBase } from '../../lib/urls';
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import EventCard from '../../components/EventCard.astro';
+import WebMcpEventCatalog from '../../components/WebMcpEventCatalog.astro';
 import { eventYear, isPastEvent, sortAscending, sortDescending } from '../../lib/events';
 
 const events = await getCollection('events', ({ data }) => !data.draft),
@@ -13,6 +14,7 @@ const events = await getCollection('events', ({ data }) => !data.draft),
 ---
 
 <BaseLayout title="Eventi" description="Prossimi appuntamenti e archivio degli eventi organizzati da XeDotNet.">
+  <WebMcpEventCatalog events={[...upcoming, ...past]} />
   <header class="page-hero"><div class="shell"><p class="breadcrumbs"><a href={withBase('/')}>Home</a> / Eventi</p><h1>Eventi</h1><p>Incontri gratuiti per imparare, confrontarsi e far circolare idee utili.</p></div></header>
   <section class="section shell">
     <div class="section-heading"><h2>Prossimi appuntamenti</h2></div>

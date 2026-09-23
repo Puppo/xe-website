@@ -1,0 +1,44 @@
+---
+import { safeInlineJson, type WebMcpEventDetails } from '../lib/webmcp';
+
+interface Props {
+  details: WebMcpEventDetails;
+}
+
+const serializedDetails = safeInlineJson(Astro.props.details);
+---
+
+<script type="application/json" data-webmcp-event-details set:html={serializedDetails} />
+
+<script>
+  import {
+    describeEvent,
+    parseDetails,
+    registerWebMcpTools,
+  } from '../lib/webmcp';
+
+  const detailsElement = document.querySelector<HTMLScriptElement>(
+      '[data-webmcp-event-details]',
+    ),
+    details = parseDetails(detailsElement);
+
+  if (details?.title) {
+    registerWebMcpTools([
+      {
+        name: 'describe_event',
+        title: 'Descrivi questo evento XE',
+        description:
+          'Restituisce una descrizione compatta dell’evento XE aperto, con programma, relatori, iscrizione e materiali.',
+        inputSchema: {
+          type: 'object',
+          properties: {},
+          additionalProperties: false,
+        },
+        execute() {
+          return describeEvent(details);
+        },
+        annotations: { readOnlyHint: true },
+      },
+    ]);
+  }
+</script>

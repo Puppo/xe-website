@@ -5,13 +5,13 @@ interface Props { action: string; honeypot: string }
 const { action, honeypot } = Astro.props;
 ---
 
-<form class="newsletter" action={action} method="post">
+<form class="newsletter" action={action} method="post" data-newsletter-form>
   <h2>Newsletter</h2>
   <p id="newsletter-help">Ricevi soltanto aggiornamenti sulle attività di XE.</p>
   <div class="form-row">
     <div class="field">
       <label for="newsletter-email">Email <span aria-hidden="true">*</span></label>
-      <input id="newsletter-email" name="EMAIL" type="email" inputmode="email" autocomplete="email" spellcheck="false" aria-describedby="newsletter-help" required />
+      <input id="newsletter-email" name="EMAIL" type="email" inputmode="email" autocomplete="email" spellcheck="false" aria-describedby="newsletter-help" maxlength="254" required />
     </div>
     <button type="submit">Iscriviti</button>
   </div>
@@ -21,3 +21,53 @@ const { action, honeypot } = Astro.props;
   </div>
   <p class="form-note">Iscrivendoti accetti il trattamento descritto nell’<a href={withBase('/privacy-policy/')}>informativa sulla privacy</a>.</p>
 </form>
+
+<script>
+  import {
+    fillControl,
+    registerWebMcpTools,
+    requiredString,
+  } from '../lib/webmcp';
+
+  const form = document.querySelector<HTMLFormElement>('[data-newsletter-form]'),
+    emailInput = form?.querySelector<HTMLInputElement>('[name="EMAIL"]'),
+    submitButton = form?.querySelector<HTMLButtonElement>('[type="submit"]');
+
+  if (form && emailInput && submitButton) {
+    registerWebMcpTools([
+      {
+        name: 'prepare_newsletter_subscription',
+        title: 'Prepara l’iscrizione alla newsletter',
+        description:
+          'Compila il modulo newsletter XE con l’email indicata e lo mostra per la revisione e l’invio manuale.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            email: {
+              type: 'string',
+              format: 'email',
+              maxLength: 254,
+              description: 'Indirizzo email da iscrivere alla newsletter.',
+            },
+          },
+          required: ['email'],
+          additionalProperties: false,
+        },
+        execute(input) {
+          const email = requiredString(input, 'email');
+          fillControl(emailInput, email);
+          form.scrollIntoView({ block: 'center' });
+          if (!emailInput.checkValidity()) {
+            emailInput.focus();
+            throw new TypeError(
+              'L’indirizzo email non è valido. Correggilo e riprova.',
+            );
+          }
+          submitButton.focus();
+          return 'Modulo newsletter compilato. Controlla l’indirizzo e premi “Iscriviti” per inviarlo.';
+        },
+        annotations: { readOnlyHint: false, consequentialHint: false },
+      },
+    ]);
+  }
+</script>
