@@ -5,7 +5,6 @@ import type { LocationEntry } from '../lib/locations';
 
 interface Props { locations: LocationEntry[] }
 const { locations } = Astro.props,
-  total = locations.reduce((sum, location) => sum + location.data.count, 0),
   pins = locationPins(locations),
   tileUrl = import.meta.env.PUBLIC_MAP_TILE_URL ?? 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
 ---
@@ -24,9 +23,6 @@ const { locations } = Astro.props,
       aria-label="Mappa interattiva della distribuzione territoriale dei soci XE"
     ></div>
     <p class="map-status" data-map-status aria-live="polite"></p>
-    <figcaption>
-      I pin indicano i dintorni dei capoluoghi delle aree provinciali e non indirizzi personali. Dati aggregati: {total} presenze territoriali.
-    </figcaption>
   </figure>
   <ul class="location-list visually-hidden" role="list">
     {locations.map(({ data }) => (
@@ -69,7 +65,7 @@ const { locations } = Astro.props,
 
         const bounds = L.latLngBounds([]);
         pins.forEach((pin) => {
-          const marker = L.marker([pin.latitude, pin.longitude], {
+          L.marker([pin.latitude, pin.longitude], {
             // The pins are a density visualization, not controls: clustered
             // targets would fail WCAG 2.5.8, so the province list below the
             // map remains the accessible alternative.
@@ -77,10 +73,10 @@ const { locations } = Astro.props,
             keyboard: false,
             icon: L.divIcon({
               className: 'member-map-marker',
-              // The rotated teardrop extends below its 36px layout box.
+              // The rotated teardrop extends below its 44px layout box.
               // Anchor its visible tip—not the box centre—to the coordinate.
-              iconAnchor: [18, 44],
-              iconSize: [36, 36]
+              iconAnchor: [22, 50],
+              iconSize: [44, 44]
             })
           }).addTo(map);
           bounds.extend([pin.latitude, pin.longitude]);

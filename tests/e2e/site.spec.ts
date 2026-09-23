@@ -221,8 +221,8 @@ test('la mappa dei soci mostra subito la mappa con i pin e mantiene un’alterna
   );
   await expect.poll(() => tileRequests.length).toBeGreaterThan(0);
   const firstMarker = mapSection.locator('.leaflet-marker-icon').first();
-  await expect(firstMarker).toHaveCSS('margin-left', '-18px');
-  await expect(firstMarker).toHaveCSS('margin-top', '-44px');
+  await expect(firstMarker).toHaveCSS('margin-left', '-22px');
+  await expect(firstMarker).toHaveCSS('margin-top', '-50px');
   expect(
     await firstMarker.evaluate((marker) => getComputedStyle(marker).rotate),
   ).toBe('none');

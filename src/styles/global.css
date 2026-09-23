@@ -1008,14 +1008,15 @@ p {
   font-size: 0.9rem;
 }
 .member-map-marker::before {
+  display: block;
   content: '';
   inline-size: 100%;
   block-size: 100%;
-  border: 0.2rem solid #fff;
+  border: 0.22rem solid #fff;
   border-radius: 50% 50% 50% 0;
   rotate: -45deg;
   background: var(--signal);
-  box-shadow: 0 0.2rem 0.5rem rgb(0 0 0 / 35%);
+  box-shadow: 0 0.25rem 0.6rem rgb(0 0 0 / 35%);
 }
 .leaflet-control-attribution {
   color: #222;
@@ -1073,11 +1074,12 @@ p {
   padding-inline-start: 3rem;
 }
 .history-number {
-  margin: 0 0 0.5rem;
+  margin: 0 0 0.6rem;
   font:
-    600 clamp(3.5rem, 6vw, 5rem)/1.1 'Manrope',
+    700 0.78rem/1 'Manrope',
     sans-serif;
-  letter-spacing: -0.06em;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
   color: var(--red);
 }
 .sponsor-strip {
