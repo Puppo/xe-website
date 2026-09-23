@@ -12,6 +12,12 @@ The project is released under the [MIT License](LICENSE).
 
 When you participate, please be respectful and constructive. Assume good faith, stay on topic, and welcome newcomers.
 
+## Previewing your changes
+
+Pull requests from the same repository get an automatic preview: the `PR preview` workflow builds the site and posts a link such as <https://xe-website-preview.netlify.app/pr-123/> as a comment on the PR. The preview is updated on every push.
+
+Fork PRs do not build automatically. A maintainer can deploy one manually by running the `PR preview` workflow from the Actions tab with the PR number and head SHA (`gh pr view <N> --json headRefOid`). The preview URL follows the same `pr-{N}/` pattern.
+
 ## Development setup
 
 The project is a single-package npm repository. It runs on Node.js 24 or newer and uses the npm lockfile — please do not introduce another package manager or lockfile.

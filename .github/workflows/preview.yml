@@ -1,0 +1,116 @@
+name: PR preview
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review, closed]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'Fork PR number to preview (maintainer only)'
+        required: true
+        type: string
+      head_sha:
+        description: 'Fork PR head SHA (from `gh pr view <n> --json headRefOid`)'
+        required: true
+        type: string
+
+concurrency:
+  group: preview-state-mutation
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    # Same-repo PRs always run. Fork PRs are skipped here; they only run when
+    # a maintainer explicitly invokes this workflow via workflow_dispatch.
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      github.event.pull_request.head.repo.full_name == github.repository
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: actions/setup-node@820762786026740c76f36085b0fe5020 # v7.0.0
+        with:
+          node-version-file: package.json
+          cache: npm
+
+      - run: npm ci
+
+      - name: Resolve target PR
+        id: target
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "number=${{ inputs.pr_number }}" >> "$GITHUB_OUTPUT"
+            echo "sha=${{ inputs.head_sha }}" >> "$GITHUB_OUTPUT"
+            echo "source=dispatch" >> "$GITHUB_OUTPUT"
+          else
+            echo "number=${{ github.event.pull_request.number }}" >> "$GITHUB_OUTPUT"
+            echo "sha=${{ github.event.pull_request.head.sha }}" >> "$GITHUB_OUTPUT"
+            echo "source=pr" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Load preview state
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: netlify-state
+          path: .state
+          token: ${{ secrets.CHECKOUT_TOKEN }}
+          fetch-depth: 1
+
+      - name: Install netlify-cli
+        run: npm install --no-save netlify-cli
+
+      - name: Build aggregate
+        env:
+          PR_NUMBER: ${{ steps.target.outputs.number }}
+          EVENT: ${{ github.event_name }}
+          ACTION: ${{ github.event.action }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_SHA: ${{ steps.target.outputs.sha }}
+          CHECKOUT_TOKEN: ${{ secrets.CHECKOUT_TOKEN }}
+        run: node scripts/build-preview-aggregate.mjs
+
+      - name: Deploy to Netlify
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        run: |
+          npx netlify deploy \
+            --dir=dist-aggregate \
+            --prod \
+            --message "PR #${{ steps.target.outputs.number }}"
+
+      - name: Commit updated state
+        env:
+          CHECKOUT_TOKEN: ${{ secrets.CHECKOUT_TOKEN }}
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          (cd .state && git add state.json && \
+            git commit -m "preview: update for PR #${{ steps.target.outputs.number }}" \
+            --allow-empty || true)
+          git push https://x-access-token:${CHECKOUT_TOKEN}@github.com/${{ github.repository }}.git HEAD:netlify-state
+
+      - name: Comment preview URL (PR open/sync)
+        if: github.event_name == 'pull_request' && github.event.action != 'closed'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          URL="https://xe-website-preview.netlify.app/pr-${{ steps.target.outputs.number }}/"
+          gh pr comment "${{ steps.target.outputs.number }}" \
+            --edit-last --create-if-none --body "🔎 Preview: $URL"
+
+      - name: Comment preview URL (workflow_dispatch)
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          GH_TOKEN: ${{ secrets.CHECKOUT_TOKEN }}
+        run: |
+          URL="https://xe-website-preview.netlify.app/pr-${{ inputs.pr_number }}/"
+          gh pr comment "${{ inputs.pr_number }}" \
+            --edit-last --create-if-none \
+            --body "🔎 Preview (maintainer-approved): $URL"

@@ -86,6 +86,35 @@ The deployment workflow sets `SITE_URL` from the repository variable or the GitH
 
 Do not commit `dist/`, `.astro/`, Playwright reports, test results, coverage output, or dependency directories.
 
+## PR previews on Netlify
+
+PR previews are deployed to a separate Netlify site at <https://xe-website-preview.netlify.app/>. Each preview lives at `pr-{N}/` on that domain, e.g. `https://xe-website-preview.netlify.app/pr-123/`. Production continues to deploy from `main` to GitHub Pages via `.github/workflows/deploy.yml`; the Netlify site hosts **only** previews.
+
+The preview workflow lives in `.github/workflows/preview.yml` and is driven by `scripts/build-preview-aggregate.mjs`. Because Netlify deploys are atomic, every PR event rebuilds and redeploys the **aggregate** of all currently active PRs. State is held in a `netlify-state` branch in this repo (one file: `state.json`); the workflow updates it on every run.
+
+### Required secrets
+
+Configure these in the repository's GitHub settings:
+
+| Secret | Purpose |
+| --- | --- |
+| `NETLIFY_AUTH_TOKEN` | Netlify personal access token, scoped to the preview site |
+| `NETLIFY_SITE_ID` | The Site ID for the preview site |
+| `CHECKOUT_TOKEN` | GitHub PAT used only to fetch fork PR heads; `GITHUB_TOKEN` cannot read fork refs |
+
+### Fork PRs
+
+The `preview` job skips fork PRs via the `github.event.pull_request.head.repo.full_name == github.repository` guard. To preview a fork PR, a maintainer runs the `PR preview` workflow from the Actions tab via `workflow_dispatch`, supplying the PR number and the head SHA (read with `gh pr view <n> --json headRefOid`). Fork code never runs with secrets on first push.
+
+### Local sanity check
+
+```sh
+SITE_URL=https://xe-website-preview.netlify.app/pr-999/ PUBLIC_NOINDEX=1 npm run build
+npm run check:build
+```
+
+The preview build sets `PUBLIC_NOINDEX=1`, which renders `<meta name="robots" content="noindex, nofollow">` on every page and serves `Disallow: /` from `/robots.txt`.
+
 ## Testing and verification
 
 Use the smallest relevant check while iterating, then run every required check for the affected area.

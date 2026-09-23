@@ -9,3 +9,8 @@ coverage/
 core.*
 .lefthook-local/
 .lefthook-local.yml
+# Netlify PR preview workflow: working directories used by
+# scripts/build-preview-aggregate.mjs.
+.state/
+staging/
+dist-aggregate/
