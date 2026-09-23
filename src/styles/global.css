@@ -1008,14 +1008,15 @@ p {
   font-size: 0.9rem;
 }
 .member-map-marker::before {
+  display: block;
   content: '';
   inline-size: 100%;
   block-size: 100%;
-  border: 0.2rem solid #fff;
+  border: 0.22rem solid #fff;
   border-radius: 50% 50% 50% 0;
   rotate: -45deg;
   background: var(--signal);
-  box-shadow: 0 0.2rem 0.5rem rgb(0 0 0 / 35%);
+  box-shadow: 0 0.25rem 0.6rem rgb(0 0 0 / 35%);
 }
 .leaflet-control-attribution {
   color: #222;
@@ -1051,7 +1052,7 @@ p {
   border: 1px solid var(--line-soft);
 }
 .community-message > p,
-.community-history > p:not(.history-number) {
+.community-history > p:not(.history-eyebrow, .history-line) {
   color: var(--muted);
 }
 .community-faces {
@@ -1072,13 +1073,40 @@ p {
   border-inline-start: 1px solid var(--line-soft);
   padding-inline-start: 3rem;
 }
-.history-number {
-  margin: 0 0 0.5rem;
+.history-eyebrow {
+  margin: 0 0 0.6rem;
   font:
-    600 clamp(3.5rem, 6vw, 5rem)/1.1 'Manrope',
+    700 0.78rem/1 'Manrope',
     sans-serif;
-  letter-spacing: -0.06em;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.history-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem 0.6rem;
+  margin: 0 0 0.7rem;
+}
+.history-year {
+  font:
+    700 clamp(1.8rem, 1.4rem + 1.4vw, 2.3rem)/1 'Manrope',
+    sans-serif;
+  letter-spacing: -0.035em;
   color: var(--red);
+  font-variant-numeric: tabular-nums;
+}
+.history-dot {
+  color: var(--muted);
+  font-weight: 700;
+}
+.history-action {
+  font:
+    700 clamp(1.05rem, 0.95rem + 0.4vw, 1.3rem)/1.2 'Manrope',
+    sans-serif;
+  letter-spacing: -0.02em;
+  color: var(--ink);
 }
 .sponsor-strip {
   display: flex;
