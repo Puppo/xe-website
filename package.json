@@ -37,7 +37,7 @@
     "@types/leaflet": "^1.9.21",
     "cheerio": "^1.2.0",
     "lefthook": "^2.1.14",
-    "oxfmt": "^0.68.0",
+    "oxfmt": "^0.70.0",
     "oxlint": "^1.85.0",
     "sharp": "^0.35.4",
     "svgo": "^4.1.0",
