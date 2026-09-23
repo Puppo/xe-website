@@ -11,7 +11,7 @@ const formAction = import.meta.env.PUBLIC_CONTACT_FORM_ACTION;
     <div>
       <h2>Scrivi allo staff</h2>
       {formAction ? (
-        <form class="form-stack" action={formAction} method="post">
+        <form class="form-stack" action={formAction} method="post" data-contact-form>
           <input type="hidden" name="_next" value={new URL(withBase('/grazie/'), Astro.site).href} />
           <div class="field"><label for="name">Nome <span aria-hidden="true">*</span></label><input id="name" name="name" autocomplete="name" maxlength="80" required /></div>
           <div class="field"><label for="email">Email <span aria-hidden="true">*</span></label><input id="email" name="email" type="email" inputmode="email" autocomplete="email" spellcheck="false" maxlength="120" required /></div>
@@ -27,3 +27,83 @@ const formAction = import.meta.env.PUBLIC_CONTACT_FORM_ACTION;
     <aside class="detail-aside"><h2>Parliamone</h2><p>Per proporre una sessione, una collaborazione o un sostegno alle attività, includi nel messaggio tutte le informazioni utili.</p><p>Rispondiamo compatibilmente con gli impegni dei volontari che gestiscono il gruppo.</p></aside>
   </section>
 </BaseLayout>
+
+<script>
+  import {
+    fillControl,
+    registerWebMcpTools,
+    requiredString,
+  } from '../../lib/webmcp';
+
+  const form = document.querySelector<HTMLFormElement>('[data-contact-form]'),
+    nameInput = form?.querySelector<HTMLInputElement>('[name="name"]'),
+    emailInput = form?.querySelector<HTMLInputElement>('[name="email"]'),
+    messageInput = form?.querySelector<HTMLTextAreaElement>('[name="message"]'),
+    privacyInput = form?.querySelector<HTMLInputElement>('[name="privacy"]'),
+    submitButton = form?.querySelector<HTMLButtonElement>('[type="submit"]');
+
+  if (
+    form &&
+    nameInput &&
+    emailInput &&
+    messageInput &&
+    privacyInput &&
+    submitButton
+  ) {
+    registerWebMcpTools([
+      {
+        name: 'prepare_contact_message',
+        title: 'Prepara un messaggio per lo staff XE',
+        description:
+          'Compila nome, email e messaggio nel modulo contatti XE; la privacy e l’invio restano all’utente.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            name: {
+              type: 'string',
+              maxLength: 80,
+              description: 'Nome della persona che desidera essere ricontattata.',
+            },
+            email: {
+              type: 'string',
+              format: 'email',
+              maxLength: 120,
+              description: 'Indirizzo email al quale rispondere.',
+            },
+            message: {
+              type: 'string',
+              maxLength: 5000,
+              description: 'Messaggio da mostrare allo staff XE.',
+            },
+          },
+          required: ['name', 'email', 'message'],
+          additionalProperties: false,
+        },
+        execute(input) {
+          fillControl(nameInput, requiredString(input, 'name'));
+          fillControl(emailInput, requiredString(input, 'email'));
+          fillControl(messageInput, requiredString(input, 'message'));
+          form.scrollIntoView({ block: 'center' });
+
+          const invalidControl = [nameInput, emailInput, messageInput].find(
+            (control) => !control.checkValidity(),
+          );
+          if (invalidControl) {
+            invalidControl.focus();
+            throw new TypeError(
+              `Il campo “${invalidControl.name}” non è valido. Correggilo e riprova.`,
+            );
+          }
+
+          if (!privacyInput.checked) {
+            privacyInput.focus();
+          } else {
+            submitButton.focus();
+          }
+          return 'Modulo contatti compilato. Controlla i dati, leggi e accetta la privacy, quindi premi “Invia il messaggio”.';
+        },
+        annotations: { readOnlyHint: false, consequentialHint: false },
+      },
+    ]);
+  }
+</script>

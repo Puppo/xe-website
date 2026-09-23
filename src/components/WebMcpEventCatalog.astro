@@ -1,0 +1,104 @@
+---
+import { withBase } from '../lib/urls';
+import { eventSlug, eventYear, isPastEvent } from '../lib/events';
+import type { EventEntry } from '../lib/events';
+import { safeInlineJson, type WebMcpEventSummary } from '../lib/webmcp';
+
+interface Props {
+  events: EventEntry[];
+}
+
+const catalog: WebMcpEventSummary[] = Astro.props.events.map((event) => ({
+    date: event.data.date.toISOString(),
+    description: event.data.description,
+    eventType: event.data.eventType,
+    period: isPastEvent(event) ? 'past' : 'upcoming',
+    slug: eventSlug(event),
+    status: event.data.status,
+    title: event.data.title,
+    url: new URL(withBase(`/eventi/${eventSlug(event)}/`), Astro.site).href,
+    venue: event.data.venue?.name,
+    year: eventYear(event),
+  })),
+  serializedCatalog = safeInlineJson(catalog);
+---
+
+<script type="application/json" data-webmcp-event-catalog set:html={serializedCatalog} />
+
+<script>
+  import {
+    eventForSlug,
+    listEvents,
+    parseCatalog,
+    registerWebMcpTools,
+  } from '../lib/webmcp';
+
+  const catalogElement = document.querySelector<HTMLScriptElement>(
+      '[data-webmcp-event-catalog]',
+    ),
+    catalog = parseCatalog(catalogElement),
+    listSchema = {
+      type: 'object',
+      properties: {
+        query: {
+          type: 'string',
+          description: 'Testo da cercare in titolo, descrizione, tipo o luogo.',
+        },
+        year: {
+          type: 'integer',
+          description: 'Anno solare degli eventi da mostrare.',
+        },
+        period: {
+          type: 'string',
+          enum: ['all', 'upcoming', 'past'],
+          description: 'Periodo: tutti, futuri o passati.',
+        },
+        offset: {
+          type: 'integer',
+          minimum: 0,
+          description: 'Indice da cui continuare una ricerca precedente.',
+        },
+      },
+      additionalProperties: false,
+    } as const,
+    openSchema = {
+      type: 'object',
+      properties: {
+        slug: {
+          type: 'string',
+          description: 'Slug esatto restituito da list_events.',
+        },
+      },
+      required: ['slug'],
+      additionalProperties: false,
+    } as const;
+
+  if (catalog) {
+    registerWebMcpTools([
+      {
+        name: 'list_events',
+        title: 'Cerca eventi XE',
+        description:
+          'Cerca gli eventi pubblicati da XeDotNet. Restituisce fino a cinque risultati alla volta con `nextOffset`; quando `nextOffset` è `null` la ricerca è terminata.',
+        inputSchema: listSchema,
+        execute(input) {
+          return listEvents(catalog, input);
+        },
+        annotations: { readOnlyHint: true },
+      },
+      {
+        name: 'open_event',
+        title: 'Apri un evento XE',
+        description:
+          'Apre nel browser la pagina di un evento restituito da list_events.',
+        inputSchema: openSchema,
+        execute({ slug }) {
+          const event = eventForSlug(catalog, slug);
+          window.location.assign(event.url);
+          return `Navigazione verso “${event.title}”.`;
+        },
+        annotations: { readOnlyHint: true },
+      },
+    ]);
+  }
+</script>
