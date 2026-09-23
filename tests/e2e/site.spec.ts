@@ -204,10 +204,21 @@ test('la mappa dei soci mostra subito la mappa con i pin e mantiene un’alterna
   await page.goto('/chi-siamo/');
 
   const mapSection = page.locator('[data-community-map]');
-  await expect(mapSection.getByText('Treviso e provincia')).toBeVisible();
-  await expect(mapSection.locator('.location-list li')).toHaveCount(5);
+  await expect(
+    mapSection.getByRole('heading', {
+      name: 'Il Nord-Est è il nostro punto di partenza',
+    }),
+  ).toBeVisible();
   await expect(mapSection.locator('.leaflet-container')).toBeVisible();
-  await expect(mapSection.locator('.leaflet-marker-icon')).toHaveCount(5);
+  await expect(mapSection.locator('.leaflet-marker-icon')).toHaveCount(14);
+  await expect(
+    mapSection.locator('.leaflet-marker-icon.leaflet-interactive'),
+  ).toHaveCount(0);
+  await expect(mapSection.locator('.member-map-marker span')).toHaveCount(0);
+  await expect(mapSection.locator('.location-list li')).toHaveCount(5);
+  await expect(mapSection.locator('.location-list')).toContainText(
+    'Treviso e provincia',
+  );
   await expect.poll(() => tileRequests.length).toBeGreaterThan(0);
   const firstMarker = mapSection.locator('.leaflet-marker-icon').first();
   await expect(firstMarker).toHaveCSS('margin-left', '-18px');
@@ -223,7 +234,6 @@ test('la mappa dei soci mostra subito la mappa con i pin e mantiene un’alterna
   await expect(
     mapSection.getByRole('link', { name: 'OpenStreetMap' }),
   ).toBeVisible();
-  await expect(mapSection.getByText('Treviso e provincia')).toBeVisible();
 
   const results = await new AxeBuilder({ page })
     .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])

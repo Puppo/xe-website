@@ -1,29 +1,22 @@
 ---
 import 'leaflet/dist/leaflet.css';
+import { locationPins } from '../lib/locations';
+import type { LocationEntry } from '../lib/locations';
 
-interface Location {
-  id: string;
-  data: {
-    municipality: string;
-    province: string;
-    count: number;
-    latitude: number;
-    longitude: number;
-  };
-}
-interface Props { locations: Location[] }
+interface Props { locations: LocationEntry[] }
 const { locations } = Astro.props,
- total = locations.reduce((sum, location) => sum + location.data.count, 0),
- mapLocations = locations.map(({ id, data }) => ({ id, ...data })),
- tileUrl = import.meta.env.PUBLIC_MAP_TILE_URL ?? 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+  total = locations.reduce((sum, location) => sum + location.data.count, 0),
+  pins = locationPins(locations),
+  tileUrl = import.meta.env.PUBLIC_MAP_TILE_URL ?? 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
 ---
 
 <div
   class="map-layout"
   data-community-map
-  data-locations={JSON.stringify(mapLocations)}
+  data-pins={JSON.stringify(pins)}
   data-tile-url={tileUrl}
 >
+  <h3>Il Nord-Est è il nostro punto di partenza</h3>
   <figure class="community-map">
     <div
       class="interactive-map"
@@ -32,87 +25,72 @@ const { locations } = Astro.props,
     ></div>
     <p class="map-status" data-map-status aria-live="polite"></p>
     <figcaption>
-      I pin indicano i capoluoghi delle aree provinciali e non indirizzi personali. Dati aggregati: {total} presenze territoriali.
+      I pin indicano i dintorni dei capoluoghi delle aree provinciali e non indirizzi personali. Dati aggregati: {total} presenze territoriali.
     </figcaption>
   </figure>
-  <div>
-    <h3>Il Nord-Est è il nostro punto di partenza</h3>
-    <ul class="location-list" role="list">
-      {locations.map(({ data }) => (
-        <li><span>{data.province}</span><strong>{data.count} {data.count === 1 ? 'socio' : 'soci'}</strong></li>
-      ))}
-    </ul>
-  </div>
+  <ul class="location-list visually-hidden" role="list">
+    {locations.map(({ data }) => (
+      <li><span>{data.province}</span><strong>{data.count} {data.count === 1 ? 'socio' : 'soci'}</strong></li>
+    ))}
+  </ul>
 </div>
 
 <script>
-  interface MapLocation {
-    id: string;
-    municipality: string;
-    province: string;
-    count: number;
-    latitude: number;
-    longitude: number;
-  }
+  import type { MapPin } from '../lib/locations';
 
   document.querySelectorAll<HTMLElement>('[data-community-map]').forEach((container) => {
     if (container.dataset.mapReady === 'true') {return;}
     container.dataset.mapReady = 'true';
 
     const canvas = container.querySelector<HTMLElement>('[data-map-canvas]'),
-     status = container.querySelector<HTMLElement>('[data-map-status]');
+      status = container.querySelector<HTMLElement>('[data-map-status]');
     if (!canvas || !status) {return;}
 
     void (async () => {
       try {
-        const locations = JSON.parse(container.dataset.locations ?? '[]') as MapLocation[],
-         { default: L } = await import('leaflet'),
+        const pins = JSON.parse(container.dataset.pins ?? '[]') as MapPin[],
+          { default: L } = await import('leaflet'),
 
-         map = L.map(canvas, {
-          scrollWheelZoom: false,
-          zoomControl: true
-        }),
-         tiles = L.tileLayer(
-          container.dataset.tileUrl ?? 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-          {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-            maxZoom: 19
-          }
-        );
+          map = L.map(canvas, {
+            scrollWheelZoom: false,
+            zoomControl: true
+          }),
+          tiles = L.tileLayer(
+            container.dataset.tileUrl ?? 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+            {
+              attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+              maxZoom: 19
+            }
+          );
         tiles.once('tileerror', () => {
-          status.textContent = 'La cartografia non è disponibile. L’elenco delle località resta consultabile.';
+          status.textContent = 'La cartografia non è disponibile, i pin restano visibili.';
         });
         tiles.addTo(map);
 
         const bounds = L.latLngBounds([]);
-        locations.forEach((location) => {
-          const label = `${location.province}: ${location.count} ${location.count === 1 ? 'socio' : 'soci'}`,
-           marker = L.marker([location.latitude, location.longitude], {
-            alt: label,
+        pins.forEach((pin) => {
+          const marker = L.marker([pin.latitude, pin.longitude], {
+            // The pins are a density visualization, not controls: clustered
+            // targets would fail WCAG 2.5.8, so the province list below the
+            // map remains the accessible alternative.
+            interactive: false,
+            keyboard: false,
             icon: L.divIcon({
               className: 'member-map-marker',
-              html: `<span aria-hidden="true">${location.count}</span>`,
               // The rotated teardrop extends below its 36px layout box.
               // Anchor its visible tip—not the box centre—to the coordinate.
               iconAnchor: [18, 44],
-              popupAnchor: [0, -44],
               iconSize: [36, 36]
-            }),
-            keyboard: true,
-            title: label
+            })
           }).addTo(map);
-          marker.getElement()?.setAttribute('aria-label', label);
-          const popup = document.createElement('p');
-          popup.textContent = label;
-          marker.bindPopup(popup);
-          bounds.extend([location.latitude, location.longitude]);
+          bounds.extend([pin.latitude, pin.longitude]);
         });
 
         if (bounds.isValid()) {map.fitBounds(bounds.pad(0.2), { maxZoom: 9 });}
         else {map.setView([45.6, 12.1], 8);}
       } catch (error) {
         console.error('Impossibile inizializzare la mappa', error);
-        status.textContent = 'La mappa non è disponibile. L’elenco delle località resta consultabile.';
+        status.textContent = 'La mappa non è disponibile.';
       }
     })();
   });
