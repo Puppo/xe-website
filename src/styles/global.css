@@ -1052,7 +1052,7 @@ p {
   border: 1px solid var(--line-soft);
 }
 .community-message > p,
-.community-history > p:not(.history-number) {
+.community-history > p:not(.history-stat) {
   color: var(--muted);
 }
 .community-faces {
@@ -1073,14 +1073,31 @@ p {
   border-inline-start: 1px solid var(--line-soft);
   padding-inline-start: 3rem;
 }
-.history-number {
-  margin: 0 0 0.6rem;
+.history-stat {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.6rem 0.9rem;
+  margin: 0 0 0.7rem;
+}
+.history-year {
+  font:
+    700 clamp(2.6rem, 1.8rem + 2.4vw, 3.6rem)/0.95 'Manrope',
+    sans-serif;
+  letter-spacing: -0.04em;
+  color: var(--red);
+  font-variant-numeric: tabular-nums;
+}
+.history-since {
   font:
     700 0.78rem/1 'Manrope',
     sans-serif;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--red);
+  color: var(--muted);
+}
+.community-history h3 {
+  font-size: clamp(1.3rem, 1.1rem + 0.7vw, 1.7rem);
 }
 .sponsor-strip {
   display: flex;
