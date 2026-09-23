@@ -977,8 +977,6 @@ p {
 
 .map-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(15rem, 0.8fr);
-  align-items: center;
   gap: 2rem;
 }
 .community-map {
@@ -1009,16 +1007,6 @@ p {
   color: var(--muted);
   font-size: 0.9rem;
 }
-.member-map-marker {
-  display: grid;
-  place-items: center;
-  color: #fff;
-  font-weight: 800;
-}
-.member-map-marker::before,
-.member-map-marker span {
-  grid-area: 1 / 1;
-}
 .member-map-marker::before {
   content: '';
   inline-size: 100%;
@@ -1028,10 +1016,6 @@ p {
   rotate: -45deg;
   background: var(--signal);
   box-shadow: 0 0.2rem 0.5rem rgb(0 0 0 / 35%);
-}
-.member-map-marker span {
-  position: relative;
-  z-index: 1;
 }
 .leaflet-control-attribution {
   color: #222;
@@ -1043,13 +1027,6 @@ p {
   margin: 0;
   padding: 0;
   list-style: none;
-}
-.location-list li {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  border-block-end: 1px solid var(--line-soft);
-  padding-block: 0.7rem;
 }
 
 .partners {
@@ -1324,7 +1301,6 @@ textarea:user-invalid {
   .detail-grid,
   .person-profile,
   .support-panel,
-  .map-layout,
   .footer-grid,
   .event-grid,
   .community-panel {
