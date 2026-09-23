@@ -88,40 +88,36 @@ Do not commit `dist/`, `.astro/`, Playwright reports, test results, coverage out
 
 ## PR previews on Netlify
 
-PR previews are deployed to a separate Netlify site at <https://xe-website-preview.netlify.app/>. Each preview lives at `pr-{N}/` on that domain, e.g. `https://xe-website-preview.netlify.app/pr-123/`. Production continues to deploy from `main` to GitHub Pages via `.github/workflows/deploy.yml`; the Netlify site hosts **only** previews.
+PR previews are deployed to a separate Netlify site at <https://xe-website-preview.netlify.app/> through Netlify's official GitHub integration. Every pull request gets a Deploy Preview at `deploy-preview-{N}--xe-website-preview.netlify.app/`. Production continues to deploy from `main` to GitHub Pages via `.github/workflows/deploy.yml`; the Netlify site hosts **only** previews.
 
-The preview workflow lives in `.github/workflows/preview.yml` and is driven by `scripts/build-preview-aggregate.mjs`. Because Netlify deploys are atomic, every PR event rebuilds and redeploys the **aggregate** of all currently active PRs. State is held in a `netlify-state` branch in this repo (one file: `state.json`); the workflow updates it on every run.
+### One-time setup
+
+Link the Netlify site to this GitHub repository through the Netlify dashboard (`Site settings → Build & deploy → Continuous deployment → Link repository`). Once linked, every push to a PR branch triggers a Deploy Preview automatically. Confirm that "Deploy Previews" is enabled in the site's build settings.
 
 ### Required secrets
 
-Configure these in the repository's GitHub settings:
-
-| Secret | Purpose |
-| --- | --- |
-| `NETLIFY_AUTH_TOKEN` | Netlify personal access token, scoped to the preview site |
-| `NETLIFY_SITE_ID` | The Site ID for the preview site |
-| `CHECKOUT_TOKEN` | GitHub PAT used only to fetch fork PR heads; `GITHUB_TOKEN` cannot read fork refs |
+No repository secrets are required for the preview pipeline. Netlify stores its own `NETLIFY_AUTH_TOKEN` server-side; the GitHub App communicates with Netlify over that link. The `NETLIFY_SITE_ID` lives in the Netlify dashboard and is not a repository secret either.
 
 ### Fork PRs
 
-The `preview` job skips fork PRs via the `github.event.pull_request.head.repo.full_name == github.repository` guard. To preview a fork PR, a maintainer runs the `PR preview` workflow from the Actions tab via `workflow_dispatch`, supplying the PR number and the head SHA (read with `gh pr view <n> --json headRefOid`). Fork code never runs with secrets on first push.
+By default Netlify does **not** build Deploy Previews for fork PRs until a maintainer approves them. When a fork PR is opened, Netlify's bot comments on the PR with a one-click "Approve" button. Once approved, subsequent pushes on that PR rebuild automatically. Fork code never runs with build secrets on first push.
+
+### noindex
+
+`netlify.toml` sets `PUBLIC_NOINDEX=1` only for the `deploy-preview` build context. That flag renders `<meta name="robots" content="noindex, nofollow">` on every page and serves `Disallow: /` from `/robots.txt`, so search engines never index a preview. Production builds (from `main`) leave `PUBLIC_NOINDEX` unset, so the canonical site stays indexable.
 
 ### Local sanity check
 
 ```sh
-SITE_URL=https://xe-website-preview.netlify.app/pr-999/ PUBLIC_NOINDEX=1 npm run build
+SITE_URL=https://xe-website-preview.netlify.app/ PUBLIC_NOINDEX=1 npm run build
 npm run check:build
 ```
 
-The preview build sets `PUBLIC_NOINDEX=1`, which renders `<meta name="robots" content="noindex, nofollow">` on every page and serves `Disallow: /` from `/robots.txt`.
+Setting `PUBLIC_NOINDEX=1` locally mirrors what Netlify injects on every Deploy Preview build.
 
 ### Where the URL surfaces
 
-The workflow publishes the preview URL in three places:
-
-1. **PR comment** (open/sync and dispatch events only): the bot edits its previous comment so the URL stays stable across pushes.
-2. **GitHub Actions job summary**: written via `$GITHUB_STEP_SUMMARY` so the URL is visible directly in the Actions run page, including the "closed — preview removed" message on cleanup runs.
-3. **Implicit Netlify deploy**: the URL is also reachable directly without leaving Netlify's UI.
+Netlify's GitHub App automatically posts (and updates) a comment on each PR with the preview URL and a link to the deploy's logs in the Netlify dashboard. The URL is also reachable directly from the Netlify site's "Deploys" page.
 
 ## Testing and verification
 

@@ -1,0 +1,10 @@
+[build]
+command = "npm run build"
+publish = "dist"
+
+# Mark every Deploy Preview as noindex: the meta tag in BaseLayout.astro
+# renders <meta name="robots" content="noindex, nofollow"> and robots.txt
+# serves `Disallow: /`. Production (the main branch) leaves PUBLIC_NOINDEX
+# unset so search engines keep indexing the canonical site.
+[context.deploy-preview.environment]
+PUBLIC_NOINDEX = "1"

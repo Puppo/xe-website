@@ -14,9 +14,9 @@ When you participate, please be respectful and constructive. Assume good faith, 
 
 ## Previewing your changes
 
-Pull requests from the same repository get an automatic preview: the `PR preview` workflow builds the site and posts a link such as <https://xe-website-preview.netlify.app/pr-123/> as a comment on the PR. The preview is updated on every push.
+Pull requests get an automatic preview through Netlify's GitHub integration: each PR receives a Deploy Preview at `https://deploy-preview-{N}--xe-website-preview.netlify.app/`, and Netlify's bot posts the link as a comment on the PR. The preview is updated on every push.
 
-Fork PRs do not build automatically. A maintainer can deploy one manually by running the `PR preview` workflow from the Actions tab with the PR number and head SHA (`gh pr view <N> --json headRefOid`). The preview URL follows the same `pr-{N}/` pattern.
+Fork PRs do not build automatically. A maintainer approves them by clicking the **Approve** button in Netlify's bot comment on the PR, or from the Netlify dashboard. Once approved, subsequent pushes rebuild automatically.
 
 ## Development setup
 
