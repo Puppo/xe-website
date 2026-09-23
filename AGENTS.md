@@ -86,6 +86,39 @@ The deployment workflow sets `SITE_URL` from the repository variable or the GitH
 
 Do not commit `dist/`, `.astro/`, Playwright reports, test results, coverage output, or dependency directories.
 
+## PR previews on Netlify
+
+PR previews are deployed to a separate Netlify site at <https://xe-website-preview.netlify.app/> through Netlify's official GitHub integration. Every pull request gets a Deploy Preview at `deploy-preview-{N}--xe-website-preview.netlify.app/`. Production continues to deploy from `main` to GitHub Pages via `.github/workflows/deploy.yml`; the Netlify site hosts **only** previews.
+
+### One-time setup
+
+Link the Netlify site to this GitHub repository through the Netlify dashboard (`Site settings → Build & deploy → Continuous deployment → Link repository`). Once linked, every push to a PR branch triggers a Deploy Preview automatically. Confirm that "Deploy Previews" is enabled in the site's build settings.
+
+### Required secrets
+
+No repository secrets are required for the preview pipeline. Netlify stores its own `NETLIFY_AUTH_TOKEN` server-side; the GitHub App communicates with Netlify over that link. The `NETLIFY_SITE_ID` lives in the Netlify dashboard and is not a repository secret either.
+
+### Fork PRs
+
+By default Netlify does **not** build Deploy Previews for fork PRs until a maintainer approves them. When a fork PR is opened, Netlify's bot comments on the PR with a one-click "Approve" button. Once approved, subsequent pushes on that PR rebuild automatically. Fork code never runs with build secrets on first push.
+
+### noindex
+
+`netlify.toml` sets `PUBLIC_NOINDEX=1` only for the `deploy-preview` build context. That flag renders `<meta name="robots" content="noindex, nofollow">` on every page and serves `Disallow: /` from `/robots.txt`, so search engines never index a preview. Production builds (from `main`) leave `PUBLIC_NOINDEX` unset, so the canonical site stays indexable.
+
+### Local sanity check
+
+```sh
+SITE_URL=https://xe-website-preview.netlify.app/ PUBLIC_NOINDEX=1 npm run build
+npm run check:build
+```
+
+Setting `PUBLIC_NOINDEX=1` locally mirrors what Netlify injects on every Deploy Preview build.
+
+### Where the URL surfaces
+
+Netlify's GitHub App automatically posts (and updates) a comment on each PR with the preview URL and a link to the deploy's logs in the Netlify dashboard. The URL is also reachable directly from the Netlify site's "Deploys" page.
+
 ## Testing and verification
 
 Use the smallest relevant check while iterating, then run every required check for the affected area.

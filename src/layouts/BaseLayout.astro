@@ -42,6 +42,7 @@ const { title, description, image = '/images/social-card.svg', type = 'website',
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light dark" />
     <meta name="theme-color" content="#f6f8f9" />
+    {import.meta.env.PUBLIC_NOINDEX && <meta name="robots" content="noindex, nofollow" />}
     <ThemeScript />
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />

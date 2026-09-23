@@ -12,6 +12,12 @@ The project is released under the [MIT License](LICENSE).
 
 When you participate, please be respectful and constructive. Assume good faith, stay on topic, and welcome newcomers.
 
+## Previewing your changes
+
+Pull requests get an automatic preview through Netlify's GitHub integration: each PR receives a Deploy Preview at `https://deploy-preview-{N}--xe-website-preview.netlify.app/`, and Netlify's bot posts the link as a comment on the PR. The preview is updated on every push.
+
+Fork PRs do not build automatically. A maintainer approves them by clicking the **Approve** button in Netlify's bot comment on the PR, or from the Netlify dashboard. Once approved, subsequent pushes rebuild automatically.
+
 ## Development setup
 
 The project is a single-package npm repository. It runs on Node.js 24 or newer and uses the npm lockfile — please do not introduce another package manager or lockfile.
