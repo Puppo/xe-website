@@ -141,8 +141,12 @@ export const personSchema = z.object({
 
 export const partnerSchema = z.object({
   image: z.string().optional(),
+  imageHeight: z.number().int().positive().optional(),
+  imageWidth: z.number().int().positive().optional(),
   kind: z.enum(['sponsor', 'supporter']),
   name: z.string(),
+  order: z.number().int().positive().optional(),
+  published: z.boolean().default(true),
   url: z.url(),
 });
 

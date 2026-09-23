@@ -93,6 +93,45 @@ test('l’anno della storia è tra Dal e ad oggi su mobile', async ({
   }
 });
 
+test('i sostenitori attuali mostrano tutti i loghi e i collegamenti', async ({
+  page,
+}) => {
+  await page.goto('/');
+  const section = page.locator('.partner-section');
+  await expect(section.getByRole('heading', { level: 3 })).toHaveCount(2);
+
+  const expectedPartners = [
+    ['Sessionize', 'https://sessionize.com/'],
+    ['Eventitech', 'https://eventitech.it/'],
+    ['Hunext', 'https://www.hunext.com/'],
+    ['Yalp', 'https://www.yalp.me/'],
+  ];
+
+  for (const [name, url] of expectedPartners) {
+    const logo = section.getByRole('img', { name });
+    await logo.scrollIntoViewIfNeeded();
+    await expect(logo).toBeVisible();
+    expect(
+      await logo.evaluate(
+        (image: HTMLImageElement) => image.complete && image.naturalWidth > 0,
+      ),
+    ).toBe(true);
+    await expect(section.getByRole('link', { name })).toHaveAttribute(
+      'href',
+      url,
+    );
+  }
+
+  expect(
+    await section
+      .locator('.partners img')
+      .evaluateAll((images) =>
+        images.map((image) => image.getAttribute('alt')),
+      ),
+  ).toEqual(expectedPartners.map(([name]) => name));
+  await expect(section.getByRole('link')).toHaveCount(4);
+});
+
 test('la navigazione principale raggiunge gli eventi', async ({ page }) => {
   await page.goto('/');
   const menuButton = page.getByRole('button', { name: 'Apri il menu' });
