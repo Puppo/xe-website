@@ -114,3 +114,19 @@ jobs:
           gh pr comment "${{ inputs.pr_number }}" \
             --edit-last --create-if-none \
             --body "🔎 Preview (maintainer-approved): $URL"
+
+      - name: Publish preview URL to job summary
+        if: always() && steps.target.outputs.number != ''
+        run: |
+          {
+            echo "## 🔎 PR preview"
+            echo ""
+            if [ "${{ github.event_name }}" = "pull_request" ] \
+              && [ "${{ github.event.action }}" = "closed" ]; then
+              echo "PR #\${{ steps.target.outputs.number }} closed — its preview was removed from the Netlify site."
+            else
+              echo "**Preview URL:** <https://xe-website-preview.netlify.app/pr-\${{ steps.target.outputs.number }}/>"
+            fi
+            echo ""
+            echo "_Netlify site: <https://xe-website-preview.netlify.app/> — production deploys are unaffected._"
+          } >> "$GITHUB_STEP_SUMMARY"

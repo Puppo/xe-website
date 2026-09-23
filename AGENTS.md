@@ -115,6 +115,14 @@ npm run check:build
 
 The preview build sets `PUBLIC_NOINDEX=1`, which renders `<meta name="robots" content="noindex, nofollow">` on every page and serves `Disallow: /` from `/robots.txt`.
 
+### Where the URL surfaces
+
+The workflow publishes the preview URL in three places:
+
+1. **PR comment** (open/sync and dispatch events only): the bot edits its previous comment so the URL stays stable across pushes.
+2. **GitHub Actions job summary**: written via `$GITHUB_STEP_SUMMARY` so the URL is visible directly in the Actions run page, including the "closed — preview removed" message on cleanup runs.
+3. **Implicit Netlify deploy**: the URL is also reachable directly without leaving Netlify's UI.
+
 ## Testing and verification
 
 Use the smallest relevant check while iterating, then run every required check for the affected area.
