@@ -88,13 +88,16 @@ test('i sostenitori attuali mostrano tutti i loghi e i collegamenti', async ({
 }) => {
   await page.goto('/');
   const section = page.locator('.partner-section');
-  await expect(section.getByRole('heading', { level: 3 })).toHaveCount(2);
+  await expect(section.getByRole('heading', { level: 3 })).toHaveText([
+    'Grazie per il supporto alle attività del gruppo',
+    'Con il sostegno di',
+  ]);
 
   const expectedPartners = [
-    ['Sessionize', 'https://sessionize.com/'],
-    ['Eventitech', 'https://eventitech.it/'],
     ['Hunext', 'https://www.hunext.com/'],
     ['Yalp', 'https://www.yalp.me/'],
+    ['Sessionize', 'https://sessionize.com/'],
+    ['Eventitech', 'https://eventitech.it/'],
   ];
 
   for (const [name, url] of expectedPartners) {
