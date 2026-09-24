@@ -1097,7 +1097,7 @@ p {
   display: grid;
   grid-template-columns: repeat(3, max-content);
   align-items: baseline;
-  column-gap: 0.45rem;
+  column-gap: 0.2rem;
   row-gap: 0.35rem;
   margin: 0 0 0.7rem;
 }
