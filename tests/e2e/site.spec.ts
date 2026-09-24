@@ -24,7 +24,7 @@ for (const path of representativePages) {
   });
 }
 
-test('l’anno della storia è tra Dal e ad oggi su mobile', async ({
+test('Dal 2006 ad oggi ha lo stesso layout su mobile e desktop', async ({
   page,
   isMobile,
 }) => {
@@ -43,53 +43,43 @@ test('l’anno della storia è tra Dal e ad oggi su mobile', async ({
     expect(to).not.toBeNull();
     expect(action).not.toBeNull();
     await expect(history.locator('.history-line')).toContainText(
-      /Dal\s+2006\s+ad oggi\s+·\s+per crescere insieme\./,
+      /Dal\s+2006\s+ad oggi\s+per crescere insieme\./,
     );
 
-    if (isMobile) {
-      expect((from?.x ?? Infinity) + (from?.width ?? Infinity)).toBeLessThan(
-        year?.x ?? -Infinity,
-      );
-      expect((year?.x ?? Infinity) + (year?.width ?? Infinity)).toBeLessThan(
-        to?.x ?? -Infinity,
-      );
-      expect((from?.y ?? Infinity) < (year?.y ?? 0) + (year?.height ?? 0)).toBe(
-        true,
-      );
-      expect((from?.y ?? 0) + (from?.height ?? 0)).toBeGreaterThan(
-        year?.y ?? Infinity,
-      );
-      expect((to?.y ?? Infinity) < (year?.y ?? 0) + (year?.height ?? 0)).toBe(
-        true,
-      );
-      expect((to?.y ?? 0) + (to?.height ?? 0)).toBeGreaterThan(
-        year?.y ?? Infinity,
-      );
-      const descriptionBox = await history
-        .locator(':scope > p:not(.history-line)')
-        .boundingBox();
-      expect(descriptionBox).not.toBeNull();
-      expect(Math.abs((from?.x ?? 0) - (descriptionBox?.x ?? 0))).toBeLessThan(
-        2,
-      );
-      expect(
-        Math.abs((action?.x ?? 0) - (descriptionBox?.x ?? 0)),
-      ).toBeLessThan(2);
-      expect(action?.y ?? -Infinity).toBeGreaterThan(
-        (year?.y ?? 0) + (year?.height ?? 0),
-      );
-      expect(
-        await page.evaluate(
-          () => document.documentElement.scrollWidth <= window.innerWidth,
-        ),
-      ).toBe(true);
-    } else {
-      expect(Math.abs((from?.y ?? 0) - (to?.y ?? 0))).toBeLessThan(2);
-      expect(year?.y ?? -Infinity).toBeGreaterThan(
-        (from?.y ?? 0) + (from?.height ?? 0),
-      );
-      expect(Math.abs((year?.y ?? 0) - (action?.y ?? 0))).toBeLessThan(20);
-    }
+    expect((from?.x ?? Infinity) + (from?.width ?? Infinity)).toBeLessThan(
+      year?.x ?? -Infinity,
+    );
+    expect((year?.x ?? Infinity) + (year?.width ?? Infinity)).toBeLessThan(
+      to?.x ?? -Infinity,
+    );
+    expect((from?.y ?? Infinity) < (year?.y ?? 0) + (year?.height ?? 0)).toBe(
+      true,
+    );
+    expect((from?.y ?? 0) + (from?.height ?? 0)).toBeGreaterThan(
+      year?.y ?? Infinity,
+    );
+    expect((to?.y ?? Infinity) < (year?.y ?? 0) + (year?.height ?? 0)).toBe(
+      true,
+    );
+    expect((to?.y ?? 0) + (to?.height ?? 0)).toBeGreaterThan(
+      year?.y ?? Infinity,
+    );
+    const descriptionBox = await history
+      .locator(':scope > p:not(.history-line)')
+      .boundingBox();
+    expect(descriptionBox).not.toBeNull();
+    expect(Math.abs((from?.x ?? 0) - (descriptionBox?.x ?? 0))).toBeLessThan(2);
+    expect(Math.abs((action?.x ?? 0) - (descriptionBox?.x ?? 0))).toBeLessThan(
+      2,
+    );
+    expect(action?.y ?? -Infinity).toBeGreaterThan(
+      (year?.y ?? 0) + (year?.height ?? 0),
+    );
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= window.innerWidth,
+      ),
+    ).toBe(true);
   }
 });
 
