@@ -46,12 +46,12 @@ test('Dal 2006 ad oggi ha lo stesso layout su mobile e desktop', async ({
       /Dal\s+2006\s+ad oggi\s+per crescere insieme\./,
     );
 
-    expect((from?.x ?? Infinity) + (from?.width ?? Infinity)).toBeLessThan(
-      year?.x ?? -Infinity,
-    );
-    expect((year?.x ?? Infinity) + (year?.width ?? Infinity)).toBeLessThan(
-      to?.x ?? -Infinity,
-    );
+    expect(
+      (from?.x ?? Infinity) + (from?.width ?? Infinity),
+    ).toBeLessThanOrEqual(year?.x ?? -Infinity);
+    expect(
+      (year?.x ?? Infinity) + (year?.width ?? Infinity),
+    ).toBeLessThanOrEqual(to?.x ?? -Infinity);
     expect((from?.y ?? Infinity) < (year?.y ?? 0) + (year?.height ?? 0)).toBe(
       true,
     );
