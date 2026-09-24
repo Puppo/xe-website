@@ -158,7 +158,7 @@ const currentRegistrationState = event ? registrationState(event) : undefined,
         <div class="registration">
           <h2>Iscrizione</h2>
           <p>{registrationMessage(event)}</p>
-          {currentRegistrationState === 'open' && event.data.registration.url && <a class="button" href={event.data.registration.url} rel="noreferrer">{event.data.registration.label ?? 'Iscriviti all’evento'}</a>}
+          {currentRegistrationState === 'open' && event.data.registration.url && <a class="button" href={event.data.registration.url} target="_blank" rel="noreferrer">{event.data.registration.label ?? 'Iscriviti all’evento'}<span class="visually-hidden"> (si apre in una nuova scheda)</span></a>}
         </div>
       </aside>
     </div>
