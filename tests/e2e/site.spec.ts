@@ -24,6 +24,107 @@ for (const path of representativePages) {
   });
 }
 
+test('Dal 2006 ad oggi ha lo stesso layout su mobile e desktop', async ({
+  page,
+  isMobile,
+}) => {
+  for (const width of isMobile ? [320, 412] : [1280]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto('/');
+
+    const history = page.locator('.community-history');
+    const from = await history.locator('.history-from').boundingBox();
+    const year = await history.locator('.history-year').boundingBox();
+    const to = await history.locator('.history-to').boundingBox();
+    const action = await history.locator('.history-action').boundingBox();
+
+    expect(from).not.toBeNull();
+    expect(year).not.toBeNull();
+    expect(to).not.toBeNull();
+    expect(action).not.toBeNull();
+    await expect(history.locator('.history-line')).toContainText(
+      /Dal\s+2006\s+ad oggi\s+per crescere insieme\./,
+    );
+
+    expect(
+      (from?.x ?? Infinity) + (from?.width ?? Infinity),
+    ).toBeLessThanOrEqual(year?.x ?? -Infinity);
+    expect(
+      (year?.x ?? Infinity) + (year?.width ?? Infinity),
+    ).toBeLessThanOrEqual(to?.x ?? -Infinity);
+    expect((from?.y ?? Infinity) < (year?.y ?? 0) + (year?.height ?? 0)).toBe(
+      true,
+    );
+    expect((from?.y ?? 0) + (from?.height ?? 0)).toBeGreaterThan(
+      year?.y ?? Infinity,
+    );
+    expect((to?.y ?? Infinity) < (year?.y ?? 0) + (year?.height ?? 0)).toBe(
+      true,
+    );
+    expect((to?.y ?? 0) + (to?.height ?? 0)).toBeGreaterThan(
+      year?.y ?? Infinity,
+    );
+    const descriptionBox = await history
+      .locator(':scope > p:not(.history-line)')
+      .boundingBox();
+    expect(descriptionBox).not.toBeNull();
+    expect(Math.abs((from?.x ?? 0) - (descriptionBox?.x ?? 0))).toBeLessThan(2);
+    expect(Math.abs((action?.x ?? 0) - (descriptionBox?.x ?? 0))).toBeLessThan(
+      2,
+    );
+    expect(action?.y ?? -Infinity).toBeGreaterThan(
+      (year?.y ?? 0) + (year?.height ?? 0),
+    );
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= window.innerWidth,
+      ),
+    ).toBe(true);
+  }
+});
+
+test('i sostenitori attuali mostrano tutti i loghi e i collegamenti', async ({
+  page,
+}) => {
+  await page.goto('/');
+  const section = page.locator('.partner-section');
+  await expect(section.getByRole('heading', { level: 3 })).toHaveText([
+    'Grazie per il supporto alle attività del gruppo',
+    'Con il sostegno di',
+  ]);
+
+  const expectedPartners = [
+    ['Hunext', 'https://www.hunext.com/'],
+    ['Yalp', 'https://www.yalp.me/'],
+    ['Sessionize', 'https://sessionize.com/'],
+    ['Eventitech', 'https://eventitech.it/'],
+  ];
+
+  for (const [name, url] of expectedPartners) {
+    const logo = section.getByRole('img', { name });
+    await logo.scrollIntoViewIfNeeded();
+    await expect(logo).toBeVisible();
+    expect(
+      await logo.evaluate(
+        (image: HTMLImageElement) => image.complete && image.naturalWidth > 0,
+      ),
+    ).toBe(true);
+    await expect(section.getByRole('link', { name })).toHaveAttribute(
+      'href',
+      url,
+    );
+  }
+
+  expect(
+    await section
+      .locator('.partners img')
+      .evaluateAll((images) =>
+        images.map((image) => image.getAttribute('alt')),
+      ),
+  ).toEqual(expectedPartners.map(([name]) => name));
+  await expect(section.getByRole('link')).toHaveCount(4);
+});
+
 test('la navigazione principale raggiunge gli eventi', async ({ page }) => {
   await page.goto('/');
   const menuButton = page.getByRole('button', { name: 'Apri il menu' });

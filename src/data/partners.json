@@ -4,6 +4,9 @@
     "name": "Sessionize",
     "url": "https://sessionize.com/",
     "image": "/media/1184-sessionize-logo.png",
+    "imageWidth": 200,
+    "imageHeight": 99,
+    "order": 1,
     "kind": "sponsor"
   },
   {
@@ -11,30 +14,50 @@
     "name": "Eventitech",
     "url": "https://eventitech.it/",
     "image": "/media/1223-logo-eventitech-200.png",
+    "imageWidth": 200,
+    "imageHeight": 47,
+    "order": 2,
     "kind": "sponsor"
   },
   {
     "id": "jetbrains",
     "name": "JetBrains",
     "url": "https://www.jetbrains.com/",
-    "kind": "supporter"
+    "kind": "supporter",
+    "published": false
   },
   {
     "id": "telerik",
     "name": "Telerik",
     "url": "https://www.telerik.com/",
-    "kind": "supporter"
+    "kind": "supporter",
+    "published": false
   },
   {
     "id": "redgate",
     "name": "Redgate",
     "url": "https://www.red-gate.com/",
-    "kind": "supporter"
+    "kind": "supporter",
+    "published": false
   },
   {
     "id": "hunext",
     "name": "Hunext",
     "url": "https://www.hunext.com/",
+    "image": "/media/1020-hunext-hrsolutions-200x100.png",
+    "imageWidth": 200,
+    "imageHeight": 100,
+    "order": 3,
+    "kind": "supporter"
+  },
+  {
+    "id": "yalp",
+    "name": "Yalp",
+    "url": "https://www.yalp.me/",
+    "image": "/media/1117-yalp-200x100.png",
+    "imageWidth": 200,
+    "imageHeight": 100,
+    "order": 4,
     "kind": "supporter"
   }
 ]

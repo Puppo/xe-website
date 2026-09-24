@@ -11,7 +11,11 @@ const events = (await getCollection('events', ({ data }) => !data.draft)).sort(s
  nextEvent = nextScheduledEvent(upcoming),
  [site] = await getCollection('site'),
  people = await getCollection('people', ({ data }) => data.published && data.roles.includes('member')),
- partners = await getCollection('partners'),
+ partners = (await getCollection('partners')).sort((a, b) => (a.data.order ?? Infinity) - (b.data.order ?? Infinity)),
+ partnerGroups = [
+   { title: 'Grazie per il supporto alle attività del gruppo', entries: partners.filter((partner) => partner.data.published && partner.data.kind === 'supporter') },
+   { title: 'Con il sostegno di', entries: partners.filter((partner) => partner.data.published && partner.data.kind === 'sponsor') },
+ ],
  faces = people.filter((person) => person.data.image).slice(0, 5);
 ---
 
@@ -71,21 +75,36 @@ const events = (await getCollection('events', ({ data }) => !data.draft)).sort(s
         <a class="button button-secondary" href={withBase('/soci/')}>Conosci i {people.length} soci</a>
       </div>
       <div class="community-history">
-        <p class="history-eyebrow">Dal &mdash; ad oggi</p>
         <p class="history-line">
-          <span class="history-year">2006</span>
-          <span class="history-dot" aria-hidden="true">&middot;</span>
+          <span class="history-from">Dal</span>{' '}
+          <span class="history-year">2006</span>{' '}
+          <span class="history-to">ad oggi</span>{' '}
           <span class="history-action">per crescere insieme.</span>
         </p>
         <p>Esplora gli incontri, i materiali e le idee che hanno fatto la storia di XE.</p>
         <a href={withBase('/eventi/')}>Esplora il nostro archivio</a>
       </div>
     </div>
-    <div class="sponsor-strip">
-        <p>Insieme a chi crede nella condivisione</p>
-        <ul class="partners" role="list">
-          {partners.filter((partner) => partner.data.kind === 'sponsor').map((partner) => <li><a href={partner.data.url} rel="noreferrer">{partner.data.name}</a></li>)}
-        </ul>
+    <div class="partner-section">
+      <h2>Insieme a chi crede nella condivisione</h2>
+      <div class="partner-groups">
+        {partnerGroups.map((group) => (
+          <div class="partner-group">
+            <h3>{group.title}</h3>
+            <ul class="partners" role="list">
+              {group.entries.map((partner) => (
+                <li>
+                  <a href={partner.data.url} rel="noreferrer">
+                    {partner.data.image ? (
+                      <img src={withBase(partner.data.image)} alt={partner.data.name} width={partner.data.imageWidth ?? 200} height={partner.data.imageHeight ?? 100} loading="lazy" decoding="async" />
+                    ) : partner.data.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
     </div>
   </section>
 
