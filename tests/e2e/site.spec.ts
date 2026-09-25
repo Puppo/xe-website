@@ -274,13 +274,14 @@ test('le biografie dei soci sono renderizzate dal Markdown', async ({
   page,
 }) => {
   await page.goto('/soci/daniele-morosinotto/');
-  await expect(page.locator('.person-profile .prose > p')).toHaveCount(5);
+  await expect(page.locator('.person-profile .prose > p')).toHaveCount(4);
   await expect(page.locator('meta[name="description"]')).toHaveAttribute(
     'content',
     /Sono un appassionato di tecnologia/,
   );
-  await expect(page.locator('.profile-aside')).toBeVisible();
-  await expect(page.locator('.profile-aside-section').first()).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'Eventi con Daniele Morosinotto' }),
+  ).toBeVisible();
 
   await page.goto('/soci/alessandro-calzavara/');
   await expect(page.locator('meta[name="description"]')).toHaveAttribute(
@@ -308,8 +309,33 @@ test('l’elenco dei soci raggruppa i profili per iniziale e offre il salto rapi
   expect(firstLetter).toBeTruthy();
   const band = page.locator(`#lettera-${firstLetter}`);
   await expect(band).toBeVisible();
-  await expect(band.locator('.letter-glyph')).toHaveText(firstLetter ?? '');
-  expect(await band.locator('.person-card').count()).toBeGreaterThan(0);
+  await expect(band.locator('h3')).toHaveText(firstLetter ?? '');
+  expect(await band.locator('.soci-person').count()).toBeGreaterThan(0);
+});
+
+test('le pagine dei soci si adattano alle larghezze desktop e mobile', async ({
+  page,
+}) => {
+  for (const width of [320, 390, 768, 1024, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    for (const path of ['/soci/', '/soci/daniele-morosinotto/']) {
+      await page.goto(path);
+      const layout = await page.evaluate(() => ({
+        documentWidth: document.documentElement.scrollWidth,
+        viewportWidth: window.innerWidth,
+      }));
+      expect(layout.documentWidth, `${path} a ${width}px`).toBeLessThanOrEqual(
+        layout.viewportWidth,
+      );
+    }
+    const profileColumns = await page
+      .locator('.person-profile')
+      .evaluate(
+        (element) =>
+          getComputedStyle(element).gridTemplateColumns.split(' ').length,
+      );
+    expect(profileColumns).toBe(width < 832 ? 1 : 2);
+  }
 });
 
 test('la mappa dei soci mostra subito la mappa con i pin e mantiene un’alternativa testuale', async ({

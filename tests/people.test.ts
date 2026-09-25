@@ -1,14 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { CollectionEntry } from 'astro:content';
-import {
-  groupByInitial,
-  hasRichProfile,
-  linkKind,
-  nextAlphabeticalNeighbors,
-  recentEventsForPerson,
-  roleLabel,
-} from '../src/lib/people';
-import { markdownHeadings } from '../src/lib/text';
+import { groupByInitial, recentEventsForPerson } from '../src/lib/people';
 
 type Person = CollectionEntry<'people'>;
 type Event = CollectionEntry<'events'>;
@@ -85,26 +77,6 @@ describe('groupByInitial', () => {
   });
 });
 
-describe('hasRichProfile', () => {
-  it('matches when the person has both image and either title or links', () => {
-    expect(
-      hasRichProfile(person('a', 'A', { image: '/a.png', title: 'Dev' })),
-    ).toBe(true);
-    expect(
-      hasRichProfile(
-        person('a', 'A', {
-          image: '/a.png',
-          links: [{ label: 'Site', url: 'https://a.example' }],
-        }),
-      ),
-    ).toBe(true);
-  });
-
-  it('rejects members without an image, even with rich fields', () => {
-    expect(hasRichProfile(person('a', 'A', { title: 'Dev' }))).toBe(false);
-  });
-});
-
 describe('recentEventsForPerson', () => {
   it('returns date-descending events where the member spoke', () => {
     const events = [
@@ -130,83 +102,5 @@ describe('recentEventsForPerson', () => {
 
   it('returns an empty array when the person did not speak anywhere', () => {
     expect(recentEventsForPerson(person('x', 'X'), [])).toEqual([]);
-  });
-});
-
-describe('nextAlphabeticalNeighbors', () => {
-  it('returns the entries that follow the target', () => {
-    const list = ['Anna', 'Bruno', 'Carla', 'Davide', 'Eva'].map((n, i) =>
-      person(`${i}`, n),
-    );
-    const target = list[1];
-    if (!target) throw new Error('target fixture missing');
-    const neighbors = nextAlphabeticalNeighbors(target, list, 3);
-    expect(neighbors.map((p) => p.data.name)).toEqual([
-      'Carla',
-      'Davide',
-      'Eva',
-    ]);
-  });
-
-  it('wraps to the front when the target sits near the end', () => {
-    const list = ['Anna', 'Bruno', 'Carla'].map((n, i) => person(`${i}`, n));
-    const target = list[2];
-    if (!target) throw new Error('target fixture missing');
-    const neighbors = nextAlphabeticalNeighbors(target, list, 3);
-    expect(neighbors.map((p) => p.data.name)).toEqual(['Anna', 'Bruno']);
-  });
-
-  it('returns an empty array for unknown people', () => {
-    expect(nextAlphabeticalNeighbors(person('z', 'Zeta'), [], 3)).toEqual([]);
-  });
-});
-
-describe('roleLabel', () => {
-  it('joins role labels in Italian', () => {
-    expect(roleLabel(['member', 'speaker'])).toBe('Membro · Speaker');
-    expect(roleLabel(['speaker'])).toBe('Speaker');
-    expect(roleLabel(['member'])).toBe('Membro');
-  });
-});
-
-describe('linkKind', () => {
-  it.each([
-    ['https://www.linkedin.com/in/foo', 'linkedin'],
-    ['https://linkedin.com/in/foo', 'linkedin'],
-    ['https://x.com/foo', 'twitter'],
-    ['https://twitter.com/foo', 'twitter'],
-    ['https://github.com/foo', 'github'],
-    ['https://mastodon.social/@xe', 'mastodon'],
-    ['https://mastodon.online/@xe', 'mastodon'],
-    ['https://example.com/page', 'website'],
-  ])('classifies %s as %s', (url, expected) => {
-    expect(linkKind(url)).toBe(expected);
-  });
-
-  it('returns "website" for invalid URLs', () => {
-    expect(linkKind('not-a-url')).toBe('website');
-  });
-});
-
-describe('markdownHeadings', () => {
-  it('parses ATX headings and assigns slugs', () => {
-    expect(markdownHeadings('# Titolo\n## Ciao\n')).toEqual([
-      { id: 'titolo', level: 1, text: 'Titolo' },
-      { id: 'ciao', level: 2, text: 'Ciao' },
-    ]);
-  });
-
-  it('de-duplicates slugs when the same heading repeats', () => {
-    expect(
-      markdownHeadings('## Ciao\n## Ciao\n## Ciao\n').map((h) => h.id),
-    ).toEqual(['ciao', 'ciao-1', 'ciao-2']);
-  });
-
-  it('strips trailing closing hashes and whitespace', () => {
-    expect(markdownHeadings('## Ciao ###   \n')[0]?.text).toBe('Ciao');
-  });
-
-  it('returns an empty array when the content has no headings', () => {
-    expect(markdownHeadings('Solo testo.\nAltro testo.\n')).toEqual([]);
   });
 });

@@ -1,25 +1,12 @@
 ---
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import { externalLinkProps, isExternalUrl, withBase } from '../../../lib/urls';
 import { eventSlug, formatCalendarDate } from '../../../lib/events';
+import { recentEventsForPerson } from '../../../lib/people';
 import { initials, markdownExcerpt } from '../../../lib/text';
-import {
-  LINK_KIND_LABELS,
-  linkKind,
-  nextAlphabeticalNeighbors,
-  recentEventsForPerson,
-  roleLabel,
-} from '../../../lib/people';
+import { externalLinkProps, isExternalUrl, withBase } from '../../../lib/urls';
 
-const siteOrigin = Astro.site?.origin,
-  hostname = (url: string): string => {
-    try {
-      return new URL(url).hostname.replace(/^www\./, '');
-    } catch {
-      return url;
-    }
-  };
+const siteOrigin = Astro.site?.origin;
 
 export async function getStaticPaths() {
   const members = await getCollection(
@@ -29,168 +16,77 @@ export async function getStaticPaths() {
   return members.map((member) => ({ params: { slug: member.id }, props: { member } }));
 }
 
-const { member } = Astro.props,
-  { Content } = await render(member),
-  description = markdownExcerpt(member.body ?? '') || `${member.data.name}, socio di XeDotNet.`,
-  allMembers = await getCollection(
-    'people',
-    ({ data }) => data.published && data.roles.includes('member'),
-  ),
-  events = await getCollection('events', ({ data }) => !data.draft),
-  recentEvents = recentEventsForPerson(member, events, 3),
-  neighbors = nextAlphabeticalNeighbors(member, allMembers, 3),
-  dedupedExternalLinks = [
-    member.data.profileUrl,
-    ...member.data.links.map((link) => link.url),
-  ].filter((value, index, list): value is string => {
-    if (typeof value !== 'string' || value.length === 0) {
-      return false;
-    }
-    return list.indexOf(value) === index;
-  }),
-  personStructuredData = {
-    '@context': 'https://schema.org',
-    '@type': 'Person',
-    name: member.data.name,
-    url: new URL(withBase(`/soci/${member.id}/`), Astro.site).href,
-    ...(member.data.title ? { jobTitle: member.data.title } : {}),
-    ...(dedupedExternalLinks.length > 0 ? { sameAs: dedupedExternalLinks } : {}),
-  };
+const { member } = Astro.props;
+const { Content } = await render(member);
+const description = markdownExcerpt(member.body ?? '') || `${member.data.name}, socio di XeDotNet.`;
+const events = await getCollection('events', ({ data }) => !data.draft);
+const recentEvents = recentEventsForPerson(member, events, 3);
+const links = [
+  ...(member.data.profileUrl ? [{ label: 'Profilo personale', url: member.data.profileUrl }] : []),
+  ...member.data.links,
+].filter((link, index, all) => all.findIndex((item) => item.url === link.url) === index);
+const personStructuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: member.data.name,
+  url: new URL(withBase(`/soci/${member.id}/`), Astro.site).href,
+  ...(member.data.title ? { jobTitle: member.data.title } : {}),
+  ...(links.length > 0 ? { sameAs: links.map((link) => link.url) } : {}),
+};
 ---
 
-<BaseLayout
-  title={member.data.name}
-  description={description}
-  type="article"
-  structuredData={personStructuredData}
->
-  <header class="page-hero">
+<BaseLayout title={member.data.name} description={description} type="article" structuredData={personStructuredData}>
+  <header class="page-hero soci-hero soci-detail-hero">
     <div class="shell">
       <p class="breadcrumbs"><a href={withBase('/')}>Home</a> / <a href={withBase('/soci/')}>Soci</a> / {member.data.name}</p>
-      <p class="community-tag"><span aria-hidden="true"></span>{roleLabel(member.data.roles)}</p>
+      <p class="soci-overline">{member.data.roles.includes('speaker') ? 'Socio e speaker' : 'Socio di XeDotNet'}</p>
       <h1>{member.data.name}</h1>
-      {member.data.title && <p>{member.data.title}</p>}
+      {member.data.title && <p class="soci-subtitle">{member.data.title}</p>}
     </div>
   </header>
-  <section class="section shell profile-detail">
+
+  <div class="section shell soci-detail">
     <div class="person-profile">
-      <aside class="person-profile-card" aria-label="Riepilogo del socio">
-        <figure>
-          {member.data.image ? (
-            <img
-              class="person-photo"
-              src={withBase(member.data.image)}
-              alt={`Ritratto di ${member.data.name}`}
-              width="600"
-              height="450"
-            />
-          ) : (
-            <span class="person-placeholder" aria-hidden="true">{initials(member.data.name)}</span>
-          )}
-        </figure>
-        <div class="person-profile-actions">
-          {member.data.profileUrl ? (
-            <a class="button" href={member.data.profileUrl} {...externalLinkProps(member.data.profileUrl, siteOrigin)}>
-              Indirizzo esterno <span aria-hidden="true">↗</span>
-              {isExternalUrl(member.data.profileUrl, siteOrigin) && <span class="visually-hidden"> (si apre in una nuova scheda)</span>}
-            </a>
-          ) : (
-            <a class="button button-secondary" href={withBase('/soci/')}>Vedi tutti i soci</a>
-          )}
-          {member.data.profileUrl && (
-            <a class="button button-secondary" href={withBase('/soci/')}>Tutti i soci</a>
-          )}
-        </div>
-        {member.data.links.length > 0 && (
-          <ul class="profile-links" aria-label="Profili e collegamenti">
-            {member.data.links.map((link) => {
-              const kind = linkKind(link.url);
-              return (
+      <figure class="soci-portrait">
+        {member.data.image ? (
+          <img src={withBase(member.data.image)} alt={`Ritratto di ${member.data.name}`} width="600" height="600" />
+        ) : (
+          <span class="soci-initials" aria-hidden="true">{initials(member.data.name)}</span>
+        )}
+      </figure>
+      <div class="soci-story">
+        <article class="prose"><Content /></article>
+        {links.length > 0 && (
+          <section class="soci-links" aria-labelledby="soci-links-h">
+            <h2 id="soci-links-h">Collegamenti</h2>
+            <ul>
+              {links.map((link) => (
                 <li>
-                  <a class="chip-link" href={link.url} {...externalLinkProps(link.url, siteOrigin)}>
-                    <span class="visually-hidden">{LINK_KIND_LABELS[kind]}: </span>{link.label}
+                  <a href={link.url} {...externalLinkProps(link.url, siteOrigin)}>
+                    {link.label}<span aria-hidden="true"> ↗</span>
                     {isExternalUrl(link.url, siteOrigin) && <span class="visually-hidden"> (si apre in una nuova scheda)</span>}
                   </a>
                 </li>
-              );
-            })}
-          </ul>
+              ))}
+            </ul>
+          </section>
         )}
-        <dl class="profile-meta" aria-label="Informazioni del profilo">
-          <div><dt>Ruolo</dt><dd><span class="chip-stack">{member.data.roles.map((role) => <span class="chip">{role === 'speaker' ? 'Speaker' : 'Membro'}</span>)}</span></dd></div>
-          <div><dt>Nome</dt><dd>{member.data.name}</dd></div>
-          {member.data.title && <div><dt>Titolo</dt><dd>{member.data.title}</dd></div>}
-          {member.data.profileUrl && (
-            <div>
-              <dt>Sito</dt>
-              <dd><a class="profile-meta-value" href={member.data.profileUrl} {...externalLinkProps(member.data.profileUrl, siteOrigin)}>{hostname(member.data.profileUrl)}</a></dd>
-            </div>
-          )}
-        </dl>
-      </aside>
-      <article class="prose">
-        <Content />
-        <p><a href={withBase('/soci/')}>Torna all’elenco dei soci</a></p>
-      </article>
-    </div>
-    <aside class="profile-aside" aria-label="Esplora">
-      {recentEvents.length > 0 && (
-        <section class="profile-aside-section" aria-labelledby="aside-talks">
-          <h3 id="aside-talks" class="profile-aside-title">Attività recente</h3>
-          <ul class="profile-aside-list">
-            {recentEvents.map((event) => (
-              <li>
-                <a href={withBase(`/eventi/${eventSlug(event)}/`)}>
-                  <time datetime={event.data.date.toISOString()}>{formatCalendarDate(event.data.date)}</time>
-                  <span class="aside-entry-title">{event.data.title}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
-      {neighbors.length > 0 && (
-        <section class="profile-aside-section" aria-labelledby="aside-voices">
-          <h3 id="aside-voices" class="profile-aside-title">Voci vicine</h3>
-          <ul class="profile-aside-list">
-            {neighbors.map((p) => (
-              <li>
-                <a class="speaker-link" href={withBase(`/soci/${p.id}/`)}>
-                  {p.data.image ? (
-                    <img class="speaker-photo" src={withBase(p.data.image)} alt="" width="64" height="64" loading="lazy" />
-                  ) : (
-                    <span class="speaker-placeholder" aria-hidden="true">{initials(p.data.name)}</span>
-                  )}
-                  <span>{p.data.name}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
-    </aside>
-  </section>
-  {neighbors.length > 0 && (
-    <section class="section shell">
-      <div class="section-heading">
-        <h2>Continua a esplorare</h2>
-        <a href={withBase('/soci/')}>Vedi tutti i soci</a>
       </div>
-      <ul class="alphabet-rail" role="list">
-        {neighbors.map((p) => (
-          <li>
-            <article class="person-card">
-              <a href={withBase(`/soci/${p.id}/`)}>
-                {p.data.image ? <img class="person-photo" src={withBase(p.data.image)} alt="" width="240" height="240" loading="lazy" /> : <span class="person-placeholder" aria-hidden="true">{initials(p.data.name)}</span>}
-                <div class="person-card-copy">
-                  <h3>{p.data.name}</h3>
-                  {p.data.title && <p>{p.data.title}</p>}
-                </div>
-              </a>
-            </article>
-          </li>
-        ))}
-      </ul>
-    </section>
-  )}
+    </div>
+
+    {recentEvents.length > 0 && (
+      <section class="soci-events" aria-labelledby="soci-events-h">
+        <h2 id="soci-events-h">Eventi con {member.data.name}</h2>
+        <ul>
+          {recentEvents.map((event) => (
+            <li>
+              <time datetime={event.data.date.toISOString()}>{formatCalendarDate(event.data.date)}</time>
+              <a href={withBase(`/eventi/${eventSlug(event)}/`)}>{event.data.title}</a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+    <p class="soci-back"><a href={withBase('/soci/')}>Torna a tutti i soci</a></p>
+  </div>
 </BaseLayout>
