@@ -1,5 +1,6 @@
 ---
-import { withBase } from '../../../lib/urls';
+import { externalLinkProps, isExternalUrl, withBase } from '../../../lib/urls';
+const siteOrigin = Astro.site?.origin;
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { initials, markdownExcerpt } from '../../../lib/text';
@@ -19,7 +20,7 @@ const { member } = Astro.props,
     <div>{member.data.image ? <img class="person-photo" src={withBase(member.data.image)} alt={`Ritratto di ${member.data.name}`} width="600" height="450" /> : <span class="person-placeholder" aria-hidden="true">{initials(member.data.name)}</span>}</div>
     <div class="prose">
       <Content />
-      {member.data.links.length > 0 && <><h2>Collegamenti</h2><ul>{member.data.links.map((link) => <li><a href={link.url} rel="me noreferrer">{link.label}</a></li>)}</ul></>}
+      {member.data.links.length > 0 && <><h2>Collegamenti</h2><ul>{member.data.links.map((link) => <li><a href={link.url} {...externalLinkProps(link.url, siteOrigin, 'me noreferrer')}>{link.label}{isExternalUrl(link.url, siteOrigin) && <span class="visually-hidden"> (si apre in una nuova scheda)</span>}</a></li>)}</ul></>}
       <p><a href={withBase('/soci/')}>Torna all’elenco dei soci</a></p>
     </div>
   </article>

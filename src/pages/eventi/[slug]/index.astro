@@ -1,5 +1,6 @@
 ---
-import { withBase } from '../../../lib/urls';
+import { externalLinkProps, isExternalUrl, withBase } from '../../../lib/urls';
+const siteOrigin = Astro.site?.origin;
 import { getCollection, getEntries, render } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
@@ -40,17 +41,15 @@ interface SpeakerView {
   name: string;
   image?: string;
   href?: string;
-  external: boolean;
 }
 
 function speakerView(speaker: EventEntry['data']['sessions'][number]['speakers'][number]): SpeakerView {
-  if (typeof speaker === 'string') {return { name: speaker, external: false };}
+  if (typeof speaker === 'string') {return { name: speaker };}
   const person = peopleById.get(speaker.person.id) as CollectionEntry<'people'>,
    internalHref = person.data.published && person.data.roles.includes('member')
     ? withBase(`/soci/${person.id}/`)
     : undefined;
   return {
-    external: Boolean(person.data.profileUrl),
     href: person.data.profileUrl ?? internalHref,
     image: person.data.image,
     name: person.data.name
@@ -132,8 +131,8 @@ const currentRegistrationState = event ? registrationState(event) : undefined,
                             <strong>{profile.name}</strong>
                           </>;
                           return <li>{profile.href
-                            ? <a class="speaker-link" href={profile.href} target="_blank" rel={profile.external ? 'noreferrer' : 'noopener'}>
-                                {content}<span class="visually-hidden"> (si apre in una nuova scheda)</span>
+                            ? <a class="speaker-link" href={profile.href} {...externalLinkProps(profile.href, siteOrigin)}>
+                                {content}{isExternalUrl(profile.href, siteOrigin) && <span class="visually-hidden"> (si apre in una nuova scheda)</span>}
                               </a>
                             : <span class="speaker-identity">{content}</span>}</li>;
                         })}
@@ -146,19 +145,19 @@ const currentRegistrationState = event ? registrationState(event) : undefined,
             </ol>
           </section>
         )}
-        {event.data.materials.length > 0 && <section><h2>Materiali</h2><ul>{event.data.materials.map((material) => <li><a href={material.url} rel="noreferrer">{material.label}</a></li>)}</ul></section>}
+        {event.data.materials.length > 0 && <section><h2>Materiali</h2><ul>{event.data.materials.map((material) => <li><a href={material.url} {...externalLinkProps(material.url, siteOrigin)}>{material.label}{isExternalUrl(material.url, siteOrigin) && <span class="visually-hidden"> (si apre in una nuova scheda)</span>}</a></li>)}</ul></section>}
       </article>
       <aside class="detail-aside">
         <h2>Dettagli</h2>
         <dl>
           <div><dt>Data</dt><dd>{formatEventDate(event.data.date)}</dd></div>
           {event.data.eventType && <div><dt>Tipo</dt><dd>{event.data.eventType}</dd></div>}
-          {event.data.venue && <div><dt>Luogo</dt><dd>{event.data.venue.url ? <a href={event.data.venue.url} rel="noreferrer">{event.data.venue.name}</a> : event.data.venue.name}</dd></div>}
+          {event.data.venue && <div><dt>Luogo</dt><dd>{event.data.venue.url ? <a href={event.data.venue.url} {...externalLinkProps(event.data.venue.url, siteOrigin)}>{event.data.venue.name}{isExternalUrl(event.data.venue.url, siteOrigin) && <span class="visually-hidden"> (si apre in una nuova scheda)</span>}</a> : event.data.venue.name}</dd></div>}
         </dl>
         <div class="registration">
           <h2>Iscrizione</h2>
           <p>{registrationMessage(event)}</p>
-          {currentRegistrationState === 'open' && event.data.registration.url && <a class="button" href={event.data.registration.url} target="_blank" rel="noreferrer">{event.data.registration.label ?? 'Iscriviti all’evento'}<span class="visually-hidden"> (si apre in una nuova scheda)</span></a>}
+          {currentRegistrationState === 'open' && event.data.registration.url && <a class="button" href={event.data.registration.url} {...externalLinkProps(event.data.registration.url, siteOrigin)}>{event.data.registration.label ?? 'Iscriviti all’evento'}{isExternalUrl(event.data.registration.url, siteOrigin) && <span class="visually-hidden"> (si apre in una nuova scheda)</span>}</a>}
         </div>
       </aside>
     </div>

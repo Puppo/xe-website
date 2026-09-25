@@ -1,5 +1,6 @@
 ---
-import { withBase } from '../lib/urls';
+import { externalLinkProps, isExternalUrl, withBase } from '../lib/urls';
+const siteOrigin = Astro.site?.origin;
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import EventCard from '../components/EventCard.astro';
@@ -94,10 +95,10 @@ const events = (await getCollection('events', ({ data }) => !data.draft)).sort(s
             <ul class="partners" role="list">
               {group.entries.map((partner) => (
                 <li>
-                  <a href={partner.data.url} rel="noreferrer">
+                  <a href={partner.data.url} {...externalLinkProps(partner.data.url, siteOrigin)}>
                     {partner.data.image ? (
                       <img src={withBase(partner.data.image)} alt={partner.data.name} width={partner.data.imageWidth ?? 200} height={partner.data.imageHeight ?? 100} loading="lazy" decoding="async" />
-                    ) : partner.data.name}
+                    ) : <>{partner.data.name}{isExternalUrl(partner.data.url, siteOrigin) && <span class="visually-hidden"> (si apre in una nuova scheda)</span>}</>}
                   </a>
                 </li>
               ))}
