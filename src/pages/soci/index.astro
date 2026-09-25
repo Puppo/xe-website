@@ -3,21 +3,106 @@ import { withBase } from '../../lib/urls';
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { initials } from '../../lib/text';
+import { groupByInitial, hasRichProfile } from '../../lib/people';
 
-const members = (await getCollection('people', ({ data }) => data.published && data.roles.includes('member'))).sort((a, b) => a.data.sortName.localeCompare(b.data.sortName, 'it'));
+const members = (
+  await getCollection('people', ({ data }) => data.published && data.roles.includes('member'))
+).sort((a, b) => a.data.sortName.localeCompare(b.data.sortName, 'it')),
+  featured = members.filter(hasRichProfile).slice(0, 5),
+  bands = groupByInitial(members),
+  locations = await getCollection('locations'),
+  provinceCount = locations.length,
+  letterLabel = (count: number): string => `${count} ${count === 1 ? 'persona' : 'persone'}`;
 ---
 
-<BaseLayout title="Soci" description="Le persone che sostengono XeDotNet e rendono possibili le attività della community.">
-  <header class="page-hero"><div class="shell"><p class="breadcrumbs"><a href={withBase('/')}>Home</a> / Soci</p><h1>Soci</h1><p>Le persone che permettono a XE di mantenere gratuiti eventi e attività.</p></div></header>
-  <section class="section shell">
-    <p>Profili pubblici in ordine alfabetico: {members.length} {members.length === 1 ? 'socio' : 'soci'}.</p>
-    <ul class="people-grid" role="list">
-      {members.map((member) => (
-        <li><article class="person-card"><a href={withBase(`/soci/${member.id}/`)}>
-          {member.data.image ? <img class="person-photo" src={withBase(member.data.image)} alt="" width="600" height="450" loading="lazy" /> : <span class="person-placeholder" aria-hidden="true">{initials(member.data.name)}</span>}
-          <div class="person-card-copy"><h2>{member.data.name}</h2>{member.data.title && <p>{member.data.title}</p>}</div>
-        </a></article></li>
+<BaseLayout
+  title="Soci"
+  description="Le persone che sostengono XeDotNet e rendono possibili le attività della community."
+>
+  <header class="page-hero">
+    <div class="shell">
+      <p class="breadcrumbs"><a href={withBase('/')}>Home</a> / Soci</p>
+      <p class="community-tag"><span aria-hidden="true"></span>Le persone che fanno XE</p>
+      <h1>Soci</h1>
+      <p>Le persone che permettono a XE di mantenere gratuiti eventi e attività.</p>
+      <dl class="meta-row" aria-label="Riepilogo della community">
+        <div><dt>Soci</dt><dd><strong>{members.length}</strong></dd></div>
+        <div><dt>Province</dt><dd><strong>{provinceCount}</strong></dd></div>
+        <div><dt>Attivi dal</dt><dd><strong>2006</strong></dd></div>
+      </dl>
+    </div>
+  </header>
+
+  {featured.length > 0 && (
+    <section class="section shell" aria-labelledby="soci-primo-piano-h">
+      <div class="section-heading">
+        <h2 id="soci-primo-piano-h">In primo piano</h2>
+        <a href="#tutti-i-soci">Vai all’elenco completo</a>
+      </div>
+      <div class="featured-strip" role="list">
+        {featured.map((member) => (
+          <article class="person-card" role="listitem">
+            <a href={withBase(`/soci/${member.id}/`)}>
+              {member.data.image ? (
+                <img class="person-photo" src={withBase(member.data.image)} alt="" width="240" height="240" loading="lazy" />
+              ) : (
+                <span class="person-placeholder" aria-hidden="true">{initials(member.data.name)}</span>
+              )}
+              <div class="person-card-copy">
+                <h3>{member.data.name}</h3>
+                {member.data.title && <p>{member.data.title}</p>}
+                {member.data.roles.includes('speaker') && (
+                  <div class="chip-stack"><span class="chip">Speaker</span></div>
+                )}
+              </div>
+            </a>
+          </article>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <section class="section shell" id="tutti-i-soci" aria-labelledby="tutti-i-soci-h">
+    <div class="section-heading">
+      <h2 id="tutti-i-soci-h">Tutti i soci</h2>
+      <p>{members.length} {members.length === 1 ? 'socio' : 'soci'} in ordine alfabetico</p>
+    </div>
+
+    <nav class="letter-nav" aria-label="Salto per iniziale">
+      {bands.map((band) => (
+        <a href={`#lettera-${band.letter}`} data-letter={band.letter}>{band.letter}</a>
       ))}
-    </ul>
+    </nav>
+
+    {bands.map((band) => (
+      <section class="letter-band" id={`lettera-${band.letter}`} aria-labelledby={`lettera-${band.letter}-h`}>
+        <header class="letter-band-header">
+          <h3 class="letter-glyph" id={`lettera-${band.letter}-h`}>{band.letter}</h3>
+          <span class="letter-meta">{letterLabel(band.items.length)}</span>
+        </header>
+        <ul class="people-grid" role="list">
+          {band.items.map((member) => (
+            <li>
+              <article class="person-card">
+                <a href={withBase(`/soci/${member.id}/`)}>
+                  {member.data.image ? (
+                    <img class="person-photo" src={withBase(member.data.image)} alt="" width="240" height="180" loading="lazy" />
+                  ) : (
+                    <span class="person-placeholder" aria-hidden="true">{initials(member.data.name)}</span>
+                  )}
+                  <div class="person-card-copy">
+                    <h3>{member.data.name}</h3>
+                    {member.data.title && <p>{member.data.title}</p>}
+                    {member.data.roles.includes('speaker') && (
+                      <div class="chip-stack"><span class="chip">Speaker</span></div>
+                    )}
+                  </div>
+                </a>
+              </article>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
   </section>
 </BaseLayout>

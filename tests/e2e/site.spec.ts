@@ -279,12 +279,37 @@ test('le biografie dei soci sono renderizzate dal Markdown', async ({
     'content',
     /Sono un appassionato di tecnologia/,
   );
+  await expect(page.locator('.profile-aside')).toBeVisible();
+  await expect(page.locator('.profile-aside-section').first()).toBeVisible();
 
   await page.goto('/soci/alessandro-calzavara/');
   await expect(page.locator('meta[name="description"]')).toHaveAttribute(
     'content',
     'Alessandro Calzavara, socio di XeDotNet.',
   );
+});
+
+test('l’elenco dei soci raggruppa i profili per iniziale e offre il salto rapido', async ({
+  page,
+}) => {
+  await page.goto('/soci/');
+  const letterNav = page.getByRole('navigation', {
+    name: 'Salto per iniziale',
+  });
+  const letters = await letterNav
+    .locator('a')
+    .evaluateAll((anchors) =>
+      anchors.map((anchor) => anchor.textContent?.trim() ?? ''),
+    );
+  expect(letters.length).toBeGreaterThan(2);
+  expect(new Set(letters).size).toBe(letters.length);
+
+  const firstLetter = letters[0];
+  expect(firstLetter).toBeTruthy();
+  const band = page.locator(`#lettera-${firstLetter}`);
+  await expect(band).toBeVisible();
+  await expect(band.locator('.letter-glyph')).toHaveText(firstLetter ?? '');
+  expect(await band.locator('.person-card').count()).toBeGreaterThan(0);
 });
 
 test('la mappa dei soci mostra subito la mappa con i pin e mantiene un’alternativa testuale', async ({
