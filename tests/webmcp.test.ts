@@ -1,12 +1,21 @@
 import { describe, expect, it } from 'vitest';
 import {
   describeEvent,
+  describeMember,
   EVENT_CATALOG_PAGE_SIZE,
   eventForSlug,
   listEvents,
+  listMembers,
+  MEMBER_CATALOG_PAGE_SIZE,
+  memberForSlug,
   WEBMCP_OUTPUT_CHARACTER_LIMIT,
 } from '../src/lib/webmcp';
-import type { WebMcpEventDetails, WebMcpEventSummary } from '../src/lib/webmcp';
+import type {
+  WebMcpEventDetails,
+  WebMcpEventSummary,
+  WebMcpMemberDetails,
+  WebMcpMemberSummary,
+} from '../src/lib/webmcp';
 
 const catalog: WebMcpEventSummary[] = Array.from(
   { length: EVENT_CATALOG_PAGE_SIZE + 2 },
@@ -124,5 +133,129 @@ describe('descrizione WebMCP di un evento', () => {
       (session) => !description.includes(session.title),
     );
     expect(dropped.length).toBeGreaterThan(0);
+  });
+});
+
+const memberCatalog: WebMcpMemberSummary[] = Array.from(
+  { length: MEMBER_CATALOG_PAGE_SIZE + 2 },
+  (_, index) => ({
+    excerpt:
+      index === 0
+        ? 'Esperto di accessibilità e community building.'
+        : `Estratto del socio ${index}`,
+    externalLinks:
+      index === 0
+        ? [{ label: 'LinkedIn', url: 'https://linkedin.com/in/test' }]
+        : [],
+    hasBiography: true,
+    hasImage: index % 2 === 0,
+    name: `Socio ${index}`,
+    profileUrl: index === 0 ? 'https://linkedin.com/in/test' : undefined,
+    roles: index === 1 ? ['speaker'] : ['member', 'speaker'],
+    slug: `socio-${index}`,
+    title: index === 0 ? 'Accessibility Lead' : undefined,
+    url: `https://www.xedotnet.org/soci/socio-${index}/`,
+  }),
+);
+
+describe('catalogo WebMCP dei soci', () => {
+  it('filtra per testo su nome, titolo ed estratto', () => {
+    const result = listMembers(memberCatalog, { query: 'accessibilità' });
+    expect(result.total).toBe(1);
+    expect(result.members).toHaveLength(1);
+    expect(result.members[0]?.name).toBe('Socio 0');
+  });
+
+  it('filtra per ruolo e mantiene tutti i soci con entrambi i ruoli', () => {
+    const speakers = listMembers(memberCatalog, { role: 'speaker' });
+    expect(speakers.total).toBe(MEMBER_CATALOG_PAGE_SIZE + 2);
+    const onlyMembers = listMembers(memberCatalog, { role: 'member' });
+    expect(onlyMembers.total).toBe(MEMBER_CATALOG_PAGE_SIZE + 1);
+  });
+
+  it('pagina i risultati in gruppi di cinque', () => {
+    const firstPage = listMembers(memberCatalog, {}),
+      secondPage = listMembers(memberCatalog, {
+        offset: firstPage.nextOffset ?? undefined,
+      });
+    expect(firstPage.members).toHaveLength(MEMBER_CATALOG_PAGE_SIZE);
+    expect(firstPage.nextOffset).toBe(MEMBER_CATALOG_PAGE_SIZE);
+    expect(secondPage.members).toHaveLength(2);
+    expect(secondPage.nextOffset).toBeNull();
+  });
+
+  it('tronca l’estratto a 120 caratteri nella pagina corrente', () => {
+    const first = memberCatalog[0];
+    if (!first) {
+      throw new Error('Catalog fixture is empty');
+    }
+    const longExcerpt = `Estratto ${'a'.repeat(200)} finale`,
+      result = listMembers([{ ...first, excerpt: longExcerpt }], {});
+    expect(result.members[0]?.excerpt.length).toBeLessThanOrEqual(121);
+  });
+
+  it('rifiuta offset non validi', () => {
+    expect(() => listMembers(memberCatalog, { offset: -1 })).toThrow(/offset/i);
+  });
+
+  it('rifiuta uno slug non presente nel catalogo', () => {
+    expect(() => memberForSlug(memberCatalog, 'socio-sconosciuto')).toThrow(
+      /non trovato/iu,
+    );
+  });
+
+  it('rifiuta uno slug che non è una stringa', () => {
+    expect(() => memberForSlug(memberCatalog, 42)).toThrow(/slug.*socio/i);
+  });
+});
+
+describe('descrizione WebMCP di un socio', () => {
+  const details: WebMcpMemberDetails = {
+    biography: 'Esperto di accessibilità, speaker e membro della community.',
+    excerpt: 'Esperto di accessibilità e community building.',
+    externalLinks: [{ label: 'LinkedIn', url: 'https://linkedin.com/in/test' }],
+    name: 'Ada Community',
+    profileUrl: 'https://linkedin.com/in/test',
+    roles: ['member', 'speaker'],
+    slug: 'ada-community',
+    title: 'Accessibility Lead',
+    url: 'https://www.xedotnet.org/soci/ada-community/',
+  };
+
+  it('include ruoli, biografia, titolo, link e profilo esterno', () => {
+    const description = describeMember(details);
+    expect(description).toContain('Ada Community');
+    expect(description).toContain('Accessibility Lead');
+    expect(description).toContain('socio e relatore');
+    expect(description).toContain('Esperto di accessibilità');
+    expect(description).toContain('LinkedIn: https://linkedin.com/in/test');
+    expect(description).toContain(
+      'Profilo esterno: https://linkedin.com/in/test',
+    );
+  });
+
+  it('rispetta il limite e segnala i dettagli omessi', () => {
+    const biography = 'Biografia '.repeat(500).trim(),
+      externalLinks = Array.from({ length: 200 }, (_, index) => ({
+        label: `Link ${index}`,
+        url: `https://example.com/${index}`,
+      })),
+      description = describeMember(
+        { ...details, biography, externalLinks },
+        WEBMCP_OUTPUT_CHARACTER_LIMIT,
+      );
+    expect(description.length).toBeLessThanOrEqual(
+      WEBMCP_OUTPUT_CHARACTER_LIMIT,
+    );
+    expect(description).toContain('dettagli omessi');
+  });
+
+  it('descrive correttamente un socio che è solo relatore', () => {
+    const description = describeMember({
+      ...details,
+      roles: ['speaker'],
+    });
+    expect(description).toContain('relatore');
+    expect(description).not.toContain('socio e relatore');
   });
 });

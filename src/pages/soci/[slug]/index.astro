@@ -1,8 +1,11 @@
 ---
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import { eventSlug, formatCalendarDate } from '../../../lib/events';
-import { recentEventsForPerson } from '../../../lib/people';
+import WebMcpMemberCatalog from '../../../components/WebMcpMemberCatalog.astro';
+import WebMcpMemberDetails from '../../../components/WebMcpMemberDetails.astro';
+import WebMcpEventCatalog from '../../../components/WebMcpEventCatalog.astro';
+import { eventSlug, formatCalendarDate, isPastEvent, sortAscending } from '../../../lib/events';
+import { recentEventsForPerson, toMemberCatalog, toMemberDetails } from '../../../lib/people';
 import { breadcrumbList } from '../../../lib/structured-data';
 import { initials, markdownExcerpt } from '../../../lib/text';
 import { externalLinkProps, isExternalUrl, withBase } from '../../../lib/urls';
@@ -22,6 +25,9 @@ const { Content } = await render(member);
 const description = markdownExcerpt(member.body ?? '') || `${member.data.name}, socio di XeDotNet.`;
 const events = await getCollection('events', ({ data }) => !data.draft);
 const recentEvents = recentEventsForPerson(member, events, 3);
+const upcomingEvents = events
+  .filter((event) => !isPastEvent(event))
+  .sort(sortAscending);
 const links = [
   ...(member.data.profileUrl ? [{ label: 'Profilo personale', url: member.data.profileUrl }] : []),
   ...member.data.links,
@@ -41,9 +47,14 @@ const personStructuredData = [
     { name: member.data.name, url: new URL(withBase(`/soci/${member.id}/`), Astro.site).href },
   ]),
 ];
+const webMcpMemberDetails = toMemberDetails(member, Astro.site);
+const webMcpMemberSummaries = toMemberCatalog(member, Astro.site);
 ---
 
 <BaseLayout title={member.data.name} description={description} type="article" structuredData={personStructuredData}>
+  {webMcpMemberDetails && <WebMcpMemberDetails details={webMcpMemberDetails} />}
+  {webMcpMemberSummaries && <WebMcpMemberCatalog members={webMcpMemberSummaries} />}
+  <WebMcpEventCatalog events={upcomingEvents} />
   <header class="page-hero soci-hero soci-detail-hero">
     <div class="shell">
       <p class="breadcrumbs"><a href={withBase('/')}>Home</a> / <a href={withBase('/soci/')}>Soci</a> / {member.data.name}</p>

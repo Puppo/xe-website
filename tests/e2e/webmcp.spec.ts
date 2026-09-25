@@ -196,6 +196,89 @@ test('il contatto è disponibile solo con il modulo configurato e non viene invi
   ).toBe(0);
 });
 
+test('gli strumenti del catalogo soci cercano e aprono i profili', async ({
+  page,
+}) => {
+  await mockWebMcp(page);
+  await page.goto('/soci/');
+  await waitForTool(page, 'list_members');
+  await waitForTool(page, 'open_member');
+
+  const result = await page.evaluate(() => {
+    const tools = (window as unknown as { webMcpTools: RegisteredTool[] })
+        .webMcpTools,
+      tool = tools.find((candidate) => candidate.name === 'list_members');
+    return tool?.execute(
+      { role: 'speaker' },
+      { signal: new AbortController().signal },
+    );
+  });
+  expect(result).toMatchObject({ offset: 0 });
+  expect((result as { members: unknown[] }).members.length).toBeGreaterThan(0);
+
+  const target = ((result as { members: { slug: string; url: string }[] })
+    .members[0] ?? {}) as { slug: string; url: string };
+
+  await Promise.all([
+    page.waitForURL(new RegExp(`/soci/${target.slug}/$`)),
+    page.evaluate((slug) => {
+      const tool = (
+        window as unknown as { webMcpTools: RegisteredTool[] }
+      ).webMcpTools.find((candidate) => candidate.name === 'open_member');
+      return tool?.execute({ slug }, { signal: new AbortController().signal });
+    }, target.slug),
+  ]);
+});
+
+test('la pagina del socio espone una descrizione compatta', async ({
+  page,
+}) => {
+  await mockWebMcp(page);
+  await page.goto('/soci/emanuele-furlan/');
+  await waitForTool(page, 'describe_member');
+
+  const description = await page.evaluate(() => {
+    const tool = (
+      window as unknown as { webMcpTools: RegisteredTool[] }
+    ).webMcpTools.find((candidate) => candidate.name === 'describe_member');
+    return tool?.execute({}, { signal: new AbortController().signal });
+  });
+  expect(description).toContain('Emanuele Furlan');
+  expect(description).toContain('socio e relatore');
+  expect(String(description).length).toBeLessThanOrEqual(1500);
+});
+
+test('la home registra il catalogo soci dopo la sezione community', async ({
+  page,
+}) => {
+  await mockWebMcp(page);
+  await page.goto('/');
+  await waitForTool(page, 'list_members');
+  await waitForTool(page, 'open_member');
+  await waitForTool(page, 'prepare_newsletter_subscription');
+});
+
+test('la pagina evento permette di aprire il profilo del relatore', async ({
+  page,
+}) => {
+  await mockWebMcp(page);
+  await page.goto('/eventi/tech-pub-gennaio-2025/');
+  await waitForTool(page, 'list_members');
+
+  await Promise.all([
+    page.waitForURL(/\/soci\/emanuele-furlan\/$/u),
+    page.evaluate(() => {
+      const tool = (
+        window as unknown as { webMcpTools: RegisteredTool[] }
+      ).webMcpTools.find((candidate) => candidate.name === 'open_member');
+      return tool?.execute(
+        { slug: 'emanuele-furlan' },
+        { signal: new AbortController().signal },
+      );
+    }),
+  ]);
+});
+
 test('le pagine funzionano senza supporto WebMCP', async ({ page }) => {
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));

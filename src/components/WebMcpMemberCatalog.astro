@@ -1,0 +1,87 @@
+---
+import { safeInlineJson, type WebMcpMemberSummary } from '../lib/webmcp';
+
+interface Props {
+  members: WebMcpMemberSummary[];
+}
+
+const serializedCatalog = safeInlineJson(Astro.props.members);
+---
+
+<script type="application/json" data-webmcp-member-catalog set:html={serializedCatalog} />
+
+<script>
+  import {
+    listMembers,
+    memberForSlug,
+    parseMemberCatalog,
+    registerWebMcpTools,
+  } from '../lib/webmcp';
+
+  const catalogElement = document.querySelector<HTMLScriptElement>(
+      '[data-webmcp-member-catalog]',
+    ),
+    catalog = parseMemberCatalog(catalogElement),
+    listSchema = {
+      type: 'object',
+      properties: {
+        query: {
+          type: 'string',
+          description:
+            'Testo da cercare nel nome, nel titolo o nell’estratto della biografia.',
+        },
+        role: {
+          type: 'string',
+          enum: ['member', 'speaker', 'both'],
+          description:
+            'Ruolo da filtrare. "both" include soci e relatori insieme.',
+        },
+        offset: {
+          type: 'integer',
+          minimum: 0,
+          description: 'Indice da cui continuare una ricerca precedente.',
+        },
+      },
+      additionalProperties: false,
+    } as const,
+    openSchema = {
+      type: 'object',
+      properties: {
+        slug: {
+          type: 'string',
+          description: 'Slug esatto restituito da list_members.',
+        },
+      },
+      required: ['slug'],
+      additionalProperties: false,
+    } as const;
+
+  if (catalog) {
+    registerWebMcpTools([
+      {
+        name: 'list_members',
+        title: 'Cerca soci XE',
+        description:
+          'Cerca i soci pubblicati da XeDotNet. Restituisce fino a cinque risultati alla volta con `nextOffset`; quando `nextOffset` è `null` la ricerca è terminata.',
+        inputSchema: listSchema,
+        execute(input) {
+          return listMembers(catalog, input);
+        },
+        annotations: { readOnlyHint: true },
+      },
+      {
+        name: 'open_member',
+        title: 'Apri un socio XE',
+        description:
+          'Apre nel browser la pagina del socio restituito da list_members.',
+        inputSchema: openSchema,
+        execute({ slug }) {
+          const member = memberForSlug(catalog, slug);
+          window.location.assign(member.url);
+          return `Navigazione verso “${member.name}”.`;
+        },
+        annotations: { readOnlyHint: true },
+      },
+    ]);
+  }
+</script>
