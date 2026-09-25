@@ -1,4 +1,5 @@
 export const EVENT_CATALOG_PAGE_SIZE = 5;
+export const MEMBER_CATALOG_PAGE_SIZE = 5;
 export const WEBMCP_OUTPUT_CHARACTER_LIMIT = 1500;
 
 export type EventPeriod = 'all' | 'past' | 'upcoming';
@@ -35,6 +36,39 @@ export interface EventCatalogInput {
   period?: EventPeriod;
   query?: string;
   year?: number;
+}
+
+export type MemberRole = 'member' | 'speaker';
+
+export interface WebMcpMemberSummary {
+  excerpt: string;
+  externalLinks: { label: string; url: string }[];
+  hasBiography: boolean;
+  hasImage: boolean;
+  name: string;
+  profileUrl?: string;
+  roles: MemberRole[];
+  slug: string;
+  title?: string;
+  url: string;
+}
+
+export interface WebMcpMemberDetails {
+  biography: string;
+  excerpt: string;
+  externalLinks: { label: string; url: string }[];
+  name: string;
+  profileUrl?: string;
+  roles: MemberRole[];
+  slug: string;
+  title?: string;
+  url: string;
+}
+
+export interface MemberCatalogInput {
+  offset?: number;
+  query?: string;
+  role?: MemberRole | 'both';
 }
 
 function truncate(value: string, maximum: number): string {
@@ -103,6 +137,111 @@ export function eventForSlug(
     );
   }
   return event;
+}
+
+export function listMembers(
+  catalog: WebMcpMemberSummary[],
+  input: MemberCatalogInput,
+) {
+  const offset = input.offset ?? 0,
+    role = input.role ?? 'both',
+    query = input.query?.trim().toLocaleLowerCase('it-IT');
+
+  if (!Number.isInteger(offset) || offset < 0) {
+    throw new TypeError(
+      'L’offset deve essere un intero maggiore o uguale a zero.',
+    );
+  }
+
+  const matches = catalog.filter((member) => {
+      if (role !== 'both' && !member.roles.includes(role)) {
+        return false;
+      }
+      if (!query) {
+        return true;
+      }
+      return [member.name, member.title, member.excerpt]
+        .filter((value): value is string => Boolean(value))
+        .some((value) => value.toLocaleLowerCase('it-IT').includes(query));
+    }),
+    members = matches
+      .slice(offset, offset + MEMBER_CATALOG_PAGE_SIZE)
+      .map(
+        ({
+          roles: _roles,
+          hasImage: _hasImage,
+          hasBiography: _hasBiography,
+          ...member
+        }) => ({
+          ...member,
+          excerpt: truncate(member.excerpt, 120),
+        }),
+      ),
+    nextOffset =
+      offset + MEMBER_CATALOG_PAGE_SIZE < matches.length
+        ? offset + MEMBER_CATALOG_PAGE_SIZE
+        : null;
+
+  return { members, nextOffset, offset, total: matches.length };
+}
+
+export function memberForSlug(
+  catalog: WebMcpMemberSummary[],
+  slug: unknown,
+): WebMcpMemberSummary {
+  if (typeof slug !== 'string') {
+    throw new TypeError('Lo slug del socio è obbligatorio.');
+  }
+  const member = catalog.find((candidate) => candidate.slug === slug);
+  if (!member) {
+    throw new TypeError(
+      'Socio non trovato. Usa list_members per ottenere uno slug valido.',
+    );
+  }
+  return member;
+}
+
+export function describeMember(
+  member: WebMcpMemberDetails,
+  maximum = WEBMCP_OUTPUT_CHARACTER_LIMIT,
+): string {
+  const roleLabels: Record<MemberRole, string> = {
+      member: 'socio',
+      speaker: 'relatore',
+    },
+    roles = member.roles.map((role) => roleLabels[role]).join(' e '),
+    lines = [
+      `Nome: ${member.name}`,
+      member.title ? `Titolo: ${member.title}` : undefined,
+      `Ruolo: ${roles}`,
+      member.profileUrl ? `Profilo esterno: ${member.profileUrl}` : undefined,
+      `Pagina: ${member.url}`,
+    ].filter((line): line is string => Boolean(line)),
+    optionalLines: string[] = [];
+
+  if (member.biography.trim().length > 0) {
+    optionalLines.push(`Biografia (${truncate(member.biography, 360)})`);
+  }
+  if (member.externalLinks.length > 0) {
+    optionalLines.push(`Collegamenti (${member.externalLinks.length}):`);
+    for (const link of member.externalLinks) {
+      optionalLines.push(`- ${link.label}: ${link.url}`);
+    }
+  }
+
+  let result = lines.join('\n'),
+    omitted = 0;
+  for (const line of optionalLines) {
+    if (`${result}\n${line}`.length <= maximum - 40) {
+      result += `\n${line}`;
+    } else {
+      omitted += 1;
+    }
+  }
+  if (omitted > 0) {
+    result += `\n… ${omitted} dettagli omessi; consulta la pagina del socio.`;
+  }
+  return truncate(result, maximum);
 }
 
 export function describeEvent(
@@ -239,6 +378,47 @@ export function parseDetails(
     const value = JSON.parse(element.textContent);
     return typeof value === 'object' && value !== null && 'title' in value
       ? (value as WebMcpEventDetails)
+      : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+/**
+ * Defensively parse a `<script type="application/json">` block that should
+ * carry a member catalog. Returns `undefined` for missing, empty, non-JSON,
+ * or wrong-shape content so callers can skip tool registration without
+ * throwing out of a script tag.
+ */
+export function parseMemberCatalog(
+  element: HTMLScriptElement | null | undefined,
+): WebMcpMemberSummary[] | undefined {
+  if (!element?.textContent) {
+    return undefined;
+  }
+  try {
+    const value = JSON.parse(element.textContent);
+    return Array.isArray(value) ? (value as WebMcpMemberSummary[]) : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+/**
+ * Defensively parse a `<script type="application/json">` block that should
+ * carry member details. Returns `undefined` for missing, empty, non-JSON,
+ * or wrong-shape content (a `name` field is required).
+ */
+export function parseMemberDetails(
+  element: HTMLScriptElement | null | undefined,
+): WebMcpMemberDetails | undefined {
+  if (!element?.textContent) {
+    return undefined;
+  }
+  try {
+    const value = JSON.parse(element.textContent);
+    return typeof value === 'object' && value !== null && 'name' in value
+      ? (value as WebMcpMemberDetails)
       : undefined;
   } catch {
     return undefined;

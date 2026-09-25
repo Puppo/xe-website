@@ -3,7 +3,10 @@ import { externalLinkProps, isExternalUrl, withBase } from '../../../lib/urls';
 const siteOrigin = Astro.site?.origin;
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import WebMcpMemberCatalog from '../../../components/WebMcpMemberCatalog.astro';
+import WebMcpMemberDetails from '../../../components/WebMcpMemberDetails.astro';
 import { initials, markdownExcerpt } from '../../../lib/text';
+import { toMemberCatalog, toMemberDetails } from '../../../lib/people';
 
 export async function getStaticPaths() {
   const members = await getCollection('people', ({ data }) => data.published && data.roles.includes('member'));
@@ -11,10 +14,14 @@ export async function getStaticPaths() {
 }
 const { member } = Astro.props,
  { Content } = await render(member),
- description = markdownExcerpt(member.body ?? '') || `${member.data.name}, socio di XeDotNet.`;
+ description = markdownExcerpt(member.body ?? '') || `${member.data.name}, socio di XeDotNet.`,
+ webMcpMemberDetails = toMemberDetails(member, Astro.site),
+ webMcpMemberSummaries = toMemberCatalog(member, Astro.site);
 ---
 
 <BaseLayout title={member.data.name} description={description}>
+  {webMcpMemberDetails && <WebMcpMemberDetails details={webMcpMemberDetails} />}
+  {webMcpMemberSummaries && <WebMcpMemberCatalog members={webMcpMemberSummaries} />}
   <header class="page-hero"><div class="shell"><p class="breadcrumbs"><a href={withBase('/')}>Home</a> / <a href={withBase('/soci/')}>Soci</a> / {member.data.name}</p><h1>{member.data.name}</h1>{member.data.title && <p>{member.data.title}</p>}</div></header>
   <article class="section shell person-profile">
     <div>{member.data.image ? <img class="person-photo" src={withBase(member.data.image)} alt={`Ritratto di ${member.data.name}`} width="600" height="450" /> : <span class="person-placeholder" aria-hidden="true">{initials(member.data.name)}</span>}</div>
