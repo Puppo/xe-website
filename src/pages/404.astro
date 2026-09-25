@@ -1,7 +1,15 @@
 ---
 import { withBase } from '../lib/urls';
+import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import WebMcpEventCatalog from '../components/WebMcpEventCatalog.astro';
+import { isPastEvent, sortAscending } from '../lib/events';
+
+const upcomingEvents = (await getCollection('events', ({ data }) => !data.draft))
+  .filter((event) => !isPastEvent(event))
+  .sort(sortAscending);
 ---
 <BaseLayout title="Pagina non trovata" description="La pagina richiesta non è disponibile.">
+  <WebMcpEventCatalog events={upcomingEvents} />
   <section class="section shell prose"><p class="event-type">Errore 404</p><h1>Questa pagina non c’è.</h1><p>Il collegamento potrebbe essere cambiato oppure contenere un errore.</p><p><a class="button" href={withBase('/')}>Torna alla home</a> <a class="button button-secondary" href={withBase('/eventi/')}>Vai agli eventi</a></p></section>
 </BaseLayout>

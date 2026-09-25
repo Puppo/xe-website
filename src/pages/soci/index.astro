@@ -2,10 +2,10 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import WebMcpMemberCatalog from '../../components/WebMcpMemberCatalog.astro';
+import WebMcpEventCatalog from '../../components/WebMcpEventCatalog.astro';
 import { groupByInitial, memberSummaries } from '../../lib/people';
 import { initials } from '../../lib/text';
 import { isPastEvent, sortAscending } from '../../lib/events';
-import WebMcpEventCatalog from '../../components/WebMcpEventCatalog.astro';
 import { withBase } from '../../lib/urls';
 
 const members = (

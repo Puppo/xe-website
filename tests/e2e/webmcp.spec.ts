@@ -279,6 +279,45 @@ test('la pagina evento permette di aprire il profilo del relatore', async ({
   ]);
 });
 
+test('il catalogo eventi futuri è esposto su tutte le pagine non dedicate', async ({
+  page,
+}) => {
+  await mockWebMcp(page);
+
+  for (const path of [
+    '/',
+    '/soci/',
+    '/soci/emanuele-furlan/',
+    '/contatti/',
+    '/chi-siamo/',
+    '/privacy-policy/',
+    '/grazie/',
+    '/eventi/tech-pub-gennaio-2025/',
+    '/404.html',
+  ]) {
+    await page.goto(path);
+    await waitForTool(page, 'list_events');
+
+    const onlyUpcoming = await page.evaluate(() => {
+      const tools = (window as unknown as { webMcpTools: RegisteredTool[] })
+        .webMcpTools;
+      const list = tools.find((candidate) => candidate.name === 'list_events');
+      const all = list?.execute({}, { signal: new AbortController().signal });
+      const past = list?.execute(
+        { period: 'past' },
+        { signal: new AbortController().signal },
+      );
+      return {
+        total: (all as { total: number }).total,
+        pastTotal: (past as { total: number }).total,
+      };
+    });
+
+    expect(onlyUpcoming.pastTotal).toBe(0);
+    expect(onlyUpcoming.total).toBeGreaterThan(0);
+  }
+});
+
 test('le pagine funzionano senza supporto WebMCP', async ({ page }) => {
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
