@@ -5,6 +5,8 @@ import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import WebMcpMemberCatalog from '../../../components/WebMcpMemberCatalog.astro';
 import WebMcpMemberDetails from '../../../components/WebMcpMemberDetails.astro';
+import WebMcpEventCatalog from '../../../components/WebMcpEventCatalog.astro';
+import { isPastEvent, sortAscending } from '../../../lib/events';
 import { initials, markdownExcerpt } from '../../../lib/text';
 import { toMemberCatalog, toMemberDetails } from '../../../lib/people';
 
@@ -16,12 +18,16 @@ const { member } = Astro.props,
  { Content } = await render(member),
  description = markdownExcerpt(member.body ?? '') || `${member.data.name}, socio di XeDotNet.`,
  webMcpMemberDetails = toMemberDetails(member, Astro.site),
- webMcpMemberSummaries = toMemberCatalog(member, Astro.site);
+ webMcpMemberSummaries = toMemberCatalog(member, Astro.site),
+ upcomingEvents = (await getCollection('events', ({ data }) => !data.draft))
+   .filter((event) => !isPastEvent(event))
+   .sort(sortAscending);
 ---
 
 <BaseLayout title={member.data.name} description={description}>
   {webMcpMemberDetails && <WebMcpMemberDetails details={webMcpMemberDetails} />}
   {webMcpMemberSummaries && <WebMcpMemberCatalog members={webMcpMemberSummaries} />}
+  <WebMcpEventCatalog events={upcomingEvents} />
   <header class="page-hero"><div class="shell"><p class="breadcrumbs"><a href={withBase('/')}>Home</a> / <a href={withBase('/soci/')}>Soci</a> / {member.data.name}</p><h1>{member.data.name}</h1>{member.data.title && <p>{member.data.title}</p>}</div></header>
   <article class="section shell person-profile">
     <div>{member.data.image ? <img class="person-photo" src={withBase(member.data.image)} alt={`Ritratto di ${member.data.name}`} width="600" height="450" /> : <span class="person-placeholder" aria-hidden="true">{initials(member.data.name)}</span>}</div>

@@ -1,7 +1,15 @@
 ---
 import { withBase } from '../../lib/urls';
+import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import WebMcpEventCatalog from '../../components/WebMcpEventCatalog.astro';
+import { isPastEvent, sortAscending } from '../../lib/events';
+
+const upcomingEvents = (await getCollection('events', ({ data }) => !data.draft))
+  .filter((event) => !isPastEvent(event))
+  .sort(sortAscending);
 ---
 <BaseLayout title="Messaggio inviato" description="Conferma di invio del messaggio allo staff XeDotNet.">
+  <WebMcpEventCatalog events={upcomingEvents} />
   <section class="section shell prose"><h1>Messaggio inviato</h1><p>Abbiamo ricevuto la tua richiesta. Lo staff ti risponderà appena possibile.</p><p><a class="button" href={withBase('/')}>Torna alla home</a></p></section>
 </BaseLayout>

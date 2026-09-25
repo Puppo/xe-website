@@ -8,7 +8,7 @@ import EventCard from '../../../components/EventCard.astro';
 import WebMcpEventCatalog from '../../../components/WebMcpEventCatalog.astro';
 import WebMcpEventDetails from '../../../components/WebMcpEventDetails.astro';
 import WebMcpMemberCatalog from '../../../components/WebMcpMemberCatalog.astro';
-import { eventSlug, eventStructuredStatus, eventYear, formatEventDate, isCancelled, registrationMessage, registrationState, sortDescending } from '../../../lib/events';
+import { eventSlug, eventStructuredStatus, eventYear, formatEventDate, isCancelled, isPastEvent, registrationMessage, registrationState, sortAscending, sortDescending } from '../../../lib/events';
 import type { EventEntry } from '../../../lib/events';
 import { initials } from '../../../lib/text';
 import { memberSummaries } from '../../../lib/people';
@@ -91,7 +91,12 @@ const currentRegistrationState = event ? registrationState(event) : undefined,
   url: new URL(withBase(`/eventi/${eventSlug(event)}/`), Astro.site).href,
   venue: event.data.venue?.name
 } : undefined,
- speakerMemberCatalog = event ? memberSummaries(referencedPeople as CollectionEntry<'people'>[], Astro.site) : [];
+ speakerMemberCatalog = event ? memberSummaries(referencedPeople as CollectionEntry<'people'>[], Astro.site) : [],
+ upcomingEvents = event
+   ? (await getCollection('events', ({ data }) => !data.draft))
+       .filter((candidate) => !isPastEvent(candidate))
+       .sort(sortAscending)
+   : [];
 ---
 
 {props.kind === 'year' ? (
@@ -104,6 +109,7 @@ const currentRegistrationState = event ? registrationState(event) : undefined,
   <BaseLayout title={event.data.title} description={event.data.description} image={event.data.image} type="article" structuredData={eventStructuredData}>
     {webMcpEventDetails && <WebMcpEventDetails details={webMcpEventDetails} />}
     {speakerMemberCatalog.length > 0 && <WebMcpMemberCatalog members={speakerMemberCatalog} />}
+    <WebMcpEventCatalog events={upcomingEvents} />
     <header class="page-hero">
       <div class="shell">
         <p class="breadcrumbs"><a href={withBase('/')}>Home</a> / <a href={withBase('/eventi/')}>Eventi</a> / {eventYear(event)}</p>

@@ -2,12 +2,18 @@
 import { withBase } from '../../lib/urls';
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import WebMcpEventCatalog from '../../components/WebMcpEventCatalog.astro';
+import { isPastEvent, sortAscending } from '../../lib/events';
 
 const [page] = await getCollection('pages', ({ id }) => id === 'privacy-policy'),
- { Content } = await render(page);
+ { Content } = await render(page),
+ upcomingEvents = (await getCollection('events', ({ data }) => !data.draft))
+   .filter((event) => !isPastEvent(event))
+   .sort(sortAscending);
 ---
 
 <BaseLayout title={page.data.title} description={page.data.description}>
+  <WebMcpEventCatalog events={upcomingEvents} />
   <header class="page-hero"><div class="shell"><p class="breadcrumbs"><a href={withBase('/')}>Home</a> / Privacy</p><h1>{page.data.title}</h1><p>{page.data.description}</p></div></header>
   <article class="section shell prose"><Content /></article>
 </BaseLayout>
