@@ -1,5 +1,5 @@
 ---
-import { withBase } from '../lib/urls';
+import { externalLinkProps, isExternalUrl, withBase } from '../lib/urls';
 import NewsletterForm from './NewsletterForm.astro';
 
 interface Props {
@@ -21,7 +21,7 @@ const { site } = Astro.props;
       <h2>Restiamo in contatto</h2>
       <p>Eventi, incontri e occasioni per crescere insieme come sviluppatori.</p>
       <ul class="inline-list" role="list">
-        {site.socials.map((social) => <li><a href={social.url} rel="me noreferrer">{social.label}</a></li>)}
+        {site.socials.map((social) => <li><a href={social.url} {...externalLinkProps(social.url, Astro.site?.origin, 'me noreferrer')}>{social.label}{isExternalUrl(social.url, Astro.site?.origin) && <span class="visually-hidden"> (si apre in una nuova scheda)</span>}</a></li>)}
       </ul>
     </div>
     <NewsletterForm action={site.newsletterAction} honeypot={site.newsletterHoneypot} />

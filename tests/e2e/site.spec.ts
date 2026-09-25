@@ -237,7 +237,7 @@ test('gli speaker mostrano foto, fallback e collegamenti ai profili', async ({
     'https://www.linkedin.com/in/emanuele-furlan-6aa9a4225',
   );
   await expect(externalProfile).toHaveAttribute('target', '_blank');
-  await expect(externalProfile).toHaveAttribute('rel', 'noreferrer');
+  await expect(externalProfile).toHaveAttribute('rel', 'noopener noreferrer');
   await expect(externalProfile.locator('.visually-hidden')).toHaveText(
     '(si apre in una nuova scheda)',
   );
@@ -253,11 +253,9 @@ test('gli speaker mostrano foto, fallback e collegamenti ai profili', async ({
     'href',
     /\/soci\/mauro-cavallin\/$/,
   );
-  await expect(internalProfile).toHaveAttribute('target', '_blank');
-  await expect(internalProfile).toHaveAttribute('rel', 'noopener');
-  await expect(internalProfile.locator('.visually-hidden')).toHaveText(
-    '(si apre in una nuova scheda)',
-  );
+  await expect(internalProfile).not.toHaveAttribute('target', '_blank');
+  await expect(internalProfile).not.toHaveAttribute('rel', /noopener/);
+  await expect(internalProfile.locator('.visually-hidden')).toHaveCount(0);
   const alberto = page
     .locator('.speaker-identity')
     .filter({ hasText: 'Alberto Zen' });
