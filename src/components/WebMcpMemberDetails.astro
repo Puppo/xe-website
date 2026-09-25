@@ -1,0 +1,44 @@
+---
+import { safeInlineJson, type WebMcpMemberDetails } from '../lib/webmcp';
+
+interface Props {
+  details: WebMcpMemberDetails;
+}
+
+const serializedDetails = safeInlineJson(Astro.props.details);
+---
+
+<script type="application/json" data-webmcp-member-details set:html={serializedDetails} />
+
+<script>
+  import {
+    describeMember,
+    parseMemberDetails,
+    registerWebMcpTools,
+  } from '../lib/webmcp';
+
+  const detailsElement = document.querySelector<HTMLScriptElement>(
+      '[data-webmcp-member-details]',
+    ),
+    details = parseMemberDetails(detailsElement);
+
+  if (details?.name) {
+    registerWebMcpTools([
+      {
+        name: 'describe_member',
+        title: 'Descrivi questo socio XE',
+        description:
+          'Restituisce una descrizione compatta del socio XE aperto, con ruolo, biografia e collegamenti.',
+        inputSchema: {
+          type: 'object',
+          properties: {},
+          additionalProperties: false,
+        },
+        execute() {
+          return describeMember(details);
+        },
+        annotations: { readOnlyHint: true },
+      },
+    ]);
+  }
+</script>

@@ -2,12 +2,22 @@
 import { withBase } from '../../lib/urls';
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import WebMcpMemberCatalog from '../../components/WebMcpMemberCatalog.astro';
+import WebMcpEventCatalog from '../../components/WebMcpEventCatalog.astro';
+import { isPastEvent, sortAscending } from '../../lib/events';
 import { initials } from '../../lib/text';
+import { memberSummaries } from '../../lib/people';
 
-const members = (await getCollection('people', ({ data }) => data.published && data.roles.includes('member'))).sort((a, b) => a.data.sortName.localeCompare(b.data.sortName, 'it'));
+const members = (await getCollection('people', ({ data }) => data.published && data.roles.includes('member'))).sort((a, b) => a.data.sortName.localeCompare(b.data.sortName, 'it')),
+  memberCatalog = memberSummaries(members, Astro.site),
+  upcomingEvents = (await getCollection('events', ({ data }) => !data.draft))
+    .filter((event) => !isPastEvent(event))
+    .sort(sortAscending);
 ---
 
 <BaseLayout title="Soci" description="Le persone che sostengono XeDotNet e rendono possibili le attività della community.">
+  <WebMcpMemberCatalog members={memberCatalog} />
+  <WebMcpEventCatalog events={upcomingEvents} />
   <header class="page-hero"><div class="shell"><p class="breadcrumbs"><a href={withBase('/')}>Home</a> / Soci</p><h1>Soci</h1><p>Le persone che permettono a XE di mantenere gratuiti eventi e attività.</p></div></header>
   <section class="section shell">
     <p>Profili pubblici in ordine alfabetico: {members.length} {members.length === 1 ? 'socio' : 'soci'}.</p>

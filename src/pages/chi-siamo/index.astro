@@ -4,14 +4,20 @@ import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SupportPanel from '../../components/SupportPanel.astro';
 import CommunityMap from '../../components/CommunityMap.astro';
+import WebMcpEventCatalog from '../../components/WebMcpEventCatalog.astro';
+import { isPastEvent, sortAscending } from '../../lib/events';
 
 const [page] = await getCollection('pages', ({ id }) => id === 'chi-siamo'),
  { Content } = await render(page),
  [site] = await getCollection('site'),
- locations = await getCollection('locations');
+ locations = await getCollection('locations'),
+ upcomingEvents = (await getCollection('events', ({ data }) => !data.draft))
+   .filter((event) => !isPastEvent(event))
+   .sort(sortAscending);
 ---
 
 <BaseLayout title={page.data.title} description={page.data.description}>
+  <WebMcpEventCatalog events={upcomingEvents} />
   <header class="page-hero"><div class="shell"><p class="breadcrumbs"><a href={withBase('/')}>Home</a> / Chi siamo</p><h1>Chi siamo</h1><p>{page.data.description}</p></div></header>
   <section class="section shell detail-grid">
     <article class="prose"><Content /></article>
