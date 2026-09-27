@@ -2,7 +2,7 @@ import { defineConfig, svgoOptimizer } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import { unified } from '@astrojs/markdown-remark';
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
-import { deploymentConfig } from './src/lib/deployment.mjs';
+import { deploymentConfig, isSitemapExcluded } from './src/lib/deployment.mjs';
 import rehypeBaseUrls from './scripts/rehype-base-urls.mjs';
 
 const deployment = deploymentConfig(
@@ -14,7 +14,12 @@ export default defineConfig({
   experimental: {
     svgOptimizer: svgoOptimizer({ multipass: true }),
   },
-  integrations: [sitemap()],
+  integrations: [
+    sitemap({
+      filter: (page) =>
+        !isSitemapExcluded(new URL(page).pathname, deployment.base),
+    }),
+  ],
   markdown: {
     processor: unified({
       rehypePlugins: [[rehypeBaseUrls, { base: deployment.base }]],

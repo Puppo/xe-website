@@ -3,6 +3,7 @@ import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { eventSlug, formatCalendarDate } from '../../../lib/events';
 import { recentEventsForPerson } from '../../../lib/people';
+import { breadcrumbList } from '../../../lib/structured-data';
 import { initials, markdownExcerpt } from '../../../lib/text';
 import { externalLinkProps, isExternalUrl, withBase } from '../../../lib/urls';
 
@@ -25,14 +26,21 @@ const links = [
   ...(member.data.profileUrl ? [{ label: 'Profilo personale', url: member.data.profileUrl }] : []),
   ...member.data.links,
 ].filter((link, index, all) => all.findIndex((item) => item.url === link.url) === index);
-const personStructuredData = {
-  '@context': 'https://schema.org',
-  '@type': 'Person',
-  name: member.data.name,
-  url: new URL(withBase(`/soci/${member.id}/`), Astro.site).href,
-  ...(member.data.title ? { jobTitle: member.data.title } : {}),
-  ...(links.length > 0 ? { sameAs: links.map((link) => link.url) } : {}),
-};
+const personStructuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: member.data.name,
+    url: new URL(withBase(`/soci/${member.id}/`), Astro.site).href,
+    ...(member.data.title ? { jobTitle: member.data.title } : {}),
+    ...(links.length > 0 ? { sameAs: links.map((link) => link.url) } : {}),
+  },
+  breadcrumbList([
+    { name: 'Home', url: new URL(withBase('/'), Astro.site).href },
+    { name: 'Soci', url: new URL(withBase('/soci/'), Astro.site).href },
+    { name: member.data.name, url: new URL(withBase(`/soci/${member.id}/`), Astro.site).href },
+  ]),
+];
 ---
 
 <BaseLayout title={member.data.name} description={description} type="article" structuredData={personStructuredData}>

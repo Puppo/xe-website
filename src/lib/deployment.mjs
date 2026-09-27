@@ -28,3 +28,16 @@ export function prefixPath(path, base) {
   }
   return `${base.replace(/\/+$/, '')}${path}`;
 }
+
+/** Public paths that must never appear in the sitemap.
+ * Relative to the site root, exactly as returned by deploymentConfig base.
+ */
+export const sitemapExcludedPaths = ['grazie/', '404.html'];
+
+/** Whether a public pathname is one of the sitemap-excluded paths.
+ * @param {string} pathname
+ * @param {string} base
+ */
+export function isSitemapExcluded(pathname, base) {
+  return sitemapExcludedPaths.some((path) => pathname === `${base}${path}`);
+}
