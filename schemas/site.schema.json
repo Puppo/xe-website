@@ -4,10 +4,13 @@
   "items": {
     "type": "object",
     "properties": {
-      "name": {
+      "address": {
         "type": "string"
       },
       "description": {
+        "type": "string"
+      },
+      "donationButtonId": {
         "type": "string"
       },
       "email": {
@@ -15,10 +18,13 @@
         "format": "email",
         "pattern": "^(?:[A-Za-z0-9_'+\\-]+\\.)*[A-Za-z0-9_'+\\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
       },
-      "address": {
+      "fiscalCode": {
         "type": "string"
       },
-      "fiscalCode": {
+      "membershipButtonId": {
+        "type": "string"
+      },
+      "name": {
         "type": "string"
       },
       "navigation": {
@@ -39,6 +45,13 @@
           ]
         }
       },
+      "newsletterAction": {
+        "type": "string",
+        "format": "uri"
+      },
+      "newsletterHoneypot": {
+        "type": "string"
+      },
       "socials": {
         "type": "array",
         "items": {
@@ -58,17 +71,7 @@
           ]
         }
       },
-      "newsletterAction": {
-        "type": "string",
-        "format": "uri"
-      },
-      "newsletterHoneypot": {
-        "type": "string"
-      },
-      "membershipButtonId": {
-        "type": "string"
-      },
-      "donationButtonId": {
+      "tagline": {
         "type": "string"
       },
       "id": {
@@ -77,17 +80,18 @@
       }
     },
     "required": [
-      "name",
-      "description",
-      "email",
       "address",
+      "description",
+      "donationButtonId",
+      "email",
       "fiscalCode",
+      "membershipButtonId",
+      "name",
       "navigation",
-      "socials",
       "newsletterAction",
       "newsletterHoneypot",
-      "membershipButtonId",
-      "donationButtonId",
+      "socials",
+      "tagline",
       "id"
     ]
   },

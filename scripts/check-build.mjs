@@ -1,7 +1,7 @@
 import { existsSync, globSync, readFileSync } from 'node:fs';
 import { extname, join } from 'node:path';
 import * as cheerio from 'cheerio';
-import { deploymentConfig } from '../src/lib/deployment.mjs';
+import { deploymentConfig, isSitemapExcluded } from '../src/lib/deployment.mjs';
 
 const publicUrl = process.env.SITE_URL || 'https://www.xedotnet.org/',
   { site, base } = deploymentConfig(publicUrl),
@@ -79,6 +79,17 @@ for (const file of globSync('dist/sitemap*.xml')) {
     if (url.origin !== site || !url.pathname.startsWith(base)) {
       errors.push(`${file}: URL fuori da ${site}${base}: ${location}`);
     }
+    if (isSitemapExcluded(url.pathname, base)) {
+      errors.push(`${file}: URL escluso presente in sitemap: ${location}`);
+    }
+  }
+}
+
+const graziePath = join('dist', 'grazie', 'index.html');
+if (existsSync(graziePath)) {
+  const grazie = readFileSync(graziePath, 'utf8');
+  if (!grazie.includes('content="noindex, nofollow"')) {
+    errors.push('dist/grazie/index.html non contiene il meta noindex');
   }
 }
 

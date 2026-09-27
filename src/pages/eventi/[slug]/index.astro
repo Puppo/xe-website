@@ -9,6 +9,7 @@ import WebMcpEventCatalog from '../../../components/WebMcpEventCatalog.astro';
 import WebMcpEventDetails from '../../../components/WebMcpEventDetails.astro';
 import { eventSlug, eventStructuredStatus, eventYear, formatEventDate, isCancelled, registrationMessage, registrationState, sortDescending } from '../../../lib/events';
 import type { EventEntry } from '../../../lib/events';
+import { breadcrumbList } from '../../../lib/structured-data';
 import { initials } from '../../../lib/text';
 
 type Props =
@@ -56,19 +57,34 @@ function speakerView(speaker: EventEntry['data']['sessions'][number]['speakers']
   };
 }
 
-const currentRegistrationState = event ? registrationState(event) : undefined,
- eventStructuredData = event ? {
-  '@context': 'https://schema.org',
-  '@type': 'Event',
-  description: event.data.description,
-  endDate: event.data.endDate?.toISOString(),
-  eventAttendanceMode: event.data.venue?.online ? 'https://schema.org/OnlineEventAttendanceMode' : 'https://schema.org/OfflineEventAttendanceMode',
-  eventStatus: eventStructuredStatus(event),
-  location: event.data.venue ? { '@type': event.data.venue.online ? 'VirtualLocation' : 'Place', name: event.data.venue.name, url: event.data.venue.url } : undefined,
-  name: event.data.title,
-  startDate: event.data.date.toISOString(),
-  url: new URL(withBase(`/eventi/${eventSlug(event)}/`), Astro.site).href
-} : undefined,
+function eventPageUrl(event: EventEntry): string {
+  return new URL(withBase(`/eventi/${eventSlug(event)}/`), Astro.site).href;
+}
+
+const [site] = await getCollection('site'),
+ currentRegistrationState = event ? registrationState(event) : undefined,
+ eventBreadcrumbItems = (year: number) => [
+  { name: 'Home', url: new URL(withBase('/'), Astro.site).href },
+  { name: 'Eventi', url: new URL(withBase('/eventi/'), Astro.site).href },
+  { name: String(year), url: new URL(withBase(`/eventi/${year}/`), Astro.site).href }
+ ],
+ eventStructuredData = event ? [
+  {
+   '@context': 'https://schema.org',
+   '@type': 'Event',
+   description: event.data.description,
+   endDate: event.data.endDate?.toISOString(),
+   eventAttendanceMode: event.data.venue?.online ? 'https://schema.org/OnlineEventAttendanceMode' : 'https://schema.org/OfflineEventAttendanceMode',
+   eventStatus: eventStructuredStatus(event),
+   image: new URL(withBase(event.data.image ?? '/images/social-card.png'), Astro.site).href,
+   location: event.data.venue ? { '@type': event.data.venue.online ? 'VirtualLocation' : 'Place', name: event.data.venue.name, url: event.data.venue.url } : undefined,
+   name: event.data.title,
+   organizer: { '@type': 'Organization', name: site.data.name, url: new URL(withBase('/'), Astro.site).href },
+   startDate: event.data.date.toISOString(),
+   url: eventPageUrl(event)
+  },
+  breadcrumbList([...eventBreadcrumbItems(eventYear(event)), { name: event.data.title, url: eventPageUrl(event) }])
+ ] : undefined,
  webMcpEventDetails = event ? {
   date: formatEventDate(event.data.date),
   description: event.data.description,
@@ -86,13 +102,13 @@ const currentRegistrationState = event ? registrationState(event) : undefined,
   })),
   status: event.data.status,
   title: event.data.title,
-  url: new URL(withBase(`/eventi/${eventSlug(event)}/`), Astro.site).href,
+  url: eventPageUrl(event),
   venue: event.data.venue?.name
-} : undefined;
+ } : undefined;
 ---
 
 {props.kind === 'year' ? (
-  <BaseLayout title={`Eventi ${props.year}`} description={`Archivio degli eventi XeDotNet organizzati nel ${props.year}.`}>
+  <BaseLayout title={`Eventi ${props.year}`} description={`Archivio degli eventi XeDotNet organizzati nel ${props.year}.`} structuredData={breadcrumbList(eventBreadcrumbItems(props.year))}>
     <WebMcpEventCatalog events={props.events} />
     <header class="page-hero"><div class="shell"><p class="breadcrumbs"><a href={withBase('/')}>Home</a> / <a href={withBase('/eventi/')}>Eventi</a> / {props.year}</p><h1>Eventi del {props.year}</h1><p>{props.events.length} {props.events.length === 1 ? 'appuntamento' : 'appuntamenti'} nell’archivio XE.</p></div></header>
     <section class="section shell"><ol class="event-list">{props.events.map((item) => <li><EventCard event={item} /></li>)}</ol></section>
@@ -102,7 +118,7 @@ const currentRegistrationState = event ? registrationState(event) : undefined,
     {webMcpEventDetails && <WebMcpEventDetails details={webMcpEventDetails} />}
     <header class="page-hero">
       <div class="shell">
-        <p class="breadcrumbs"><a href={withBase('/')}>Home</a> / <a href={withBase('/eventi/')}>Eventi</a> / {eventYear(event)}</p>
+        <p class="breadcrumbs"><a href={withBase('/')}>Home</a> / <a href={withBase('/eventi/')}>Eventi</a> / <a href={withBase(`/eventi/${eventYear(event)}/`)}>{eventYear(event)}</a> / {event.data.title}</p>
         {isCancelled(event) && <p class="event-status event-status-detail">Evento annullato</p>}
         <h1>{event.data.title}</h1>
         <p>{formatEventDate(event.data.date)}</p>

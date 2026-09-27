@@ -2,32 +2,8 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
   "properties": {
-    "name": {
-      "type": "string"
-    },
-    "sortName": {
-      "type": "string"
-    },
-    "title": {
-      "type": "string"
-    },
     "image": {
       "type": "string"
-    },
-    "profileUrl": {
-      "type": "string",
-      "format": "uri"
-    },
-    "roles": {
-      "minItems": 1,
-      "type": "array",
-      "items": {
-        "type": "string",
-        "enum": [
-          "member",
-          "speaker"
-        ]
-      }
     },
     "links": {
       "default": [],
@@ -49,19 +25,43 @@
         ]
       }
     },
+    "name": {
+      "type": "string"
+    },
+    "profileUrl": {
+      "type": "string",
+      "format": "uri"
+    },
     "published": {
       "default": true,
       "type": "boolean"
     },
+    "roles": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "member",
+          "speaker"
+        ]
+      }
+    },
+    "sortName": {
+      "type": "string"
+    },
     "sourceUrl": {
       "type": "string",
       "format": "uri"
+    },
+    "title": {
+      "type": "string"
     }
   },
   "required": [
     "name",
-    "sortName",
-    "roles"
+    "roles",
+    "sortName"
   ],
   "$id": "https://www.xedotnet.org/schemas/person.schema.json",
   "title": "Profilo pubblico XeDotNet"

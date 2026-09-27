@@ -15,15 +15,18 @@ interface Props {
   description: string;
   image?: string;
   type?: 'website' | 'article';
-  structuredData?: Record<string, unknown>;
+  noindex?: boolean;
+  structuredData?: Record<string, unknown> | Record<string, unknown>[];
 }
 
-const { title, description, image = '/images/social-card.svg', type = 'website', structuredData } = Astro.props,
+const defaultImage = '/images/social-card.png',
+ { title, description, image = defaultImage, type = 'website', noindex = false, structuredData } = Astro.props,
  [site] = await getCollection('site'),
  canonicalPath = Astro.url.pathname === withBase('/404/') ? withBase('/404.html') : Astro.url.pathname,
  canonical = new URL(canonicalPath, Astro.site),
  fullTitle = title === site.data.name ? title : `${title} | ${site.data.name}`,
  fullImage = new URL(withBase(image), Astro.site),
+ isDefaultImage = image === defaultImage,
  organization = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
@@ -42,21 +45,31 @@ const { title, description, image = '/images/social-card.svg', type = 'website',
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light dark" />
     <meta name="theme-color" content="#f6f8f9" />
-    {import.meta.env.PUBLIC_NOINDEX && <meta name="robots" content="noindex, nofollow" />}
+    {(import.meta.env.PUBLIC_NOINDEX || noindex) && <meta name="robots" content="noindex, nofollow" />}
     <ThemeScript />
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    <link rel="alternate" type="application/rss+xml" title={`Eventi — ${site.data.name}`} href={new URL(withBase('/rss.xml'), Astro.site).href} />
     <link rel="icon" type="image/png" sizes="32x32" href={withBase('/images/favicon/favicon-32x32.png')} />
     <link rel="icon" type="image/png" sizes="96x96" href={withBase('/images/favicon/favicon-96x96.png')} />
     <link rel="icon" type="image/png" sizes="16x16" href={withBase('/images/favicon/favicon-16x16.png')} />
     <link rel="apple-touch-icon" sizes="180x180" href={withBase('/images/favicon/apple-icon-180x180.png')} />
     <meta property="og:locale" content="it_IT" />
     <meta property="og:type" content={type} />
+    <meta property="og:site_name" content={site.data.name} />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={fullImage} />
+    {isDefaultImage && (
+      <>
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content={`${site.data.name} — ${site.data.tagline}`} />
+      </>
+    )}
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={fullImage} />
     <title>{fullTitle}</title>
     <script type="application/ld+json" set:html={JSON.stringify(structuredData ?? organization)} />
   </head>

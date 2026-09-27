@@ -175,4 +175,5 @@ export const siteSchema = z.object({
   newsletterAction: z.url(),
   newsletterHoneypot: z.string(),
   socials: z.array(linkSchema),
+  tagline: z.string(),
 });

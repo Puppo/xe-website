@@ -4,12 +4,6 @@
   "items": {
     "type": "object",
     "properties": {
-      "municipality": {
-        "type": "string"
-      },
-      "province": {
-        "type": "string"
-      },
       "count": {
         "type": "integer",
         "exclusiveMinimum": 0,
@@ -25,17 +19,23 @@
         "minimum": -180,
         "maximum": 180
       },
+      "municipality": {
+        "type": "string"
+      },
+      "province": {
+        "type": "string"
+      },
       "id": {
         "type": "string",
         "minLength": 1
       }
     },
     "required": [
-      "municipality",
-      "province",
       "count",
       "latitude",
       "longitude",
+      "municipality",
+      "province",
       "id"
     ]
   },
