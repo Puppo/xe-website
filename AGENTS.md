@@ -133,7 +133,7 @@ npm run check:build            # validate URLs in the completed dist/ build
 npm run test:e2e               # all Playwright projects; requires a completed dist/ build
 ```
 
-`lint` and `format:check` also run in the `Checks` GitHub Actions workflow (a dedicated `lint` job, parallel to `test` and `build`); both must be clean before a PR can merge.
+`lint` and `format:check` also run in the `Checks` GitHub Actions workflow (a dedicated `lint` job, parallel to `test` and `build`); both must be clean before a PR can merge. The workflow's `build` job sets a dummy `PUBLIC_CONTACT_FORM_ACTION` so the shared `dist/` artifact exercises the real contact-form variant; local builds without it exercise the email fallback. The `playwright` job sets `CONTACT_FORM_VARIANT=form` so `tests/e2e/contact.spec.ts` fails loudly if the form is missing, and it runs the full e2e suite on Chromium plus `site.spec.ts`, `accessibility.spec.ts`, and `contact.spec.ts` on the `mobile` project so mobile axe scans, the mobile-menu keyboard behavior, and the contact form's mobile-keyboard flow gate every PR.
 
 Useful focused commands:
 
