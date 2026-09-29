@@ -1,104 +1,91 @@
----
-import { withBase } from '../lib/urls';
-import { eventSlug, eventYear, isPastEvent } from '../lib/events';
-import type { EventEntry } from '../lib/events';
-import { safeInlineJson, type WebMcpEventSummary } from '../lib/webmcp';
-
-interface Props {
-  events: EventEntry[];
-}
-
-const catalog: WebMcpEventSummary[] = Astro.props.events.map((event) => ({
-    date: event.data.date.toISOString(),
-    description: event.data.description,
-    eventType: event.data.eventType,
-    period: isPastEvent(event) ? 'past' : 'upcoming',
-    slug: eventSlug(event),
-    status: event.data.status,
-    title: event.data.title,
-    url: new URL(withBase(`/eventi/${eventSlug(event)}/`), Astro.site).href,
-    venue: event.data.venue?.name,
-    year: eventYear(event),
-  })),
-  serializedCatalog = safeInlineJson(catalog);
----
-
-<script type="application/json" data-webmcp-event-catalog set:html={serializedCatalog} />
-
 <script>
+  import { withBase } from '../lib/urls';
   import {
     eventForSlug,
+    getEvent,
     listEvents,
-    parseCatalog,
     registerWebMcpTools,
+    type WebMcpFullEvent,
   } from '../lib/webmcp';
 
-  const catalogElement = document.querySelector<HTMLScriptElement>(
-      '[data-webmcp-event-catalog]',
-    ),
-    catalog = parseCatalog(catalogElement),
-    listSchema = {
-      type: 'object',
-      properties: {
-        query: {
-          type: 'string',
-          description: 'Testo da cercare in titolo, descrizione, tipo o luogo.',
-        },
-        year: {
-          type: 'integer',
-          description: 'Anno solare degli eventi da mostrare.',
-        },
-        period: {
-          type: 'string',
-          enum: ['all', 'upcoming', 'past'],
-          description: 'Periodo: tutti, futuri o passati.',
-        },
-        offset: {
-          type: 'integer',
-          minimum: 0,
-          description: 'Indice da cui continuare una ricerca precedente.',
-        },
-      },
-      additionalProperties: false,
-    } as const,
-    openSchema = {
-      type: 'object',
-      properties: {
-        slug: {
-          type: 'string',
-          description: 'Slug esatto restituito da list_events.',
-        },
-      },
-      required: ['slug'],
-      additionalProperties: false,
-    } as const;
-
-  if (catalog) {
-    registerWebMcpTools([
-      {
-        name: 'list_events',
-        title: 'Cerca eventi XE',
-        description:
-          'Cerca gli eventi pubblicati da XeDotNet. Restituisce fino a cinque risultati alla volta con `nextOffset`; quando `nextOffset` è `null` la ricerca è terminata.',
-        inputSchema: listSchema,
-        execute(input) {
-          return listEvents(catalog, input);
-        },
-        annotations: { readOnlyHint: true },
-      },
-      {
-        name: 'open_event',
-        title: 'Apri un evento XE',
-        description:
-          'Apre nel browser la pagina di un evento restituito da list_events.',
-        inputSchema: openSchema,
-        execute({ slug }) {
-          const event = eventForSlug(catalog, slug);
-          window.location.assign(event.url);
-          return `Navigazione verso “${event.title}”.`;
-        },
-        annotations: { readOnlyHint: true },
-      },
-    ]);
+  let catalogPromise: Promise<WebMcpFullEvent[]> | undefined;
+  function loadCatalog(): Promise<WebMcpFullEvent[]> {
+    catalogPromise ??= fetch(withBase('/webmcp/events.json'))
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error('Il catalogo degli eventi non è disponibile.');
+        }
+        const value: unknown = await response.json();
+        if (!Array.isArray(value)) {
+          throw new TypeError('Il catalogo degli eventi non è valido.');
+        }
+        return value as WebMcpFullEvent[];
+      })
+      .catch((error: unknown) => {
+        catalogPromise = undefined;
+        throw error;
+      });
+    return catalogPromise;
   }
+
+  registerWebMcpTools([
+    {
+      name: 'list_events',
+      title: 'Cerca eventi XE',
+      description:
+        'Cerca tutti gli eventi pubblicati da XeDotNet, anche passati e annullati. Restituisce fino a cinque risultati alla volta con nextOffset; usa get_event con uno slug per leggere i dettagli completi.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          query: { type: 'string', description: 'Testo da cercare in titolo, descrizione, tipo, luogo e relatori.' },
+          dateFrom: { type: 'string', pattern: '^\\d{4}-\\d{2}-\\d{2}$', description: 'Primo giorno incluso, nel formato YYYY-MM-DD.' },
+          dateTo: { type: 'string', pattern: '^\\d{4}-\\d{2}-\\d{2}$', description: 'Ultimo giorno incluso, nel formato YYYY-MM-DD.' },
+          title: { type: 'string', description: 'Testo da cercare solo nel titolo.' },
+          description: { type: 'string', description: 'Testo da cercare solo nella descrizione.' },
+          speakers: { type: 'array', minItems: 1, items: { type: 'string', minLength: 1 }, description: 'Uno o più nomi di relatori; basta una corrispondenza.' },
+          year: { type: 'integer', description: 'Anno solare degli eventi da mostrare.' },
+          period: { type: 'string', enum: ['all', 'upcoming', 'past'], description: 'Periodo: tutti, futuri o passati.' },
+          offset: { type: 'integer', minimum: 0, description: 'Indice da cui continuare una ricerca precedente.' },
+        },
+        additionalProperties: false,
+      },
+      async execute(input) {
+        return listEvents(await loadCatalog(), input);
+      },
+      annotations: { readOnlyHint: true },
+    },
+    {
+      name: 'get_event',
+      title: 'Dettagli di un evento XE',
+      description:
+        'Restituisce tutti i dettagli di un evento pubblicato da XeDotNet, inclusi programma, relatori, contenuto, materiali e disponibilità attuale delle iscrizioni.',
+      inputSchema: {
+        type: 'object',
+        properties: { slug: { type: 'string', description: 'Slug esatto restituito da list_events.' } },
+        required: ['slug'],
+        additionalProperties: false,
+      },
+      async execute({ slug }) {
+        return getEvent(await loadCatalog(), slug);
+      },
+      annotations: { readOnlyHint: true },
+    },
+    {
+      name: 'open_event',
+      title: 'Apri un evento XE',
+      description: 'Apre nel browser la pagina di un evento restituito da list_events.',
+      inputSchema: {
+        type: 'object',
+        properties: { slug: { type: 'string', description: 'Slug esatto restituito da list_events.' } },
+        required: ['slug'],
+        additionalProperties: false,
+      },
+      async execute({ slug }) {
+        const event = eventForSlug(await loadCatalog(), slug);
+        window.location.assign(event.url);
+        return `Navigazione verso “${event.title}”.`;
+      },
+      annotations: { readOnlyHint: true },
+    },
+  ]);
 </script>

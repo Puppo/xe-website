@@ -1,3 +1,9 @@
+import {
+  isPastEventDate,
+  registrationMessage,
+  registrationState,
+} from './events';
+
 export const EVENT_CATALOG_PAGE_SIZE = 5;
 export const MEMBER_CATALOG_PAGE_SIZE = 5;
 export const WEBMCP_OUTPUT_CHARACTER_LIMIT = 1500;
@@ -7,14 +13,28 @@ export type EventPeriod = 'all' | 'past' | 'upcoming';
 export interface WebMcpEventSummary {
   date: string;
   description: string;
+  endDate?: string;
   eventType?: string;
   period: Exclude<EventPeriod, 'all'>;
   slug: string;
+  speakers?: string[];
   status: 'cancelled' | 'scheduled';
   title: string;
   url: string;
   venue?: string;
   year: number;
+}
+
+export interface WebMcpFullEvent extends WebMcpEventSummary {
+  body: string;
+  materials: { label: string; url: string }[];
+  registration: { startDate?: string; endDate?: string; url?: string };
+  sessions: {
+    description?: string;
+    speakers: string[];
+    time?: string;
+    title: string;
+  }[];
 }
 
 export interface WebMcpEventDetails {
@@ -32,9 +52,14 @@ export interface WebMcpEventDetails {
 }
 
 export interface EventCatalogInput {
+  dateFrom?: string;
+  dateTo?: string;
+  description?: string;
   offset?: number;
   period?: EventPeriod;
   query?: string;
+  speakers?: string[];
+  title?: string;
   year?: number;
 }
 
@@ -78,13 +103,58 @@ function truncate(value: string, maximum: number): string {
   return `${value.slice(0, Math.max(0, maximum - 1)).trimEnd()}…`;
 }
 
+function fold(value: string): string {
+  return value
+    .normalize('NFD')
+    .replaceAll(/[\u0300-\u036f]/g, '')
+    .toLocaleLowerCase('it-IT')
+    .trim();
+}
+
+function calendarDate(value: string, key: string): string {
+  if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/u.test(value)) {
+    throw new TypeError(`Il parametro “${key}” richiede una data YYYY-MM-DD.`);
+  }
+  const parsed = new Date(`${value}T00:00:00.000Z`);
+  if (
+    Number.isNaN(parsed.getTime()) ||
+    parsed.toISOString().slice(0, 10) !== value
+  ) {
+    throw new TypeError(`Il parametro “${key}” richiede una data valida.`);
+  }
+  return value;
+}
+
 export function listEvents(
   catalog: WebMcpEventSummary[],
   input: EventCatalogInput,
+  now = new Date(),
 ) {
+  if (
+    input.speakers !== undefined &&
+    (!Array.isArray(input.speakers) ||
+      input.speakers.length === 0 ||
+      input.speakers.some(
+        (speaker) => typeof speaker !== 'string' || !speaker.trim(),
+      ))
+  ) {
+    throw new TypeError('Indica almeno un relatore non vuoto.');
+  }
   const offset = input.offset ?? 0,
     period = input.period ?? 'all',
-    query = input.query?.trim().toLocaleLowerCase('it-IT');
+    query = input.query === undefined ? undefined : fold(input.query),
+    title = input.title === undefined ? undefined : fold(input.title),
+    description =
+      input.description === undefined ? undefined : fold(input.description),
+    speakers = input.speakers?.map(fold),
+    dateFrom =
+      input.dateFrom === undefined
+        ? undefined
+        : calendarDate(input.dateFrom, 'dateFrom'),
+    dateTo =
+      input.dateTo === undefined
+        ? undefined
+        : calendarDate(input.dateTo, 'dateTo');
 
   if (!Number.isInteger(offset) || offset < 0) {
     throw new TypeError(
@@ -94,26 +164,60 @@ export function listEvents(
   if (input.year !== undefined && !Number.isInteger(input.year)) {
     throw new TypeError('L’anno deve essere un numero intero.');
   }
-
+  if (dateFrom && dateTo && dateFrom > dateTo) {
+    throw new TypeError('La data iniziale deve precedere la data finale.');
+  }
   const matches = catalog.filter((event) => {
-      if (period !== 'all' && event.period !== period) {
+      const actualPeriod = isPastEventDate(
+        new Date(event.date),
+        event.endDate ? new Date(event.endDate) : undefined,
+        now,
+      )
+        ? 'past'
+        : 'upcoming';
+      if (period !== 'all' && actualPeriod !== period) {
         return false;
       }
       if (input.year !== undefined && event.year !== input.year) {
         return false;
       }
-      if (!query) {
-        return true;
-      }
-      return [event.title, event.description, event.eventType, event.venue]
-        .filter((value): value is string => Boolean(value))
-        .some((value) => value.toLocaleLowerCase('it-IT').includes(query));
+      const start = event.date.slice(0, 10),
+        end = (event.endDate ?? event.date).slice(0, 10),
+        eventSpeakers = event.speakers ?? [];
+      return (
+        (!dateFrom || end >= dateFrom) &&
+        (!dateTo || start <= dateTo) &&
+        (!title || fold(event.title).includes(title)) &&
+        (!description || fold(event.description).includes(description)) &&
+        (!speakers ||
+          speakers.some((speaker) =>
+            eventSpeakers.some((name) => fold(name).includes(speaker)),
+          )) &&
+        (!query ||
+          [
+            event.title,
+            event.description,
+            event.eventType,
+            event.venue,
+            ...eventSpeakers,
+          ]
+            .filter((value): value is string => Boolean(value))
+            .some((value) => fold(value).includes(query)))
+      );
     }),
     events = matches
       .slice(offset, offset + EVENT_CATALOG_PAGE_SIZE)
-      .map(({ period: _period, year: _year, ...event }) => ({
-        ...event,
+      .map((event) => ({
+        date: event.date,
         description: truncate(event.description, 120),
+        endDate: event.endDate,
+        eventType: event.eventType,
+        slug: event.slug,
+        speakers: event.speakers,
+        status: event.status,
+        title: event.title,
+        url: event.url,
+        venue: event.venue,
       })),
     nextOffset =
       offset + EVENT_CATALOG_PAGE_SIZE < matches.length
@@ -123,10 +227,10 @@ export function listEvents(
   return { events, nextOffset, offset, total: matches.length };
 }
 
-export function eventForSlug(
-  catalog: WebMcpEventSummary[],
+export function eventForSlug<T extends WebMcpEventSummary>(
+  catalog: T[],
   slug: unknown,
-): WebMcpEventSummary {
+): T {
   if (typeof slug !== 'string') {
     throw new TypeError('Lo slug dell’evento è obbligatorio.');
   }
@@ -137,6 +241,46 @@ export function eventForSlug(
     );
   }
   return event;
+}
+
+export function getEvent(
+  catalog: WebMcpFullEvent[],
+  slug: unknown,
+  now = new Date(),
+) {
+  const event = eventForSlug(catalog, slug),
+    registrationEvent = {
+      data: {
+        date: new Date(event.date),
+        endDate: event.endDate ? new Date(event.endDate) : undefined,
+        status: event.status,
+        registration: {
+          startDate: event.registration.startDate
+            ? new Date(event.registration.startDate)
+            : undefined,
+          endDate: event.registration.endDate
+            ? new Date(event.registration.endDate)
+            : undefined,
+        },
+      },
+    },
+    state = registrationState(registrationEvent, now);
+  return {
+    ...event,
+    period: isPastEventDate(
+      new Date(event.date),
+      event.endDate ? new Date(event.endDate) : undefined,
+      now,
+    )
+      ? 'past'
+      : 'upcoming',
+    registration: {
+      ...event.registration,
+      message: registrationMessage(registrationEvent, now),
+      state,
+      url: state === 'open' ? event.registration.url : undefined,
+    },
+  };
 }
 
 export function listMembers(
@@ -312,7 +456,7 @@ export function fillControl(
 ): void {
   control.value = value;
   // Native HTML5 form validation reacts to both `input` and `change`,
-  // so framework-specific synthetic events are unnecessary.
+  // So framework-specific synthetic events are unnecessary.
   control.dispatchEvent(new Event('input', { bubbles: true }));
   control.dispatchEvent(new Event('change', { bubbles: true }));
 }

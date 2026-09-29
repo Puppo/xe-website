@@ -4,6 +4,7 @@ import {
   describeMember,
   EVENT_CATALOG_PAGE_SIZE,
   eventForSlug,
+  getEvent,
   listEvents,
   listMembers,
   MEMBER_CATALOG_PAGE_SIZE,
@@ -12,6 +13,7 @@ import {
 } from '../src/lib/webmcp';
 import type {
   WebMcpEventDetails,
+  WebMcpFullEvent,
   WebMcpEventSummary,
   WebMcpMemberDetails,
   WebMcpMemberSummary,
@@ -26,8 +28,11 @@ const catalog: WebMcpEventSummary[] = Array.from(
         ? 'Una serata dedicata a WebMCP e agli agenti.'
         : `Descrizione evento ${index}`,
     eventType: index === 0 ? 'Tech-Pub' : 'Conferenza',
+    endDate: index === 0 ? '2026-01-12T12:00:00.000Z' : undefined,
     period: index < 2 ? 'upcoming' : 'past',
     slug: `evento-${index}`,
+    speakers:
+      index === 0 ? ['Gianni Rosà', 'Emanuele Furlan'] : ['Relatore diverso'],
     status: index === 1 ? 'cancelled' : 'scheduled',
     title: `Evento ${index}`,
     url: `https://www.xedotnet.org/eventi/evento-${index}/`,
@@ -40,9 +45,29 @@ describe('catalogo WebMCP degli eventi', () => {
   it('filtra per testo, anno e periodo senza perdere gli eventi annullati', () => {
     expect(listEvents(catalog, { query: 'WebMCP' }).events).toHaveLength(1);
     expect(listEvents(catalog, { year: 2025 }).total).toBe(3);
-    const upcoming = listEvents(catalog, { period: 'upcoming' });
-    expect(upcoming.total).toBe(2);
-    expect(upcoming.events[1]?.status).toBe('cancelled');
+    const past = listEvents(
+      catalog,
+      { period: 'past' },
+      new Date('2026-09-29'),
+    );
+    expect(past.total).toBe(catalog.length);
+    expect(past.events.some((event) => event.status === 'cancelled')).toBe(
+      true,
+    );
+    expect(
+      listEvents(
+        catalog.slice(0, 1),
+        { period: 'upcoming' },
+        new Date('2026-01-11'),
+      ).total,
+    ).toBe(1);
+    expect(
+      listEvents(
+        catalog.slice(0, 1),
+        { period: 'past' },
+        new Date('2026-01-13'),
+      ).total,
+    ).toBe(1);
   });
 
   it('pagina i risultati in gruppi di cinque', () => {
@@ -65,6 +90,75 @@ describe('catalogo WebMCP degli eventi', () => {
     expect(() => eventForSlug(catalog, 'evento-sconosciuto')).toThrow(
       /non trovato/iu,
     );
+  });
+
+  it('combina intervallo sovrapposto, titolo, descrizione e relatori', () => {
+    const result = listEvents(catalog, {
+      dateFrom: '2026-01-12',
+      dateTo: '2026-01-15',
+      title: 'evento 0',
+      description: 'agenti',
+      speakers: ['Nessuno', 'ROSA'],
+    });
+    expect(result.events.map((event) => event.slug)).toEqual(['evento-0']);
+    expect(
+      listEvents(catalog, { dateFrom: '2026-01-13' }).events,
+    ).not.toContainEqual(expect.objectContaining({ slug: 'evento-0' }));
+    expect(listEvents(catalog, { speakers: ['furlan'] }).total).toBe(1);
+    expect(listEvents(catalog, { query: 'gianni rosa' }).total).toBe(1);
+  });
+
+  it('rifiuta date impossibili, intervalli invertiti e relatori vuoti', () => {
+    expect(() => listEvents(catalog, { dateFrom: '2026-02-30' })).toThrow(
+      /valida/iu,
+    );
+    expect(() =>
+      listEvents(catalog, { dateFrom: '2026-02-01', dateTo: '2026-01-01' }),
+    ).toThrow(/iniziale/iu);
+    expect(() => listEvents(catalog, { speakers: [] })).toThrow(/relatore/iu);
+    expect(() => listEvents(catalog, { speakers: [' '] })).toThrow(
+      /relatore/iu,
+    );
+  });
+
+  it('restituisce i dettagli completi e aggiorna la disponibilità delle iscrizioni', () => {
+    const [first] = catalog;
+    if (!first) {
+      throw new Error('Il catalogo di prova è vuoto.');
+    }
+    const event: WebMcpFullEvent = {
+      ...first,
+      body: 'Contenuto completo.',
+      materials: [{ label: 'Slide', url: 'https://example.com/slide' }],
+      registration: {
+        startDate: '2026-01-01T00:00:00.000Z',
+        endDate: '2026-01-10T00:00:00.000Z',
+        url: 'https://example.com/iscrizione',
+      },
+      sessions: [
+        {
+          title: 'Sessione',
+          speakers: ['Gianni Rosà'],
+          description: 'Dettagli del talk.',
+        },
+      ],
+    };
+    const open = getEvent(
+      [event],
+      'evento-0',
+      new Date('2026-01-10T12:00:00Z'),
+    );
+    expect(open.registration.state).toBe('open');
+    expect(open.registration.url).toBe(event.registration.url);
+    expect(open.body).toBe('Contenuto completo.');
+    expect(open.sessions[0]?.description).toBe('Dettagli del talk.');
+    const closed = getEvent(
+      [event],
+      'evento-0',
+      new Date('2026-01-11T12:00:00Z'),
+    );
+    expect(closed.registration.state).toBe('closed');
+    expect(closed.registration.url).toBeUndefined();
   });
 });
 

@@ -279,7 +279,7 @@ test('la pagina evento permette di aprire il profilo del relatore', async ({
   ]);
 });
 
-test('il catalogo eventi futuri è esposto su tutte le pagine non dedicate', async ({
+test('tutti gli eventi e i dettagli sono disponibili da ogni pagina', async ({
   page,
 }) => {
   await mockWebMcp(page);
@@ -297,24 +297,43 @@ test('il catalogo eventi futuri è esposto su tutte le pagine non dedicate', asy
   ]) {
     await page.goto(path);
     await waitForTool(page, 'list_events');
+    await waitForTool(page, 'get_event');
 
-    const onlyUpcoming = await page.evaluate(() => {
+    const result = await page.evaluate(async () => {
       const tools = (window as unknown as { webMcpTools: RegisteredTool[] })
         .webMcpTools;
       const list = tools.find((candidate) => candidate.name === 'list_events');
-      const all = list?.execute({}, { signal: new AbortController().signal });
-      const past = list?.execute(
-        { period: 'past' },
+      const details = tools.find((candidate) => candidate.name === 'get_event');
+      const past = await list?.execute(
+        {
+          dateFrom: '2025-01-01',
+          dateTo: '2025-01-31',
+          speakers: ['Emanuele Furlan'],
+        },
+        { signal: new AbortController().signal },
+      );
+      const event = await details?.execute(
+        { slug: 'tech-pub-gennaio-2025' },
         { signal: new AbortController().signal },
       );
       return {
-        total: (all as { total: number }).total,
-        pastTotal: (past as { total: number }).total,
+        past: past as { total: number; events: { slug: string }[] },
+        event: event as {
+          title: string;
+          body: string;
+          sessions: { speakers: string[] }[];
+        },
       };
     });
 
-    expect(onlyUpcoming.pastTotal).toBe(0);
-    expect(onlyUpcoming.total).toBeGreaterThan(0);
+    expect(result.past.events.map((event) => event.slug)).toContain(
+      'tech-pub-gennaio-2025',
+    );
+    expect(result.event.title).toContain('Tech-Pub');
+    expect(
+      result.event.sessions.flatMap((session) => session.speakers),
+    ).toContain('Emanuele Furlan');
+    expect(result.event.body.length).toBeGreaterThan(0);
   }
 });
 
@@ -347,7 +366,7 @@ test('la newsletter rifiuta email non valide senza inviare il modulo', async ({
     });
   });
 
-  const error = await page.evaluate(() => {
+  const errorMessage = await page.evaluate(() => {
     const tool = (
       window as unknown as { webMcpTools: RegisteredTool[] }
     ).webMcpTools.find(
@@ -359,11 +378,11 @@ test('la newsletter rifiuta email non valide senza inviare il modulo', async ({
         { signal: new AbortController().signal },
       );
       return null;
-    } catch (cause) {
-      return cause instanceof Error ? cause.message : String(cause);
+    } catch (error) {
+      return error instanceof Error ? error.message : String(error);
     }
   });
-  expect(error).toMatch(/email/i);
+  expect(errorMessage).toMatch(/email/i);
 
   await expect(page.locator('#newsletter-email')).toHaveValue('not-an-email');
   await expect(page.locator('#newsletter-email')).toBeFocused();
@@ -399,7 +418,7 @@ test('il contatto rifiuta dati non validi senza inviare il modulo', async ({
     });
   });
 
-  const error = await page.evaluate(() => {
+  const errorMessage = await page.evaluate(() => {
     const tool = (
       window as unknown as { webMcpTools: RegisteredTool[] }
     ).webMcpTools.find(
@@ -411,11 +430,11 @@ test('il contatto rifiuta dati non validi senza inviare il modulo', async ({
         { signal: new AbortController().signal },
       );
       return null;
-    } catch (cause) {
-      return cause instanceof Error ? cause.message : String(cause);
+    } catch (error) {
+      return error instanceof Error ? error.message : String(error);
     }
   });
-  expect(error).toMatch(/name|email/i);
+  expect(errorMessage).toMatch(/name|email/i);
 
   await expect(page.locator('#name')).toHaveValue('');
   await expect(page.locator('#privacy')).not.toBeChecked();
