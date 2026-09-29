@@ -11,15 +11,31 @@ export type RegistrationState =
   | 'open'
   | 'closed';
 
+export interface RegistrationEvent {
+  data: {
+    date: Date;
+    endDate?: Date;
+    status: 'cancelled' | 'scheduled';
+    registration: { startDate?: Date; endDate?: Date };
+  };
+}
+
 export function eventTime(event: EventEntry): number {
   return event.data.date.getTime();
 }
 
-export function isPastEvent(event: EventEntry, now = new Date()): boolean {
-  const end = event.data.endDate ?? event.data.date,
-    eventDayEnd = new Date(end);
+export function isPastEventDate(
+  date: Date,
+  endDate?: Date,
+  now = new Date(),
+): boolean {
+  const eventDayEnd = new Date(endDate ?? date);
   eventDayEnd.setUTCHours(23, 59, 59, 999);
   return eventDayEnd.getTime() < now.getTime();
+}
+
+export function isPastEvent(event: EventEntry, now = new Date()): boolean {
+  return isPastEventDate(event.data.date, event.data.endDate, now);
 }
 
 export function sortAscending(a: EventEntry, b: EventEntry): number {
@@ -86,10 +102,10 @@ export function nextScheduledEvent(
 }
 
 export function registrationState(
-  event: EventEntry,
+  event: RegistrationEvent,
   now = new Date(),
 ): RegistrationState {
-  if (isCancelled(event)) {
+  if (event.data.status === 'cancelled') {
     return 'cancelled';
   }
 
@@ -111,7 +127,7 @@ export function registrationState(
 }
 
 export function registrationMessage(
-  event: EventEntry,
+  event: RegistrationEvent,
   now = new Date(),
 ): string {
   const state = registrationState(event, now),

@@ -1,8 +1,10 @@
 ---
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import WebMcpMemberCatalog from '../../../components/WebMcpMemberCatalog.astro';
+import WebMcpMemberDetails from '../../../components/WebMcpMemberDetails.astro';
 import { eventSlug, formatCalendarDate } from '../../../lib/events';
-import { recentEventsForPerson } from '../../../lib/people';
+import { recentEventsForPerson, toMemberCatalog, toMemberDetails } from '../../../lib/people';
 import { breadcrumbList } from '../../../lib/structured-data';
 import { initials, markdownExcerpt } from '../../../lib/text';
 import { externalLinkProps, isExternalUrl, withBase } from '../../../lib/urls';
@@ -41,9 +43,13 @@ const personStructuredData = [
     { name: member.data.name, url: new URL(withBase(`/soci/${member.id}/`), Astro.site).href },
   ]),
 ];
+const webMcpMemberDetails = toMemberDetails(member, Astro.site);
+const webMcpMemberSummaries = toMemberCatalog(member, Astro.site);
 ---
 
 <BaseLayout title={member.data.name} description={description} type="article" structuredData={personStructuredData}>
+  {webMcpMemberDetails && <WebMcpMemberDetails details={webMcpMemberDetails} />}
+  {webMcpMemberSummaries && <WebMcpMemberCatalog members={webMcpMemberSummaries} />}
   <header class="page-hero soci-hero soci-detail-hero">
     <div class="shell">
       <p class="breadcrumbs"><a href={withBase('/')}>Home</a> / <a href={withBase('/soci/')}>Soci</a> / {member.data.name}</p>
