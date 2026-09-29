@@ -10,6 +10,8 @@ const representativePages = [
   '/chi-siamo/',
   '/contatti/',
   '/privacy-policy/',
+  '/grazie/',
+  '/404.html',
 ];
 
 for (const path of representativePages) {

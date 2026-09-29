@@ -58,6 +58,10 @@ jobs:
   build:
     needs: setup
     runs-on: ubuntu-latest
+    env:
+      # Dummy endpoint so the PR artifact (and the e2e suite) exercises the
+      # real contact form variant; check-build does not validate form actions.
+      PUBLIC_CONTACT_FORM_ACTION: https://example.com/contatto
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
@@ -79,6 +83,8 @@ jobs:
   playwright:
     needs: [setup, build]
     runs-on: ubuntu-latest
+    env:
+      CONTACT_FORM_VARIANT: form
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
@@ -94,3 +100,4 @@ jobs:
           path: dist
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e -- --project=chromium
+      - run: npm run test:e2e -- tests/e2e/site.spec.ts tests/e2e/accessibility.spec.ts tests/e2e/contact.spec.ts --project=mobile
