@@ -45,7 +45,7 @@
     "typescript": "^6.0.3",
     "vite-plugin-image-optimizer": "^2.0.3",
     "vitest": "^5.0.2",
-    "webmcp-types": "^0.1.9",
+    "webmcp-types": "^0.1.10",
     "yaml": "^2.9.1"
   },
   "engines": {
