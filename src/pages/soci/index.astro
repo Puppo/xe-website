@@ -1,16 +1,15 @@
 ---
-import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import WebMcpMemberCatalog from '../../components/WebMcpMemberCatalog.astro';
-import { groupByInitial, memberSummaries } from '../../lib/people';
+import { currentMembers, groupByInitial, memberSummaries } from '../../lib/people';
+import { loadPeopleContext } from '../../lib/people-content';
 import { initials } from '../../lib/text';
 import { withBase } from '../../lib/urls';
 
-const members = (
-  await getCollection('people', ({ data }) => data.published && data.roles.includes('member'))
-).sort((a, b) => a.data.sortName.localeCompare(b.data.sortName, 'it'));
+const { people, context } = await loadPeopleContext();
+const members = currentMembers(people, context).sort((a, b) => a.data.sortName.localeCompare(b.data.sortName, 'it'));
 const bands = groupByInitial(members),
-  memberCatalog = memberSummaries(members, Astro.site);
+  memberCatalog = memberSummaries(members, Astro.site, context);
 ---
 
 <BaseLayout title="Soci" description="Le persone che sostengono XeDotNet e rendono possibili le attività della community.">
@@ -48,7 +47,7 @@ const bands = groupByInitial(members),
                   <strong>{member.data.name}</strong>
                   {member.data.title && <span>{member.data.title}</span>}
                 </span>
-                {member.data.roles.includes('speaker') && <span class="soci-role">Speaker</span>}
+                {context.speakerIds.has(member.id) && <span class="soci-role">Speaker</span>}
               </a>
             </li>
           ))}

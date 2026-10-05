@@ -1,19 +1,27 @@
 import type { APIRoute } from 'astro';
-import { getCollection } from 'astro:content';
-import { toMemberDetails } from '../../../lib/people';
+import { loadPeopleContext } from '../../../lib/people-content';
+import {
+  legacyPersonSlugs,
+  personSlugAliases,
+} from '../../../lib/person-slugs.mjs';
+import { currentMembers, toMemberDetails } from '../../../lib/people';
 
 export async function getStaticPaths() {
-  const people = await getCollection(
-    'people',
-    ({ data }) => data.published && data.roles.includes('member'),
+  const { people, context } = await loadPeopleContext();
+  return currentMembers(people, context).flatMap((person) =>
+    [person.id, ...personSlugAliases(person.id)].map((slug) => ({
+      params: { slug },
+    })),
   );
-  return people.map((person) => ({ params: { slug: person.id } }));
 }
 
 export const GET: APIRoute = async ({ params, site }) => {
-  const person = await getCollection('people').then((people) =>
-    people.find((candidate) => candidate.id === params.slug),
-  );
-  const details = person ? toMemberDetails(person, site) : undefined;
+  const { people, context } = await loadPeopleContext();
+  const id =
+    params.slug && Object.hasOwn(legacyPersonSlugs, params.slug)
+      ? legacyPersonSlugs[params.slug]
+      : params.slug;
+  const person = people.find((candidate) => candidate.id === id);
+  const details = person ? toMemberDetails(person, site, context) : undefined;
   return details ? Response.json(details) : new Response(null, { status: 404 });
 };

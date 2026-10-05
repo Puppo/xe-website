@@ -60,6 +60,7 @@ Where the content lives:
 
 - Events: `src/data/events/<year>/<date>-<slug>.md`
 - People: `src/data/people/<slug>.md`
+- Annual memberships: `src/data/memberships/<year>.json`
 - Pages: `src/data/pages/<slug>.md`
 - Shared structured data: `src/data/*.json`
 
@@ -70,6 +71,44 @@ npm run schemas   # writes the generated files in schemas/
 ```
 
 Commit the regenerated `schemas/` output alongside the source-of-truth edit. Invalid content must fail the build — do not bypass validation with casts or permissive schemas.
+
+## Gestione annuale dei soci
+
+L’albo soci è un file JSON per anno associativo in `src/data/memberships/`. Il sito usa sempre l’anno più alto disponibile, indipendentemente dalla data corrente. Il 1° gennaio non cambia nulla finché non viene pubblicato un nuovo elenco. Pubblicare un file per un anno futuro attiva subito quell’elenco: prepararlo in un branch e unirlo quando deve entrare in vigore.
+
+Esempio di `src/data/memberships/2026.json`:
+
+```json
+{
+  "members": [
+    "alberto-acerbis",
+    "andrea-dottor",
+    "michael-denny"
+  ]
+}
+```
+
+Per aggiornare i soci:
+
+1. Copiare l’elenco precedente, per esempio con `cp src/data/memberships/2026.json src/data/memberships/2027.json`.
+2. Aggiungere gli slug di chi ha sottoscritto la tessera e rimuovere chi non ha rinnovato. Per i nuovi profili usare nomi file minuscoli con trattini: lo slug corrisponde al nome senza `.md`: `src/data/people/andrea-dottor.md` → `andrea-dottor`.
+   Tutti i nomi file devono essere in kebab case, per esempio `massimiliano-barbierato.md`, `mirko-rezzin.md` e `roberto-ferro.md`. Il build rifiuta maiuscole, punti e i vecchi identificativi migrati. L’autocompletamento JSON propone gli slug canonici. I vecchi URL dei soci hanno un redirect al nuovo indirizzo; gli endpoint JSON storici restituiscono il dettaglio con lo slug canonico. Gli alias sono pubblicati solo per i soci correnti con profilo pubblicato e non compaiono nella sitemap.
+3. Per una nuova persona, creare prima il profilo Markdown in `src/data/people/`, con almeno `name` e `sortName` nel frontmatter e la biografia nel corpo. Non aggiungere `roles`: i ruoli pubblici sono derivati dai dati e il campo viene rifiutato dallo schema. `published: false` impedisce la visualizzazione anche se la persona è nell’elenco annuale.
+4. Tenere gli slug in ordine alfabetico, senza duplicati. Non eliminare gli elenchi degli anni precedenti o i profili di chi non rinnova: servono per la storia associativa e gli eventi.
+5. Dopo aver creato profili, eseguire `npm run schemas` per aggiornare l’autocompletamento degli slug nell’editor. Includere le modifiche generate in `schemas/` nel commit.
+6. Eseguire `npm run build` e `npm run check:build`, controllare la pagina `/soci/` e aprire una pull request con le modifiche.
+
+I nomi dei file devono essere anni di quattro cifre (`YYYY.json`), senza suffissi o sottocartelle. `members` è obbligatorio; un elenco vuoto è valido e mostra zero soci, senza recuperare l’elenco precedente. Il build fallisce se manca ogni elenco annuale, se un elenco contiene duplicati o slug fuori ordine, o se un socio non ha un profilo. I riferimenti sono controllati anche negli anni storici. Chi non compare nell’ultimo elenco non ha più una pagina pubblica `/soci/<slug>/` né un dettaglio WebMCP; il suo profilo sorgente e i riferimenti negli eventi restano disponibili.
+
+Lo stato di speaker deriva dai riferimenti espliciti alle persone nelle sessioni degli eventi non in bozza, attraverso tutto l’archivio. In un evento, usare `person: andrea-dottor` nell’elenco `speakers` della sessione per riferirsi al profilo. Gli eventi passati, futuri e annullati contano; gli eventi con `draft: true` no. Le stringhe speaker storiche restano testo e non vengono confrontate con i nomi dei profili. Uno speaker che non rinnova resta tale, ma compare nell’elenco soci e ha una pagina pubblica solo se è anche un socio corrente pubblicato.
+
+La migrazione completa dal vecchio sito richiede un anno esplicito:
+
+```sh
+npm run migrate -- --membership-year=2026
+```
+
+Questo comando scarica e riscrive molti contenuti, incluso l’elenco dell’anno indicato. Non usarlo per il normale aggiornamento annuale dei soci; eseguirlo solo per una migrazione completa autorizzata. Senza un anno valido il comando termina prima di scaricare o scrivere file.
 
 ## Testing and verification
 

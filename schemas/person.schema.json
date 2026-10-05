@@ -36,17 +36,6 @@
       "default": true,
       "type": "boolean"
     },
-    "roles": {
-      "minItems": 1,
-      "type": "array",
-      "items": {
-        "type": "string",
-        "enum": [
-          "member",
-          "speaker"
-        ]
-      }
-    },
     "sortName": {
       "type": "string"
     },
@@ -60,9 +49,9 @@
   },
   "required": [
     "name",
-    "roles",
     "sortName"
   ],
+  "additionalProperties": false,
   "$id": "https://www.xedotnet.org/schemas/person.schema.json",
   "title": "Profilo pubblico XeDotNet"
 }

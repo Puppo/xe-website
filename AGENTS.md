@@ -12,6 +12,7 @@ This is a single-package npm repository. Use Node.js 24 or newer and npm; do not
 - `src/components/`: reusable Astro components and limited client-side behavior.
 - `src/layouts/`: shared page layouts.
 - `src/lib/`: event, text, URL, and deployment helpers.
+- `src/data/memberships/`: yearly JSON membership lists; the highest available year determines current members.
 - `src/data/`: Markdown content and shared JSON data.
 - `src/content-schemas.ts`: canonical Zod definitions for all content.
 - `src/content.config.ts`: Astro content collection loaders.
@@ -47,10 +48,12 @@ Never commit `.env`, credentials, tokens, or private form endpoints.
 - Keep user-facing copy, metadata, test descriptions, and domain vocabulary in Italian unless a requested change explicitly requires another language.
 - Use the terms in `CONTEXT.md`. In particular, preserve the distinction between scheduled and cancelled events and derive registration availability from its inclusive date interval rather than a manually maintained status.
 - Event Markdown lives at `src/data/events/<year>/<date>-<slug>.md`; people and page Markdown live under `src/data/people/` and `src/data/pages/`; shared structured data lives in `src/data/*.json`.
+- Annual membership comes from `src/data/memberships/YYYY.json`, never people frontmatter or the current date. People profiles must not contain `roles`; derive speaker status only from explicit person references in non-draft events, including historical, future, and cancelled events. Legacy speaker strings are display text. Keep historical lists and profiles; see [Gestione annuale dei soci](CONTRIBUTING.md#gestione-annuale-dei-soci). Regenerate editor schemas after adding profiles.
 - Treat `src/content-schemas.ts` as the schema source of truth. When it changes, run `npm run schemas` and commit the corresponding generated changes in `schemas/`.
 - Content that fails a collection schema must fail the build. Do not bypass validation with casts, permissive schemas, or duplicated validation logic.
+- People filenames and canonical IDs must use lowercase kebab case. Preserve known legacy profile spellings through `src/lib/person-slugs.mjs`; generate their aliases only for published current members and exclude alias pages from the sitemap.
 - Preserve historical content, slugs, source URLs, and public URL compatibility unless the task explicitly calls for a migration.
-- `npm run migrate` fetches the legacy website and rewrites event, people, media, and migration-report files. Do not run it unless the user explicitly requests a full migration or refresh and understands the resulting broad changes.
+- `npm run migrate -- --membership-year=YYYY` requires an explicit four-digit membership year and fetches the legacy website and rewrites event, people, media, and migration-report files. Do not run it unless the user explicitly requests a full migration or refresh and understands the resulting broad changes.
 
 ## Code conventions
 

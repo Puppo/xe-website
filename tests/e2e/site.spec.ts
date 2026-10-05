@@ -403,3 +403,70 @@ test('la mappa non causa overflow orizzontale', async ({ page }) => {
   );
   expect(hasOverflow).toBe(false);
 });
+
+test('i riferimenti agli eventi determinano il badge speaker e i ruoli WebMCP', async ({
+  page,
+  request,
+}) => {
+  await page.goto('/soci/');
+  const nicola = page.locator('.soci-person[href="/soci/nicola-paro/"]');
+  await expect(nicola.locator('.soci-role')).toHaveText('Speaker');
+  await page.goto('/soci/nicola-paro/');
+  await expect(page.locator('.soci-overline')).toHaveText('Socio e speaker');
+  const details = await request.get('/webmcp/members/nicola-paro.json');
+  expect(details.ok()).toBe(true);
+  expect(await details.json()).toMatchObject({
+    slug: 'nicola-paro',
+    roles: ['member', 'speaker'],
+  });
+  const catalog = await request.get('/webmcp/members.json');
+  expect(catalog.ok()).toBe(true);
+  expect(await catalog.json()).toEqual(
+    expect.arrayContaining([
+      expect.objectContaining({
+        slug: 'nicola-paro',
+        roles: ['member', 'speaker'],
+      }),
+    ]),
+  );
+});
+
+test('gli URL storici dei soci raggiungono i profili in kebab case', async ({
+  page,
+  request,
+}) => {
+  const aliases = {
+    MassimilianoBarbierato: 'massimiliano-barbierato',
+    massimilianobarbierato: 'massimiliano-barbierato',
+    'mirko.rezzin': 'mirko-rezzin',
+    mirkorezzin: 'mirko-rezzin',
+    'roberto.ferro': 'roberto-ferro',
+    robertoferro: 'roberto-ferro',
+    robertomazzoli: 'roberto-mazzoli',
+    vincenzofoggia: 'vincenzo-foggia',
+  };
+  for (const [alias, canonical] of Object.entries(aliases)) {
+    await page.goto(`/soci/${alias}/`);
+    await expect(page).toHaveURL(new RegExp(`/soci/${canonical}/$`, 'u'));
+    await expect(page.locator('h1')).toHaveCount(1);
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+      'href',
+      new RegExp(`/soci/${canonical}/$`, 'u'),
+    );
+    const response = await request.get(`/webmcp/members/${alias}.json`);
+    expect(response.ok()).toBe(true);
+    expect(await response.json()).toMatchObject({
+      slug: canonical,
+      url: expect.stringContaining(`/soci/${canonical}/`),
+    });
+  }
+  const catalog = await (await request.get('/webmcp/members.json')).json();
+  for (const [alias, canonical] of Object.entries(aliases)) {
+    expect(catalog).toEqual(
+      expect.arrayContaining([expect.objectContaining({ slug: canonical })]),
+    );
+    expect(catalog).not.toEqual(
+      expect.arrayContaining([expect.objectContaining({ slug: alias })]),
+    );
+  }
+});

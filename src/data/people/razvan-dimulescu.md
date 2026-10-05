@@ -3,8 +3,6 @@ name: Razvan Dimulescu
 sortName: Razvan Dimulescu
 title: Frontend developer
 image: /media/1204-razvan.jpg
-roles:
-  - member
 links:
   - label: linkedin.com
     url: https://www.linkedin.com/in/razvan-dimulescu/

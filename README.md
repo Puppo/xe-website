@@ -16,7 +16,7 @@ The main commands are:
 - `npm test`: run unit tests.
 - `npm run build`: create a complete static build.
 - `npm run test:e2e`: run browser and accessibility tests.
-- `npm run migrate`: recreate events, people, and the migration report from the previous website.
+- `npm run migrate -- --membership-year=2026`: recreate events, people, and the migration report from the previous website.
 
 To enable the contact form, copy `.env.example` to `.env` and set `PUBLIC_CONTACT_FORM_ACTION` to the public Formspree endpoint. If the endpoint is not configured, the site displays a working email link instead.
 
@@ -25,8 +25,11 @@ Configure the public address with `SITE_URL`, including any subdirectory; for ex
 ## Content
 
 - Event Markdown: `src/data/events/<year>/<date>-<event-name>.md` (for example, `2026/2026-04-10-blazorconf2026.md`)
+- Annual membership lists: `src/data/memberships/<year>.json`
 - People Markdown: `src/data/people/` (metadata in the YAML frontmatter and biography in the body)
 - Page Markdown: `src/data/pages/`
 - Shared configuration and data: `src/data/*.json`
+
+For the annual membership update, follow [Gestione annuale dei soci](CONTRIBUTING.md#gestione-annuale-dei-soci).
 
 Schemas are defined in `src/content-schemas.ts` and connected to the content collections in `src/content.config.ts`. An invalid entry causes the build to fail. The JSON Schemas in `schemas/` are regenerated automatically before each build; editor completion mappings are configured in `.vscode/settings.json`.

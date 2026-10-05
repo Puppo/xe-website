@@ -3,9 +3,6 @@ name: Andrea Agnoletto
 sortName: Andrea Agnoletto
 title: Microsoft Certified Professional
 image: /media/1031-agnoletto-foto.jpg
-roles:
-  - member
-  - speaker
 links:
   - label: linkedin.com
     url: https://www.linkedin.com/in/andreaagnoletto

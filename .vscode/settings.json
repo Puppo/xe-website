@@ -11,6 +11,10 @@
     {
       "fileMatch": ["/src/data/site.json"],
       "url": "./schemas/site.schema.json"
+    },
+    {
+      "fileMatch": ["/src/data/memberships/*.json"],
+      "url": "./schemas/membership.schema.json"
     }
   ]
 }

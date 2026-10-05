@@ -198,7 +198,6 @@ describe('profili', () => {
     const profile = {
       name: 'Ada Lovelace',
       profileUrl: 'https://www.linkedin.com/in/ada-lovelace',
-      roles: ['speaker'],
       sortName: 'Lovelace, Ada',
     };
     expect(personSchema.safeParse(profile).success).toBe(true);

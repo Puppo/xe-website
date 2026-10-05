@@ -3,8 +3,6 @@ name: Filippo Frater
 sortName: Filippo Frater
 title: Software developer
 image: /media/1216-frater.jpg
-roles:
-  - member
 links:
   - label: linkedin.com
     url: https://www.linkedin.com/in/filippofrater

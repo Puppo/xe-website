@@ -1,8 +1,6 @@
 ---
 name: Marco Minerva
 sortName: Marco Minerva
-roles:
-  - speaker
 links: []
 published: true
 sourceUrl: https://www.xedotnet.org/eventi/minimal-api-in-the-real-world/

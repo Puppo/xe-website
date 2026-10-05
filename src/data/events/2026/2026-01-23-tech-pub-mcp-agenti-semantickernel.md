@@ -11,7 +11,7 @@ sessions:
   - time: 20:00 - 20:30
     title: Estendere gli LLM con .NET e OpenAPI
     speakers:
-      - person: mirkorezzin
+      - person: mirko-rezzin
     description: In questa sessione esploriamo come integrare API .NET descritte in OpenAPI all’interno di un LLM per estenderne concretamente le capacità operative. Vedremo come esporre funzioni al modello, gestire autenticazione e autorizzazione e coordinare più servizi.
   - time: 20:30 - 21:00
     title: ".NET Agent Framework: Orchestrazione Agenti e Integrazione MCP Tools"

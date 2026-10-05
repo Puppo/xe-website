@@ -127,13 +127,12 @@ export const eventInputSchema = createEventSchema(
   speakerInputSchema,
 );
 
-export const personSchema = z.object({
+export const personSchema = z.strictObject({
   image: z.string().optional(),
   links: z.array(linkSchema).default([]),
   name: z.string(),
   profileUrl: z.url().optional(),
   published: z.boolean().default(true),
-  roles: z.array(z.enum(['member', 'speaker'])).min(1),
   sortName: z.string(),
   sourceUrl: z.url().optional(),
   title: z.string().optional(),
@@ -177,3 +176,37 @@ export const siteSchema = z.object({
   socials: z.array(linkSchema),
   tagline: z.string(),
 });
+
+export function createMembershipSchema<
+  T extends z.ZodType<string | { id: string }>,
+>(memberSchema: T) {
+  return z
+    .object({
+      members: z.array(memberSchema, { error: 'Indicare l’elenco dei soci.' }),
+    })
+    .superRefine((membership, context) => {
+      const seen = new Set<string>();
+      let previous: string | undefined;
+      for (const [index, member] of membership.members.entries()) {
+        const id = typeof member === 'string' ? member : member.id;
+        if (seen.has(id)) {
+          context.addIssue({
+            code: 'custom',
+            message: `Il socio "${id}" è presente più volte.`,
+            path: ['members', index],
+          });
+        }
+        if (previous !== undefined && previous > id) {
+          context.addIssue({
+            code: 'custom',
+            message: 'Gli slug dei soci devono essere in ordine alfabetico.',
+            path: ['members', index],
+          });
+        }
+        seen.add(id);
+        previous = id;
+      }
+    });
+}
+
+export const membershipInputSchema = createMembershipSchema(z.string().min(1));

@@ -1,8 +1,6 @@
 ---
 name: Diano Bellio
 sortName: Diano Bellio
-roles:
-  - speaker
 links: []
 published: true
 sourceUrl: https://www.xedotnet.org/eventi/techpub-telegram-bot/
