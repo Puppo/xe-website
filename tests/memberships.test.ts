@@ -8,6 +8,7 @@ import {
 } from '../src/content-schemas';
 import {
   createMembershipContext,
+  createSpeakerIds,
   currentMembers,
   isCurrentMember,
   memberSummaries,
@@ -42,7 +43,7 @@ function annualList(
   };
 }
 
-const ada = person('ada', { roles: ['speaker'] });
+const ada = person('ada');
 const bruno = person('bruno');
 const hidden = person('nascosto', { published: false });
 const people = [ada, bruno, hidden];
@@ -84,18 +85,21 @@ describe('schema dell’albo soci', () => {
     ).toBe(true);
   });
 
-  it('consente profili senza ruoli e rifiuta il ruolo member nel frontmatter', () => {
-    expect(personSchema.parse({ name: 'Ada', sortName: 'Ada' }).roles).toEqual(
-      [],
-    );
-    expect(
-      personSchema.safeParse({
-        name: 'Ada',
-        sortName: 'Ada',
-        roles: ['member'],
-      }).success,
-    ).toBe(false);
-  });
+  it.each([{ roles: [] }, { roles: ['member'] }, { roles: ['speaker'] }])(
+    'rifiuta il campo roles obsoleto: %j',
+    ({ roles }) => {
+      expect(
+        personSchema.parse({ name: 'Ada', sortName: 'Ada' }),
+      ).not.toHaveProperty('roles');
+      expect(
+        personSchema.safeParse({
+          name: 'Ada',
+          sortName: 'Ada',
+          roles,
+        }).success,
+      ).toBe(false);
+    },
+  );
 });
 
 describe('anno associativo corrente', () => {
@@ -180,12 +184,18 @@ describe('anno associativo corrente', () => {
 });
 
 describe('catalogo dei soci correnti', () => {
-  const membership = createMembershipContext(
-    [annualList('2026', ['ada', 'bruno', 'nascosto'])],
-    people,
-  );
+  const speakerIds = createSpeakerIds([
+    { data: { draft: false, sessions: [{ speakers: [{ person: 'ada' }] }] } },
+  ]);
+  const membership = {
+    ...createMembershipContext(
+      [annualList('2026', ['ada', 'bruno', 'nascosto'])],
+      people,
+    ),
+    speakerIds,
+  };
 
-  it('deriva member dall’elenco e speaker dal profilo', () => {
+  it('deriva member dall’elenco e speaker dagli eventi', () => {
     expect(toMemberSummary(ada, baseUrl, membership)?.roles).toEqual([
       'member',
       'speaker',
@@ -206,16 +216,20 @@ describe('catalogo dei soci correnti', () => {
   });
 
   it('rimuove chi non rinnova e conserva il suo ruolo speaker', () => {
-    const next = createMembershipContext(
-      [annualList('2026', ['ada', 'bruno']), annualList('2027', ['bruno'])],
-      people,
-    );
+    const next = {
+      ...createMembershipContext(
+        [annualList('2026', ['ada', 'bruno']), annualList('2027', ['bruno'])],
+        people,
+      ),
+      speakerIds,
+    };
     expect(
       memberSummaries(people, baseUrl, next).map((member) => member.slug),
     ).toEqual(['bruno']);
     expect(toMemberSummary(ada, baseUrl, next)).toBeUndefined();
     expect(toMemberDetails(ada, baseUrl, next)).toBeUndefined();
     expect(toMemberCatalog(ada, baseUrl, next)).toBeUndefined();
-    expect(ada.data.roles).toEqual(['speaker']);
+    expect(next.speakerIds.has(ada.id)).toBe(true);
+    expect(ada.data).not.toHaveProperty('roles');
   });
 });

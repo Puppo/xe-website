@@ -3,8 +3,6 @@ name: Andrea Dottor
 sortName: Andrea Dottor
 title: Microsoft MVP ASP.NET
 image: /media/1028-dottor-foto.jpg
-roles:
-  - speaker
 links:
   - label: dottor.net
     url: http://www.dottor.net/

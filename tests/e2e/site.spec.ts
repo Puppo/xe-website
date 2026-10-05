@@ -403,3 +403,30 @@ test('la mappa non causa overflow orizzontale', async ({ page }) => {
   );
   expect(hasOverflow).toBe(false);
 });
+
+test('i riferimenti agli eventi determinano il badge speaker e i ruoli WebMCP', async ({
+  page,
+  request,
+}) => {
+  await page.goto('/soci/');
+  const nicola = page.locator('.soci-person[href="/soci/nicola-paro/"]');
+  await expect(nicola.locator('.soci-role')).toHaveText('Speaker');
+  await page.goto('/soci/nicola-paro/');
+  await expect(page.locator('.soci-overline')).toHaveText('Socio e speaker');
+  const details = await request.get('/webmcp/members/nicola-paro.json');
+  expect(details.ok()).toBe(true);
+  expect(await details.json()).toMatchObject({
+    slug: 'nicola-paro',
+    roles: ['member', 'speaker'],
+  });
+  const catalog = await request.get('/webmcp/members.json');
+  expect(catalog.ok()).toBe(true);
+  expect(await catalog.json()).toEqual(
+    expect.arrayContaining([
+      expect.objectContaining({
+        slug: 'nicola-paro',
+        roles: ['member', 'speaker'],
+      }),
+    ]),
+  );
+});

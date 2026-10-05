@@ -44,20 +44,43 @@ export function groupByInitial(people: PersonEntry[]): LetterBand[] {
     .sort((a, b) => ITALIAN_INITIAL.compare(a.letter, b.letter));
 }
 
-function matchesSpeaker(speaker: unknown, personId: string): boolean {
+type SpeakerReference = string | { person: string | { id: string } };
+
+interface SpeakerEvent {
+  data: {
+    draft: boolean;
+    sessions: { speakers: SpeakerReference[] }[];
+  };
+}
+
+function speakerPersonId(speaker: SpeakerReference): string | undefined {
   if (typeof speaker === 'string') {
-    return speaker === personId;
+    return undefined;
   }
-  if (speaker && typeof speaker === 'object' && 'person' in speaker) {
-    const candidate = (speaker as { person: unknown }).person;
-    if (typeof candidate === 'string') {
-      return candidate === personId;
+  return typeof speaker.person === 'string'
+    ? speaker.person
+    : speaker.person.id;
+}
+
+/** Published event references establish speaker status, independently of membership. */
+export function createSpeakerIds(
+  events: readonly SpeakerEvent[],
+): ReadonlySet<string> {
+  const ids = new Set<string>();
+  for (const event of events) {
+    if (event.data.draft) {
+      continue;
     }
-    if (candidate && typeof candidate === 'object' && 'id' in candidate) {
-      return (candidate as { id: unknown }).id === personId;
+    for (const session of event.data.sessions) {
+      for (const speaker of session.speakers) {
+        const id = speakerPersonId(speaker);
+        if (id !== undefined) {
+          ids.add(id);
+        }
+      }
     }
   }
-  return false;
+  return ids;
 }
 
 /** Up to `limit` most-recent events where the given member spoke. */
@@ -67,10 +90,14 @@ export function recentEventsForPerson(
   limit = DEFAULT_NEIGHBORS,
 ): TalkEvent[] {
   return events
-    .filter((event) =>
-      event.data.sessions.some((session) =>
-        session.speakers.some((speaker) => matchesSpeaker(speaker, person.id)),
-      ),
+    .filter(
+      (event) =>
+        !event.data.draft &&
+        event.data.sessions.some((session) =>
+          session.speakers.some(
+            (speaker) => speakerPersonId(speaker) === person.id,
+          ),
+        ),
     )
     .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
     .slice(NO_INDEX, limit);
@@ -79,6 +106,10 @@ export function recentEventsForPerson(
 export interface MembershipContext {
   year: number;
   memberIds: ReadonlySet<string>;
+}
+
+export interface PeopleContext extends MembershipContext {
+  speakerIds: ReadonlySet<string>;
 }
 
 /** Validate all years before selecting the latest available list. */
@@ -134,11 +165,11 @@ export type BaseUrl = URL | string | undefined;
 
 function personRoles(
   person: PersonEntry,
-  membership: MembershipContext,
+  context: PeopleContext,
 ): MemberRole[] {
   return [
-    ...(membership.memberIds.has(person.id) ? ['member' as const] : []),
-    ...person.data.roles,
+    ...(context.memberIds.has(person.id) ? ['member' as const] : []),
+    ...(context.speakerIds.has(person.id) ? ['speaker' as const] : []),
   ];
 }
 
@@ -149,7 +180,7 @@ function personProfileUrl(baseUrl: BaseUrl, person: PersonEntry): string {
 function toSummary(
   person: PersonEntry,
   baseUrl: BaseUrl,
-  membership: MembershipContext,
+  context: PeopleContext,
 ): WebMcpMemberSummary {
   const biography = (person.body ?? '').trim();
   return {
@@ -159,7 +190,7 @@ function toSummary(
     hasImage: Boolean(person.data.image),
     name: person.data.name,
     profileUrl: person.data.profileUrl,
-    roles: personRoles(person, membership),
+    roles: personRoles(person, context),
     slug: person.id,
     title: person.data.title,
     url: personProfileUrl(baseUrl, person),
@@ -169,18 +200,18 @@ function toSummary(
 export function toMemberSummary(
   person: PersonEntry,
   baseUrl: BaseUrl,
-  membership: MembershipContext,
+  context: PeopleContext,
 ): WebMcpMemberSummary | undefined {
-  if (!isCurrentMember(person, membership)) {
+  if (!isCurrentMember(person, context)) {
     return undefined;
   }
-  return toSummary(person, baseUrl, membership);
+  return toSummary(person, baseUrl, context);
 }
 
 function toDetails(
   person: PersonEntry,
   baseUrl: BaseUrl,
-  membership: MembershipContext,
+  context: PeopleContext,
 ): WebMcpMemberDetails {
   const biography = (person.body ?? '').trim();
   return {
@@ -189,7 +220,7 @@ function toDetails(
     externalLinks: person.data.links,
     name: person.data.name,
     profileUrl: person.data.profileUrl,
-    roles: personRoles(person, membership),
+    roles: personRoles(person, context),
     slug: person.id,
     title: person.data.title,
     url: personProfileUrl(baseUrl, person),
@@ -199,29 +230,29 @@ function toDetails(
 export function toMemberDetails(
   person: PersonEntry,
   baseUrl: BaseUrl,
-  membership: MembershipContext,
+  context: PeopleContext,
 ): WebMcpMemberDetails | undefined {
-  if (!isCurrentMember(person, membership)) {
+  if (!isCurrentMember(person, context)) {
     return undefined;
   }
-  return toDetails(person, baseUrl, membership);
+  return toDetails(person, baseUrl, context);
 }
 
 export function memberSummaries(
   people: PersonEntry[],
   baseUrl: BaseUrl,
-  membership: MembershipContext,
+  context: PeopleContext,
 ): WebMcpMemberSummary[] {
-  return currentMembers(people, membership)
-    .map((person) => toMemberSummary(person, baseUrl, membership))
+  return currentMembers(people, context)
+    .map((person) => toMemberSummary(person, baseUrl, context))
     .filter((summary): summary is WebMcpMemberSummary => Boolean(summary));
 }
 
 export function toMemberCatalog(
   person: PersonEntry,
   baseUrl: BaseUrl,
-  membership: MembershipContext,
+  context: PeopleContext,
 ): WebMcpMemberSummary[] | undefined {
-  const summary = toMemberSummary(person, baseUrl, membership);
+  const summary = toMemberSummary(person, baseUrl, context);
   return summary ? [summary] : undefined;
 }

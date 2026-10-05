@@ -1,6 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import type { CollectionEntry } from 'astro:content';
-import { groupByInitial, recentEventsForPerson } from '../src/lib/people';
+import {
+  createSpeakerIds,
+  groupByInitial,
+  recentEventsForPerson,
+} from '../src/lib/people';
 
 type Person = CollectionEntry<'people'>;
 type Event = CollectionEntry<'events'>;
@@ -16,7 +20,6 @@ function person(
       links: [],
       name,
       published: true,
-      roles: [],
       sortName: name,
       ...extra,
     },
@@ -102,5 +105,66 @@ describe('recentEventsForPerson', () => {
 
   it('returns an empty array when the person did not speak anywhere', () => {
     expect(recentEventsForPerson(person('x', 'X'), [])).toEqual([]);
+  });
+});
+
+describe('speaker derivati dagli eventi', () => {
+  it('unisce riferimenti sorgente e Astro senza duplicati tra sessioni', () => {
+    const ids = createSpeakerIds([
+      {
+        data: {
+          draft: false,
+          sessions: [
+            { speakers: [{ person: 'ada' }, { person: { id: 'bruno' } }] },
+            { speakers: [{ person: { id: 'ada' } }, { person: 'bruno' }] },
+          ],
+        },
+      },
+    ]);
+    expect([...ids]).toEqual(['ada', 'bruno']);
+  });
+
+  it('riconosce eventi storici, futuri e annullati senza dipendere dalla data', () => {
+    const historical = event('storico', '2006-01-01', ['ada']);
+    const future = event('futuro', '2099-01-01', ['bruno']);
+    historical.data.status = 'cancelled';
+    expect([...createSpeakerIds([historical, future])]).toEqual([
+      'ada',
+      'bruno',
+    ]);
+  });
+
+  it('esclude bozze e stringhe legacy anche se coincidono con uno slug', () => {
+    const draft = event('bozza', '2026-01-01', ['ada']);
+    draft.data.draft = true;
+    const legacy = event('legacy', '2026-01-01', []);
+    legacy.data.sessions = [
+      { title: 'Talk', speakers: ['ada', 'Ada Lovelace'] },
+    ];
+    expect([...createSpeakerIds([draft, legacy])]).toEqual([]);
+    expect(
+      recentEventsForPerson(person('ada', 'Ada'), [draft, legacy]),
+    ).toEqual([]);
+  });
+
+  it('gestisce elenchi senza eventi o senza sessioni', () => {
+    expect([...createSpeakerIds([])]).toEqual([]);
+    expect([...createSpeakerIds([event('vuoto', '2026-01-01', [])])]).toEqual(
+      [],
+    );
+  });
+
+  it('usa i riferimenti Astro anche per la cronologia del profilo', () => {
+    const resolved = event('risolto', '2026-01-01', []);
+    resolved.data.sessions = [
+      {
+        title: 'Talk',
+        speakers: [{ person: { collection: 'people', id: 'ada' } }],
+      },
+    ];
+    expect([...createSpeakerIds([resolved])]).toEqual(['ada']);
+    expect(recentEventsForPerson(person('ada', 'Ada'), [resolved])).toEqual([
+      resolved,
+    ]);
   });
 });

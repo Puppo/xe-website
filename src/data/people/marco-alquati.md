@@ -2,8 +2,6 @@
 name: Marco Alquati
 sortName: Marco Alquati
 image: /media/1192-marcoalquati.jpg
-roles:
-  - speaker
 links:
   - label: linkedin.com
     url: https://www.linkedin.com/in/marco-alquati-5a2931a2/

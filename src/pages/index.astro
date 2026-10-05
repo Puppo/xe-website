@@ -8,15 +8,15 @@ import SupportPanel from '../components/SupportPanel.astro';
 import WebMcpMemberCatalog from '../components/WebMcpMemberCatalog.astro';
 import { eventSlug, formatEventDate, isPastEvent, nextScheduledEvent, sortAscending } from '../lib/events';
 import { currentMembers, memberSummaries } from '../lib/people';
-import { loadMemberships } from '../lib/memberships';
+import { loadPeopleContext } from '../lib/people-content';
 
 const events = (await getCollection('events', ({ data }) => !data.draft)).sort(sortAscending),
  upcoming = events.filter((event) => !isPastEvent(event)),
  nextEvent = nextScheduledEvent(upcoming),
  [site] = await getCollection('site'),
- { people: allPeople, membership } = await loadMemberships(),
- people = currentMembers(allPeople, membership),
- memberCatalog = memberSummaries(people, Astro.site, membership),
+ { people: allPeople, context } = await loadPeopleContext(),
+ people = currentMembers(allPeople, context),
+ memberCatalog = memberSummaries(people, Astro.site, context),
  partners = (await getCollection('partners')).sort((a, b) => (a.data.order ?? Infinity) - (b.data.order ?? Infinity)),
  partnerGroups = [
    { title: 'Grazie per il supporto alle attività del gruppo', entries: partners.filter((partner) => partner.data.published && partner.data.kind === 'supporter') },

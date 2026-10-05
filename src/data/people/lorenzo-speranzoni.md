@@ -1,8 +1,6 @@
 ---
 name: Lorenzo Speranzoni
 sortName: Lorenzo Speranzoni
-roles:
-  - speaker
 links: []
 published: true
 sourceUrl: https://www.xedotnet.org/eventi/sql-nosql/

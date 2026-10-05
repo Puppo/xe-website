@@ -5,7 +5,7 @@ import WebMcpMemberCatalog from '../../../components/WebMcpMemberCatalog.astro';
 import WebMcpMemberDetails from '../../../components/WebMcpMemberDetails.astro';
 import { eventSlug, formatCalendarDate } from '../../../lib/events';
 import { currentMembers, recentEventsForPerson, toMemberCatalog } from '../../../lib/people';
-import { loadMemberships } from '../../../lib/memberships';
+import { loadPeopleContext } from '../../../lib/people-content';
 import { breadcrumbList } from '../../../lib/structured-data';
 import { initials, markdownExcerpt } from '../../../lib/text';
 import { externalLinkProps, isExternalUrl, withBase } from '../../../lib/urls';
@@ -13,12 +13,12 @@ import { externalLinkProps, isExternalUrl, withBase } from '../../../lib/urls';
 const siteOrigin = Astro.site?.origin;
 
 export async function getStaticPaths() {
-  const { people, membership } = await loadMemberships();
-  const members = currentMembers(people, membership);
-  return members.map((member) => ({ params: { slug: member.id }, props: { member, membership } }));
+  const { people, context } = await loadPeopleContext();
+  const members = currentMembers(people, context);
+  return members.map((member) => ({ params: { slug: member.id }, props: { member, context } }));
 }
 
-const { member, membership } = Astro.props;
+const { member, context } = Astro.props;
 const { Content } = await render(member);
 const description = markdownExcerpt(member.body ?? '') || `${member.data.name}, socio di XeDotNet.`;
 const events = await getCollection('events', ({ data }) => !data.draft);
@@ -42,7 +42,7 @@ const personStructuredData = [
     { name: member.data.name, url: new URL(withBase(`/soci/${member.id}/`), Astro.site).href },
   ]),
 ];
-const webMcpMemberSummaries = toMemberCatalog(member, Astro.site, membership);
+const webMcpMemberSummaries = toMemberCatalog(member, Astro.site, context);
 ---
 
 <BaseLayout title={member.data.name} description={description} type="article" structuredData={personStructuredData}>
@@ -51,7 +51,7 @@ const webMcpMemberSummaries = toMemberCatalog(member, Astro.site, membership);
   <header class="page-hero soci-hero soci-detail-hero">
     <div class="shell">
       <p class="breadcrumbs"><a href={withBase('/')}>Home</a> / <a href={withBase('/soci/')}>Soci</a> / {member.data.name}</p>
-      <p class="soci-overline">{member.data.roles.includes('speaker') ? 'Socio e speaker' : 'Socio di XeDotNet'}</p>
+      <p class="soci-overline">{context.speakerIds.has(member.id) ? 'Socio e speaker' : 'Socio di XeDotNet'}</p>
       <h1>{member.data.name}</h1>
       {member.data.title && <p class="soci-subtitle">{member.data.title}</p>}
     </div>

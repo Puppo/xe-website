@@ -12,7 +12,7 @@ import type { EventEntry } from '../../../lib/events';
 import { breadcrumbList } from '../../../lib/structured-data';
 import { initials } from '../../../lib/text';
 import { isCurrentMember, memberSummaries } from '../../../lib/people';
-import { loadMemberships } from '../../../lib/memberships';
+import { loadPeopleContext } from '../../../lib/people-content';
 
 type Props =
   | { kind: 'year'; year: number; events: EventEntry[] }
@@ -30,7 +30,7 @@ export async function getStaticPaths() {
   ];
 }
 
-const { membership } = await loadMemberships();
+const { context } = await loadPeopleContext();
 const props = Astro.props as Props;
 let Content: Awaited<ReturnType<typeof render>>['Content'] | undefined;
 if (props.kind === 'event') {({ Content } = await render(props.event));}
@@ -50,7 +50,7 @@ interface SpeakerView {
 function speakerView(speaker: EventEntry['data']['sessions'][number]['speakers'][number]): SpeakerView {
   if (typeof speaker === 'string') {return { name: speaker };}
   const person = peopleById.get(speaker.person.id) as CollectionEntry<'people'>,
-   internalHref = isCurrentMember(person, membership)
+   internalHref = isCurrentMember(person, context)
     ? withBase(`/soci/${person.id}/`)
     : undefined;
   return {
@@ -108,7 +108,7 @@ const [site] = await getCollection('site'),
   url: eventPageUrl(event),
   venue: event.data.venue?.name
  } : undefined,
- speakerMemberCatalog = event ? memberSummaries(referencedPeople as CollectionEntry<'people'>[], Astro.site, membership) : [];
+ speakerMemberCatalog = event ? memberSummaries(referencedPeople as CollectionEntry<'people'>[], Astro.site, context) : [];
 ---
 
 {props.kind === 'year' ? (

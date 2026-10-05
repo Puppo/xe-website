@@ -5,7 +5,6 @@ import {
   canonicalAssetUrl,
   chooseKnownProfileUrl,
   extractLegacySpeakerCandidates,
-  ensureSpeakerRole,
   isOrganizationSpeaker,
   markdownParts,
   normalizeSpeakerName,
@@ -188,7 +187,6 @@ for (const [key, name] of [...uniqueHumanNames].sort((a, b) =>
 )) {
   let person = peopleByName.get(key);
   if (person) {
-    ensureSpeakerRole(person.data);
     person.data.profileUrl ??= chooseKnownProfileUrl(person.data.links);
     reused.push(name);
   } else {
@@ -201,7 +199,6 @@ for (const [key, name] of [...uniqueHumanNames].sort((a, b) =>
       data: {
         name,
         sortName: name,
-        roles: ['speaker'],
         links: [],
         published: true,
         sourceUrl: sourcePageByName.get(key),

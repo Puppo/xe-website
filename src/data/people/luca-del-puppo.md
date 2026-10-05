@@ -2,8 +2,6 @@
 name: Luca Del Puppo
 sortName: Luca Del Puppo
 image: /media/1180-delpuppoluca.jpeg
-roles:
-  - speaker
 links:
   - label: twitter.com
     url: https://twitter.com/delpuppoluca

@@ -22,4 +22,9 @@ L’anno indicato dal nome del file `src/data/memberships/YYYY.json`. Il sito mo
 _Avoid_: Anno corrente calcolato dalla data, ruolo member nel profilo
 
 **Albo soci**:
-L’elenco annuale degli slug delle persone che hanno sottoscritto la tessera. Gli elenchi storici e i profili restano nel repository anche in caso di mancato rinnovo. Il ruolo speaker è una caratteristica del profilo e non dipende dal rinnovo della tessera.
+L’elenco annuale degli slug delle persone che hanno sottoscritto la tessera. Gli elenchi storici e i profili restano nel repository anche in caso di mancato rinnovo. Lo stato di speaker deriva dai riferimenti negli eventi pubblicati e non dipende dal rinnovo della tessera.
+
+
+**Speaker**:
+Una persona referenziata esplicitamente nelle sessioni di almeno un evento non in bozza, storico o futuro, programmato o annullato. Lo stato è derivato dai dati degli eventi, senza un campo `roles` nel profilo. Le stringhe speaker storiche sono solo testo e non identificano automaticamente un profilo.
+_Avoid_: Ruolo speaker mantenuto manualmente nel profilo

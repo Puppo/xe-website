@@ -2,7 +2,6 @@ import { describe, expect, it } from 'vitest';
 import {
   chooseKnownProfileUrl,
   extractLegacySpeakerCandidates,
-  ensureSpeakerRole,
   isUsableSpeakerImage,
   markdownParts,
   replaceSpeakerScalars,
@@ -73,14 +72,5 @@ describe('speaker enrichment', () => {
         { label: 'LinkedIn', url: 'https://linkedin.com/in/ada' },
       ]),
     ).toBe('https://linkedin.com/in/ada');
-  });
-});
-
-describe('ruolo speaker', () => {
-  it('inizializza i ruoli omessi e non duplica lo speaker', () => {
-    const person: { name: string; roles?: string[] } = { name: 'Ada' };
-    ensureSpeakerRole(person);
-    ensureSpeakerRole(person);
-    expect(person.roles).toEqual(['speaker']);
   });
 });

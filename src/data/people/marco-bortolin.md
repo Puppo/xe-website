@@ -2,8 +2,6 @@
 name: Marco Bortolin
 sortName: Marco Bortolin
 image: /media/1047-bortolin-foto.jpg
-roles:
-  - speaker
 links:
   - label: hunext.com
     url: http://www.hunext.com/

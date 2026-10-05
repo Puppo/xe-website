@@ -1,8 +1,6 @@
 ---
 name: Emanuele Bartolesi
 sortName: Emanuele Bartolesi
-roles:
-  - speaker
 links: []
 published: true
 sourceUrl: https://www.xedotnet.org/eventi/net-core-saturday/

@@ -127,13 +127,12 @@ export const eventInputSchema = createEventSchema(
   speakerInputSchema,
 );
 
-export const personSchema = z.object({
+export const personSchema = z.strictObject({
   image: z.string().optional(),
   links: z.array(linkSchema).default([]),
   name: z.string(),
   profileUrl: z.url().optional(),
   published: z.boolean().default(true),
-  roles: z.array(z.enum(['speaker'])).default([]),
   sortName: z.string(),
   sourceUrl: z.url().optional(),
   title: z.string().optional(),

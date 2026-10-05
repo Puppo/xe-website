@@ -2,8 +2,6 @@
 name: Davide Contin
 sortName: Davide Contin
 image: /media/1132-davidecontin.jpg
-roles:
-  - speaker
 links:
   - label: qwertystudio.it
     url: http://www.qwertystudio.it/
