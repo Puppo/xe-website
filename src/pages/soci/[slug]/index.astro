@@ -4,7 +4,8 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import WebMcpMemberCatalog from '../../../components/WebMcpMemberCatalog.astro';
 import WebMcpMemberDetails from '../../../components/WebMcpMemberDetails.astro';
 import { eventSlug, formatCalendarDate } from '../../../lib/events';
-import { recentEventsForPerson, toMemberCatalog } from '../../../lib/people';
+import { currentMembers, recentEventsForPerson, toMemberCatalog } from '../../../lib/people';
+import { loadMemberships } from '../../../lib/memberships';
 import { breadcrumbList } from '../../../lib/structured-data';
 import { initials, markdownExcerpt } from '../../../lib/text';
 import { externalLinkProps, isExternalUrl, withBase } from '../../../lib/urls';
@@ -12,14 +13,12 @@ import { externalLinkProps, isExternalUrl, withBase } from '../../../lib/urls';
 const siteOrigin = Astro.site?.origin;
 
 export async function getStaticPaths() {
-  const members = await getCollection(
-    'people',
-    ({ data }) => data.published && data.roles.includes('member'),
-  );
-  return members.map((member) => ({ params: { slug: member.id }, props: { member } }));
+  const { people, membership } = await loadMemberships();
+  const members = currentMembers(people, membership);
+  return members.map((member) => ({ params: { slug: member.id }, props: { member, membership } }));
 }
 
-const { member } = Astro.props;
+const { member, membership } = Astro.props;
 const { Content } = await render(member);
 const description = markdownExcerpt(member.body ?? '') || `${member.data.name}, socio di XeDotNet.`;
 const events = await getCollection('events', ({ data }) => !data.draft);
@@ -43,11 +42,11 @@ const personStructuredData = [
     { name: member.data.name, url: new URL(withBase(`/soci/${member.id}/`), Astro.site).href },
   ]),
 ];
-const webMcpMemberSummaries = toMemberCatalog(member, Astro.site);
+const webMcpMemberSummaries = toMemberCatalog(member, Astro.site, membership);
 ---
 
 <BaseLayout title={member.data.name} description={description} type="article" structuredData={personStructuredData}>
-  {member.data.published && member.data.roles.includes('member') && <WebMcpMemberDetails slug={member.id} />}
+  <WebMcpMemberDetails slug={member.id} />
   {webMcpMemberSummaries && <WebMcpMemberCatalog members={webMcpMemberSummaries} />}
   <header class="page-hero soci-hero soci-detail-hero">
     <div class="shell">

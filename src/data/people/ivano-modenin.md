@@ -4,7 +4,6 @@ sortName: Ivano Modenin
 title: Senior Developer
 image: /media/1049-modenin-foto.jpg
 roles:
-  - member
   - speaker
 links:
   - label: it.linkedin.com

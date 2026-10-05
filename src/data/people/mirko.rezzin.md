@@ -3,7 +3,6 @@ name: Mirko Rezzin
 sortName: Mirko Rezzin
 title: .Net Developer
 roles:
-  - member
   - speaker
 links:
   - label: linkedin.com

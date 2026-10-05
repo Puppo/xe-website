@@ -37,12 +37,11 @@
       "type": "boolean"
     },
     "roles": {
-      "minItems": 1,
+      "default": [],
       "type": "array",
       "items": {
         "type": "string",
         "enum": [
-          "member",
           "speaker"
         ]
       }
@@ -60,7 +59,6 @@
   },
   "required": [
     "name",
-    "roles",
     "sortName"
   ],
   "$id": "https://www.xedotnet.org/schemas/person.schema.json",

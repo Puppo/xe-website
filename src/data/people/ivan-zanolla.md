@@ -3,8 +3,6 @@ name: Ivan Zanolla
 sortName: Ivan Zanolla
 title: Software developer
 image: /media/1217-ivanzanolla2.jpg
-roles:
-  - member
 links:
   - label: linkedin.com
     url: https://www.linkedin.com/in/ivanzanolla/

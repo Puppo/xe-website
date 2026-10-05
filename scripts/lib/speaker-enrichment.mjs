@@ -109,3 +109,10 @@ export function chooseKnownProfileUrl(links = []) {
     links.find(({ url }) => /linkedin\.com/i.test(url))?.url ?? links[0]?.url
   );
 }
+
+export function ensureSpeakerRole(person) {
+  person.roles ??= [];
+  if (!person.roles.includes('speaker')) {
+    person.roles.push('speaker');
+  }
+}

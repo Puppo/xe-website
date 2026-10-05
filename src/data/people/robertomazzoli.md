@@ -3,8 +3,6 @@ name: Roberto Mazzoli
 sortName: Roberto Mazzoli
 title: Consulenza informatica
 image: /media/1224-robertomazzoli.png
-roles:
-  - member
 links:
   - label: linkedin.com
     url: https://www.linkedin.com/in/roberto-mazzoli-08295ab/

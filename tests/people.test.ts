@@ -16,7 +16,7 @@ function person(
       links: [],
       name,
       published: true,
-      roles: ['member'],
+      roles: [],
       sortName: name,
       ...extra,
     },

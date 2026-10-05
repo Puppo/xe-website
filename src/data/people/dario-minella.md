@@ -2,8 +2,6 @@
 name: Dario Minella
 sortName: Dario Minella
 image: /media/1222-minella-foto.jpg
-roles:
-  - member
 links:
   - label: linkedin.com
     url: https://www.linkedin.com/in/dario-minella/

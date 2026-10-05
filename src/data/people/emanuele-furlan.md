@@ -4,7 +4,6 @@ sortName: Emanuele Furlan
 title: Full Stack developer
 image: /media/1191-fotoprofilo-200x200.jpg
 roles:
-  - member
   - speaker
 links:
   - label: linkedin.com

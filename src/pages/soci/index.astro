@@ -1,16 +1,15 @@
 ---
-import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import WebMcpMemberCatalog from '../../components/WebMcpMemberCatalog.astro';
-import { groupByInitial, memberSummaries } from '../../lib/people';
+import { currentMembers, groupByInitial, memberSummaries } from '../../lib/people';
+import { loadMemberships } from '../../lib/memberships';
 import { initials } from '../../lib/text';
 import { withBase } from '../../lib/urls';
 
-const members = (
-  await getCollection('people', ({ data }) => data.published && data.roles.includes('member'))
-).sort((a, b) => a.data.sortName.localeCompare(b.data.sortName, 'it'));
+const { people, membership } = await loadMemberships();
+const members = currentMembers(people, membership).sort((a, b) => a.data.sortName.localeCompare(b.data.sortName, 'it'));
 const bands = groupByInitial(members),
-  memberCatalog = memberSummaries(members, Astro.site);
+  memberCatalog = memberSummaries(members, Astro.site, membership);
 ---
 
 <BaseLayout title="Soci" description="Le persone che sostengono XeDotNet e rendono possibili le attività della community.">

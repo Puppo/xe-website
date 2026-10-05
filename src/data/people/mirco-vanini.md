@@ -4,7 +4,6 @@ sortName: Mirco Vanini
 title: Microsoft MVP Windows Hardware Engineering (IoT, Mobile, and Desktop)
 image: /media/1035-vanini-foto.jpg
 roles:
-  - member
   - speaker
 links:
   - label: proxsoft.it

@@ -1,7 +1,9 @@
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir, readdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { z } from 'astro/zod';
+import { slug } from 'github-slugger';
 import {
+  createMembershipSchema,
   eventInputSchema,
   locationSchema,
   partnerSchema,
@@ -12,6 +14,10 @@ import {
 const root = join(import.meta.dirname, '..'),
   output = join(root, 'schemas'),
   id = z.string().min(1),
+  personIds = (await readdir(join(root, 'src/data/people')))
+    .filter((filename) => filename.endsWith('.md'))
+    .map((filename) => slug(filename.slice(0, -'.md'.length)))
+    .sort(),
   schemas = {
     'event.schema.json': ['Evento XeDotNet', eventInputSchema],
     'locations.schema.json': [
@@ -21,6 +27,10 @@ const root = join(import.meta.dirname, '..'),
     'partners.schema.json': [
       'Partner XeDotNet',
       z.array(partnerSchema.extend({ id })),
+    ],
+    'membership.schema.json': [
+      'Soci per anno associativo XeDotNet',
+      createMembershipSchema(z.enum(personIds)),
     ],
     'person.schema.json': ['Profilo pubblico XeDotNet', personSchema],
     'site.schema.json': [
@@ -35,6 +45,9 @@ for (const [filename, [title, schema]] of Object.entries(schemas)) {
   const jsonSchema = z.toJSONSchema(schema, { io: 'input' });
   jsonSchema.$id = `https://www.xedotnet.org/schemas/${filename}`;
   jsonSchema.title = title;
+  if (filename === 'membership.schema.json') {
+    jsonSchema.properties.members.uniqueItems = true;
+  }
   await writeFile(
     join(output, filename),
     `${JSON.stringify(jsonSchema, null, 2)}\n`,

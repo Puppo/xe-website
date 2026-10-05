@@ -7,14 +7,16 @@ import EventCard from '../components/EventCard.astro';
 import SupportPanel from '../components/SupportPanel.astro';
 import WebMcpMemberCatalog from '../components/WebMcpMemberCatalog.astro';
 import { eventSlug, formatEventDate, isPastEvent, nextScheduledEvent, sortAscending } from '../lib/events';
-import { memberSummaries } from '../lib/people';
+import { currentMembers, memberSummaries } from '../lib/people';
+import { loadMemberships } from '../lib/memberships';
 
 const events = (await getCollection('events', ({ data }) => !data.draft)).sort(sortAscending),
  upcoming = events.filter((event) => !isPastEvent(event)),
  nextEvent = nextScheduledEvent(upcoming),
  [site] = await getCollection('site'),
- people = await getCollection('people', ({ data }) => data.published && data.roles.includes('member')),
- memberCatalog = memberSummaries(people, Astro.site),
+ { people: allPeople, membership } = await loadMemberships(),
+ people = currentMembers(allPeople, membership),
+ memberCatalog = memberSummaries(people, Astro.site, membership),
  partners = (await getCollection('partners')).sort((a, b) => (a.data.order ?? Infinity) - (b.data.order ?? Infinity)),
  partnerGroups = [
    { title: 'Grazie per il supporto alle attività del gruppo', entries: partners.filter((partner) => partner.data.published && partner.data.kind === 'supporter') },

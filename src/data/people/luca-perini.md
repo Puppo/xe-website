@@ -2,8 +2,6 @@
 name: Luca Perini
 sortName: Luca Perini
 title: Senior consultant
-roles:
-  - member
 links:
   - label: linkedin.com
     url: https://www.linkedin.com/in/luca-perini-8a690034/

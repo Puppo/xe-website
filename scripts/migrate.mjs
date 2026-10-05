@@ -2,12 +2,26 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { basename, extname, join } from 'node:path';
 import * as cheerio from 'cheerio';
 import TurndownService from 'turndown';
+import { parseArgs } from 'node:util';
+import { slug as personSlug } from 'github-slugger';
+import { membershipInputSchema, personSchema } from '../src/content-schemas.ts';
 import { stringify as toYaml } from 'yaml';
+
+const { values } = parseArgs({
+  options: { 'membership-year': { type: 'string' } },
+});
+const membershipYear = values['membership-year'];
+if (!membershipYear || !/^\d{4}$/u.test(membershipYear)) {
+  throw new Error(
+    'La migrazione richiede --membership-year=YYYY (quattro cifre).',
+  );
+}
 
 const ORIGIN = 'https://www.xedotnet.org',
   ROOT = new URL('../', import.meta.url).pathname,
   EVENTS_DIR = join(ROOT, 'src/data/events'),
   PEOPLE_DIR = join(ROOT, 'src/data/people'),
+  MEMBERSHIPS_DIR = join(ROOT, 'src/data/memberships'),
   MEDIA_DIR = join(ROOT, 'public/media'),
   years = Array.from({ length: 12 }, (_, index) => 2015 + index),
   turndown = new TurndownService({
@@ -320,7 +334,8 @@ async function migratePeople() {
     cards = $(
       '.cards > .row > [itemscope][itemtype*="Person"], .cards > [itemscope][itemtype*="Person"]',
     ).toArray(),
-    seen = new Set();
+    seen = new Set(),
+    importedMembers = new Set();
   for (const cardElement of cards) {
     const card = $(cardElement),
       modal = card.find('.modal[id^="popup_"]').first(),
@@ -353,23 +368,30 @@ async function migratePeople() {
         sortName: name,
         ...(title && { title }),
         ...(image && { image }),
-        roles: ['member'],
         links: externalLinks($, modal),
         published: true,
         sourceUrl: url,
       },
-      frontmatter = toYaml(person, { lineWidth: 0 }).trim();
+      frontmatter = toYaml(personSchema.parse(person), { lineWidth: 0 }).trim();
     await writeFile(
       join(PEOPLE_DIR, `${slug}.md`),
       `---\n${frontmatter}\n---\n${bio ? `\n${bio}\n` : ''}`,
     );
+    importedMembers.add(personSlug(slug));
     report.routes.push({
-      destination: `/soci/${slug}/`,
+      destination: `/soci/${personSlug(slug)}/`,
       kind: 'socio',
       source: `${url}#${slug}`,
     });
   }
-  report.people = seen.size;
+  const membership = membershipInputSchema.parse({
+    members: [...importedMembers].sort(),
+  });
+  await writeFile(
+    join(MEMBERSHIPS_DIR, `${membershipYear}.json`),
+    `${JSON.stringify(membership, null, 2)}\n`,
+  );
+  report.people = importedMembers.size;
 }
 
 async function runPool(items, concurrency, worker) {
@@ -410,6 +432,7 @@ async function main() {
   await Promise.all([
     mkdir(EVENTS_DIR, { recursive: true }),
     mkdir(PEOPLE_DIR, { recursive: true }),
+    mkdir(MEMBERSHIPS_DIR, { recursive: true }),
     mkdir(MEDIA_DIR, { recursive: true }),
   ]);
   const eventUrls = await discoverEventUrls();

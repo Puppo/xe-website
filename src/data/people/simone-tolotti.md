@@ -2,8 +2,6 @@
 name: Simone Tolotti
 sortName: Simone Tolotti
 title: Senior Embedded Engineer
-roles:
-  - member
 links:
   - label: linkedin.com
     url: https://www.linkedin.com/in/simone-tolotti-84812224/

@@ -3,8 +3,6 @@ name: Luca Fabbri
 sortName: Luca Fabbri
 title: Technical Leader
 image: /media/1221-img-2024.jpeg
-roles:
-  - member
 links:
   - label: linkedin.com
     url: https://www.linkedin.com/in/lucafabbri84?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app

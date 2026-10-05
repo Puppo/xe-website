@@ -2,8 +2,6 @@
 name: Massimo Appi
 sortName: Massimo Appi
 title: Senior SW Engineer and Analyst
-roles:
-  - member
 links:
   - label: asac.it
     url: http://www.asac.it/

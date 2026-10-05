@@ -3,7 +3,6 @@ name: Enrico Giacomazzi
 sortName: Enrico Giacomazzi
 title: Sviluppatore full-stack / Firmwarista
 roles:
-  - member
   - speaker
 links:
   - label: it.linkedin.com

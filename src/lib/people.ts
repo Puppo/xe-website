@@ -76,25 +76,81 @@ export function recentEventsForPerson(
     .slice(NO_INDEX, limit);
 }
 
-export function publishedPeople(people: PersonEntry[]): PersonEntry[] {
-  return people.filter(
-    (person) => person.data.published && person.data.roles.includes('member'),
-  );
+export interface MembershipContext {
+  year: number;
+  memberIds: ReadonlySet<string>;
+}
+
+/** Validate all years before selecting the latest available list. */
+export function createMembershipContext(
+  memberships: CollectionEntry<'memberships'>[],
+  people: PersonEntry[],
+): MembershipContext {
+  const peopleIds = new Set(people.map((person) => person.id));
+  let latest: CollectionEntry<'memberships'> | undefined;
+  for (const membership of memberships) {
+    if (!/^\d{4}$/u.test(membership.id)) {
+      throw new Error(
+        `L’anno associativo "${membership.id}" deve avere quattro cifre.`,
+      );
+    }
+    for (const member of membership.data.members) {
+      if (!peopleIds.has(member.id)) {
+        throw new Error(
+          `Anno associativo ${membership.id}: il socio "${member.id}" non ha un profilo.`,
+        );
+      }
+    }
+    if (!latest || Number(membership.id) > Number(latest.id)) {
+      latest = membership;
+    }
+  }
+  if (!latest) {
+    throw new Error(
+      'Manca un elenco annuale dei soci in src/data/memberships/.',
+    );
+  }
+  return {
+    year: Number(latest.id),
+    memberIds: new Set(latest.data.members.map((member) => member.id)),
+  };
+}
+
+export function isCurrentMember(
+  person: PersonEntry,
+  membership: MembershipContext,
+): boolean {
+  return person.data.published && membership.memberIds.has(person.id);
+}
+
+export function currentMembers(
+  people: PersonEntry[],
+  membership: MembershipContext,
+): PersonEntry[] {
+  return people.filter((person) => isCurrentMember(person, membership));
 }
 
 export type BaseUrl = URL | string | undefined;
 
-function personRoles(person: PersonEntry): MemberRole[] {
-  return person.data.roles.filter((role): role is MemberRole =>
-    ['member', 'speaker'].includes(role),
-  );
+function personRoles(
+  person: PersonEntry,
+  membership: MembershipContext,
+): MemberRole[] {
+  return [
+    ...(membership.memberIds.has(person.id) ? ['member' as const] : []),
+    ...person.data.roles,
+  ];
 }
 
 function personProfileUrl(baseUrl: BaseUrl, person: PersonEntry): string {
   return new URL(withBase(`/soci/${person.id}/`), baseUrl).href;
 }
 
-function toSummary(person: PersonEntry, baseUrl: BaseUrl): WebMcpMemberSummary {
+function toSummary(
+  person: PersonEntry,
+  baseUrl: BaseUrl,
+  membership: MembershipContext,
+): WebMcpMemberSummary {
   const biography = (person.body ?? '').trim();
   return {
     excerpt: markdownExcerpt(biography),
@@ -103,7 +159,7 @@ function toSummary(person: PersonEntry, baseUrl: BaseUrl): WebMcpMemberSummary {
     hasImage: Boolean(person.data.image),
     name: person.data.name,
     profileUrl: person.data.profileUrl,
-    roles: personRoles(person),
+    roles: personRoles(person, membership),
     slug: person.id,
     title: person.data.title,
     url: personProfileUrl(baseUrl, person),
@@ -113,14 +169,19 @@ function toSummary(person: PersonEntry, baseUrl: BaseUrl): WebMcpMemberSummary {
 export function toMemberSummary(
   person: PersonEntry,
   baseUrl: BaseUrl,
+  membership: MembershipContext,
 ): WebMcpMemberSummary | undefined {
-  if (!person.data.published || !person.data.roles.includes('member')) {
+  if (!isCurrentMember(person, membership)) {
     return undefined;
   }
-  return toSummary(person, baseUrl);
+  return toSummary(person, baseUrl, membership);
 }
 
-function toDetails(person: PersonEntry, baseUrl: BaseUrl): WebMcpMemberDetails {
+function toDetails(
+  person: PersonEntry,
+  baseUrl: BaseUrl,
+  membership: MembershipContext,
+): WebMcpMemberDetails {
   const biography = (person.body ?? '').trim();
   return {
     biography: markdownExcerpt(biography, BIOGRAPHY_EXCERPT_LENGTH),
@@ -128,7 +189,7 @@ function toDetails(person: PersonEntry, baseUrl: BaseUrl): WebMcpMemberDetails {
     externalLinks: person.data.links,
     name: person.data.name,
     profileUrl: person.data.profileUrl,
-    roles: personRoles(person),
+    roles: personRoles(person, membership),
     slug: person.id,
     title: person.data.title,
     url: personProfileUrl(baseUrl, person),
@@ -138,26 +199,29 @@ function toDetails(person: PersonEntry, baseUrl: BaseUrl): WebMcpMemberDetails {
 export function toMemberDetails(
   person: PersonEntry,
   baseUrl: BaseUrl,
+  membership: MembershipContext,
 ): WebMcpMemberDetails | undefined {
-  if (!person.data.published || !person.data.roles.includes('member')) {
+  if (!isCurrentMember(person, membership)) {
     return undefined;
   }
-  return toDetails(person, baseUrl);
+  return toDetails(person, baseUrl, membership);
 }
 
 export function memberSummaries(
   people: PersonEntry[],
   baseUrl: BaseUrl,
+  membership: MembershipContext,
 ): WebMcpMemberSummary[] {
-  return publishedPeople(people)
-    .map((person) => toMemberSummary(person, baseUrl))
+  return currentMembers(people, membership)
+    .map((person) => toMemberSummary(person, baseUrl, membership))
     .filter((summary): summary is WebMcpMemberSummary => Boolean(summary));
 }
 
 export function toMemberCatalog(
   person: PersonEntry,
   baseUrl: BaseUrl,
+  membership: MembershipContext,
 ): WebMcpMemberSummary[] | undefined {
-  const summary = toMemberSummary(person, baseUrl);
+  const summary = toMemberSummary(person, baseUrl, membership);
   return summary ? [summary] : undefined;
 }

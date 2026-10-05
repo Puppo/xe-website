@@ -4,7 +4,6 @@ sortName: Daniele Morosinotto
 title: JavaScript enthusiast
 image: /media/1032-morosinotto-foto.jpg
 roles:
-  - member
   - speaker
 links:
   - label: twitter.com

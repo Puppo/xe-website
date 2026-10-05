@@ -3,8 +3,6 @@ name: Andrea Adami
 sortName: Andrea Adami
 title: Solution Architect
 image: /media/1218-andrea-adami-fototessera-sfondo-bianco-200.png
-roles:
-  - member
 links:
   - label: fulcro.net
     url: https://www.fulcro.net/

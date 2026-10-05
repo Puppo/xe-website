@@ -3,7 +3,6 @@ name: Massimo Zaccarin
 sortName: Massimo Zaccarin
 image: /media/1055-zaccarin-foto.jpg
 roles:
-  - member
   - speaker
 links:
   - label: linkedin.com

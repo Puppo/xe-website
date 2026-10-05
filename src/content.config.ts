@@ -3,6 +3,7 @@ import { z } from 'astro/zod';
 import { file, glob } from 'astro/loaders';
 import {
   createEventSchema,
+  createMembershipSchema,
   eventDateSchema,
   locationSchema,
   pageSchema,
@@ -22,6 +23,19 @@ const events = defineCollection({
     loader: glob({ base: './src/data/people', pattern: '**/*.md' }),
     schema: personSchema,
   }),
+  memberships = defineCollection({
+    loader: glob({
+      base: './src/data/memberships',
+      pattern: '**/*.json',
+      generateId: ({ entry }) => {
+        if (!/^\d{4}\.json$/u.test(entry)) {
+          throw new Error(`Il file soci "${entry}" deve chiamarsi YYYY.json.`);
+        }
+        return entry.slice(0, -'.json'.length);
+      },
+    }),
+    schema: createMembershipSchema(reference('people')),
+  }),
   partners = defineCollection({
     loader: file('./src/data/partners.json'),
     schema: partnerSchema,
@@ -39,4 +53,12 @@ const events = defineCollection({
     schema: siteSchema,
   });
 
-export const collections = { events, locations, pages, partners, people, site };
+export const collections = {
+  events,
+  locations,
+  memberships,
+  pages,
+  partners,
+  people,
+  site,
+};
