@@ -116,7 +116,7 @@ const [site] = await getCollection('site'),
   </BaseLayout>
 ) : event && Content ? (
   <BaseLayout title={event.data.title} description={event.data.description} image={event.data.image} type="article" structuredData={eventStructuredData}>
-    {webMcpEventDetails && <WebMcpEventDetails details={webMcpEventDetails} />}
+    {webMcpEventDetails && <WebMcpEventDetails slug={eventSlug(event)} />}
     {speakerMemberCatalog.length > 0 && <WebMcpMemberCatalog members={speakerMemberCatalog} />}
     <header class="page-hero">
       <div class="shell">

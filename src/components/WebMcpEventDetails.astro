@@ -1,28 +1,29 @@
 ---
-import { safeInlineJson, type WebMcpEventDetails } from '../lib/webmcp';
+import { withBase } from '../lib/urls';
 
 interface Props {
-  details: WebMcpEventDetails;
+  slug: string;
 }
 
-const serializedDetails = safeInlineJson(Astro.props.details);
+const detailsUrl = withBase(`/webmcp/events/${Astro.props.slug}.json`);
 ---
 
-<script type="application/json" data-webmcp-event-details set:html={serializedDetails} />
+<span hidden data-webmcp-event-details data-url={detailsUrl}></span>
 
 <script>
   import {
     describeEvent,
-    parseDetails,
+    fetchWebMcpJson,
     registerWebMcpTools,
+    type WebMcpEventDetails,
   } from '../lib/webmcp';
 
-  const detailsElement = document.querySelector<HTMLScriptElement>(
+  const detailsElement = document.querySelector<HTMLElement>(
       '[data-webmcp-event-details]',
     ),
-    details = parseDetails(detailsElement);
+    detailsUrl = detailsElement?.dataset.url;
 
-  if (details?.title) {
+  if (detailsUrl) {
     registerWebMcpTools([
       {
         name: 'describe_event',
@@ -34,7 +35,12 @@ const serializedDetails = safeInlineJson(Astro.props.details);
           properties: {},
           additionalProperties: false,
         },
-        execute() {
+        async execute() {
+          const details = await fetchWebMcpJson(
+            detailsUrl,
+            (value): value is WebMcpEventDetails =>
+              typeof value === 'object' && value !== null && 'title' in value,
+          );
           return describeEvent(details);
         },
         annotations: { readOnlyHint: true },

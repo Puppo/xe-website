@@ -1,6 +1,7 @@
 <script>
   import { withBase } from '../lib/urls';
   import {
+    fetchWebMcpJson,
     eventForSlug,
     getEvent,
     listEvents,
@@ -8,24 +9,11 @@
     type WebMcpFullEvent,
   } from '../lib/webmcp';
 
-  let catalogPromise: Promise<WebMcpFullEvent[]> | undefined;
+  function isEventCatalog(value: unknown): value is WebMcpFullEvent[] {
+    return Array.isArray(value);
+  }
   function loadCatalog(): Promise<WebMcpFullEvent[]> {
-    catalogPromise ??= fetch(withBase('/webmcp/events.json'))
-      .then(async (response) => {
-        if (!response.ok) {
-          throw new Error('Il catalogo degli eventi non è disponibile.');
-        }
-        const value: unknown = await response.json();
-        if (!Array.isArray(value)) {
-          throw new TypeError('Il catalogo degli eventi non è valido.');
-        }
-        return value as WebMcpFullEvent[];
-      })
-      .catch((error: unknown) => {
-        catalogPromise = undefined;
-        throw error;
-      });
-    return catalogPromise;
+    return fetchWebMcpJson(withBase('/webmcp/events.json'), isEventCatalog);
   }
 
   registerWebMcpTools([

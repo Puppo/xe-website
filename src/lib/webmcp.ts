@@ -8,6 +8,35 @@ export const EVENT_CATALOG_PAGE_SIZE = 5;
 export const MEMBER_CATALOG_PAGE_SIZE = 5;
 export const WEBMCP_OUTPUT_CHARACTER_LIMIT = 1500;
 
+const jsonRequests = new Map<string, Promise<unknown>>();
+
+/** Fetch a generated WebMCP JSON file once, retrying automatically after errors. */
+export function fetchWebMcpJson<T>(
+  url: string,
+  isExpected: (value: unknown) => value is T,
+): Promise<T> {
+  let request = jsonRequests.get(url);
+  if (!request) {
+    request = fetch(url).then(async (response) => {
+      if (!response.ok) {
+        throw new Error('I dati WebMCP non sono disponibili.');
+      }
+      const value: unknown = await response.json();
+      if (!isExpected(value)) {
+        throw new TypeError('I dati WebMCP non sono validi.');
+      }
+      return value;
+    });
+    jsonRequests.set(url, request);
+    void request.catch(() => {
+      if (jsonRequests.get(url) === request) {
+        jsonRequests.delete(url);
+      }
+    });
+  }
+  return request as Promise<T>;
+}
+
 export type EventPeriod = 'all' | 'past' | 'upcoming';
 
 export interface WebMcpEventSummary {
