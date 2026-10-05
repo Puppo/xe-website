@@ -1,7 +1,7 @@
 import { mkdir, readdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { z } from 'astro/zod';
-import { slug } from 'github-slugger';
+import { personIdFromFilename } from '../src/lib/person-slugs.mjs';
 import {
   createMembershipSchema,
   eventInputSchema,
@@ -16,7 +16,7 @@ const root = join(import.meta.dirname, '..'),
   id = z.string().min(1),
   personIds = (await readdir(join(root, 'src/data/people')))
     .filter((filename) => filename.endsWith('.md'))
-    .map((filename) => slug(filename.slice(0, -'.md'.length)))
+    .map((filename) => personIdFromFilename(filename))
     .sort(),
   schemas = {
     'event.schema.json': ['Evento XeDotNet', eventInputSchema],

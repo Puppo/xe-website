@@ -1,6 +1,7 @@
 import { defineCollection, reference } from 'astro:content';
 import { z } from 'astro/zod';
 import { file, glob } from 'astro/loaders';
+import { personIdFromFilename } from './lib/person-slugs.mjs';
 import {
   createEventSchema,
   createMembershipSchema,
@@ -20,7 +21,11 @@ const events = defineCollection({
     ),
   }),
   people = defineCollection({
-    loader: glob({ base: './src/data/people', pattern: '**/*.md' }),
+    loader: glob({
+      base: './src/data/people',
+      pattern: '**/*.md',
+      generateId: ({ entry }) => personIdFromFilename(entry),
+    }),
     schema: personSchema,
   }),
   memberships = defineCollection({

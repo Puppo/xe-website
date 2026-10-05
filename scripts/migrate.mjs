@@ -3,7 +3,7 @@ import { basename, extname, join } from 'node:path';
 import * as cheerio from 'cheerio';
 import TurndownService from 'turndown';
 import { parseArgs } from 'node:util';
-import { slug as personSlug } from 'github-slugger';
+import { canonicalPersonSlug } from '../src/lib/person-slugs.mjs';
 import { membershipInputSchema, personSchema } from '../src/content-schemas.ts';
 import { stringify as toYaml } from 'yaml';
 
@@ -363,6 +363,7 @@ async function migratePeople() {
         imageSource && !/no_photo/i.test(imageSource)
           ? await saveAsset(imageSource)
           : undefined,
+      id = canonicalPersonSlug(slug),
       person = {
         name,
         sortName: name,
@@ -374,12 +375,12 @@ async function migratePeople() {
       },
       frontmatter = toYaml(personSchema.parse(person), { lineWidth: 0 }).trim();
     await writeFile(
-      join(PEOPLE_DIR, `${slug}.md`),
+      join(PEOPLE_DIR, `${id}.md`),
       `---\n${frontmatter}\n---\n${bio ? `\n${bio}\n` : ''}`,
     );
-    importedMembers.add(personSlug(slug));
+    importedMembers.add(id);
     report.routes.push({
-      destination: `/soci/${personSlug(slug)}/`,
+      destination: `/soci/${id}/`,
       kind: 'socio',
       source: `${url}#${slug}`,
     });

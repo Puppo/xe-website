@@ -51,6 +51,7 @@ Never commit `.env`, credentials, tokens, or private form endpoints.
 - Annual membership comes from `src/data/memberships/YYYY.json`, never people frontmatter or the current date. People profiles must not contain `roles`; derive speaker status only from explicit person references in non-draft events, including historical, future, and cancelled events. Legacy speaker strings are display text. Keep historical lists and profiles; see [Gestione annuale dei soci](CONTRIBUTING.md#gestione-annuale-dei-soci). Regenerate editor schemas after adding profiles.
 - Treat `src/content-schemas.ts` as the schema source of truth. When it changes, run `npm run schemas` and commit the corresponding generated changes in `schemas/`.
 - Content that fails a collection schema must fail the build. Do not bypass validation with casts, permissive schemas, or duplicated validation logic.
+- People filenames and canonical IDs must use lowercase kebab case. Preserve known legacy profile spellings through `src/lib/person-slugs.mjs`; generate their aliases only for published current members and exclude alias pages from the sitemap.
 - Preserve historical content, slugs, source URLs, and public URL compatibility unless the task explicitly calls for a migration.
 - `npm run migrate -- --membership-year=YYYY` requires an explicit four-digit membership year and fetches the legacy website and rewrites event, people, media, and migration-report files. Do not run it unless the user explicitly requests a full migration or refresh and understands the resulting broad changes.
 

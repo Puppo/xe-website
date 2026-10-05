@@ -1,3 +1,5 @@
+import { legacyPersonSlugs } from './person-slugs.mjs';
+
 /** Resolve the public origin and base path from one deployment URL.
  * @param {string} value
  */
@@ -39,5 +41,10 @@ export const sitemapExcludedPaths = ['grazie/', '404.html'];
  * @param {string} base
  */
 export function isSitemapExcluded(pathname, base) {
-  return sitemapExcludedPaths.some((path) => pathname === `${base}${path}`);
+  return (
+    sitemapExcludedPaths.some((path) => pathname === `${base}${path}`) ||
+    Object.keys(legacyPersonSlugs).some(
+      (alias) => pathname === `${base}soci/${alias}/`,
+    )
+  );
 }

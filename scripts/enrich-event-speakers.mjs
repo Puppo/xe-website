@@ -2,6 +2,10 @@ import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import { basename, extname, join } from 'node:path';
 import { parse, stringify } from 'yaml';
 import {
+  canonicalPersonSlug,
+  personIdFromFilename,
+} from '../src/lib/person-slugs.mjs';
+import {
   canonicalAssetUrl,
   chooseKnownProfileUrl,
   extractLegacySpeakerCandidates,
@@ -69,7 +73,7 @@ function renderMarkdown(data, remainder) {
 }
 
 function uniqueSlug(name, occupiedIds) {
-  const base = safeName(name) || 'speaker';
+  const base = canonicalPersonSlug(name) || 'speaker';
   let slug = base,
     suffix = 2;
   while (occupiedIds.has(slug)) {
@@ -122,7 +126,7 @@ const eventFiles = await markdownFiles(EVENTS_DIR),
   ),
   people = await Promise.all(
     personFiles.map(async (path) => ({
-      id: basename(path, '.md').replaceAll('.', ''),
+      id: personIdFromFilename(basename(path)),
       path,
       ...parseMarkdown(await readFile(path, 'utf8')),
     })),

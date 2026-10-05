@@ -5,6 +5,7 @@ import WebMcpMemberCatalog from '../../../components/WebMcpMemberCatalog.astro';
 import WebMcpMemberDetails from '../../../components/WebMcpMemberDetails.astro';
 import { eventSlug, formatCalendarDate } from '../../../lib/events';
 import { currentMembers, recentEventsForPerson, toMemberCatalog } from '../../../lib/people';
+import { personSlugAliases } from '../../../lib/person-slugs.mjs';
 import { loadPeopleContext } from '../../../lib/people-content';
 import { breadcrumbList } from '../../../lib/structured-data';
 import { initials, markdownExcerpt } from '../../../lib/text';
@@ -15,10 +16,18 @@ const siteOrigin = Astro.site?.origin;
 export async function getStaticPaths() {
   const { people, context } = await loadPeopleContext();
   const members = currentMembers(people, context);
-  return members.map((member) => ({ params: { slug: member.id }, props: { member, context } }));
+  return members.flatMap((member) =>
+    [member.id, ...personSlugAliases(member.id)].map((slug) => ({
+      params: { slug },
+      props: { member, context },
+    })),
+  );
 }
 
 const { member, context } = Astro.props;
+if (Astro.params.slug !== member.id) {
+  return Astro.redirect(withBase(`/soci/${member.id}/`), 301);
+}
 const { Content } = await render(member);
 const description = markdownExcerpt(member.body ?? '') || `${member.data.name}, socio di XeDotNet.`;
 const events = await getCollection('events', ({ data }) => !data.draft);

@@ -66,8 +66,8 @@
           "marco-minerva",
           "marco-parenzan",
           "marco-pozzan",
+          "massimiliano-barbierato",
           "massimiliano-de-savi",
-          "massimilianobarbierato",
           "massimo-appi",
           "massimo-zaccarin",
           "matteo-bortolazzo",
@@ -77,7 +77,7 @@
           "mauro-servienti",
           "michael-denny",
           "mirco-vanini",
-          "mirkorezzin",
+          "mirko-rezzin",
           "nicola-paro",
           "paolo-galfione",
           "pietro-brambati",
@@ -85,8 +85,8 @@
           "raffaele-rialdi",
           "raffaele-trivillin",
           "razvan-dimulescu",
-          "robertoferro",
-          "robertomazzoli",
+          "roberto-ferro",
+          "roberto-mazzoli",
           "serena-giust",
           "simone-ferraro",
           "simone-tolotti",
@@ -96,7 +96,7 @@
           "tommaso-dri",
           "umberto-baratto",
           "valter-minute",
-          "vincenzofoggia"
+          "vincenzo-foggia"
         ]
       },
       "uniqueItems": true
