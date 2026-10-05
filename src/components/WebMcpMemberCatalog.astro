@@ -1,27 +1,45 @@
 ---
-import { safeInlineJson, type WebMcpMemberSummary } from '../lib/webmcp';
+import type { WebMcpMemberSummary } from '../lib/webmcp';
+import { withBase } from '../lib/urls';
 
 interface Props {
   members: WebMcpMemberSummary[];
 }
 
-const serializedCatalog = safeInlineJson(Astro.props.members);
+const catalogUrl = withBase('/webmcp/members.json');
+const allowedSlugs = JSON.stringify(Astro.props.members.map(({ slug }) => slug));
 ---
 
-<script type="application/json" data-webmcp-member-catalog set:html={serializedCatalog} />
+<span hidden data-webmcp-member-catalog data-url={catalogUrl} data-allowed-slugs={allowedSlugs}></span>
 
 <script>
   import {
+    fetchWebMcpJson,
     listMembers,
     memberForSlug,
-    parseMemberCatalog,
     registerWebMcpTools,
+    type WebMcpMemberSummary,
   } from '../lib/webmcp';
-
-  const catalogElement = document.querySelector<HTMLScriptElement>(
+  const catalogElement = document.querySelector<HTMLElement>(
       '[data-webmcp-member-catalog]',
     ),
-    catalog = parseMemberCatalog(catalogElement),
+    catalogUrl = catalogElement?.dataset.url,
+    allowedSlugs = (() => {
+      try {
+        const value: unknown = JSON.parse(catalogElement?.dataset.allowedSlugs ?? '');
+        return Array.isArray(value) && value.every((slug) => typeof slug === 'string')
+          ? value as string[]
+          : undefined;
+      } catch {
+        return undefined;
+      }
+    })(),
+    loadCatalog = () => {
+      if (!catalogUrl) {
+        throw new Error('Il catalogo dei soci non è disponibile.');
+      }
+      return fetchWebMcpJson(catalogUrl, (value): value is WebMcpMemberSummary[] => Array.isArray(value));
+    },
     listSchema = {
       type: 'object',
       properties: {
@@ -56,7 +74,7 @@ const serializedCatalog = safeInlineJson(Astro.props.members);
       additionalProperties: false,
     } as const;
 
-  if (catalog) {
+  if (catalogUrl && allowedSlugs) {
     registerWebMcpTools([
       {
         name: 'list_members',
@@ -64,8 +82,12 @@ const serializedCatalog = safeInlineJson(Astro.props.members);
         description:
           'Cerca i soci pubblicati da XeDotNet. Restituisce fino a cinque risultati alla volta con `nextOffset`; quando `nextOffset` è `null` la ricerca è terminata.',
         inputSchema: listSchema,
-        execute(input) {
-          return listMembers(catalog, input);
+        async execute(input) {
+          const catalog = await loadCatalog();
+          return listMembers(
+            catalog.filter((member) => allowedSlugs.includes(member.slug)),
+            input,
+          );
         },
         annotations: { readOnlyHint: true },
       },
@@ -75,7 +97,12 @@ const serializedCatalog = safeInlineJson(Astro.props.members);
         description:
           'Apre nel browser la pagina del socio restituito da list_members.',
         inputSchema: openSchema,
-        execute({ slug }) {
+        async execute({ slug }, { signal }) {
+          signal.throwIfAborted();
+          const catalog = (await loadCatalog()).filter((member) =>
+            allowedSlugs.includes(member.slug),
+          );
+          signal.throwIfAborted();
           const member = memberForSlug(catalog, slug);
           window.location.assign(member.url);
           return `Navigazione verso “${member.name}”.`;
