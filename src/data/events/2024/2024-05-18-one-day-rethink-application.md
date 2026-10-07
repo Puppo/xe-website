@@ -82,8 +82,6 @@ In un mondo in continua evoluzione, è essenziale domandarsi: come possiamo gara
 
 Unisciti a noi per una giornata di ispirazione, apprendimento e condivisione di conoscenze, mentre esploriamo il futuro delle applicazioni e scopriamo come possiamo ridefinire il loro ruolo nel mondo digitale in continua evoluzione.
 
--   **Il materiale è disponibile al seguente link:** [Slide e codice](https://drive.google.com/drive/folders/184PUcbXMjmmSQgqJGXlx0VZDQFEau-X3?usp=sharing)
-
 * * *
 
 ### Sponsor

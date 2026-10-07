@@ -13,6 +13,7 @@ export const speakerInputSchema = z.union([
 export const createSessionSchema = <T extends z.ZodType>(speakerSchema: T) =>
   z.object({
     description: z.string().optional(),
+    materials: z.array(linkSchema).default([]),
     speakers: z.array(speakerSchema).default([]),
     time: z.string().optional(),
     title: z.string(),

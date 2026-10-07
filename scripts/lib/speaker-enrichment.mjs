@@ -121,6 +121,9 @@ export function replaceSessions(frontmatter, sessions) {
           document.setIn(['sessions', index, key], value);
         }
       }
+      for (const key of Object.keys(previous[index])) {
+        if (!(key in session)) document.deleteIn(['sessions', index, key]);
+      }
     }
   }
   return document.toString({ lineWidth: 0 }).trimEnd();

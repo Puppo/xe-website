@@ -8,6 +8,7 @@ import {
 } from '../../lib/events';
 import { withBase } from '../../lib/urls';
 import type { WebMcpFullEvent } from '../../lib/webmcp';
+import { eventMaterials } from '../../lib/webmcp';
 
 export const GET: APIRoute = async ({ site }) => {
   const [events, people] = await Promise.all([
@@ -19,6 +20,7 @@ export const GET: APIRoute = async ({ site }) => {
       const slug = eventSlug(event),
         sessions = event.data.sessions.map((session) => ({
           description: session.description,
+          materials: session.materials ?? [],
           speakers: session.speakers.map((speaker) =>
             typeof speaker === 'string'
               ? speaker
@@ -33,7 +35,7 @@ export const GET: APIRoute = async ({ site }) => {
         description: event.data.description,
         endDate: event.data.endDate?.toISOString(),
         eventType: event.data.eventType,
-        materials: event.data.materials,
+        materials: eventMaterials(event.data),
         period: isPastEvent(event) ? 'past' : 'upcoming',
         registration: {
           startDate: event.data.registration.startDate?.toISOString(),

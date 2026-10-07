@@ -11,12 +11,13 @@ sessions:
     title: Presentazione
     speakers:
       - person: gianluca-sartori
+    materials:
+      - label: Materiali
+        url: https://drive.google.com/drive/folders/1mCq7nHbZUBIEqp0VH_NGNjAGFzuo50xt?usp=sharing
   - time: 22:00 - 23:00
     title: Q & A
     speakers: []
-materials:
-  - label: download
-    url: https://drive.google.com/drive/folders/1mCq7nHbZUBIEqp0VH_NGNjAGFzuo50xt?usp=sharing
+materials: []
 sourceUrl: https://www.xedotnet.org/eventi/sql-server-query-optimization/
 draft: false
 ---
@@ -24,5 +25,3 @@ draft: false
 L’abbiamo vissuto tutti: il telefono suona, l’applicazione è lenta, qualcosa non va, il database risponde a passo di lumaca. E’ tempo di trovare le query più pesanti e convincerle a darsi una mossa. Ma come si fa? Come le trovo? Cosa devo guardare? Manca forse un indice? E se invece la scrivessi in un altro modo?
 
 In questa sessione proveremo a fare un po’ di ordine, suggerire un **metodo** e presentare alcune **tecniche di ottimizzazione**.
-
-**E' possibile scaricare il materiale al seguante link**: [download](https://drive.google.com/drive/folders/1mCq7nHbZUBIEqp0VH_NGNjAGFzuo50xt?usp=sharing)

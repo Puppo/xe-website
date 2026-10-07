@@ -19,10 +19,8 @@ sessions:
       - person: emanuele-zanchettin
     description: 'Un tema sempre scottante: intercettare gli errori e monitorare le prestazioni del proprio database. In questa sessione si vuole presentare il set di base degli strumenti "molto utili" e introdurre il concetto di analisi prestazionale: dalla "cura" nelle emergenze alla "prevenzione" delle problematiche. Alcuni esempi pratici per capire cosa e come fare nelle diverse situazioni che potrebbero verificarsi proprio domani (se non oggi stesso) sul database della tua applicazione.'
 materials:
-  - label: download
+  - label: Materiali
     url: https://drive.google.com/open?id=0B5JUdKPfCebKLXBMVU5FSmM4ZmM
 sourceUrl: https://www.xedotnet.org/eventi/debug-night/
 draft: false
 ---
-
-**E' possibile scaricare il materiale al seguente link**: [download](https://drive.google.com/open?id=0B5JUdKPfCebKLXBMVU5FSmM4ZmM)

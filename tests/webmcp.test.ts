@@ -4,6 +4,7 @@ import {
   describeMember,
   EVENT_CATALOG_PAGE_SIZE,
   eventForSlug,
+  eventMaterials,
   getEvent,
   listEvents,
   listMembers,
@@ -191,6 +192,32 @@ describe('descrizione WebMCP di un evento', () => {
     expect(description).toContain('Ada Lovelace');
     expect(description).toContain('Le iscrizioni sono aperte');
     expect(description).toContain('Slide: https://example.com/slide');
+  });
+
+  it('mantiene il catalogo aggregato e descrive ogni risorsa una volta con il suo talk', () => {
+    const slide = details.materials[0],
+      shared = {
+        label: 'Cartella comune',
+        url: 'https://example.com/folder?key=1#demo',
+      },
+      event = {
+        ...details,
+        materials: [shared, slide],
+        sessions: [{ ...details.sessions[0], materials: [slide] }],
+      },
+      description = describeEvent(event);
+    expect(eventMaterials(event)).toEqual([shared, slide]);
+    expect(description).toContain(
+      'Slide (Agenti sul Web): https://example.com/slide',
+    );
+    expect(description.match(/https:\/\/example.com\/slide/gu)).toHaveLength(1);
+    expect(description).toContain(shared.url);
+    expect(
+      eventMaterials({
+        materials: [slide],
+        sessions: [{ materials: [slide] }, {}],
+      }),
+    ).toEqual([slide]);
   });
 
   it('rispetta il limite e segnala i dettagli omessi', () => {

@@ -19,10 +19,8 @@ sessions:
       - person: pietro-lovato
     description: Sempre più spesso si sente parlare di Intelligenza Artificiale, di Machine Learning, di Deep Learning, presentati come i nuovi settori in cui investire. Cercheremo di fare chiarezza tra questi termini così usati (e a volte abusati), cercando di comprenderne i principi, le potenzialità, e i limiti. Vedremo poi in concreto cosa succede all'interno di una particolare classe di questi algoritmi, denominati “reti neurali”, e come sia possibile intervenire nel codice per customizzare e migliorare la propria soluzione, prendendo in esame un caso di studio reale nell'ambito dell'elaborazione delle immagini.
 materials:
-  - label: download
+  - label: Materiali
     url: https://drive.google.com/open?id=1Qz_3VoFv8_RS28rgVzlJO4K91hlS54WK
 sourceUrl: https://www.xedotnet.org/eventi/power-bi-deep-learning-night/
 draft: false
 ---
-
-**E' possibile scaricare il materiale al seguente link**: [download](https://drive.google.com/open?id=1Qz_3VoFv8_RS28rgVzlJO4K91hlS54WK)

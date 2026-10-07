@@ -13,6 +13,7 @@ import { breadcrumbList } from '../../../lib/structured-data';
 import { initials } from '../../../lib/text';
 import { isCurrentMember, memberSummaries } from '../../../lib/people';
 import { loadPeopleContext } from '../../../lib/people-content';
+import { eventMaterials } from '../../../lib/webmcp';
 
 type Props =
   | { kind: 'year'; year: number; events: EventEntry[] }
@@ -93,12 +94,13 @@ const [site] = await getCollection('site'),
   description: event.data.description,
   endDate: event.data.endDate ? formatEventDate(event.data.endDate) : undefined,
   eventType: event.data.eventType,
-  materials: event.data.materials,
+  materials: eventMaterials(event.data),
   registration: {
     message: registrationMessage(event),
     url: currentRegistrationState === 'open' ? event.data.registration.url : undefined
   },
   sessions: event.data.sessions.map((session) => ({
+    materials: session.materials ?? [],
     speakers: session.speakers.map((speaker) => speakerView(speaker).name),
     time: session.time,
     title: session.title
@@ -159,6 +161,16 @@ const [site] = await getCollection('site'),
                       </ul>
                     )}
                     {session.description && <p>{session.description}</p>}
+                    {(session.materials?.length ?? 0) > 0 && (
+                      <ul class="session-materials" role="list" aria-label={`Materiali: ${session.title}`}>
+                        {session.materials.map((material) => (
+                          <li><a href={material.url} {...externalLinkProps(material.url, siteOrigin)}>
+                            {material.label}<span class="visually-hidden"> — {session.title}</span>
+                            {isExternalUrl(material.url, siteOrigin) && <span class="visually-hidden"> (si apre in una nuova scheda)</span>}
+                          </a></li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
                 </li>
               ))}

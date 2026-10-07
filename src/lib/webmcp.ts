@@ -39,6 +39,27 @@ export function fetchWebMcpJson<T>(
 
 export type EventPeriod = 'all' | 'past' | 'upcoming';
 
+export interface EventMaterial {
+  label: string;
+  url: string;
+}
+
+/** Preserve the flat resource catalog for existing WebMCP consumers. */
+export function eventMaterials(event: {
+  materials: EventMaterial[];
+  sessions: { materials?: EventMaterial[] }[];
+}): EventMaterial[] {
+  const seen = new Set<string>();
+  return [
+    ...event.materials,
+    ...event.sessions.flatMap((session) => session.materials ?? []),
+  ].filter(({ url }) => {
+    if (seen.has(url)) return false;
+    seen.add(url);
+    return true;
+  });
+}
+
 export interface WebMcpEventSummary {
   date: string;
   description: string;
@@ -60,6 +81,7 @@ export interface WebMcpFullEvent extends WebMcpEventSummary {
   registration: { startDate?: string; endDate?: string; url?: string };
   sessions: {
     description?: string;
+    materials?: EventMaterial[];
     speakers: string[];
     time?: string;
     title: string;
@@ -73,7 +95,12 @@ export interface WebMcpEventDetails {
   eventType?: string;
   materials: { label: string; url: string }[];
   registration: { message: string; url?: string };
-  sessions: { speakers: string[]; time?: string; title: string }[];
+  sessions: {
+    materials?: EventMaterial[];
+    speakers: string[];
+    time?: string;
+    title: string;
+  }[];
   status: 'cancelled' | 'scheduled';
   title: string;
   url: string;
@@ -441,11 +468,22 @@ export function describeEvent(
       optionalLines.push(
         `- ${session.time ? `${session.time}: ` : ''}${session.title}${speakers}`,
       );
+      for (const material of session.materials ?? []) {
+        optionalLines.push(
+          `  - ${material.label} (${session.title}): ${material.url}`,
+        );
+      }
     }
   }
-  if (event.materials.length > 0) {
-    optionalLines.push(`Materiali (${event.materials.length}):`);
-    for (const material of event.materials) {
+  const assigned = new Set(
+      event.sessions.flatMap((session) =>
+        (session.materials ?? []).map(({ url }) => url),
+      ),
+    ),
+    shared = event.materials.filter(({ url }) => !assigned.has(url));
+  if (shared.length > 0) {
+    optionalLines.push(`Materiali (${shared.length}):`);
+    for (const material of shared) {
       optionalLines.push(`- ${material.label}: ${material.url}`);
     }
   }

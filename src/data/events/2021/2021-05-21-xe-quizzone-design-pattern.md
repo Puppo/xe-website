@@ -11,12 +11,13 @@ sessions:
     title: Design pattern - Quiz
     speakers:
       - XE
+    materials:
+      - label: Materiali
+        url: https://drive.google.com/drive/folders/1vdZvZ7OpRayqoJzuErKtlfeBg3PFcNIG?usp=sharing
   - time: 22:00 - 23:00
     title: Q & A
     speakers: []
-materials:
-  - label: download
-    url: https://drive.google.com/drive/folders/1vdZvZ7OpRayqoJzuErKtlfeBg3PFcNIG?usp=sharing
+materials: []
 sourceUrl: https://www.xedotnet.org/eventi/xe-quizzone-design-pattern/
 draft: false
 ---
@@ -28,5 +29,3 @@ Torna quindi il nostro **Quiz** che questa volta sarà dedicato ai **Design Patt
 Le **spiegazioni**, con esempi pratici, si alterneranno alle **domande del gioco**. Non ti preoccupare, non diremo a nessuno come hai risposto alle domande, ma se sarai il più bravo lo sapranno tutti ;)
 
 L'evento si svolgerà on-line e il link per partecipare via Teams verrà inviato a tutti gli iscritti qualche ora prima dell'inizio.
-
-**E' possibile scaricare il materiale al seguante link**: [download](https://drive.google.com/drive/folders/1vdZvZ7OpRayqoJzuErKtlfeBg3PFcNIG?usp=sharing)

@@ -77,6 +77,26 @@
           "description": {
             "type": "string"
           },
+          "materials": {
+            "default": [],
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string"
+                },
+                "url": {
+                  "type": "string",
+                  "format": "uri"
+                }
+              },
+              "required": [
+                "label",
+                "url"
+              ]
+            }
+          },
           "speakers": {
             "default": [],
             "type": "array",

@@ -52,13 +52,11 @@ sessions:
     speakers:
       - person: lorenzo-barbieri
 materials:
-  - label: download
+  - label: Materiali
     url: https://drive.google.com/open?id=12gM5tDMuby81lfPlLdXjQTBY3GG1Jc0t
 sourceUrl: https://www.xedotnet.org/eventi/one-day-performance-optimization/
 draft: false
 ---
-
-**E' possibile scaricare il materiale al seguente link**: [download](https://drive.google.com/open?id=12gM5tDMuby81lfPlLdXjQTBY3GG1Jc0t)
 
 Arriva il nostro main event del semestre, **XE One Day - Performance & Optimization**. Assieme ai nostri ospiti e speaker d’eccezione **Andrea Benedetti** (Director of Technical Evangelism presso Microsoft) e **Lorenzo Barbieri** (Cloud Solution Architect Microsoft) trascorreremo un’intera giornata dedicata a tecniche e tecnologie per spingere le performance delle nostre applicazioni over the top! Ma non solo: nel pomeriggio vi aspetta l’**Unconference**: una nuova formula per discutere su argomenti specifici direttamente suggeriti da voi, sempe sul tema performance & optimization!
 

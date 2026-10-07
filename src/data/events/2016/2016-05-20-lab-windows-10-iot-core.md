@@ -13,11 +13,10 @@ sessions:
     speakers:
       - person: mirco-vanini
     description: Questo laboratorio sarà un introduzione pratica all'utilizzo di Windows 10 IoT Core, nel suo porting verso la Raspberry PI 2, per sperimentare assieme come interagire con la scheda ed i vari sensori / mondo esterno. Per partecipare al laboratorio è necessario venire muniti di portatile con installati i seguenti programmi/ambienti, in dettaglio:PC con Windows 10Visual Studio 2015, Community edition o superiore- ricordarsi di selezionare gli strumenti di sviluppo UWP durante il setupVisual Studio 2015 Update 2 with Windows developer tools 1.3.1 Windows IoT Core Project Templates (https://visualstudiogallery.msdn.microsoft.com/55b357e1-a533-43ad-82a5-a88ac4b01dec?SRC=VSIDE)Windows 10 IoT Core (Raspberry Pi 2) (https://ms-iot.github.io/content/en-US/Downloads.htm)Se siete windows insider scaricate la versione 14262 che contiene il remote controlScaricare l'utility dhcpserver (http://www.dhcpserver.de/)Cavo di rete ethernet normaleUSB To Ethernet Adapter (se il vostro portatile non ha la porta Ethernet)Scheda Raspberry PI 2 o 3MicroSD da 8 GBAlimentatore scheda Raspberry
-materials:
-  - label: download
-    url: https://drive.google.com/folderview?id=0B5JUdKPfCebKQ0h5YTI3S2ctdW8&usp=sharing
-  - label: https://ms-iot.github.io/content/en-US/Downloads.htm
-    url: https://ms-iot.github.io/content/en-US/Downloads.htm
+    materials:
+      - label: Materiali
+        url: https://drive.google.com/folderview?id=0B5JUdKPfCebKQ0h5YTI3S2ctdW8&usp=sharing
+materials: []
 sourceUrl: https://www.xedotnet.org/eventi/lab-windows-10-iot-core/
 draft: false
 ---
@@ -26,4 +25,30 @@ Hai mai pensato di poter usare le tue competenze informatiche usando input e out
 Ti piacerebbe provare ad usare schede/controllori LED e altri sensori, ma non ci hai mai provato?  
 Vieni al Lab IoT, ti insegneremo a muovere i primi passi con Windows IoT Core usando una RaspberryPi2 per acquisire segnali dal mondo esterno e far comunicare queste schede con il cloud...
 
-**E' possibile scaricare il materiale al seguante link**: [download](https://drive.google.com/folderview?id=0B5JUdKPfCebKQ0h5YTI3S2ctdW8&usp=sharing)
+## Prerequisiti — LAB Windows 10 IoT core
+
+-   PC con Windows 10
+
+-   Visual Studio 2015, Community edition o superiore\
+    \- ricordarsi di selezionare gli strumenti di sviluppo UWP durante il setup
+
+-   Visual Studio 2015 Update 2 with Windows developer tools 1.3.1
+
+-   Windows IoT Core Project Templates ([https://visualstudiogallery.msdn.microsoft.com/55b357e1-a533-43ad-82a5-a88ac4b01dec?SRC=VSIDE](https://visualstudiogallery.msdn.microsoft.com/55b357e1-a533-43ad-82a5-a88ac4b01dec?SRC=VSIDE))
+
+-   Windows 10 IoT Core (Raspberry Pi 2) ([https://ms-iot.github.io/content/en-US/Downloads.htm](https://ms-iot.github.io/content/en-US/Downloads.htm))
+
+-   Se siete windows insider scaricate la versione 14262 che contiene il remote control
+
+-   Scaricare ed installare Windows IoT Remote Client ([https://www.microsoft.com/it-it/store/apps/windows-iot-remote-client/9nblggh5mnxz](https://www.microsoft.com/it-it/store/apps/windows-iot-remote-client/9nblggh5mnxz) )
+-   Scaricare l'utility dhcpserver ([http://www.dhcpserver.de/](http://www.dhcpserver.de/))
+
+-   Cavo di rete ethernet normale
+
+-   USB To Ethernet Adapter (se il vostro portatile non ha la porta Ethernet)
+
+-   Scheda Raspberry PI 2 o 3
+
+-   MicroSD da 8 GB
+
+-   Alimentatore scheda Raspberry

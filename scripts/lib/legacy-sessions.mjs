@@ -1,4 +1,5 @@
 import * as cheerio from 'cheerio';
+import { uniqueMaterials } from './legacy-materials.mjs';
 import {
   normalizeSpeakerName,
   splitSpeakerNames,
@@ -189,6 +190,12 @@ export function mergeSessions(existing, recovered, peopleNames = new Map()) {
       continue;
     }
     const known = new Set((target.speakers ?? []).map(speakerKey));
+    if (incoming.materials?.length > 0) {
+      target.materials = uniqueMaterials([
+        ...(target.materials ?? []),
+        ...incoming.materials,
+      ]);
+    }
     for (const speaker of incoming.speakers) {
       if (!known.has(speakerKey(speaker))) {
         (target.speakers ??= []).push(speaker);

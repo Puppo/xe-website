@@ -11,6 +11,10 @@ import {
   recoverLegacySessions,
 } from './lib/legacy-sessions.mjs';
 import {
+  extractLegacyMaterials,
+  recoverEventMaterials,
+} from './lib/legacy-materials.mjs';
+import {
   createPeopleNameIndex,
   matchSpeaker,
   markdownParts,
@@ -203,7 +207,7 @@ async function parseEvent(url) {
   await localizeImages($, article);
   await localizeMediaLinks($, article);
   const bodyHtml = article.html() || '',
-    body = turndown
+    legacyBody = turndown
       .turndown(bodyHtml)
       .replaceAll(/\n{3,}/g, '\n\n')
       .trim(),
@@ -213,11 +217,14 @@ async function parseEvent(url) {
       ).slice(0, 300) || title,
     recovered = await recoverLegacySessions(html, url, title, fetchText),
     existingPath = join(EVENTS_DIR, date.slice(0, 4), `${date}-${slug}.md`);
-  let existingSessions = [];
+  let existingSessions = [],
+    existingMaterials = [];
   try {
-    existingSessions =
-      parse(markdownParts(await readFile(existingPath, 'utf8')).frontmatter)
-        .sessions ?? [];
+    const existing = parse(
+      markdownParts(await readFile(existingPath, 'utf8')).frontmatter,
+    );
+    existingSessions = existing.sessions ?? [];
+    existingMaterials = existing.materials ?? [];
   } catch (error) {
     if (error.code !== 'ENOENT') throw error;
   }
@@ -268,22 +275,20 @@ async function parseEvent(url) {
     }
   }
 
-  const materialMap = new Map();
-  $('article.maincontent a[href]').each((_, anchor) => {
-    const href = $(anchor).attr('href'),
-      label = clean($(anchor).text());
-    if (!href) {
-      return;
-    }
-    const absolute = new URL(href, ORIGIN);
-    if (
-      /drive\.google|github\.com|slides|download/i.test(
-        `${absolute.href} ${label}`,
-      )
-    ) {
-      materialMap.set(absolute.href, label || 'Materiale');
-    }
-  });
+  const materialRecovery = recoverEventMaterials({
+      data: { sessions, materials: existingMaterials, sourceUrl: url },
+      body: legacyBody,
+      evidence: extractLegacyMaterials(html, url),
+      peopleNames: new Map(
+        [...peopleByName.values()]
+          .flat()
+          .map((person) => [person.id, person.data.name]),
+      ),
+    }),
+    { body } = materialRecovery;
+  report.warnings.push(
+    ...materialRecovery.warnings.map((warning) => `${url}: ${warning}`),
+  );
 
   const registrationWidget = $('.sidebar .widget')
     .filter((_, element) =>
@@ -322,11 +327,8 @@ async function parseEvent(url) {
         },
       }),
       ...(firstBodyImage && { image: firstBodyImage }),
-      sessions,
-      materials: [...materialMap].map(([materialUrl, label]) => ({
-        label,
-        url: materialUrl,
-      })),
+      sessions: materialRecovery.sessions,
+      materials: materialRecovery.materials,
       ...(registrationUrl && {
         registration: {
           label: 'Iscriviti all’evento',

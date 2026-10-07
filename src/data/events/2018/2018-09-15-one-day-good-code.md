@@ -52,7 +52,7 @@ sessions:
       - XE
     description: Durante la giornata raccoglieremo le domande e le più interessanti verranno discusse con gli speaker in questa sessione in attesa di goderci una buona cena in compagnia.
 materials:
-  - label: download
+  - label: Materiali
     url: https://drive.google.com/open?id=1csLBDTapV14HTUnM-H-KOUffWpPq3g_6
 sourceUrl: https://www.xedotnet.org/eventi/one-day-good-code/
 draft: false
@@ -68,5 +68,3 @@ La partecipazione alla conferenza è (come al solito) gratuita.
 
 Per chi vorrà, l'evento proseguirà con la cena, che si terrà nella stessa location ([Osteria del Frate dalla Manica Larga](https://www.osteriadelfrate.it/)), una trattoria con cucina casereccia che lavora solo con materie prime di alta qualità. Il menù prevede antipasto di salumi tipici, un primo, un secondo a base di carne, contorni, dolce, vino e bevande comprese.  
 XE contribuirà a coprire parte del costo per cui il prezzo finale sarà di soli €22,00 a persona: un'occasione di cui approfittare!
-
-**E' possibile scaricare il materiale al seguante link**: [download](https://drive.google.com/open?id=1csLBDTapV14HTUnM-H-KOUffWpPq3g_6)

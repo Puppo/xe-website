@@ -8,6 +8,7 @@ import {
 } from '../../../lib/events';
 import { withBase } from '../../../lib/urls';
 import type { WebMcpEventDetails } from '../../../lib/webmcp';
+import { eventMaterials } from '../../../lib/webmcp';
 
 export async function getStaticPaths() {
   const events = await getCollection('events', ({ data }) => !data.draft);
@@ -35,7 +36,7 @@ export const GET: APIRoute = async ({ params, site }) => {
         ? formatEventDate(event.data.endDate)
         : undefined,
       eventType: event.data.eventType,
-      materials: event.data.materials,
+      materials: eventMaterials(event.data),
       registration: {
         message: registrationMessage(event),
         url:
@@ -44,6 +45,7 @@ export const GET: APIRoute = async ({ params, site }) => {
             : undefined,
       },
       sessions: event.data.sessions.map((session) => ({
+        materials: session.materials ?? [],
         speakers: session.speakers.map((speaker) =>
           typeof speaker === 'string'
             ? speaker
