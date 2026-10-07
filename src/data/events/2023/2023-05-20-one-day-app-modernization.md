@@ -7,7 +7,62 @@ venue:
   name: Training Center - Banchina dell'Azoto 15
   url: https://goo.gl/maps/TsUuEDT75SC2
   online: false
-sessions: []
+sessions:
+  - title: Registrazione
+    speakers: []
+    time: 08:30
+  - title: Intro
+    speakers: []
+    time: 09:00
+  - title: Time Series for relational people
+    speakers:
+      - person: gianluca-sartori
+    time: 09:30
+  - title: The recipe for a universal Design System
+    speakers:
+      - person: luca-del-puppo
+    time: 09:30
+  - title: Coffee break (offerto da XE + sponsor)
+    speakers: []
+    time: 10:30
+  - title: Microservices tips&tricks con .net e DAPR
+    speakers:
+      - person: alessandro-melchiori
+    time: 10:55
+  - title: Modernize Angular App
+    speakers:
+      - person: daniele-morosinotto
+    time: 10:55
+  - title: Blazor United. Un salto nel futuro
+    speakers:
+      - person: andrea-dottor
+    time: 12:00
+  - title: Pranzo (offerto da XE + sponsor)
+    speakers: []
+    time: 13:00
+  - title: Modernize your community
+    speakers:
+      - person: davide-contin
+    time: 14:10
+  - title: Modernizzare i tuoi web service con Azure API Management
+    speakers:
+      - person: massimo-bonanni
+    time: 15:00
+  - title: How to modernise WPF & Windows Forms applications with Windows Apps SDK
+    speakers:
+      - person: mirco-vanini
+    time: 15:00
+  - title: Configure your App
+    speakers:
+      - person: marco-bortolin
+    time: 16:05
+  - title: Qwik il framework che ti stupirà
+    speakers:
+      - person: giorgio-boa
+    time: 16:05
+  - title: Saluti ed estrazione premi
+    speakers: []
+    time: 17:10
 materials:
   - label: GitHub
     url: https://github.com/spaghettidba/CodeSamples/tree/master/TimeSeriesForRelationalPeople

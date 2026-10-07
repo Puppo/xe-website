@@ -6,7 +6,11 @@ eventType: Online Meeting
 venue:
   name: Live Meeting
   online: false
-sessions: []
+sessions:
+  - title: XE - Online Meeting - Intelligenza Artificiale
+    speakers:
+      - person: gianni-rosa-gallina
+      - person: clemente-giorio
 materials: []
 sourceUrl: https://www.xedotnet.org/eventi/xe-online-meeting-intelligenza-artificiale/
 draft: false

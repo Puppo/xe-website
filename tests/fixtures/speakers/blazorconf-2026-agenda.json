@@ -1,0 +1,71 @@
+{
+  "sourceUrl": "https://blazorconf.it/",
+  "date": "2026-04-10",
+  "sessions": [
+    {
+      "title": "Registrazione",
+      "time": "08:30",
+      "speakers": []
+    },
+    {
+      "title": "Keynote - Il problema non è Blazor (e neanche l'AI)",
+      "time": "09:20",
+      "speakers": ["Michele Aponte"]
+    },
+    {
+      "title": "Clean Architecture in Blazor: principi, compromessi e cattive idee da evitare",
+      "time": "09:55",
+      "speakers": ["Alberto Acerbis"]
+    },
+    {
+      "title": "Coffee Break",
+      "time": "10:40",
+      "speakers": []
+    },
+    {
+      "title": "Come crearsi il proprio UI-kit: dal testing alla documentazione",
+      "time": "11:00",
+      "speakers": ["Alberto Mori"]
+    },
+    {
+      "title": "Blazor Components: Fundamentals to Advanced Patterns",
+      "time": "11:45",
+      "speakers": ["Andrea Dottor"]
+    },
+    {
+      "title": "Pranzo",
+      "time": "12:30",
+      "speakers": []
+    },
+    {
+      "title": "Aspire + FoundryLocal + Blazor = AIChat",
+      "time": "14:00",
+      "speakers": ["Marco Alquati"]
+    },
+    {
+      "title": "Una UI per domarli tutti: Blazor Hybrid",
+      "time": "14:45",
+      "speakers": ["Alessio Iafrate"]
+    },
+    {
+      "title": "Coffee Break",
+      "time": "15:30",
+      "speakers": []
+    },
+    {
+      "title": "Creare Videogames e Collaborative Apps: è possibile con Blazor?",
+      "time": "15:50",
+      "speakers": ["Nicola Paro"]
+    },
+    {
+      "title": "From Legacy to Embedded: .NET and Blazor for Industrial IoT",
+      "time": "16:35",
+      "speakers": ["Simone Tolotti"]
+    },
+    {
+      "title": "Chiusura giornata, estrazione premi e saluti",
+      "time": "17:20",
+      "speakers": []
+    }
+  ]
+}

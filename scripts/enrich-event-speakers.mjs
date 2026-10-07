@@ -1,13 +1,20 @@
 import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import { basename, extname, join } from 'node:path';
+import { pathToFileURL } from 'node:url';
 import { parse, stringify } from 'yaml';
+import {
+  mergeSessions,
+  recoverLegacySessions,
+} from './lib/legacy-sessions.mjs';
 import {
   canonicalPersonSlug,
   personIdFromFilename,
 } from '../src/lib/person-slugs.mjs';
 import {
   canonicalAssetUrl,
-  chooseKnownProfileUrl,
+  createPeopleNameIndex,
+  matchSpeaker,
+  replaceSessions,
   extractLegacySpeakerCandidates,
   isOrganizationSpeaker,
   markdownParts,
@@ -18,10 +25,6 @@ import {
 } from './lib/speaker-enrichment.mjs';
 
 const ROOT = join(import.meta.dirname, '..'),
-  EVENTS_DIR = join(ROOT, 'src/data/events'),
-  PEOPLE_DIR = join(ROOT, 'src/data/people'),
-  MEDIA_DIR = join(ROOT, 'public/media'),
-  WRITE = process.argv.includes('--write'),
   CONCURRENCY = 6;
 
 async function markdownFiles(directory) {
@@ -96,10 +99,10 @@ function mediaFilename(url) {
   return `${parentId ? `${parentId}-` : ''}${stem}${extension}`;
 }
 
-async function downloadImage(url) {
+async function downloadImage(url, write, mediaDirectory) {
   const canonical = canonicalAssetUrl(url),
     filename = mediaFilename(canonical);
-  if (!WRITE) {
+  if (!write) {
     return `/media/${filename}`;
   }
   const response = await fetch(canonical, {
@@ -110,197 +113,244 @@ async function downloadImage(url) {
     throw new Error(`${response.status} ${response.statusText}: ${canonical}`);
   }
   await writeFile(
-    join(MEDIA_DIR, filename),
+    join(mediaDirectory, filename),
     Buffer.from(await response.arrayBuffer()),
   );
   return `/media/${filename}`;
 }
 
-const eventFiles = await markdownFiles(EVENTS_DIR),
-  personFiles = await markdownFiles(PEOPLE_DIR),
-  events = await Promise.all(
-    eventFiles.map(async (path) => ({
-      path,
-      ...parseMarkdown(await readFile(path, 'utf8')),
-    })),
-  ),
-  people = await Promise.all(
-    personFiles.map(async (path) => ({
-      id: personIdFromFilename(basename(path)),
-      path,
-      ...parseMarkdown(await readFile(path, 'utf8')),
-    })),
-  ),
-  occupiedIds = new Set(people.map(({ id }) => id)),
-  peopleByName = new Map(
-    people.map((person) => [normalizeSpeakerName(person.data.name), person]),
-  ),
-  sourcePageByName = new Map(),
-  uniqueHumanNames = new Map();
+export async function enrichSpeakers({
+  root = ROOT,
+  write = false,
+  fetchPage = fetchText,
+} = {}) {
+  const EVENTS_DIR = join(root, 'src/data/events'),
+    PEOPLE_DIR = join(root, 'src/data/people'),
+    MEDIA_DIR = join(root, 'public/media');
+  const eventFiles = await markdownFiles(EVENTS_DIR),
+    personFiles = await markdownFiles(PEOPLE_DIR),
+    events = await Promise.all(
+      eventFiles.map(async (path) => ({
+        path,
+        ...parseMarkdown(await readFile(path, 'utf8')),
+      })),
+    ),
+    people = await Promise.all(
+      personFiles.map(async (path) => ({
+        id: personIdFromFilename(basename(path)),
+        path,
+        ...parseMarkdown(await readFile(path, 'utf8')),
+      })),
+    ),
+    occupiedIds = new Set(people.map(({ id }) => id)),
+    peopleByName = createPeopleNameIndex(people),
+    sourcePageByName = new Map(),
+    uniqueHumanNames = new Map();
 
-for (const event of events) {
-  for (const session of event.data.sessions ?? []) {
-    for (const speaker of session.speakers ?? []) {
-      if (typeof speaker !== 'string' || isOrganizationSpeaker(speaker)) {
-        continue;
+  const candidatesByName = new Map(),
+    warnings = [],
+    audits = [],
+    peopleNames = new Map(
+      people.map((person) => [person.id, person.data.name]),
+    );
+  for (const event of events.filter(({ data }) => !data.sourceUrl))
+    warnings.push(
+      `${event.path}: sourceUrl assente, verifica non disponibile.`,
+    );
+  await runPool(
+    events.filter(({ data }) => data.sourceUrl),
+    async (event) => {
+      try {
+        const html = await fetchPage(event.data.sourceUrl),
+          recovered = await recoverLegacySessions(
+            html,
+            event.data.sourceUrl,
+            event.data.title,
+            fetchPage,
+          );
+        warnings.push(...recovered.warnings);
+        const before = event.data.sessions ?? [],
+          merged = mergeSessions(before, recovered.sessions, peopleNames);
+        event.data.sessions = merged;
+        audits.push(
+          `${event.data.sourceUrl}: ${recovered.kind}; ${before.length} → ${merged.length} sessioni${recovered.warnings.length > 0 ? '; verifica incompleta' : ''}.`,
+        );
+        const titles = new Set();
+        for (const session of before) {
+          const key = `${normalizeSpeakerName(session.title)}|${session.time ?? ''}`;
+          if (titles.has(key))
+            warnings.push(
+              `${event.data.sourceUrl}: titolo sessione ambiguo: ${session.title}`,
+            );
+          titles.add(key);
+        }
+        for (const candidate of extractLegacySpeakerCandidates(
+          html,
+          event.data.sourceUrl,
+        )) {
+          const key = normalizeSpeakerName(candidate.name),
+            candidates = candidatesByName.get(key) ?? [];
+          candidates.push(candidate);
+          candidatesByName.set(key, candidates);
+        }
+      } catch (error) {
+        audits.push(
+          `${event.data.sourceUrl}: fonte non disponibile; sessioni conservate.`,
+        );
+        warnings.push(
+          `${event.data.sourceUrl}: ${error instanceof Error ? error.message : String(error)}`,
+        );
       }
-      const key = normalizeSpeakerName(speaker);
-      uniqueHumanNames.set(key, speaker);
-      if (!sourcePageByName.has(key)) {
-        sourcePageByName.set(key, event.data.sourceUrl);
+    },
+  );
+
+  for (const event of events) {
+    for (const session of event.data.sessions ?? []) {
+      for (const speaker of session.speakers ?? []) {
+        if (typeof speaker !== 'string' || isOrganizationSpeaker(speaker))
+          continue;
+        const key = normalizeSpeakerName(speaker);
+        uniqueHumanNames.set(key, speaker);
+        if (!sourcePageByName.has(key))
+          sourcePageByName.set(key, event.data.sourceUrl);
       }
     }
   }
-}
 
-const candidatesByName = new Map(),
-  warnings = [];
-await runPool(
-  events.filter(({ data }) => data.sourceUrl),
-  async (event) => {
-    try {
-      const html = await fetchText(event.data.sourceUrl);
-      for (const candidate of extractLegacySpeakerCandidates(
-        html,
-        event.data.sourceUrl,
-      )) {
-        const key = normalizeSpeakerName(candidate.name),
-          candidates = candidatesByName.get(key) ?? [];
-        candidates.push(candidate);
-        candidatesByName.set(key, candidates);
-      }
-    } catch (error) {
+  const referencesByName = new Map(),
+    created = [],
+    reused = [],
+    importedImages = [],
+    missingImages = [],
+    ambiguousImages = [];
+
+  if (write) await mkdir(MEDIA_DIR, { recursive: true });
+
+  for (const [key, name] of [...uniqueHumanNames].sort((a, b) =>
+    a[1].localeCompare(b[1], 'it'),
+  )) {
+    const match = matchSpeaker(name, peopleByName);
+    if (match.kind === 'ambiguous') {
       warnings.push(
-        `${event.data.sourceUrl}: ${error instanceof Error ? error.message : String(error)}`,
+        `${name}: corrispondenza ambigua (${match.ids.join(', ')}).`,
       );
+      continue;
     }
-  },
-);
+    let { person } = match;
+    if (person) {
+      reused.push(name);
+    } else {
+      const id = uniqueSlug(name, occupiedIds);
+      person = {
+        id,
+        path: join(PEOPLE_DIR, `${id}.md`),
+        frontmatter: '',
+        remainder: '\n',
+        data: {
+          name,
+          sortName: name,
+          links: [],
+          published: true,
+          sourceUrl: sourcePageByName.get(key),
+        },
+      };
+      people.push(person);
+      peopleByName.set(key, [person]);
+      created.push(name);
+    }
 
-const referencesByName = new Map(),
-  created = [],
-  reused = [],
-  importedImages = [],
-  missingImages = [],
-  ambiguousImages = [];
-
-await mkdir(MEDIA_DIR, { recursive: true });
-
-for (const [key, name] of [...uniqueHumanNames].sort((a, b) =>
-  a[1].localeCompare(b[1], 'it'),
-)) {
-  let person = peopleByName.get(key);
-  if (person) {
-    person.data.profileUrl ??= chooseKnownProfileUrl(person.data.links);
-    reused.push(name);
-  } else {
-    const id = uniqueSlug(name, occupiedIds);
-    person = {
-      id,
-      path: join(PEOPLE_DIR, `${id}.md`),
-      frontmatter: '',
-      remainder: '\n',
-      data: {
-        name,
-        sortName: name,
-        links: [],
-        published: true,
-        sourceUrl: sourcePageByName.get(key),
-      },
-    };
-    people.push(person);
-    peopleByName.set(key, person);
-    created.push(name);
-  }
-
-  const candidates = candidatesByName.get(key) ?? [],
-    imageUrl = selectImageCandidate(candidates);
-  if (!person.data.image && imageUrl) {
-    try {
-      person.data.image = await downloadImage(imageUrl);
-      importedImages.push(name);
-    } catch (error) {
-      warnings.push(
-        `${name}: ${error instanceof Error ? error.message : String(error)}`,
-      );
+    const candidates = candidatesByName.get(key) ?? [],
+      imageUrl = selectImageCandidate(candidates);
+    if (!person.data.image && imageUrl) {
+      try {
+        person.data.image = await downloadImage(imageUrl, write, MEDIA_DIR);
+        importedImages.push(name);
+      } catch (error) {
+        warnings.push(
+          `${name}: ${error instanceof Error ? error.message : String(error)}`,
+        );
+        missingImages.push(name);
+      }
+    } else if (!person.data.image && candidates.length > 0) {
+      ambiguousImages.push(name);
+    } else if (!person.data.image) {
       missingImages.push(name);
     }
-  } else if (!person.data.image && candidates.length > 0) {
-    ambiguousImages.push(name);
-  } else if (!person.data.image) {
-    missingImages.push(name);
+    referencesByName.set(key, person.id);
   }
-  referencesByName.set(key, person.id);
+
+  let updatedEvents = 0;
+  for (const event of events) {
+    const frontmatter = replaceSpeakerScalars(
+      replaceSessions(event.frontmatter, event.data.sessions ?? []),
+      referencesByName,
+    );
+    if (frontmatter === event.frontmatter) {
+      continue;
+    }
+    updatedEvents += 1;
+    if (write) {
+      await writeFile(event.path, `---\n${frontmatter}\n---${event.remainder}`);
+    }
+  }
+
+  for (const person of people) {
+    const source = renderMarkdown(person.data, person.remainder);
+    if (write) {
+      const original = person.frontmatter
+        ? `---\n${person.frontmatter}\n---${person.remainder}`
+        : undefined;
+      if (
+        !person.frontmatter ||
+        JSON.stringify(parse(person.frontmatter)) !==
+          JSON.stringify(person.data)
+      ) {
+        if (source !== original) await writeFile(person.path, source);
+      }
+    }
+  }
+
+  const report = [
+    '# Verifica delle associazioni tra eventi e speaker',
+    '',
+    `Modalità: ${write ? 'scrittura' : 'simulazione'}`,
+    '',
+    `- Eventi esaminati: ${events.length}`,
+    `- Eventi modificati: ${updatedEvents}`,
+    `- Profili riutilizzati: ${reused.length}`,
+    `- Profili creati: ${created.length}`,
+    `- Foto importate: ${importedImages.length}`,
+    '',
+    '## Profili creati',
+    '',
+    ...(created.length > 0
+      ? created.map((name) => `- ${name}`)
+      : ['- Nessuno']),
+    '',
+    '## Verifica degli eventi',
+    '',
+    ...audits.sort().map((entry) => `- ${entry}`),
+    '',
+    '## Fonti non disponibili e corrispondenze da verificare',
+    '',
+    ...(warnings.length > 0
+      ? warnings.sort().map((warning) => `- ${warning}`)
+      : ['- Nessuna']),
+    '',
+    '## Foto mancanti o ambigue (fallback con iniziali)',
+    '',
+    ...[...missingImages, ...ambiguousImages].sort().map((name) => `- ${name}`),
+    '',
+  ].join('\n');
+  return { report, updatedEvents, created, warnings, audits };
 }
 
-let updatedEvents = 0;
-for (const event of events) {
-  const frontmatter = replaceSpeakerScalars(
-    event.frontmatter,
-    referencesByName,
-  );
-  if (frontmatter === event.frontmatter) {
-    continue;
-  }
-  updatedEvents += 1;
-  if (WRITE) {
-    await writeFile(event.path, `---\n${frontmatter}\n---${event.remainder}`);
-  }
+if (
+  process.argv[1] &&
+  import.meta.url === pathToFileURL(process.argv[1]).href
+) {
+  const { report } = await enrichSpeakers({
+    write: process.argv.includes('--write'),
+  });
+  console.log(report);
 }
-
-for (const person of people) {
-  const source = renderMarkdown(person.data, person.remainder);
-  if (WRITE) {
-    await writeFile(person.path, source);
-  }
-}
-
-const report = [
-  '# Speaker import report',
-  '',
-  `Mode: ${WRITE ? 'write' : 'dry-run'}`,
-  '',
-  `- Event files updated: ${updatedEvents}`,
-  `- Existing profiles reused: ${reused.length}`,
-  `- Speaker-only profiles created: ${created.length}`,
-  `- Photos imported: ${importedImages.length}`,
-  `- Missing photos: ${missingImages.length}`,
-  `- Ambiguous photos: ${ambiguousImages.length}`,
-  `- Legacy page warnings: ${warnings.length}`,
-  '',
-  '## Created profiles',
-  '',
-  ...(created.length > 0 ? created.map((name) => `- ${name}`) : ['- None']),
-  '',
-  '## Imported photos',
-  '',
-  ...(importedImages.length > 0
-    ? importedImages.map((name) => `- ${name}`)
-    : ['- None']),
-  '',
-  '## Missing photos (initials fallback)',
-  '',
-  ...(missingImages.length > 0
-    ? missingImages.map((name) => `- ${name}`)
-    : ['- None']),
-  '',
-  '## Ambiguous photos (initials fallback)',
-  '',
-  ...(ambiguousImages.length > 0
-    ? ambiguousImages.map((name) => `- ${name}`)
-    : ['- None']),
-  '',
-  '## Untouched organization entries',
-  '',
-  '- 1nn0va',
-  '- XE',
-  '',
-  '## Warnings',
-  '',
-  ...(warnings.length > 0
-    ? warnings.sort().map((warning) => `- ${warning}`)
-    : ['- None']),
-  '',
-].join('\n');
-
-console.log(report);
