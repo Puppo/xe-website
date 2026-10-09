@@ -210,6 +210,10 @@ p {
 .prose {
   max-inline-size: var(--text);
 }
+.about-prose {
+  font-size: clamp(1.125rem, 1rem + 0.4vw, 1.375rem);
+  line-height: 1.65;
+}
 .prose > * + * {
   margin-block-start: 1.1em;
 }
@@ -379,13 +383,16 @@ p {
   list-style: none;
 }
 .nav-list a {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   min-block-size: 2.5rem;
   padding: 0.45rem 0.65rem;
   border-radius: 100vmax;
   color: var(--muted);
   font-weight: 700;
   font-size: 0.9rem;
+  line-height: 1.4;
   text-decoration: none;
 }
 .nav-list a:hover,
@@ -649,6 +656,20 @@ p {
 .event-card h2 a {
   color: var(--ink);
   text-decoration: none;
+}
+.event-card h2 a::after {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: var(--radius);
+  content: '';
+}
+.event-card h2 a:focus-visible {
+  outline: none;
+}
+.event-card h2 a:focus-visible::after {
+  outline: 3px solid var(--focus);
+  outline-offset: 4px;
 }
 .event-card h2 a:hover {
   color: var(--red);
@@ -975,17 +996,15 @@ p {
 .support-actions {
   align-self: center;
 }
-.support-actions form + form {
-  margin-block-start: 0.75rem;
+.support-actions > a {
+  display: block;
+  inline-size: fit-content;
+  min-block-size: 2.75rem;
+  padding-block: 0.5rem;
+  font-weight: 700;
 }
-.support-actions button {
-  inline-size: 100%;
-}
-.support-actions .button-secondary {
-  color: var(--ink);
-}
-.support-actions .button-secondary:hover {
-  color: #fff;
+.support-actions > a + a {
+  margin-block-start: 0.5rem;
 }
 
 .map-layout {
@@ -1342,6 +1361,7 @@ textarea:user-invalid {
     gap: 0.15rem;
   }
   .nav-area[data-menu-ready] .nav-list a {
+    justify-content: flex-start;
     min-block-size: 3rem;
     padding: 0.75rem 1rem;
     border-radius: 0.65rem;

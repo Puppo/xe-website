@@ -14,7 +14,7 @@ const [page] = await getCollection('pages', ({ id }) => id === 'chi-siamo'),
 <BaseLayout title={page.data.title} description={page.data.description}>
   <header class="page-hero"><div class="shell"><p class="breadcrumbs"><a href={withBase('/')}>Home</a> / Chi siamo</p><h1>Chi siamo</h1><p>{page.data.description}</p></div></header>
   <section class="section shell detail-grid">
-    <article class="prose"><Content /></article>
+    <article class="prose about-prose"><Content /></article>
     <aside><SupportPanel membershipButtonId={site.data.membershipButtonId} donationButtonId={site.data.donationButtonId} /></aside>
   </section>
   <section class="section surface"><div class="shell"><div class="section-heading"><h2>Da dove vengono alcuni soci</h2></div><CommunityMap locations={locations} /></div></section>
