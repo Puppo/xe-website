@@ -878,7 +878,6 @@ p {
 }
 .speaker-photo {
   object-fit: cover;
-  object-position: center 20%;
   background: var(--surface-strong);
 }
 .speaker-placeholder {
@@ -1092,7 +1091,6 @@ p {
   block-size: 3.5rem;
   border-radius: 50%;
   object-fit: cover;
-  object-position: center 20%;
   margin-inline-start: -0.5rem;
   border: 3px solid var(--surface);
 }
@@ -1555,10 +1553,6 @@ textarea:user-invalid {
   flex: 0 0 4.25rem;
   border-radius: 0.55rem;
   object-fit: cover;
-}
-.soci-person > img,
-.soci-portrait img {
-  object-position: center 20%;
 }
 .soci-initials {
   display: grid;
