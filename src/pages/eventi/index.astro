@@ -20,7 +20,7 @@ const events = await getCollection('events', ({ data }) => !data.draft),
   </section>
   <section class="section surface">
     <div class="shell">
-      <div class="section-heading"><h2>Archivio</h2><p>{past.length} eventi</p></div>
+      <div class="section-heading"><h2 id="archivio">Archivio</h2><p>{past.length} eventi</p></div>
       <ul class="year-grid" role="list">
         {years.map((year) => <li><a href={withBase(`/eventi/${year}/`)}><strong>{year}</strong><span>{counts.get(year)} {counts.get(year) === 1 ? 'evento' : 'eventi'}</span></a></li>)}
       </ul>
