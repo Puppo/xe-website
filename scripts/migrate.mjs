@@ -1,11 +1,25 @@
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import { basename, extname, join } from 'node:path';
 import * as cheerio from 'cheerio';
 import TurndownService from 'turndown';
 import { parseArgs } from 'node:util';
 import { canonicalPersonSlug } from '../src/lib/person-slugs.mjs';
 import { membershipInputSchema, personSchema } from '../src/content-schemas.ts';
-import { stringify as toYaml } from 'yaml';
+import { parse, stringify as toYaml } from 'yaml';
+import {
+  mergeSessions,
+  recoverLegacySessions,
+} from './lib/legacy-sessions.mjs';
+import {
+  extractLegacyMaterials,
+  recoverEventMaterials,
+} from './lib/legacy-materials.mjs';
+import {
+  createPeopleNameIndex,
+  matchSpeaker,
+  markdownParts,
+  normalizeSpeakerName,
+} from './lib/speaker-enrichment.mjs';
 
 const { values } = parseArgs({
   options: { 'membership-year': { type: 'string' } },
@@ -35,7 +49,9 @@ const ORIGIN = 'https://www.xedotnet.org',
     routes: [],
     warnings: [],
   },
-  assetCache = new Map();
+  assetCache = new Map(),
+  peopleByName = new Map(),
+  occupiedPersonIds = new Set();
 
 turndown.addRule('removeLayout', {
   filter: ['script', 'style', 'iframe'],
@@ -191,7 +207,7 @@ async function parseEvent(url) {
   await localizeImages($, article);
   await localizeMediaLinks($, article);
   const bodyHtml = article.html() || '',
-    body = turndown
+    legacyBody = turndown
       .turndown(bodyHtml)
       .replaceAll(/\n{3,}/g, '\n\n')
       .trim(),
@@ -199,47 +215,80 @@ async function parseEvent(url) {
       clean(
         $('meta[name="description"]').attr('content') || article.text(),
       ).slice(0, 300) || title,
-    sessions = [];
-  $('article.maincontent > .row').each((_, row) => {
-    const columns = $(row).children('[class*="col-"]');
-    if (columns.length < 2) {
-      return;
+    recovered = await recoverLegacySessions(html, url, title, fetchText),
+    existingPath = join(EVENTS_DIR, date.slice(0, 4), `${date}-${slug}.md`);
+  let existingSessions = [],
+    existingMaterials = [];
+  try {
+    const existing = parse(
+      markdownParts(await readFile(existingPath, 'utf8')).frontmatter,
+    );
+    existingSessions = existing.sessions ?? [];
+    existingMaterials = existing.materials ?? [];
+  } catch (error) {
+    if (error.code !== 'ENOENT') throw error;
+  }
+  const knownNames = new Map(
+      [...peopleByName.values()]
+        .flat()
+        .map((person) => [person.id, person.data.name]),
+    ),
+    sessions = mergeSessions(existingSessions, recovered.sessions, knownNames);
+  report.warnings.push(...recovered.warnings);
+  for (const session of sessions) {
+    session.speakers ??= [];
+    for (let index = 0; index < session.speakers.length; index += 1) {
+      const name = session.speakers[index];
+      if (typeof name !== 'string') continue;
+      const match = matchSpeaker(name, peopleByName);
+      if (match.kind === 'organization') continue;
+      if (match.kind === 'ambiguous') {
+        report.warnings.push(
+          `${url}: speaker ambiguo ${name} (${match.ids.join(', ')}).`,
+        );
+        continue;
+      }
+      let { person } = match;
+      if (!person) {
+        const base = canonicalPersonSlug(name);
+        let id = base,
+          suffix = 2;
+        while (occupiedPersonIds.has(id)) id = `${base}-${suffix++}`;
+        occupiedPersonIds.add(id);
+        person = {
+          id,
+          data: personSchema.parse({
+            name,
+            sortName: name,
+            links: [],
+            published: true,
+            sourceUrl: url,
+          }),
+        };
+        peopleByName.set(normalizeSpeakerName(name), [person]);
+        await writeFile(
+          join(PEOPLE_DIR, `${id}.md`),
+          `---\n${toYaml(person.data, { lineWidth: 0 }).trim()}\n---\n`,
+        );
+      }
+      session.speakers[index] = { person: person.id };
     }
-    const first = columns.eq(0),
-      second = columns.eq(1),
-      time = clean(first.children('strong').first().text()),
-      speakerText = clean(first.find('span').last().text()),
-      sessionTitle = clean(second.children('strong').first().text()),
-      sessionDescription = clean(second.find('p').text());
-    if (!sessionTitle && !time) {
-      return;
-    }
-    sessions.push({
-      ...(time && { time }),
-      speakers: speakerText
-        ? speakerText.split(/\s+(?:&|e)\s+|,\s*/).filter(Boolean)
-        : [],
-      title: sessionTitle || 'Sessione',
-      ...(sessionDescription && { description: sessionDescription }),
-    });
-  });
+  }
 
-  const materialMap = new Map();
-  $('article.maincontent a[href]').each((_, anchor) => {
-    const href = $(anchor).attr('href'),
-      label = clean($(anchor).text());
-    if (!href) {
-      return;
-    }
-    const absolute = new URL(href, ORIGIN);
-    if (
-      /drive\.google|github\.com|slides|download/i.test(
-        `${absolute.href} ${label}`,
-      )
-    ) {
-      materialMap.set(absolute.href, label || 'Materiale');
-    }
-  });
+  const materialRecovery = recoverEventMaterials({
+      data: { sessions, materials: existingMaterials, sourceUrl: url },
+      body: legacyBody,
+      evidence: extractLegacyMaterials(html, url),
+      peopleNames: new Map(
+        [...peopleByName.values()]
+          .flat()
+          .map((person) => [person.id, person.data.name]),
+      ),
+    }),
+    { body } = materialRecovery;
+  report.warnings.push(
+    ...materialRecovery.warnings.map((warning) => `${url}: ${warning}`),
+  );
 
   const registrationWidget = $('.sidebar .widget')
     .filter((_, element) =>
@@ -278,11 +327,8 @@ async function parseEvent(url) {
         },
       }),
       ...(firstBodyImage && { image: firstBodyImage }),
-      sessions,
-      materials: [...materialMap].map(([materialUrl, label]) => ({
-        label,
-        url: materialUrl,
-      })),
+      sessions: materialRecovery.sessions,
+      materials: materialRecovery.materials,
       ...(registrationUrl && {
         registration: {
           label: 'Iscriviti all’evento',
@@ -438,9 +484,23 @@ async function main() {
   ]);
   const eventUrls = await discoverEventUrls();
   console.log(`Trovati ${eventUrls.length} eventi. Avvio la migrazione…`);
+  await migratePeople();
+  const profiles = await Promise.all(
+    (await readdir(PEOPLE_DIR))
+      .filter((file) => file.endsWith('.md'))
+      .map(async (file) => ({
+        id: file.slice(0, -3),
+        data: parse(
+          markdownParts(await readFile(join(PEOPLE_DIR, file), 'utf8'))
+            .frontmatter,
+        ),
+      })),
+  );
+  for (const [key, matches] of createPeopleNameIndex(profiles))
+    peopleByName.set(key, matches);
+  for (const person of profiles) occupiedPersonIds.add(person.id);
   await Promise.all([
     runPool(eventUrls, 6, parseEvent),
-    migratePeople(),
     saveAsset('/media/1139/statutoxedotnet.pdf', 'statuto-xedotnet.pdf'),
     saveAsset('/media/1184/sessionize-logo.png'),
     saveAsset('/media/1223/logo_eventitech_200.png'),

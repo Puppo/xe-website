@@ -139,7 +139,7 @@ describe('speaker derivati dagli eventi', () => {
     draft.data.draft = true;
     const legacy = event('legacy', '2026-01-01', []);
     legacy.data.sessions = [
-      { title: 'Talk', speakers: ['ada', 'Ada Lovelace'] },
+      { title: 'Talk', materials: [], speakers: ['ada', 'Ada Lovelace'] },
     ];
     expect([...createSpeakerIds([draft, legacy])]).toEqual([]);
     expect(
@@ -159,6 +159,7 @@ describe('speaker derivati dagli eventi', () => {
     resolved.data.sessions = [
       {
         title: 'Talk',
+        materials: [],
         speakers: [{ person: { collection: 'people', id: 'ada' } }],
       },
     ];

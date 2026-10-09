@@ -13,13 +13,7 @@ sessions:
     speakers:
       - person: davide-contin
     description: 'Partendo dalle basi di GIT svolgeremo una serie di esercizi pratici che ci serviranno a conoscere i principali comandi di GIT. Proveremo assieme i più comuni flussi di sviluppo del codice: creeremo la nostra "repo" con le prime "commit" e ovviamente impareremo a risolvendo gli eventuali "merge conflict". Ci sposteremo poi online per provare a condividere il nostro progetto e a creare la nostra prima "pull request". Capiremo insieme perché questo strumento non sia più un semplice sistema di gestione del codice, ma grazie a GitHub, abbia assunto ormai una connotazione "social" abilitando la collaborazione di più persone, diventando il fulcro per tutto il mondo Open Source.Prerequisiti necessari per partecipare al Lab su GIT:'
-materials:
-  - label: https://git-scm.com/downloads
-    url: https://git-scm.com/downloads
-  - label: https://github.com/join
-    url: https://github.com/join
-  - label: https://code.visualstudio.com/#alt-downloads
-    url: https://code.visualstudio.com/#alt-downloads
+materials: []
 sourceUrl: https://www.xedotnet.org/eventi/lab-git-e-github/
 draft: false
 ---
@@ -27,3 +21,11 @@ draft: false
 Questo laboratorio sarà un introduzione pratica all'utilizzo di GIT e GitHub per sperimentare insieme come muovere i primi passi con questi strumenti.
 
 L'evento viene fatto in contemporanea nelle due sale,  collegate in streaming, così da rendere completamente dinamica la serata.
+
+## Prerequisiti — Learn GIT and How to Contribute
+
+-   PC o Mac con GIT installato ([https://git-scm.com/downloads](https://git-scm.com/downloads))
+-   Avere un account su GitHub ([https://github.com/join](https://github.com/join))
+-   Altri tools che verrano usati/mostrati durante il corso, caldamente suggeriti, ma non strettamente necessari:
+    -   VS Code ([https://code.visualstudio.com/#alt-downloads](https://code.visualstudio.com/#alt-downloads))
+    -   SourceTree ([https://www.sourcetreeapp.com](https://www.sourcetreeapp.com/))

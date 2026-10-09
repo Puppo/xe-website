@@ -11,14 +11,17 @@ sessions:
     title: Presentazione
     speakers:
       - person: luca-del-puppo
+    materials:
+      - label: Codice
+        url: https://github.com/puppo/prisma-in-the-air
+      - label: Slide
+        url: https://speakerdeck.com/puppo/prisma-in-the-air
   - time: 22:00 - 23:00
     title: Q & A
     speakers: []
 materials:
-  - label: Materiale
+  - label: Materiali
     url: https://drive.google.com/drive/folders/1S0QSYP7TOX3Z1WLh1Z7Z0zWc_sTS5UzA?usp=sharing?usp=sharing
-  - label: https://github.com/puppo/prisma-in-the-air
-    url: https://github.com/puppo/prisma-in-the-air
 sourceUrl: https://www.xedotnet.org/eventi/prisma-is-in-the-air/
 draft: false
 ---
@@ -30,8 +33,3 @@ Prisma probabilmente è la risposta a questa domanda.
 Nell’ultimo periodo Prisma si sta facendo strada nel caos degli ORM del mondo Node, portando novità e ricevendo molti apprezzamenti dalla Community.
 
 Vediamo insieme le potenzialità di questo strumento e come tramite il suo utilizzo la nostra developer experience possa migliorare drasticamente.
-
-**E' possibile scaricare il materiale ai seguante link:**[](https://drive.google.com/drive/folders/1S0QSYP7TOX3Z1WLh1Z7Z0zWc_sTS5UzA?usp=sharing?usp=sharing)
-
--   Slide: [https://speakerdeck.com/puppo/prisma-in-the-air](https://speakerdeck.com/puppo/prisma-in-the-air)
--   Codice: [https://github.com/puppo/prisma-in-the-air](https://github.com/puppo/prisma-in-the-air)

@@ -23,12 +23,10 @@ sessions:
       - person: davide-senatore
     description: In questa sessione vedremo come impiegare Ionic Framework per interfacciarsi al Device Mobile e consumare in modo efficiente API remote. Impareremo quali sono le strategie più importanti quando si interagisce con servizi remoti e quali siano le best practices per interagire con l'utente. Vedremo inoltre quali strumenti mette a disposizione Ionic per implementare i pattern più interessanti tipo loading spinner, pull and refresh e infinite scrolling.
 materials:
-  - label: download
+  - label: Materiali
     url: https://drive.google.com/folderview?id=0B5JUdKPfCebKZS1QVHRZU3lMb2M&usp=sharing
 sourceUrl: https://www.xedotnet.org/eventi/web-api-ionic/
 draft: false
 ---
 
 Questa prima serata dell'anno sarà dedicata alle linee guida da seguire durante lo sviluppo di API pubbliche, ed al loro consumo in ambito mobile e web.
-
-**E' possibile scaricare il materiale al seguante link**: [download](https://drive.google.com/folderview?id=0B5JUdKPfCebKZS1QVHRZU3lMb2M&usp=sharing)

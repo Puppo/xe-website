@@ -19,12 +19,10 @@ sessions:
       - person: davide-senatore
     description: Angular Material è l'implementazione delle linee guida di Material Design di Google. Grazie a questa libreria, è possibile creare applicazioni web moderne, responsive e basate su standard.Utilizzando Angular come strato di logica ed integrandosi con web service REST è possibile riutilizzare pattern ben conosciuti per realizzare applicazioni per desktop, tablet e smartphone.In questa sessione conosceremo la filosofia di Material Design e comprenderemo come la libreria Angular Material possa dare un contributo di produttività ai nostri progetti.
 materials:
-  - label: download
+  - label: Materiali
     url: https://drive.google.com/drive/folders/0B5JUdKPfCebKSXFHUFVjNVpPemc?usp=sharing
 sourceUrl: https://www.xedotnet.org/eventi/ui-night-bootstrap-vs-angular-material/
 draft: false
 ---
 
 Un reale e pratico confronto tra due dei più popolari UI Component framework. Una battaglia a colpi di stili, html e direttive
-
-**E' possibile scaricare il materiale al seguante link**: [download](https://drive.google.com/drive/folders/0B5JUdKPfCebKSXFHUFVjNVpPemc?usp=sharing)

@@ -1,0 +1,2860 @@
+[
+  {
+    "file": "src/data/events/2026/2026-01-23-tech-pub-mcp-agenti-semantickernel.md",
+    "data": {
+      "title": "Tech-Pub: AI & .NET: Estendere, Orchestrare e Accelerare lo Sviluppo con LLM e MCP",
+      "description": "Inizialmente una breve introduzione al protocollo MCP (senza scendere nel dettaglio), di cosa si tratta, quali problematiche si propongono di risolvere, quanti e quali implementazioni sono già state sviluppate e dove trovarli. Successivamente un esempio di come integrarli su VS Code in modalità",
+      "date": "2026-01-23",
+      "eventType": "Tech-Pub",
+      "venue": {
+        "name": "Ice and Co.",
+        "url": "https://goo.gl/maps/2HMfQE64jb12",
+        "online": false
+      },
+      "sessions": [
+        {
+          "time": "20:00 - 20:30",
+          "title": "Estendere gli LLM con .NET e OpenAPI",
+          "speakers": [
+            {
+              "person": "mirko-rezzin"
+            }
+          ],
+          "description": "In questa sessione esploriamo come integrare API .NET descritte in OpenAPI all’interno di un LLM per estenderne concretamente le capacità operative. Vedremo come esporre funzioni al modello, gestire autenticazione e autorizzazione e coordinare più servizi."
+        },
+        {
+          "time": "20:30 - 21:00",
+          "title": ".NET Agent Framework: Orchestrazione Agenti e Integrazione MCP Tools",
+          "speakers": [
+            {
+              "person": "massimo-zaccarin"
+            }
+          ]
+        },
+        {
+          "time": "21:00 - 21:30",
+          "title": "Da requisiti a codice production-ready: workflow AI-assisted con GitHub Copilot e MCP",
+          "speakers": [
+            {
+              "person": "massimiliano-de-savi"
+            }
+          ]
+        }
+      ],
+      "materials": [
+        {
+          "label": "Slide",
+          "url": "https://drive.google.com/drive/folders/1bwW6Dkv5yZHL4V3npKUH8YSpGPBxWHAm?usp=sharing"
+        }
+      ],
+      "sourceUrl": "https://www.xedotnet.org/eventi/tech-pub-mcp-agenti-semantickernel/",
+      "draft": false
+    },
+    "body": "\n\nUn incontro informale dove tecnologia e convivialità si incontrano.\n\nScopri come estendere LLM con .NET e OpenAPI, orchestrare agenti con il .NET Agent Framework e creare workflow AI-assisted con GitHub Copilot e MCP.\n\nTalk pratici, demo live… e una buona birra per accompagnare il networking!\n\n-   **Il materiale è disponibile al seguente link:** [Slide](https://drive.google.com/drive/folders/1bwW6Dkv5yZHL4V3npKUH8YSpGPBxWHAm?usp=sharing)\n"
+  },
+  {
+    "file": "src/data/events/2026/2026-04-10-blazorconf2026.md",
+    "data": {
+      "title": "Blazor Conf 2026",
+      "description": "Venerdì 10 Aprile, Venezia Mestre, evento gratuito: Blazor Conf in collaborazione con Blazor Developer Italiani.",
+      "date": "2026-04-10",
+      "eventType": "Giornata",
+      "venue": {
+        "name": "Belstay Venezia Mestre",
+        "url": "https://maps.app.goo.gl/7eN5ptsqGvadmFvh7",
+        "online": false
+      },
+      "sessions": [
+        {
+          "title": "Registrazione",
+          "time": "08:30",
+          "speakers": []
+        },
+        {
+          "title": "Keynote - Il problema non è Blazor (e neanche l'AI)",
+          "time": "09:20",
+          "speakers": [
+            {
+              "person": "michele-aponte"
+            }
+          ]
+        },
+        {
+          "title": "Clean Architecture in Blazor: principi, compromessi e cattive idee da evitare",
+          "time": "09:55",
+          "speakers": [
+            {
+              "person": "alberto-acerbis"
+            }
+          ]
+        },
+        {
+          "title": "Coffee Break",
+          "time": "10:40",
+          "speakers": []
+        },
+        {
+          "title": "Come crearsi il proprio UI-kit: dal testing alla documentazione",
+          "time": "11:00",
+          "speakers": [
+            {
+              "person": "alberto-mori"
+            }
+          ]
+        },
+        {
+          "title": "Blazor Components: Fundamentals to Advanced Patterns",
+          "time": "11:45",
+          "speakers": [
+            {
+              "person": "andrea-dottor"
+            }
+          ]
+        },
+        {
+          "title": "Pranzo",
+          "time": "12:30",
+          "speakers": []
+        },
+        {
+          "title": "Aspire + FoundryLocal + Blazor = AIChat",
+          "time": "14:00",
+          "speakers": [
+            {
+              "person": "marco-alquati"
+            }
+          ]
+        },
+        {
+          "title": "Una UI per domarli tutti: Blazor Hybrid",
+          "time": "14:45",
+          "speakers": [
+            {
+              "person": "alessio-iafrate"
+            }
+          ]
+        },
+        {
+          "title": "Coffee Break",
+          "time": "15:30",
+          "speakers": []
+        },
+        {
+          "title": "Creare Videogames e Collaborative Apps: è possibile con Blazor?",
+          "time": "15:50",
+          "speakers": [
+            {
+              "person": "nicola-paro"
+            }
+          ]
+        },
+        {
+          "title": "From Legacy to Embedded: .NET and Blazor for Industrial IoT",
+          "time": "16:35",
+          "speakers": [
+            {
+              "person": "simone-tolotti"
+            }
+          ]
+        },
+        {
+          "title": "Chiusura giornata, estrazione premi e saluti",
+          "time": "17:20",
+          "speakers": []
+        }
+      ],
+      "materials": [
+        {
+          "label": "Il problema non è Blazor (e neanche l'AI)",
+          "url": "https://drive.google.com/file/d/1fLnDnIefBvvJcGUKgmPI17s5pMVfV8d_/view?usp=sharing"
+        },
+        {
+          "label": "Clean Architecture in Blazor: principi, compromessi e cattive idee da evitare",
+          "url": "https://drive.google.com/file/d/1OudQd8rpJdMRvcN3kghlzAMoFZX6LXSF/view?usp=sharing"
+        },
+        {
+          "label": "Come crearsi il proprio UI-kit: dal testing alla documentazione",
+          "url": "https://github.com/albx/my-talks/blob/main/2026/BlazorConf/ComeCrearsiUIkit.pdf"
+        },
+        {
+          "label": "Blazor Components: Fundamentals to Advanced Patterns",
+          "url": "https://github.com/andreadottor/BlazorConf2026"
+        },
+        {
+          "label": "Aspire + FoundryLocal + Blazor = AIChat",
+          "url": "https://github.com/quatto84/BlazorConf2026.AIChat"
+        },
+        {
+          "label": "Una UI per domarli tutti: Blazor Hybrid",
+          "url": "https://github.com/a-iafrate/BlazorConf2026"
+        },
+        {
+          "label": "Creare Videogames e Collaborative Apps: è possibile con Blazor?",
+          "url": "https://github.com/nicolaparo/conferences/blob/main/2026-04-10-BlazorConf26/presentation.pdf"
+        },
+        {
+          "label": "From Legacy to Embedded: .NET and Blazor for Industrial IoT",
+          "url": "https://github.com/simonetolotti/BlazorConf2026"
+        }
+      ],
+      "sourceUrl": "https://www.xedotnet.org/eventi/blazorconf2026/",
+      "draft": false
+    },
+    "body": "\n\nSalvate la data in calendario! Torna la [Blazor Conf 2026](https://blazorconf.it/) in una nuova location... Mestre (Venezia)!\n\nIn collaborazione con la community di Blazor Developer Italiani stiamo organizzando questo fantastico evento.\n\nAperte le iscrizioni all'evento. L'attesa per l'agenda è terminata, [qui](https://blazorconf.it/) è possibile consultare tutto.\n\nSiamo alla ricerca di sponsor che possono aiutarci a realizzare questo evento e a supportare il nostro lavoro, in cambio di visibilità alla conferenza, spazio promozionale ed espositivo, con dulcis in fundo possibilità di ampliare la propria rete di contatti e/o collaboratori. Se siete interessanti non esitate a [contattarci](/contatti/).\n\n**Disponibile il materiale dell'evento:**\n\n[Il problema non è Blazor (e neanche l'AI)](https://drive.google.com/file/d/1fLnDnIefBvvJcGUKgmPI17s5pMVfV8d_/view?usp=sharing) [Clean Architecture in Blazor: principi, compromessi e cattive idee da evitare](https://drive.google.com/file/d/1OudQd8rpJdMRvcN3kghlzAMoFZX6LXSF/view?usp=sharing) [Come crearsi il proprio UI-kit: dal testing alla documentazione](https://github.com/albx/my-talks/blob/main/2026/BlazorConf/ComeCrearsiUIkit.pdf) [Blazor Components: Fundamentals to Advanced Patterns](https://github.com/andreadottor/BlazorConf2026) [Aspire + FoundryLocal + Blazor = AIChat](https://github.com/quatto84/BlazorConf2026.AIChat) [Una UI per domarli tutti: Blazor Hybrid](https://github.com/a-iafrate/BlazorConf2026) [Creare Videogames e Collaborative Apps: è possibile con Blazor?](https://github.com/nicolaparo/conferences/blob/main/2026-04-10-BlazorConf26/presentation.pdf) [From Legacy to Embedded: .NET and Blazor for Industrial IoT](https://github.com/simonetolotti/BlazorConf2026)\n"
+  },
+  {
+    "file": "src/data/events/2026/2026-05-22-oneday2026.md",
+    "data": {
+      "title": "XE OneDay 2026 - Happy Birthday 20th - Architettura del Software",
+      "description": "Quest’anno XE celebra vent’anni di community, crescita e condivisione, e abbiamo deciso di farlo nel modo che più ci rappresenta: una giornata interamente dedicata all’architettura del software, raccontata da professionisti che hanno segnato la storia del nostro gruppo. Sarà un viaggio attraverso id",
+      "date": "2026-05-22",
+      "eventType": "Giornata",
+      "venue": {
+        "name": "Belstay Venezia Mestre",
+        "url": "https://maps.app.goo.gl/7eN5ptsqGvadmFvh7",
+        "online": false
+      },
+      "image": "/media/1020-hunext-hrsolutions-200x100.png",
+      "sessions": [
+        {
+          "time": "08:30 - 09:20",
+          "title": "Registrazione",
+          "speakers": []
+        },
+        {
+          "time": "09:20 - 09:40",
+          "title": "Benvenuto & Introduzione",
+          "speakers": ["XE"]
+        },
+        {
+          "time": "09:40 - 10:30",
+          "title": "Comunica finché non avrai più bisogno di presentazioni",
+          "speakers": [
+            {
+              "person": "lorenzo-barbieri"
+            }
+          ],
+          "description": "Non basta più essere degli ottimi professionisti, è necessario anche convincere gli altri del valore del proprio lavoro. Il rischio è che cada nell’oblio e non venga percepito per quello che è. Il rischio è far parte della massa indistinta. Perché dovrebbero scegliere te in mezzo ai milioni di sviluppatori, soprattutto ora che l'AI generativa fa un sacco di lavoro al posto nostro?A cosa serve essere un genio se oltre alle mura della tua azienda non ti conosce nessuno?Imparerai strategie utili per affinare la tua comunicazione, curare il personal branding e migliorare la percezione che gli altri hanno di te e del tuo lavoro."
+        },
+        {
+          "time": "10:30 - 11:00",
+          "title": "Coffee break",
+          "speakers": []
+        },
+        {
+          "time": "11:00 - 11:50",
+          "title": "L’AI scrive codice. Ma chi capisce il dominio?",
+          "speakers": [
+            {
+              "person": "alberto-acerbis"
+            }
+          ],
+          "description": "Nell'era dei modelli degli LLM, scrivere codice non è mai stato così veloce e accessibile. Tuttavia, la produzione di codice ad alta velocità spesso nasconde un rischio fondamentale: un sottile disallineamento con il dominio aziendale. Sebbene gli agenti di IA eccellano nella generazione di testi plausibili, mancano di una comprensione duratura del contesto, colmando spesso le ambiguità umane con ipotesi statistiche.Questa sessione esplora il motivo per cui il Domain-Driven Design non è solo una tecnica di modellazione tradizionale, ma il “sistema operativo” essenziale per uno sviluppo assistito dall'IA di successo. Approfondiremo come un linguaggio ubiquitario disciplinato funga da volante, riducendo lo spazio per le interpretazioni errate dell'IA e stabilizzando il processo di generazione attraverso chiari vincoli linguistici.Inoltre, esamineremo la sinergia tra la Documentazione Vivente e lo Sviluppo Guidato dalle Specifiche. Come trattare le specifiche come una “banca dati”, una costituzione non negoziabile che guida gli agenti di IA, e come la Documentazione Vivente preservi una profonda conoscenza del dominio che il codice da solo non può catturare.Passando dalla codifica manuale all'ingegneria del linguaggio, discuteremo di come costruire architetture evolutive che consentano ai team di rimanere più a lungo nello Spazio del Problema, assicurando che il software che generiamo non sia solo veloce, ma significativo."
+        },
+        {
+          "time": "11:55 - 12:45",
+          "title": "From CRUD to messages",
+          "speakers": [
+            {
+              "person": "alessandro-melchiori"
+            }
+          ],
+          "description": "Il CRUD funziona… finché non smette di farlo.Quando la complessità cresce, il modello si rompe: logica dispersa, accoppiamento forte, evoluzione lenta. In questo talk vedremo come passare da un monolite fragile a un’architettura message-driven usando DDD, CQRS e domain events."
+        },
+        {
+          "time": "12:45 - 14:15",
+          "title": "Pranzo",
+          "speakers": []
+        },
+        {
+          "time": "14:15 - 15:05",
+          "title": "Architettura ai tempi dell'AI",
+          "speakers": [
+            {
+              "person": "gian-maria-ricci"
+            }
+          ],
+          "description": "Lavorando da molto con assistenti AI per la scrittura del codice, si nota che il modo di concepire il codice cambia, talvolta in modo sottile, talvolta in modo radicale.L'architettura del software non fa eccezione, ora che sempre più codice è scritto da una intelligenza artificiale, ci si interroga sul come deve evolvere il concetto di architettura, ma soprattutto se serva ancora.Argomento controverso, ma mai cosi attuale."
+        },
+        {
+          "time": "15:10 - 16:00",
+          "title": "Storia dell'architettura del software e del perché non abbiamo ancora capito",
+          "speakers": [
+            {
+              "person": "mauro-servienti"
+            }
+          ],
+          "description": "Dagli anni '60 ad oggi abbiamo collezionato un numero impressionante di paradigmi rivoluzionari, ognuno accompagnato dalla certezza di aver finalmente trovato la soluzione. Eppure, eccoci ancora qui.In questa presentazione faremo un giro veloce attraverso le tappe principali dell'architettura del software: cosa promettevano, cosa hanno mantenuto e perché continuiamo a ripetere gli stessi errori. Perché, parafrasando Fred Brooks, non esiste il proiettile d'argento — e la maggior parte dei fallimenti architetturali non nasce da scelte tecnologiche sbagliate, ma dall'aver anteposto i fronzoli tecnici ai requisiti di business.Vedremo come un approccio modulare orientato ai servizi, progettato attorno ai confini del dominio, sia la risposta più onesta che abbiamo finora trovato. Non perché sia perfetta, ma perché riconosce la complessità invece di nasconderla sotto un'astrazione in più."
+        },
+        {
+          "time": "16:00 - 16:20",
+          "title": "Coffee break",
+          "speakers": []
+        },
+        {
+          "time": "16:20 - 17:10",
+          "title": "Polyglot data, meno complessità",
+          "speakers": [
+            {
+              "person": "gianluca-hotz"
+            }
+          ],
+          "description": "Polyglot non è solo una questione di linguaggi: è una realtà dei dati. Il rischio è trasformare il “best-of-breed” in una collezione di attriti: più connessioni, più policy, più integrazioni, più failure mode. Parliamo di come un database relazionale poliglotta possa assorbire molte esigenze moderne (documenti, storico, audit, relazioni, automazioni, file) riducendo superficie architetturale e complessità. Con esempi e trade-off, dal punto di vista di chi deve consegnare funzionalità e poi mantenerle."
+        },
+        {
+          "time": "17:10 - 17:40",
+          "title": "Brindisi",
+          "speakers": []
+        }
+      ],
+      "materials": [
+        {
+          "label": "Slide",
+          "url": "https://drive.google.com/drive/folders/1KVw6XpFhyxtOHzqGnmc1bsAJMtJQXo7x?usp=sharing"
+        }
+      ],
+      "sourceUrl": "https://www.xedotnet.org/eventi/oneday2026/",
+      "draft": false
+    },
+    "body": "\n\nQuest’anno XE celebra **vent’anni di community, crescita e condivisione**, e abbiamo deciso di farlo nel modo che più ci rappresenta: una giornata interamente dedicata all’**architettura del software**, raccontata da professionisti che hanno segnato la storia del nostro gruppo.\n\nSarà un viaggio attraverso idee, esperienze e prospettive diverse: dalla comunicazione alle evoluzioni dell’AI, dai modelli architetturali che continuano a sfidarci alle pratiche che possono rendere i nostri sistemi più solidi, moderni e sostenibili.\n\nAbbiamo costruito un’agenda che alterna visione, tecnica e pragmatismo, con l’obiettivo di offrirti **spunti immediatamente applicabili** e, perché no, qualche sana provocazione. Preparati a una giornata intensa, ricca di contenuti e di confronti, pensata per chi vuole crescere come sviluppatore, architetto o semplicemente come professionista curioso.\n\n-   **Il materiale è disponibile al seguente link:** [Slide](https://drive.google.com/drive/folders/1KVw6XpFhyxtOHzqGnmc1bsAJMtJQXo7x?usp=sharing)\n\n* * *\n\n### Main sponsor\n\n[![](/media/1020-hunext-hrsolutions-200x100.png)](https://www.hunext.com/ \"HUNEXT\")\n\n#### sponsor tecnici\n\n[![](/media/1202-packt.png)](https://www.packtpub.com/)\n\nSiamo alla ricerca di sponsor per l'evento, se siete interessati, non indugiate! [Contattateci](/contatti/)!\n"
+  },
+  {
+    "file": "src/data/events/2025/2025-05-23-sql-night-2025.md",
+    "data": {
+      "title": "SQL Night 2025",
+      "description": "Temporal tables in SQL Server, temporal tables in PostreSQL, time series databases",
+      "date": "2025-05-23",
+      "eventType": "Evento serale",
+      "venue": {
+        "name": "Training Center - Banchina dell'Azoto 15",
+        "url": "https://goo.gl/maps/TsUuEDT75SC2",
+        "online": false
+      },
+      "sessions": [
+        {
+          "time": "19:30 - 19:45",
+          "title": "Introduzione",
+          "speakers": ["XE"]
+        },
+        {
+          "time": "19:45 - 20:30",
+          "title": "Database temporali con SQL server",
+          "speakers": [
+            {
+              "person": "gianluca-hotz"
+            }
+          ],
+          "description": "Esploreremo la funzionalità delle tabelle temporali in SQL Server per tracciare automaticamente le modifiche ai dati nel tempo. La sessione includerà anche esempi in SQL standard per comprendere i concetti temporali in modo più ampio e applicabile anche ad altri sistemi."
+        },
+        {
+          "time": "20:30 - 20:40",
+          "title": "Pausa",
+          "speakers": []
+        },
+        {
+          "time": "20:40 - 21:25",
+          "title": "PostgreSQL for time travellers",
+          "speakers": [
+            {
+              "person": "danilo-dominici"
+            }
+          ],
+          "description": "Cosa c’è (e cosa manca) in PostgreSQL standard per la gestione di dati temporali e quali sono le estensioni più comunemente utilizzate per manipolare il tempo."
+        },
+        {
+          "time": "21:25 - 21:45",
+          "title": "Pausa",
+          "speakers": []
+        },
+        {
+          "time": "21:45 - 22:30",
+          "title": "Battle of Time Series: SQL Server 2022 vs. ADX vs. InfluxDB vs. TimescaleDB",
+          "speakers": [
+            {
+              "person": "gianluca-sartori"
+            }
+          ],
+          "description": "Negli ultimi anni abbiamo visto la nascita di database time-series, specializzati per dati che hanno una dimensione temporale. SQL Server 2022 presenta alcune nuove funzionalità time-series: sono sufficienti per renderlo una buona scelta? InfluxDB è leader di mercato in questo ambito: quali sono le caratteristiche che lo distinguono dai comptetitor? ADX è la scelta più ovvia in Azure: come lo possiamo confrontare con InfluxDB? TimescaleDB è l’opzione time-series nel mondo Postgres: cosa lo rende una scelta vincente? Unisciti a me in questa sessione e aiutami a scegliere un vincitore!"
+        }
+      ],
+      "materials": [
+        {
+          "label": "Slide",
+          "url": "https://drive.google.com/drive/folders/1rp8RYy4oY294VvowVxJklMDxBBYDu8Bp?usp=sharing"
+        }
+      ],
+      "sourceUrl": "https://www.xedotnet.org/eventi/sql-night-2025/",
+      "draft": false
+    },
+    "body": "\n\nSiamo entusiasti di darvi il benvenuto a una serata dedicata all'esplorazione dei database temporali e delle loro applicazioni. Abbiamo preparato un programma ricco di sessioni interessanti e approfondimenti tecnici che vi guideranno attraverso le ultime novità e le migliori pratiche nel campo dei database time-series.\n\n-   **Il materiale è disponibile al seguente link:** [Slide](https://drive.google.com/drive/folders/1rp8RYy4oY294VvowVxJklMDxBBYDu8Bp?usp=sharing)\n"
+  },
+  {
+    "file": "src/data/events/2025/2025-09-12-un-ecosistema-di-agenti-per-microsoft-365-copilot.md",
+    "data": {
+      "title": "Un’ecosistema di agenti per Microsoft 365 Copilot",
+      "description": "[Online Meeting] L’esperienza di Microsoft 365 Copilot si è recentemente arricchita di un vasto ecosistema di agenti: dai declarative agent, realizzati con strumenti come Copilot Studio o Microsoft 365 Agents Toolkit; ai custom engine agent, che possono essere sviluppati con Microsoft 365 Agents SDK",
+      "date": "2025-09-12",
+      "eventType": "Online Meeting",
+      "venue": {
+        "name": "Virtual meeting",
+        "online": true
+      },
+      "sessions": [
+        {
+          "time": "21:00 - 22:00",
+          "title": "Presentazione",
+          "speakers": [
+            {
+              "person": "matteo-pagani"
+            }
+          ],
+          "description": "L’esperienza di Microsoft 365 Copilot si è recentemente arricchita di un vasto ecosistema di agenti: dai declarative agent, realizzati con strumenti come Copilot Studio o Microsoft 365 Agents Toolkit; ai custom engine agent, che possono essere sviluppati con Microsoft 365 Agents SDK, Teams AI Library, Semantic Kernel e Azure AI Foundry. Siete un po’ confusi? Niente paura, nel corso di questa sessione capiremo meglio le differenze e quali strumenti utilizzare in base allo scenario che si vuole implementare."
+        },
+        {
+          "time": "22:00 - 23:00",
+          "title": "Q & A",
+          "speakers": []
+        }
+      ],
+      "materials": [
+        {
+          "label": "Slide",
+          "url": "https://drive.google.com/file/d/1phamwV3kezQFyb1q13Z2gWmAd52ZsPyd/view?usp=sharing"
+        }
+      ],
+      "sourceUrl": "https://www.xedotnet.org/eventi/un-ecosistema-di-agenti-per-microsoft-365-copilot/",
+      "draft": false
+    },
+    "body": "\n\nRiprendiamo le sessioni di questo semestre, dopo la pausa estiva, con una sessione online su Microsoft 365 Copilot, dove Matteo Pagani ci aiuterà a fare chiarezza su scenari e strumenti.\n\n-   **Il materiale è disponibile al seguente link:** [Slide](https://drive.google.com/file/d/1phamwV3kezQFyb1q13Z2gWmAd52ZsPyd/view?usp=sharing)\n"
+  },
+  {
+    "file": "src/data/events/2025/2025-11-15-net-conf-2025-xe.md",
+    "data": {
+      "title": ".NET Conf 2025 XE",
+      "description": "Durante la .NET Conf 2025 (11-13 Novembre) ci sarà il lancio ufficiale di .NET 10. Questa giornata sarà quindi il momento ideale per riassumere le novità in arrivo ed approfondire le tematiche più interessanti.",
+      "date": "2025-11-15",
+      "eventType": "Giornata",
+      "venue": {
+        "name": "Agriturismo Casa di Anna",
+        "url": "https://maps.app.goo.gl/2joUuu7ys88LzZFV8",
+        "online": false
+      },
+      "sessions": [
+        {
+          "time": "08:30 - 09:00",
+          "title": "Registrazione",
+          "speakers": []
+        },
+        {
+          "time": "09:00 - 09:15",
+          "title": "Benvenuto e keynote",
+          "speakers": ["XE"]
+        },
+        {
+          "time": "09:15 - 10:00",
+          "title": "Performance Improvements in .NET 10",
+          "speakers": [
+            {
+              "person": "mirco-vanini"
+            }
+          ]
+        },
+        {
+          "time": "10:05 - 10:50",
+          "title": "Alla scoperta di C# 14 e di Entity Framework Core 10",
+          "speakers": [
+            {
+              "person": "marco-minerva"
+            }
+          ]
+        },
+        {
+          "time": "10:55 - 11:20",
+          "title": "Coffee break",
+          "speakers": []
+        },
+        {
+          "time": "11:20 - 12:05",
+          "title": "Novità in ASP.NET Core & Blazor",
+          "speakers": [
+            {
+              "person": "andrea-dottor"
+            }
+          ]
+        },
+        {
+          "time": "12:10 - 12:55",
+          "title": "Novità in .NET Aspire",
+          "speakers": [
+            {
+              "person": "marco-bortolin"
+            }
+          ]
+        },
+        {
+          "time": "12:55 - 13:00",
+          "title": "Saluti finali",
+          "speakers": []
+        }
+      ],
+      "materials": [
+        {
+          "label": "Slide",
+          "url": "https://drive.google.com/drive/folders/1Mz9J_gVwV269sroCN8x_Lqg_iKWwjSPZ?usp=sharing"
+        }
+      ],
+      "registration": {
+        "url": "https://www.eventbrite.com/e/registrazione-net-conf-2025-xe-1740075636069?aff=oddtdtcreator",
+        "label": "Iscriviti all’evento"
+      },
+      "sourceUrl": "https://www.xedotnet.org/eventi/net-conf-2025-xe/",
+      "draft": false
+    },
+    "body": "\n\nDurante la [**.NET Conf 2025**](https://www.dotnetconf.net/ \".NET Conf\") (11-13 Novembre) ci sarà il lancio ufficiale di **.NET 10**.  \nQuesta giornata sarà quindi il momento ideale per riassumere le novità in arrivo ed approfondire le tematiche più interessanti.\n\nPer coloro che desiderano un'esperienza completa, offriamo la possibilità di fermarsi a pranzo in agriturismo.\n\nIl menu includerà:\n\n-   una selezione di antipasti della casa\n-   un bis di primi\n-   un secondo piatto accompagnato da due contorni\n-   un delizioso dessert\n-   acqua, vino, caffè\n\nI biglietti per l'evento sono disponibili su [Eventbrite](https://www.eventbrite.com/e/registrazione-net-conf-2025-xe-1740075636069?aff=oddtdtcreator) in due opzioni:\n\n1.  Biglietto per la **sola conferenza (gratuito)**\n2.  Biglietto che include la **conferenza e il pranzo (30€)**\n\nTieni presente che i posti per i biglietti che comprendono il pranzo sono limitati e disponibili solo fino a 10 giorni prima dell'evento, quindi ti consigliamo di acquistarli al più presto. Non perdere questa straordinaria opportunità di apprendere, connetterti e gustare una deliziosa esperienza con noi durante la .NET Conf 2025!\n\n-   **Il materiale è disponibile al seguente link:** [Slide](https://drive.google.com/drive/folders/1Mz9J_gVwV269sroCN8x_Lqg_iKWwjSPZ?usp=sharing)\n"
+  },
+  {
+    "file": "src/data/events/2024/2024-03-15-sql-night-2024.md",
+    "data": {
+      "title": "SQL Night 2024",
+      "description": "Data API Builder: scenari d’uso; La mia applicazione è lenta: e adesso?",
+      "date": "2024-03-15",
+      "eventType": "Evento serale",
+      "venue": {
+        "name": "Training Center - Banchina dell'Azoto 15",
+        "url": "https://goo.gl/maps/TsUuEDT75SC2",
+        "online": false
+      },
+      "sessions": [
+        {
+          "time": "20:00 - 21:15",
+          "title": "Data API Builder: scenari d’uso",
+          "speakers": [
+            {
+              "person": "danilo-dominici"
+            }
+          ],
+          "description": "Data API Builder semplifica la creazione di API basandosi sul modello dati presente in un database (diversi in realtà: può usare SQL Server, PostgreSQL, MySQL e CosmosDB). E lo fa sia per tecnologia REST che GraphQL.Come funziona? In quali scenari è utile? Come si implementa la sicurezza? Si può usare on-prem? Scopriamolo insieme!"
+        },
+        {
+          "time": "21:30 - 22:45",
+          "title": "La mia applicazione è lenta: e adesso?",
+          "speakers": [
+            {
+              "person": "gianluca-sartori"
+            }
+          ],
+          "description": "Ci risiamo: ho appena terminato la migliore applicazione di sempre, che cambierà il corso della storia dell'informatica, ma adesso che sono in produzione le cose non vanno come avevo sperato. Alcune form sono lente, a volte aspetto per diversi secondi, altre volte è tutto veloce, ma non capisco perché. Non so nemmeno se sia colpa del database, ma sospetto che lo sia. Come faccio a saperlo? Ci sono degli strumenti che mi possono aiutare? C'è una metodologia per capire come individuare e risolvere i problemi di performance?Scopriamolo insieme in questa sessione!"
+        }
+      ],
+      "materials": [
+        {
+          "label": "Slide e codice",
+          "url": "https://drive.google.com/drive/folders/1ThBcHnQdPFyKNLoTMzsJAZyUR6ECIx8T?usp=sharing"
+        }
+      ],
+      "sourceUrl": "https://www.xedotnet.org/eventi/sql-night-2024/",
+      "draft": false
+    },
+    "body": "\n\nIn questa serata abbiamo invitato **Danilo Dominici** e **Gianluca Sartori**, due esperti DBA, a parlare di database e accesso ai dati, ma con un occhio di riguardo a noi sviluppatori.   \nÈ innegabile che i database siano una risorsa fondamentale per noi sviluppatori e dovremmo sfruttarli al massimo delle loro potenzialità.  \nQueste le premesse di questa SQL Night.\n\n-   **Il materiale è disponibile al seguente link:** [Slide e codice](https://drive.google.com/drive/folders/1ThBcHnQdPFyKNLoTMzsJAZyUR6ECIx8T?usp=sharing)\n"
+  },
+  {
+    "file": "src/data/events/2024/2024-04-12-tech-pub-playwright.md",
+    "data": {
+      "title": "Tech-Pub: Playwright",
+      "description": "Playwright enables reliable end-to-end testing for modern web apps.",
+      "date": "2024-04-12",
+      "eventType": "Tech-Pub",
+      "venue": {
+        "name": "Ice and Co.",
+        "url": "https://goo.gl/maps/2HMfQE64jb12",
+        "online": false
+      },
+      "sessions": [
+        {
+          "time": "20:00 - 20:30",
+          "title": "Playwright visto da due mondi paralleli - parte 1",
+          "speakers": [
+            {
+              "person": "marco-alquati"
+            }
+          ]
+        },
+        {
+          "time": "20:30 - 21:00",
+          "title": "Playwright visto da due mondi paralleli - parte 2",
+          "speakers": [
+            {
+              "person": "luca-del-puppo"
+            }
+          ]
+        }
+      ],
+      "materials": [
+        {
+          "label": "Slide Luca Del Puppo",
+          "url": "https://slides.com/puppo92/write-one-time-test-everywhere-with-playwright/fullscreen"
+        }
+      ],
+      "sourceUrl": "https://www.xedotnet.org/eventi/tech-pub-playwright/",
+      "draft": false
+    },
+    "body": "\n\nUn paio di (veloci) presentazioni, seguite da discussioni e domande libere sull'argomento...ed il tutto accompagnato da buona birra.  \nUno stile più informale per condividere la conoscenza e passare una serata in compagnia.\n\n_Non funziona su Firefox, non funziona su Safari, va in crash su Chrome (ok, quest'ultima è impossibile ;)). Ma quante volte la tua nuova funzionalità ha creato problemi su almeno uno di questi browser? O quante volte il codice ha iniziato a incepparsi a causa di modifiche impreviste? Certo, eliminare tutti i bug è impossibile, ma prevenirli è parte del nostro lavoro.  \nEsploriamo insieme come creare test end-to-end (e2e) grazie all’utilizzo di Playwright e vediamolo applicato ai mondi .NET e JavaScript/TypeScript._\n\n-   **Il materiale è disponibile al seguente link:** [Slide Luca Del Puppo](https://slides.com/puppo92/write-one-time-test-everywhere-with-playwright/fullscreen)\n"
+  },
+  {
+    "file": "src/data/events/2024/2024-05-18-one-day-rethink-application.md",
+    "data": {
+      "title": "One Day - Rethink application",
+      "description": "Sabato 18 Maggio, Venezia Mestre, evento gratuito: dalla modernizzazione alla riscrittura delle nostre applicazioni, esploreremo strategie innovative per garantire la longevità delle nostre soluzioni digitali.",
+      "date": "2024-05-18",
+      "eventType": "Giornata",
+      "venue": {
+        "name": "Belstay Venezia Mestre",
+        "url": "https://maps.app.goo.gl/7eN5ptsqGvadmFvh7",
+        "online": false
+      },
+      "sessions": [
+        {
+          "title": "Registrazione",
+          "speakers": [],
+          "time": "09:00"
+        },
+        {
+          "title": "Keynote",
+          "speakers": [],
+          "time": "09:30"
+        },
+        {
+          "title": "Prevenire è meglio che curare",
+          "speakers": [
+            {
+              "person": "davide-contin"
+            }
+          ],
+          "time": "10:00"
+        },
+        {
+          "title": "Estrarre i dati utilizzando l'AI: Azure OpenAI vs Document Intelligence!",
+          "speakers": [
+            {
+              "person": "massimo-bonanni"
+            }
+          ],
+          "time": "10:00"
+        },
+        {
+          "title": "Coffee break",
+          "speakers": [],
+          "time": "11:00"
+        },
+        {
+          "title": "Tackling Chaos, Resilence & Metrics in the heart of your Application",
+          "speakers": [
+            {
+              "person": "alberto-acerbis"
+            }
+          ],
+          "time": "11:30"
+        },
+        {
+          "title": "Pattern e Servizi per Azure ma senza dimenticare l'on premise",
+          "speakers": [
+            {
+              "person": "marco-parenzan"
+            }
+          ],
+          "time": "11:30"
+        },
+        {
+          "title": "Pranzo",
+          "speakers": [],
+          "time": "12:30"
+        },
+        {
+          "title": "A Journey from monolith to microservices",
+          "speakers": [
+            {
+              "person": "simone-recupero"
+            },
+            {
+              "person": "christian-de-simone"
+            }
+          ],
+          "time": "14:00"
+        },
+        {
+          "title": "Scale your Frontend application with Module Federation",
+          "speakers": [
+            {
+              "person": "luca-del-puppo"
+            }
+          ],
+          "time": "14:00"
+        },
+        {
+          "title": "Dal Desktop ad un Framework UI con Blazor in una applicazione reale",
+          "speakers": [
+            {
+              "person": "marco-bortolin"
+            },
+            {
+              "person": "marco-alquati"
+            }
+          ],
+          "time": "15:05"
+        },
+        {
+          "title": "Getting Started with Architectural Decision Records (ADR)",
+          "speakers": [
+            {
+              "person": "antonio-dell-ava"
+            }
+          ],
+          "time": "15:05"
+        },
+        {
+          "title": "Coffee break",
+          "speakers": [],
+          "time": "16:05"
+        },
+        {
+          "title": "Rinnovo ed evoluzioni di un prodotto - Trasformare il codice del passato in soluzioni future",
+          "speakers": [
+            {
+              "person": "mirco-vanini"
+            },
+            {
+              "person": "simone-tolotti"
+            }
+          ],
+          "time": "16:35"
+        },
+        {
+          "title": "React and the rendering maze",
+          "speakers": [
+            {
+              "person": "enrico-giacomazzi"
+            }
+          ],
+          "time": "16:35"
+        },
+        {
+          "title": "Saluti e estrazione premi",
+          "speakers": [],
+          "time": "17:35"
+        }
+      ],
+      "materials": [
+        {
+          "label": "Slide e codice",
+          "url": "https://drive.google.com/drive/folders/184PUcbXMjmmSQgqJGXlx0VZDQFEau-X3?usp=sharing"
+        }
+      ],
+      "sourceUrl": "https://www.xedotnet.org/eventi/one-day-rethink-application/",
+      "draft": false
+    },
+    "body": "\n\nSiamo lieti di annunciare il tema di quest'anno: \"**Rethink Application**\". Dalla modernizzazione alla riscrittura delle nostre applicazioni, esploreremo strategie innovative per garantire la longevità delle nostre soluzioni digitali.\n\nIn un mondo in continua evoluzione, è essenziale domandarsi: come possiamo garantire che le nostre applicazioni resistano al passare del tempo? Come possiamo rinfrescare e aggiornare le nostre applicazioni esistenti per rimanere pertinenti e competitive?\n\nUnisciti a noi per una giornata di ispirazione, apprendimento e condivisione di conoscenze, mentre esploriamo il futuro delle applicazioni e scopriamo come possiamo ridefinire il loro ruolo nel mondo digitale in continua evoluzione.\n\n-   **Il materiale è disponibile al seguente link:** [Slide e codice](https://drive.google.com/drive/folders/184PUcbXMjmmSQgqJGXlx0VZDQFEau-X3?usp=sharing)\n\n* * *\n\n### Sponsor\n"
+  },
+  {
+    "file": "src/data/events/2024/2024-09-20-fusioncache-hybrid-caching-in-net.md",
+    "data": {
+      "title": "FusionCache: hybrid caching in .NET",
+      "description": "[Online Meeting] Una panoramica sul caching in .NET: memory, distributed ed infine hybrid, con FusionCache.",
+      "date": "2024-09-20",
+      "eventType": "Online Meeting",
+      "venue": {
+        "name": "Virtual meeting",
+        "online": true
+      },
+      "sessions": [
+        {
+          "time": "21:00 - 22:00",
+          "title": "Presentazione",
+          "speakers": [
+            {
+              "person": "jody-donetti"
+            }
+          ],
+          "description": "Una panoramica sul caching in .NET: memory, distributed ed infine hybrid, con FusionCache.Scenari comuni e come sfruttare al meglio le sue feature per ottenere performance, robustezza e resilienza, il tutto in un package pronto all’uso.Chiudiamo infine con una piccola anteprima della nuova HybridCache di Microsoft in arrivo con .NET 9, e cos’abbia a che fare con FusionCache"
+        },
+        {
+          "time": "22:00 - 23:00",
+          "title": "Q & A",
+          "speakers": []
+        }
+      ],
+      "materials": [
+        {
+          "label": "download",
+          "url": "https://docs.google.com/presentation/d/1RfjPRfNbirComhBtQlrLJPGDX-zlQ3u6/edit?usp=sharing&ouid=101537442308490421078&rtpof=true&sd=true"
+        }
+      ],
+      "sourceUrl": "https://www.xedotnet.org/eventi/fusioncache-hybrid-caching-in-net/",
+      "draft": false
+    },
+    "body": "\n\nRiprendiamo le sessioni di questo semestre con una sessione su FusionCache, tenuta direttamente dal suo autore Jody Donetti.\n\n-   **Il materiale è disponibile al seguente link:** [download](https://docs.google.com/presentation/d/1RfjPRfNbirComhBtQlrLJPGDX-zlQ3u6/edit?usp=sharing&ouid=101537442308490421078&rtpof=true&sd=true)\n"
+  },
+  {
+    "file": "src/data/events/2023/2023-04-14-progettare-contenuti-per-la-user-experience.md",
+    "data": {
+      "title": "Progettare contenuti per la user experience",
+      "description": "C’è una nuova disciplina nel mondo Tech che unisce la sensibilità e creatività del copywriting con i principi e i processi del design. UX Writing significa progettare contenuti, creare testi che guidano nella navigazione all’interno di siti internet e applicazioni.",
+      "date": "2023-04-14",
+      "eventType": "Online Meeting",
+      "venue": {
+        "name": "Virtual meeting",
+        "online": true
+      },
+      "sessions": [
+        {
+          "time": "21:00 - 22:00",
+          "title": "Presentazione",
+          "speakers": [
+            {
+              "person": "serena-giust"
+            }
+          ],
+          "description": "[Serena Giust, originaria della provincia di Treviso, vive oggi nei Paesi Bassi. Svolge il ruolo di Content Design Manager per una delle aziende tech più famose al mondo.]"
+        },
+        {
+          "time": "22:00 - 23:00",
+          "title": "Q & A",
+          "speakers": []
+        }
+      ],
+      "materials": [
+        {
+          "label": "Download",
+          "url": "https://drive.google.com/drive/folders/108y7HeviUwm-X2u4Qd3EsqFsb8bR2g0a?usp=share_link"
+        }
+      ],
+      "sourceUrl": "https://www.xedotnet.org/eventi/progettare-contenuti-per-la-user-experience/",
+      "draft": false
+    },
+    "body": "\n\nC’è una nuova disciplina nel mondo Tech che unisce la sensibilità e creatività del copywriting con i principi e i processi del design. UX Writing significa progettare contenuti, creare testi che guidano nella navigazione all’interno di siti internet e applicazioni. Testi che aiutano a compiere azioni nella maniera più semplice ed efficace possibile, che hanno un grande impatto nella navigazione dell'utente e negli obiettivi del business stesso. In questa sessione vi proporrò i dieci principi alla base dello UX Writing Manifesto, esempi pratici e qualche curiosità sul mio ruolo.\n\n-   **Le slide sono disponibili al seguente link:** [Download](https://drive.google.com/drive/folders/108y7HeviUwm-X2u4Qd3EsqFsb8bR2g0a?usp=share_link)\n"
+  },
+  {
+    "file": "src/data/events/2023/2023-05-20-one-day-app-modernization.md",
+    "data": {
+      "title": "One Day - App modernization",
+      "description": "Ritorna il XE One Day, e quest'anno dedicato alla modernizzazione delle nostre applicazioni.",
+      "date": "2023-05-20",
+      "eventType": "Giornata",
+      "venue": {
+        "name": "Training Center - Banchina dell'Azoto 15",
+        "url": "https://goo.gl/maps/TsUuEDT75SC2",
+        "online": false
+      },
+      "sessions": [
+        {
+          "title": "Registrazione",
+          "speakers": [],
+          "time": "08:30"
+        },
+        {
+          "title": "Intro",
+          "speakers": [],
+          "time": "09:00"
+        },
+        {
+          "title": "Time Series for relational people",
+          "speakers": [
+            {
+              "person": "gianluca-sartori"
+            }
+          ],
+          "time": "09:30"
+        },
+        {
+          "title": "The recipe for a universal Design System",
+          "speakers": [
+            {
+              "person": "luca-del-puppo"
+            }
+          ],
+          "time": "09:30"
+        },
+        {
+          "title": "Coffee break (offerto da XE + sponsor)",
+          "speakers": [],
+          "time": "10:30"
+        },
+        {
+          "title": "Microservices tips&tricks con .net e DAPR",
+          "speakers": [
+            {
+              "person": "alessandro-melchiori"
+            }
+          ],
+          "time": "10:55"
+        },
+        {
+          "title": "Modernize Angular App",
+          "speakers": [
+            {
+              "person": "daniele-morosinotto"
+            }
+          ],
+          "time": "10:55"
+        },
+        {
+          "title": "Blazor United. Un salto nel futuro",
+          "speakers": [
+            {
+              "person": "andrea-dottor"
+            }
+          ],
+          "time": "12:00"
+        },
+        {
+          "title": "Pranzo (offerto da XE + sponsor)",
+          "speakers": [],
+          "time": "13:00"
+        },
+        {
+          "title": "Modernize your community",
+          "speakers": [
+            {
+              "person": "davide-contin"
+            }
+          ],
+          "time": "14:10"
+        },
+        {
+          "title": "Modernizzare i tuoi web service con Azure API Management",
+          "speakers": [
+            {
+              "person": "massimo-bonanni"
+            }
+          ],
+          "time": "15:00"
+        },
+        {
+          "title": "How to modernise WPF & Windows Forms applications with Windows Apps SDK",
+          "speakers": [
+            {
+              "person": "mirco-vanini"
+            }
+          ],
+          "time": "15:00"
+        },
+        {
+          "title": "Configure your App",
+          "speakers": [
+            {
+              "person": "marco-bortolin"
+            }
+          ],
+          "time": "16:05"
+        },
+        {
+          "title": "Qwik il framework che ti stupirà",
+          "speakers": [
+            {
+              "person": "giorgio-boa"
+            }
+          ],
+          "time": "16:05"
+        },
+        {
+          "title": "Saluti ed estrazione premi",
+          "speakers": [],
+          "time": "17:10"
+        }
+      ],
+      "materials": [
+        {
+          "label": "GitHub",
+          "url": "https://github.com/spaghettidba/CodeSamples/tree/master/TimeSeriesForRelationalPeople"
+        },
+        {
+          "label": "Slide",
+          "url": "https://slides.com/puppo92/the-recipe-for-a-universal-design-system/fullscreen"
+        },
+        {
+          "label": "Slide",
+          "url": "https://drive.google.com/file/d/1iDBySV6_8mmDVviZxAaHQNU9ZJIHKtZn/view?usp=share_link"
+        },
+        {
+          "label": "GitHub",
+          "url": "https://github.com/dmorosinotto/XE_Modernize_Angular"
+        },
+        {
+          "label": "Slide",
+          "url": "https://drive.google.com/file/d/1yvBBKcYVmDZiaaWhZ93iVa-_qO1Z0t3V/view?usp=share_link"
+        },
+        {
+          "label": "GitHub",
+          "url": "https://github.com/andreadottor/BrewerApp"
+        },
+        {
+          "label": "Slide",
+          "url": "https://drive.google.com/file/d/1_KCTKArqin-WkiMfY2JlMGHjCRH10CwJ/view?usp=share_link"
+        },
+        {
+          "label": "Slide",
+          "url": "https://drive.google.com/file/d/1DwqYUSWoHgqkSmQ32TgYEL1xgHdxoEnb/view?usp=share_link"
+        },
+        {
+          "label": "Demo",
+          "url": "https://drive.google.com/file/d/1zRSiqwMs3yYPv2K9P3BF6C62SQ-BFmn4/view?usp=share_link"
+        },
+        {
+          "label": "Slide",
+          "url": "https://drive.google.com/file/d/1Qctf4E8B1yZ0o8iwH1bZ3L9nxvEn9aIf/view?usp=share_link"
+        },
+        {
+          "label": "GitHub",
+          "url": "https://github.com/bortolin/XeDotNet.DemoConfigApp"
+        },
+        {
+          "label": "Slide",
+          "url": "https://drive.google.com/file/d/1sFgybVoVV8pRd9J1To65oCxNGjp2YL5h/view?usp=share_link"
+        }
+      ],
+      "sourceUrl": "https://www.xedotnet.org/eventi/one-day-app-modernization/",
+      "draft": false
+    },
+    "body": "\n\nRitorna il XE One Day, e quest'anno dedicato alla modernizzazione delle nostre applicazioni.\n\nUna giornata ricca di 10 sessioni che ti guideranno nell'esplorazione di nuove tecnologie e strategie per aiutarti a raggiungere i tuoi obiettivi di modernizzazione.\n\nNon perdere l'occasione di imparare da esperti del settore e scoprire come sfruttare al meglio le tue applicazioni. Iscriviti oggi e non perdere l'opportunità di essere parte di XE One Day!\n\nL'evento è gratuito e aperto a tutti.\n\n**Slide e codice sessioni:**\n\n-   Time Series for relational people (Gianluca Sartori)  \n    [GitHub](https://github.com/spaghettidba/CodeSamples/tree/master/TimeSeriesForRelationalPeople)\n-   The recipe for a universal Design System (Luca Del Puppo)  \n    [Slide](https://slides.com/puppo92/the-recipe-for-a-universal-design-system/fullscreen)\n-   Microservices tips&tricks con .net e DAPR (Alessandro Melchiori)  \n    [Slide](https://drive.google.com/file/d/1iDBySV6_8mmDVviZxAaHQNU9ZJIHKtZn/view?usp=share_link)\n-   Modernize Angular App (Daniele Morosinotto)  \n    [GitHub](https://github.com/dmorosinotto/XE_Modernize_Angular)\n-   Blazor United. Un salto nel futuro (Andrea Dottor)  \n    [Slide](https://drive.google.com/file/d/1yvBBKcYVmDZiaaWhZ93iVa-_qO1Z0t3V/view?usp=share_link) [GitHub](https://github.com/andreadottor/BrewerApp)\n-   Modernizzare i tuoi web service con Azure API Management (Massimo Bonanni)  \n    [Slide](https://drive.google.com/file/d/1_KCTKArqin-WkiMfY2JlMGHjCRH10CwJ/view?usp=share_link)\n-   How to modernise WPF & Windows Forms applications with Windows Apps SDK (Mirco Vanini)  \n    [Slide](https://drive.google.com/file/d/1DwqYUSWoHgqkSmQ32TgYEL1xgHdxoEnb/view?usp=share_link) [Demo](https://drive.google.com/file/d/1zRSiqwMs3yYPv2K9P3BF6C62SQ-BFmn4/view?usp=share_link)\n-   Configure your App (Marco Bortolin)  \n    [Slide](https://drive.google.com/file/d/1Qctf4E8B1yZ0o8iwH1bZ3L9nxvEn9aIf/view?usp=share_link) [GitHub](https://github.com/bortolin/XeDotNet.DemoConfigApp)\n-   Qwik il framework che ti stupirà (Giorgio Boa)  \n    [Slide](https://drive.google.com/file/d/1sFgybVoVV8pRd9J1To65oCxNGjp2YL5h/view?usp=share_link)\n"
+  },
+  {
+    "file": "src/data/events/2023/2023-10-20-ai-rimpiazzo-o-aiuto-per-gli-sviluppatori.md",
+    "data": {
+      "title": "AI, rimpiazzo o aiuto per gli sviluppatori?",
+      "description": "In questo evento esploreremo le funzionalità che le AI stanno mettendo a dispozione degli sviluppatori negli utlimi mesi.",
+      "date": "2023-10-20",
+      "eventType": "Evento serale",
+      "venue": {
+        "name": "Training Center - Banchina dell'Azoto 15",
+        "url": "https://goo.gl/maps/TsUuEDT75SC2",
+        "online": false
+      },
+      "sessions": [
+        {
+          "time": "20:00 - 22:00",
+          "title": "AI, rimpiazzo o aiuto per gli sviluppatori?",
+          "speakers": [
+            {
+              "person": "gian-maria-ricci"
+            }
+          ],
+          "description": "In questo evento esploreremo le funzionalità che le AI stanno mettendo a dispozione degli sviluppatori negli utlimi mesi. GPT-3 prima e GPT-4 poi sembrano poter \"sostituire\" in alcuni casi gli sviluppatori / sistemisti, ma la realtà è probabilmente differente. Scopriamo quindi come usare al meglio ciò che la AI ha da offrire nel lavoro di tutti i giorni."
+        }
+      ],
+      "materials": [
+        {
+          "label": "Download",
+          "url": "https://drive.google.com/file/d/1SDdIyBDms8llBBmo3ezqpxqaIykXulNK/view?usp=sharing"
+        }
+      ],
+      "sourceUrl": "https://www.xedotnet.org/eventi/ai-rimpiazzo-o-aiuto-per-gli-sviluppatori/",
+      "draft": false
+    },
+    "body": "\n\nQuesta sera abbiamo il piacere di accogliere **Gian Maria Ricci**, un esperto che da tempo si dedica all'approfondimento del _prompt engineering_ nel contesto dello sviluppo software. Gian Maria ci illustrerà come strumenti come _GitHub Copilot_, _GPT-3_ e _GPT-4_ possano significativamente migliorare il nostro quotidiano lavoro.\n\nViviamo in un periodo di profondi mutamenti, e l'introduzione e l'adozione di strumenti di questa natura possono davvero fare la differenza nel nostro settore.\n\n-   **Le slide sono disponibili al seguente link:** [Download](https://drive.google.com/file/d/1SDdIyBDms8llBBmo3ezqpxqaIykXulNK/view?usp=sharing)\n"
+  },
+  {
+    "file": "src/data/events/2022/2022-03-18-how-to-modernise-wpf-windows-forms-applications-with-windows-apps-sdk.md",
+    "data": {
+      "title": "How to modernise WPF & Windows Forms applications with Windows Apps SDK",
+      "description": "Con Windows Apps SDK Microsoft rilascia il nuovo framework per lo sviluppo di applicazioni desktop unendo la potenza dell’ecosistema di Windows alla flessibilità del nuovo runtime .NET. [...]",
+      "date": "2022-03-18",
+      "eventType": "Online Meeting",
+      "venue": {
+        "name": "Virtual meeting",
+        "online": true
+      },
+      "sessions": [
+        {
+          "time": "21:00 - 22:00",
+          "title": "Presentazione",
+          "speakers": [
+            {
+              "person": "mirco-vanini"
+            }
+          ]
+        },
+        {
+          "time": "22:00 - 23:00",
+          "title": "Q & A",
+          "speakers": []
+        }
+      ],
+      "materials": [
+        {
+          "label": "Download",
+          "url": "https://drive.google.com/drive/folders/1S0QSYP7TOX3Z1WLh1Z7Z0zWc_sTS5UzA?usp=sharing?usp=sharing"
+        }
+      ],
+      "sourceUrl": "https://www.xedotnet.org/eventi/how-to-modernise-wpf-windows-forms-applications-with-windows-apps-sdk/",
+      "draft": false
+    },
+    "body": "\n\nCon Windows Apps SDK Microsoft rilascia il nuovo framework per lo sviluppo di applicazioni desktop unendo la potenza dell’ecosistema di Windows alla flessibilità del nuovo runtime .NET. Oltre ad includere WinUI3, pensato per sviluppare la UI delle nuove applicazioni, Windows Apps SDK contiene molte funzionalità che è possibile integrare in applicazioni .NET esistenti per offrire un’esperienza moderna e consistente. Interessati ? Scopriamo come ... \n\n**E' possibile scaricare il materiale al seguante link**: [Download](https://drive.google.com/drive/folders/1S0QSYP7TOX3Z1WLh1Z7Z0zWc_sTS5UzA?usp=sharing?usp=sharing)\n"
+  },
+  {
+    "file": "src/data/events/2022/2022-04-29-prisma-is-in-the-air.md",
+    "data": {
+      "title": "Prisma is in the Air",
+      "description": "Nel mondo .Net Entity Framework oramai è una garanzia, ma possiamo avere un’alternativa valida anche nell’ecosistema node?",
+      "date": "2022-04-29",
+      "eventType": "Online Meeting",
+      "venue": {
+        "name": "Virtual meeting",
+        "online": true
+      },
+      "sessions": [
+        {
+          "time": "21:00 - 22:00",
+          "title": "Presentazione",
+          "speakers": [
+            {
+              "person": "luca-del-puppo"
+            }
+          ]
+        },
+        {
+          "time": "22:00 - 23:00",
+          "title": "Q & A",
+          "speakers": []
+        }
+      ],
+      "materials": [
+        {
+          "label": "Materiale",
+          "url": "https://drive.google.com/drive/folders/1S0QSYP7TOX3Z1WLh1Z7Z0zWc_sTS5UzA?usp=sharing?usp=sharing"
+        },
+        {
+          "label": "https://github.com/puppo/prisma-in-the-air",
+          "url": "https://github.com/puppo/prisma-in-the-air"
+        }
+      ],
+      "sourceUrl": "https://www.xedotnet.org/eventi/prisma-is-in-the-air/",
+      "draft": false
+    },
+    "body": "\n\nNel mondo .Net Entity Framework oramai è una garanzia, ma possiamo avere un’alternativa valida anche nell’ecosistema node?\n\nPrisma probabilmente è la risposta a questa domanda.\n\nNell’ultimo periodo Prisma si sta facendo strada nel caos degli ORM del mondo Node, portando novità e ricevendo molti apprezzamenti dalla Community.\n\nVediamo insieme le potenzialità di questo strumento e come tramite il suo utilizzo la nostra developer experience possa migliorare drasticamente.\n\n**E' possibile scaricare il materiale ai seguante link:**[](https://drive.google.com/drive/folders/1S0QSYP7TOX3Z1WLh1Z7Z0zWc_sTS5UzA?usp=sharing?usp=sharing)\n\n-   Slide: [https://speakerdeck.com/puppo/prisma-in-the-air](https://speakerdeck.com/puppo/prisma-in-the-air)\n-   Codice: [https://github.com/puppo/prisma-in-the-air](https://github.com/puppo/prisma-in-the-air)\n"
+  },
+  {
+    "file": "src/data/events/2022/2022-05-20-minimal-api-in-the-real-world.md",
+    "data": {
+      "title": "Minimal API in the real world",
+      "description": "Le Minimal API sono una delle novità più interessanti di .NET 6.0. Ma sono davvero così minimali? Ha senso utilizzarle in scenari complessi? In questa sessione...",
+      "date": "2022-05-20",
+      "eventType": "Online Meeting",
+      "venue": {
+        "name": "Virtual meeting",
+        "online": true
+      },
+      "sessions": [
+        {
+          "time": "21:00 - 22:00",
+          "title": "Presentazione",
+          "speakers": [
+            {
+              "person": "marco-minerva"
+            }
+          ]
+        },
+        {
+          "time": "22:00 - 23:00",
+          "title": "Q & A",
+          "speakers": []
+        }
+      ],
+      "materials": [
+        {
+          "label": "Download",
+          "url": "https://drive.google.com/drive/folders/1cZWjhwvZn-xDiwLiVSyFUxEPCwJKz9AX?usp=sharing"
+        }
+      ],
+      "sourceUrl": "https://www.xedotnet.org/eventi/minimal-api-in-the-real-world/",
+      "draft": false
+    },
+    "body": "\n\nLe Minimal API sono una delle novità più interessanti di .NET 6.0. Ma sono davvero così minimali? Ha senso utilizzarle in scenari complessi? In questa sessione analizzeremo le principali limitazioni che le caratterizzano e scopriremo come superarle, per capire se possiamo davvero adottarle in applicazioni reali.\n\nE come nel (ormai) classico format online di XE, ci sarà ampio spazio per le domande ed il confronto.\n\n**E' possibile scaricare il materiale al seguante link**: [Download](https://drive.google.com/drive/folders/1cZWjhwvZn-xDiwLiVSyFUxEPCwJKz9AX?usp=sharing)\n"
+  },
+  {
+    "file": "src/data/events/2022/2022-09-16-net-maui.md",
+    "data": {
+      "title": ".NET MAUI",
+      "description": ".NET MAUI, Building hybrid web apps with Blazor",
+      "date": "2022-09-16",
+      "eventType": "Evento serale",
+      "venue": {
+        "name": "Training Center - Banchina dell'Azoto 15",
+        "url": "https://goo.gl/maps/TsUuEDT75SC2",
+        "online": false
+      },
+      "sessions": [
+        {
+          "time": "19:30 - 20:00",
+          "title": "Registrazione",
+          "speakers": []
+        },
+        {
+          "time": "20:00 - 21:15",
+          "title": ".NET MAUI",
+          "speakers": [
+            {
+              "person": "marco-bortolin"
+            }
+          ],
+          "description": ".NET MAUI è finalmente disponibile, evoluzione di Xamarin Forms che permette di creare app desktop e per dispositivi mobili, native e multipiattaforma da una singola codebase C#. In questa sessione vedremo come funziona e come utilizzare questo nuovo framework per le nostre applicazioni."
+        },
+        {
+          "time": "21:30 - 22:45",
+          "title": "Hybrid web apps with Blazor",
+          "speakers": [
+            {
+              "person": "andrea-dottor"
+            }
+          ],
+          "description": "Blazor ormai è una tecnologia sempre più presente nello sviluppo web. MAUI si propone di essere l'esatta controparte per lo sviluppo multipiattforma mobile e desktop. In questa sessione vedremo come unire il meglio dei due mondi, così da poter riusare codice Blazor all'interno di un'applicazione MAUI, realizzando così una Hybrid web apps. Sapere come integrare queste due tecnologie può far si di sviluppare al meglio le applicazioni Blazor (oggi), così da poterle sfruttare (domani) anche nel mondo mobile e desktop."
+        }
+      ],
+      "materials": [
+        {
+          "label": "Download",
+          "url": "https://drive.google.com/drive/folders/1rtPFyhPkgkSAKbr3MfL1pTuSY04BWlZU?usp=sharing"
+        },
+        {
+          "label": "MauiBeerApp",
+          "url": "https://github.com/bortolin/MauiBeerApp"
+        },
+        {
+          "label": "MAUI Blazor hybrid",
+          "url": "https://github.com/andreadottor/maui-blazor-hybrid"
+        }
+      ],
+      "sourceUrl": "https://www.xedotnet.org/eventi/net-maui/",
+      "draft": false
+    },
+    "body": "\n\nE' giunto il momento di ritornare **in presenza** e parlare di una delle più grosse novità di questo 2022.  \n  \n\n-   **Le slide sono disponibili al seguente link:** [Download](https://drive.google.com/drive/folders/1rtPFyhPkgkSAKbr3MfL1pTuSY04BWlZU?usp=sharing)\n-   **Codice Bortolin:** [MauiBeerApp](https://github.com/bortolin/MauiBeerApp) \n-   **Codice Dottor:** [MAUI Blazor hybrid](https://github.com/andreadottor/maui-blazor-hybrid)\n"
+  },
+  {
+    "file": "src/data/events/2021/2021-01-22-blazor-ha-vinto-storie-di-casi-reali.md",
+    "data": {
+      "title": "XE - Online Meeting - Blazor ha vinto? Storie di casi reali",
+      "description": "In questa serata cercheremo di capire perchè Blazor ha riscosso così tanto successo, e lo faremo analizzando ...",
+      "date": "2021-01-22",
+      "eventType": "Online Meeting",
+      "venue": {
+        "name": "Virtual meeting",
+        "online": true
+      },
+      "sessions": [
+        {
+          "time": "21:00 - 22:00",
+          "title": "Presentazione",
+          "speakers": [
+            {
+              "person": "andrea-dottor"
+            }
+          ]
+        },
+        {
+          "time": "22:00 - 23:00",
+          "title": "Q & A",
+          "speakers": []
+        }
+      ],
+      "materials": [
+        {
+          "label": "Download",
+          "url": "https://drive.google.com/drive/folders/1lukZtVKtImvePQn1aIbOjg21Ca7LK_RT?usp=sharing"
+        }
+      ],
+      "sourceUrl": "https://www.xedotnet.org/eventi/blazor-ha-vinto-storie-di-casi-reali/",
+      "draft": false
+    },
+    "body": "\n\nIn questa serata cercheremo di capire perchè Blazor ha riscosso così tanto successo, e lo faremo analizzando casi presi da applicazioni reali dove questa tecnologia è stata introdotta, così da capirne meglio le potenzialità (ma anche le eventuali criticità).  \nCome di consuetudine, faremo poi un confronto, così da condividere i vari punti di vista.\n\n**E' possibile scaricare il materiale al seguante link**: [Download](https://drive.google.com/drive/folders/1lukZtVKtImvePQn1aIbOjg21Ca7LK_RT?usp=sharing)\n"
+  },
+  {
+    "file": "src/data/events/2021/2021-02-19-iot-support-for-net-core.md",
+    "data": {
+      "title": "XE - Online Meeting - IoT support for .NET Core",
+      "description": "Un punto fermo per tutti gli sviluppatori e appassionati che vogliono condividere la loro conoscenza e passione per la tecnologia.",
+      "date": "2021-02-19",
+      "eventType": "Online Meeting",
+      "venue": {
+        "name": "Virtual meeting",
+        "online": true
+      },
+      "sessions": [
+        {
+          "time": "21:00 - 22:00",
+          "title": "Presentazione",
+          "speakers": [
+            {
+              "person": "mirco-vanini"
+            }
+          ]
+        },
+        {
+          "time": "22:00 - 23:00",
+          "title": "Q & A",
+          "speakers": []
+        }
+      ],
+      "materials": [
+        {
+          "label": "download",
+          "url": "https://drive.google.com/drive/folders/1OHgd68jCuRxF8oH-Ma7OWvObkF0eTsdm?usp=sharing"
+        }
+      ],
+      "sourceUrl": "https://www.xedotnet.org/eventi/iot-support-for-net-core/",
+      "draft": false
+    },
+    "body": "\n\nLe applicazioni IoT in genere interagiscono con sensori, display e dispositivi di input che richiedono l’uso di pin GPIO, porte seriali, ecc. In questa sessione vedremmo come .NET Core può essere usato per creare applicazioni per dispositivi e scenari IoT multi piattaforma.\n\n**E' possibile scaricare il materiale al seguante link**: [download](https://drive.google.com/drive/folders/1OHgd68jCuRxF8oH-Ma7OWvObkF0eTsdm?usp=sharing)\n"
+  },
+  {
+    "file": "src/data/events/2021/2021-05-21-xe-quizzone-design-pattern.md",
+    "data": {
+      "title": "Xe Quizzone - Design pattern",
+      "description": "Un punto fermo per tutti gli sviluppatori e appassionati che vogliono condividere la loro conoscenza e passione per la tecnologia.",
+      "date": "2021-05-21",
+      "eventType": "Online Meeting",
+      "venue": {
+        "name": "Virtual meeting",
+        "online": true
+      },
+      "sessions": [
+        {
+          "time": "21:00 - 22:00",
+          "title": "Design pattern - Quiz",
+          "speakers": ["XE"]
+        },
+        {
+          "time": "22:00 - 23:00",
+          "title": "Q & A",
+          "speakers": []
+        }
+      ],
+      "materials": [
+        {
+          "label": "download",
+          "url": "https://drive.google.com/drive/folders/1vdZvZ7OpRayqoJzuErKtlfeBg3PFcNIG?usp=sharing"
+        }
+      ],
+      "sourceUrl": "https://www.xedotnet.org/eventi/xe-quizzone-design-pattern/",
+      "draft": false
+    },
+    "body": "\n\nMolto spesso gli eventi dedicati alle tecnologie di sviluppo si concentrano sulle ultime novità disponibili, ma sappiamo benissimo che ci sono dei principi e delle buone pratiche che sono sempre validi ed è bene conoscere prima delle ultime novità.\n\nTorna quindi il nostro **Quiz** che questa volta sarà dedicato ai **Design Pattern**. Sarà un modo divertente per rispolverare questi principi che tutti dovremmo conoscere.\n\nLe **spiegazioni**, con esempi pratici, si alterneranno alle **domande del gioco**. Non ti preoccupare, non diremo a nessuno come hai risposto alle domande, ma se sarai il più bravo lo sapranno tutti ;)\n\nL'evento si svolgerà on-line e il link per partecipare via Teams verrà inviato a tutti gli iscritti qualche ora prima dell'inizio.\n\n**E' possibile scaricare il materiale al seguante link**: [download](https://drive.google.com/drive/folders/1vdZvZ7OpRayqoJzuErKtlfeBg3PFcNIG?usp=sharing)\n"
+  },
+  {
+    "file": "src/data/events/2021/2021-09-17-sql-server-query-optimization.md",
+    "data": {
+      "title": "SQL Server Query Optimization",
+      "description": "Un punto fermo per tutti gli sviluppatori e appassionati che vogliono condividere la loro conoscenza e passione per la tecnologia.",
+      "date": "2021-09-17",
+      "eventType": "Online Meeting",
+      "venue": {
+        "name": "Virtual meeting",
+        "online": true
+      },
+      "sessions": [
+        {
+          "time": "21:00 - 22:00",
+          "title": "Presentazione",
+          "speakers": [
+            {
+              "person": "gianluca-sartori"
+            }
+          ]
+        },
+        {
+          "time": "22:00 - 23:00",
+          "title": "Q & A",
+          "speakers": []
+        }
+      ],
+      "materials": [
+        {
+          "label": "download",
+          "url": "https://drive.google.com/drive/folders/1mCq7nHbZUBIEqp0VH_NGNjAGFzuo50xt?usp=sharing"
+        }
+      ],
+      "sourceUrl": "https://www.xedotnet.org/eventi/sql-server-query-optimization/",
+      "draft": false
+    },
+    "body": "\n\nL’abbiamo vissuto tutti: il telefono suona, l’applicazione è lenta, qualcosa non va, il database risponde a passo di lumaca. E’ tempo di trovare le query più pesanti e convincerle a darsi una mossa. Ma come si fa? Come le trovo? Cosa devo guardare? Manca forse un indice? E se invece la scrivessi in un altro modo?\n\nIn questa sessione proveremo a fare un po’ di ordine, suggerire un **metodo** e presentare alcune **tecniche di ottimizzazione**.\n\n**E' possibile scaricare il materiale al seguante link**: [download](https://drive.google.com/drive/folders/1mCq7nHbZUBIEqp0VH_NGNjAGFzuo50xt?usp=sharing)\n"
+  },
+  {
+    "file": "src/data/events/2021/2021-11-12-dotnet-conf-2021-hot-topics.md",
+    "data": {
+      "title": "dotNET Conf 2021 Hot Topics",
+      "description": "Durante la .Net Conf 2021 (9-11 Novembre) ci sarà il lancio ufficiale di .Net 6. Venerdì 12 novembre vedremo assieme le novità in arrivo e approfondire le tematiche più interessanti.",
+      "date": "2021-11-12",
+      "eventType": "Online Meeting",
+      "venue": {
+        "name": "Virtual meeting",
+        "online": true
+      },
+      "sessions": [
+        {
+          "time": "21:00 - 22:30",
+          "title": "Presentazione",
+          "speakers": [
+            {
+              "person": "mirco-vanini"
+            },
+            {
+              "person": "andrea-dottor"
+            },
+            {
+              "person": "marco-bortolin"
+            }
+          ]
+        },
+        {
+          "time": "22:30 - 23:30",
+          "title": "Q & A",
+          "speakers": []
+        }
+      ],
+      "materials": [
+        {
+          "label": "download",
+          "url": "https://drive.google.com/drive/folders/1w0qz3BrsFgXeDfOXG5ewhGJmYsqnJRU7?usp=sharing"
+        }
+      ],
+      "sourceUrl": "https://www.xedotnet.org/eventi/dotnet-conf-2021-hot-topics/",
+      "draft": false
+    },
+    "body": "\n\nDurante la **.Net Conf 2021** (9-11 Novembre) ci sarà il lancio ufficiale di **.Net 6**.  \nQuesta serata sarà quindi il momento ideale per riassumere le novità in arrivo e approfondire le tematiche più interessanti.\n\n  \nCome in tutti i nostri eventi online, ci sarà ampio spazio per le domande e il confronto.\n\n**E' possibile scaricare il materiale al seguante link**: [download](https://drive.google.com/drive/folders/1w0qz3BrsFgXeDfOXG5ewhGJmYsqnJRU7?usp=sharing)\n"
+  },
+  {
+    "file": "src/data/events/2020/2020-10-16-online-meeting-spa-framework-a-confronto.md",
+    "data": {
+      "title": "Online Meeting - SPA Framework a confronto",
+      "description": "Un punto fermo per tutti gli sviluppatori e appassionati che vogliono condividere la loro conoscenza e passione per la tecnologia.",
+      "date": "2020-10-16",
+      "eventType": "Online Meeting",
+      "venue": {
+        "name": "Virtual meeting",
+        "online": true
+      },
+      "sessions": [
+        {
+          "time": "21:00 - 22:30",
+          "title": "Blazor",
+          "speakers": [
+            {
+              "person": "andrea-dottor"
+            }
+          ],
+          "description": "Link al repository con il codice della Demo e le slides:https://github.com/andreadottor/XE.Dottor.Demo.BlazorWebApp"
+        },
+        {
+          "time": "21:00 - 22:30",
+          "title": "Angular",
+          "speakers": [
+            {
+              "person": "alice-capponi"
+            }
+          ],
+          "description": "Link al codice della Demo:https://github.com/Alyyc85/xe-post-app"
+        },
+        {
+          "time": "21:00 - 22:30",
+          "title": "Vue.js",
+          "speakers": [
+            {
+              "person": "daniele-morosinotto"
+            }
+          ],
+          "description": "Link al repository con il codice della Demo e le slides:https://github.com/dmorosinotto/XE_FrameworkSPA_Vue"
+        },
+        {
+          "time": "21:00 - 22:30",
+          "title": "React",
+          "speakers": [
+            {
+              "person": "enrico-giacomazzi"
+            }
+          ],
+          "description": "Link al codice della Demo:https://github.com/enricogiacomazzi/xe_confronto_spa_react"
+        }
+      ],
+      "materials": [
+        {
+          "label": "https://github.com/andreadottor/XE.Dottor.Demo.BlazorWebApp",
+          "url": "https://github.com/andreadottor/XE.Dottor.Demo.BlazorWebApp"
+        },
+        {
+          "label": "https://github.com/Alyyc85/xe-post-app",
+          "url": "https://github.com/Alyyc85/xe-post-app"
+        },
+        {
+          "label": "https://github.com/dmorosinotto/XE_FrameworkSPA_Vue",
+          "url": "https://github.com/dmorosinotto/XE_FrameworkSPA_Vue"
+        },
+        {
+          "label": "https://github.com/enricogiacomazzi/xe_confronto_spa_react",
+          "url": "https://github.com/enricogiacomazzi/xe_confronto_spa_react"
+        }
+      ],
+      "sourceUrl": "https://www.xedotnet.org/eventi/online-meeting-spa-framework-a-confronto/",
+      "draft": false
+    },
+    "body": "\n\nNegli ultimi anni le tecnologie per lo sviluppo di Single Page Application hanno avuto una grande evoluzione. Nel tempo alcuni framework si sono affermati, altri sono scomparsi.  \nIn questa serata ci confronteremo sulle nostre esperinze con la guida di alcuni speaker che potranno rispondere alle nostre domande.\n"
+  },
+  {
+    "file": "src/data/events/2020/2020-11-13-xe-online-meeting-novembre.md",
+    "data": {
+      "title": "XE Online Meeting - dotNET Conf 2020 Hot Topics",
+      "description": "Un punto fermo per tutti gli sviluppatori e appassionati che vogliono condividere la loro conoscenza e passione per la tecnologia.",
+      "date": "2020-11-13",
+      "eventType": "Online Meeting",
+      "venue": {
+        "name": "Virtual meeting",
+        "online": true
+      },
+      "sessions": [
+        {
+          "time": "21:00 - 21:20",
+          "title": "Desktop development",
+          "speakers": [
+            {
+              "person": "mirco-vanini"
+            }
+          ]
+        },
+        {
+          "time": "21:20 - 21:40",
+          "title": "Web development",
+          "speakers": [
+            {
+              "person": "andrea-dottor"
+            }
+          ]
+        },
+        {
+          "time": "21:40 - 22:00",
+          "title": "C# 9",
+          "speakers": [
+            {
+              "person": "daniele-morosinotto"
+            }
+          ]
+        },
+        {
+          "time": "22:00 - 22:15",
+          "title": "Xamarin",
+          "speakers": [
+            {
+              "person": "marco-bortolin"
+            }
+          ]
+        }
+      ],
+      "materials": [
+        {
+          "label": "download",
+          "url": "https://drive.google.com/drive/folders/19ljtf3IQ-XedD2u4HGWf_NjlZ2hcZdA2?usp=sharing"
+        }
+      ],
+      "sourceUrl": "https://www.xedotnet.org/eventi/xe-online-meeting-novembre/",
+      "draft": false
+    },
+    "body": "\n\nDurante la .Net Conf 2020 (10-12 Novembre) ci sarà il lancio ufficiale di .Net 5.  \nQuesta serata sarà quindi il momento ideale per riassumere le novità in arrivo e approfondire le tematiche più interessanti.\n\nCome in tutti i nostri eventi online, ci sarà ampio spazio per le domande e il confronto.\n\n**E' possibile scaricare il materiale al seguante link**: [download](https://drive.google.com/drive/folders/19ljtf3IQ-XedD2u4HGWf_NjlZ2hcZdA2?usp=sharing)\n"
+  },
+  {
+    "file": "src/data/events/2019/2019-02-22-data-night-influxdb-elastic-search.md",
+    "data": {
+      "title": "Data Night - InfluxDB - Elastic Search",
+      "description": "Un punto fermo per tutti gli sviluppatori e appassionati che vogliono condividere la loro conoscenza e passione per la tecnologia.",
+      "date": "2019-02-22",
+      "eventType": "Evento serale",
+      "venue": {
+        "name": "Training Center - Banchina dell'Azoto 15",
+        "url": "https://goo.gl/maps/TsUuEDT75SC2",
+        "online": false
+      },
+      "sessions": [
+        {
+          "time": "20:00 - 21:30",
+          "title": "Time Series DB: perchè e quando? Introduzione a InfluxDB",
+          "speakers": [
+            {
+              "person": "mauro-rainis"
+            }
+          ],
+          "description": "I db relazionali non sono sempre la soluzione ottimale per la gestione di serie temporali di dati. Analizzeremo perchè e quando un db TimeSeries potrebbe essere una scelta migliore, vedremo poi installazione e utilizzo di InfluxDb e del suo \"TICK\" stack."
+        },
+        {
+          "time": "21:45 - 23:00",
+          "title": "How to search...better!",
+          "speakers": [
+            {
+              "person": "alessandro-melchiori"
+            }
+          ],
+          "description": "Elasticsearch e' uno dei progetti piu' popolari su Github con circa 400 contributors, piu' di 3,000 forks e decine di migliaia di commits. Ma cos'e' e a \"cosa serve\" ElasticSearch? Come \"funziona\"?"
+        }
+      ],
+      "materials": [
+        {
+          "label": "https://www.slideshare.net/melkio/how-to-searchbetter",
+          "url": "https://www.slideshare.net/melkio/how-to-searchbetter"
+        },
+        {
+          "label": "https://www.slideshare.net/MauroRainis1/time-seriesdb-influx",
+          "url": "https://www.slideshare.net/MauroRainis1/time-seriesdb-influx"
+        }
+      ],
+      "sourceUrl": "https://www.xedotnet.org/eventi/data-night-influxdb-elastic-search/",
+      "draft": false
+    },
+    "body": "\n\nLe slide della sessione di Alessandro Melchiori su ElasticSearch sono disponibili a questo li:  \n[https://www.slideshare.net/melkio/how-to-searchbetter](https://www.slideshare.net/melkio/how-to-searchbetter)\n\nLe slide della sessione di Mauro Rainis su Influx DB sono disponibili a questo li:  \n[https://www.slideshare.net/MauroRainis1/time-seriesdb-influx](https://www.slideshare.net/MauroRainis1/time-seriesdb-influx)\n\nIn questa serata dedicata ai dati i nostri speaker ci parleranno di \"Time series database\" e \"Search & Analytics\".\n"
+  },
+  {
+    "file": "src/data/events/2019/2019-05-25-one-day-enterprise-application.md",
+    "data": {
+      "title": "One Day - Enterprise application",
+      "description": "Il nostro main event del 2019, in continuità con la precedente edizione, sarà focalizzato sullo sviluppo di applicazioni Enterprise. Non si parlerà solo di codice, ma anche di metodologie, strumenti per l'organizzazione del team e soprattutto condivideremo esperienze.",
+      "date": "2019-05-25",
+      "eventType": "Giornata",
+      "venue": {
+        "name": "Holiday Inn Venezia, Venezia Mestre",
+        "url": "https://www.google.it/maps/place/Holiday+Inn+Venice+-+Mestre+Marghera/@45.4743392,12.2127474,17z/data=!3m1!4b1!4m2!3m1!1s0x477eb680674b298d:0x3e77220e14d9b15",
+        "online": false
+      },
+      "image": "/media/1154-oneday-enterpriseapplication-agendasmall1.png",
+      "sessions": [
+        {
+          "time": "09:00 - 09:30",
+          "title": "Intro",
+          "speakers": ["XE"]
+        },
+        {
+          "time": "09:30 - 10:30",
+          "title": "(Track 1) From Legacy to MAD - Come passare dallo sviluppo Legacy a un Modern Application Development senza impazzire",
+          "speakers": [
+            {
+              "person": "ivano-modenin"
+            },
+            {
+              "person": "paolo-galfione"
+            }
+          ],
+          "description": "E' molto probabile che aziende nate da almeno 10 anni abbiano delle applicazioni legacy ancora operative.Per chi ne fa il proprio core business, la cosa rischia di diventare un dramma se non si trova una via graduale per passare dal vecchio modo di lavorare a quello nuovo.Non esiste un percorso sicuro e valido per tutti, ma seguire una strada già tracciata può aiutare a raggiungere più facilmente la propria meta.Vi raccontiamo la nostra esperienza e di come abbiamo trasformato la nostra applicazione legacy in una moderna e agile enterprise application.Metodologie, strumenti, passi falsi e successi.Scarica presentazione e demo"
+        },
+        {
+          "time": "09:30 - 10:30",
+          "title": "(Track 2) Back to the Future: Migrare da WebForm ad ASP.NET Core gradualmente",
+          "speakers": [
+            {
+              "person": "andrea-dottor"
+            },
+            {
+              "person": "marco-bortolin"
+            }
+          ],
+          "description": "Molte applicazione sono (ancora) sviluppate in WebForm e non possono essere convertite automaticamente ad ASP.NET Core. Una riscrittura completa in molti casi è impossibile o impensabile da attuare. In questa sessione vedremo come migrare in modo graduale queste tipologie di applicazioni verso ASP.NET Core, andando in dettaglio nelle varie problematiche che solitamente si possono presentare. La sessione deriva da un'esperienza reale, che ha permesso di conoscere (nel bene o nel male) le difficoltà che si nascondo in queste migrazioni.Scarica presentazione e demo (link nella presentazione)"
+        },
+        {
+          "time": "10:30 - 10:50",
+          "title": "Coffee Break",
+          "speakers": []
+        },
+        {
+          "time": "10:50 - 11:50",
+          "title": "(Track 1) Gestire i rilasci automatici con Azure DevOps",
+          "speakers": [
+            {
+              "person": "gian-maria-ricci"
+            }
+          ],
+          "description": "In questa sessione verrà mostrato come gestire i rilasci con Azure Devops, mostrando il percorso che, partendo dal codice, passando per le build arriva alle fasi di rilascio con la gestione delle pipeline di rilascio. Vedremo quindi come si può automatizzare il deploy nei vari ambienti sia del codice applicativo ma anche delle modifiche di servizi accessori, come database.Scarica presentazione e demo"
+        },
+        {
+          "time": "10:50 - 11:50",
+          "title": "(Track 2) Modernizing Enterprise Apps",
+          "speakers": [
+            {
+              "person": "mirco-vanini"
+            }
+          ],
+          "description": "Quale futuro si prospetta per le tue applicazioni WPF e Windows Form? Come posso utilizzare le nuove funzionalità di Windows 10 in questa tipologia di applicazioni ?In questa sessione vedremmo come .NET e Visual Studio semplificano la modernizzazione graduale delle applicazioni esistenti con le funzionalità di Windows 10. Verrà illustrato come utilizzare UWP XAML Islands per migliorare le applicazioni WPF e Windows Form con funzionalità moderne, come utilizzare le nuove funzionalità di containerizzazione di MSIX e come utilizzare .NET Core 3 nelle applicazioni desktop.Scarica presentazione e demo"
+        },
+        {
+          "time": "12:00 - 13:00",
+          "title": "(Track 1) Azure Security, come rendere sicura una soluzione ibrida PaaS/IaaS",
+          "speakers": [
+            {
+              "person": "lorenzo-barbieri"
+            }
+          ],
+          "description": "E’ importante sapere anche le applicazioni più solide portate su Azure possano essere soggette a problemi. Vedremo quali sono le strade per mantenere una soluzione disponibile, come accorgersi rapidamente dei problemi e soprattutto come porvi rimedio. In termini di architetture cloud, fondamentalmente, valuteremo gli approcci di “Design for failure” e “fault injection”, provando ad ottenere il massimo risultato con il minimo uso di \"sforzo\".Presentazione disponibile su SlideShare"
+        },
+        {
+          "time": "12:00 - 13:00",
+          "title": "(Track 2) Frontend solutions for Enterprise App",
+          "speakers": [
+            {
+              "person": "daniele-morosinotto"
+            }
+          ],
+          "description": "Quando pensiamo ad una Enterprise application moderna subito ci vengono in mente vari Pattern per organizzare al meglio il nostro codice nel Backend (lavorare a layer, CQRS fino ad arrivare ai micro-servizi) ma poi quando si tratta di scrivere il Frontend come ci comportiamo? Oggi va di moda fare SPA (Single Page Application) ma come possiamo strutturarle?In questa sessione cercherò di dare delle possibili risposte/suggerimenti su come affrontare questo problema ed organizzare al meglio anche il codice del Frontend di una Enterprise Application.Presentazione e codice disponibili su Github"
+        },
+        {
+          "time": "13:00 - 14:10",
+          "title": "Pranzo",
+          "speakers": []
+        },
+        {
+          "time": "14:10 - 15:10",
+          "title": "(Track 1) Welcome to the (state) machine",
+          "speakers": [
+            {
+              "person": "mauro-servienti"
+            }
+          ],
+          "description": "Ultimamente ci hanno stressato come non mai che stateful è il male. Tutto deve essere stateless, altrimenti non scala, non può essere altamente disponibile, ed è complesso da manutenere ed evolvere. Nonostante questo i sistemi software complessi, essendo basati su processi collaborativi, sono per natura stateful. I processi collaborativi, noti anche come long running business transactions, necessitano di interagiscono con risorse distribuite. L'approccio tradizionale basato su transazioni distribuite, anche se allettante, è una bomba pronta ad esplodere.Pane quotidiano per le Saghe. Le Saghe consentono di modellare sistemi complessi senza la necessità di transazioni distribuite e coordinamento esterno. Vedremo cosa sono le Saghe, come possono essere usate per modellare domini complessi, e che ruolo giocano quando progettiamo sistemi basati sui concetti di \"design for failures\" e \"eventual consistency\"(It’s all right, I know where you’ve been)Presentazione e codice (link nelle slide) disponibili su SlideShare"
+        },
+        {
+          "time": "14:10 - 15:10",
+          "title": "(Track 2) SQL Server Infernals: Worst Practices in Action",
+          "speakers": [
+            {
+              "person": "gianluca-sartori"
+            }
+          ],
+          "description": "Ammettiamolo: le Best Practice sono troppe per conoscerle tutte e scegliere quali applicare per prime. Il tuo telefono suona di continuo? I tuoi utenti chiedono quel \"reportino veolce\" che invece ti occupa per ore e continuano a cambiarlo ogni volta che pensi sia finito? Hai mai pensato che in tempi difficili almeno evitare le Worst Practice potrebbe essere un buon punto di partenza e che puoi lasciare il lavoro di fino per un futuro migliore? Se la risposta è sì, allora questa sessione è per te: scopriremo insieme come non torturare un'istanza di SQL Server e vedremo come evitare di fare scelte che nel lungo periodo potrebbero rivelarsi meno brillanti idi quanto non sembrassero all'inizio.Scarica presentazione"
+        },
+        {
+          "time": "15:20 - 16:20",
+          "title": "(Track 1) SCRUM: Il metodo empirico come pratica di sviluppo per massimizzare risultati e qualità",
+          "speakers": [
+            {
+              "person": "andrea-boschin"
+            }
+          ],
+          "description": "In una realtà quotidiana in cui le tecnologie e i requisiti di sviluppo sono sempre meno definiti e chiari, il processo di sviluppo agile e in particolare il framework SCRUM si rivelano l’unica soluzione possibile per garantire la produzione di software aderente alle esigenze reali del cliente e al tempo stesso sfruttare le tecnologie più all’avanguardia senza perdere di vista la qualità. In questa sessione analizzeremo le motivazioni che ci dovrebbero spingere ad abbracciare il framework SCRUM e, con esso l’empirismo guidato da precise regole di ingaggio. Affronteremo così i temi più tecnici dell’implementazione del framework, degli eventi che lo caratterizzano, il backlog e il concetto di “done” per poi completare il quadro illustrando come sia possibile fare forecasting in un processo agile.Scarica presentazione"
+        },
+        {
+          "time": "15:20 - 16:20",
+          "title": "(Track 2) SQL Server Workload Profiling",
+          "speakers": [
+            {
+              "person": "gianluca-hotz"
+            }
+          ],
+          "description": "Analisi e tuning delle prestazioni di un’applicazione sono temi difficili da affrontare dovendo prendere in considerazione una moltitudine di componenti complessi che richiedono un approccio interdisciplinare. In questa sessione faremo prima una panoramica degli strumenti e delle tecniche di analisi che riguardano SQL Server, spesso uno dei componenti principali di un’applicazione, per entrare poi nel dettaglio pratico di utilizzo degli Extended Events, una funzionalità specifica per la raccolta di eventi utili sia al troubleshooting, che al tuning delle prestazioni.Presentazione e codice disponibili su Github"
+        },
+        {
+          "time": "16:30 - 17:30",
+          "title": "e(o)rrori indimenticabili",
+          "speakers": ["XE"],
+          "description": "Abbiamo chiesto a tutti i nostri speaker di raccontarci un episodio indimenticabile... ne sentiremo delle belle."
+        }
+      ],
+      "materials": [
+        {
+          "label": "Scarica presentazione e demo",
+          "url": "https://drive.google.com/open?id=16ov5UelEUoWUSrgQBpuxUEfHKpnesM3G"
+        },
+        {
+          "label": "Scarica presentazione e demo (link nella presentazione)",
+          "url": "https://drive.google.com/open?id=1D4Na6OYtev-W8nK-dxqa2hgWV7v41kbV"
+        },
+        {
+          "label": "Scarica presentazione e demo",
+          "url": "https://drive.google.com/open?id=1_nNx-e6Ev-cUwGeA-dn4d5iYWMier-FM"
+        },
+        {
+          "label": "Scarica presentazione e demo",
+          "url": "https://drive.google.com/open?id=1hLTvxq1aJXAza8RMDiiQOsX3PtbaLSZw"
+        },
+        {
+          "label": "Presentazione disponibile su SlideShare",
+          "url": "https://www.slideshare.net/geniodelmale/azure-security-how-to-protect-a-hybrid-paasiaas-solution-built-entirely-in-the-cloud"
+        },
+        {
+          "label": "Presentazione e codice disponibili su Github",
+          "url": "https://github.com/dmorosinotto/XE_OneDay_EnterpriseApp"
+        },
+        {
+          "label": "Materiale",
+          "url": "https://www.slideshare.net/mauroservienti/welcome-to-the-state-machine-xe-one-day-enterprise-applications"
+        },
+        {
+          "label": "Scarica presentazione",
+          "url": "https://drive.google.com/open?id=1Cxf7HdosyqdoF2EOxrzCPc0dggIef0Oe"
+        },
+        {
+          "label": "Scarica presentazione",
+          "url": "https://drive.google.com/open?id=1uxtZeG2hYAcHrEVSQ4OmE54O_Lmk03Tr"
+        },
+        {
+          "label": "Presentazione e codice disponibili su Github",
+          "url": "https://github.com/ghotz/Presentations/tree/master/One%20Day%20-%20Enterprise%20Application"
+        }
+      ],
+      "sourceUrl": "https://www.xedotnet.org/eventi/one-day-enterprise-application/",
+      "draft": false
+    },
+    "body": "\n\nIl nostro main event del 2019, in continuità con la precedente edizione, sarà focalizzato sullo sviluppo di **applicazioni Enterprise**. Non si parlerà solo di codice, ma anche di **metodologie**, **strumenti** per l'organizzazione del team e soprattutto **condivideremo esperienze**.\n\nL'evento si svilupperà in un'**intera giornata**. Si inizierà con una veloce sessione di benvenuto per poi dividersi in due track parallele per un totale di **10 sessioni**.  \nSi chiuderà con una sessione che coinvolgerà tutti gli speaker al termine della quale verranno estratti alcuni gadget per i partecipanti.\n\nLa partecipazione alla conferenza è (come al solito) **gratuita** e, grazie al supporto del nostro sponsor, verrà offerto a tutti i partecipanti un **coffee break** a metà mattina e il **pranzo**.\n\nVisualizza / scarica l'agenda della giornata\n\n[![Preview Agenda XeOneDay](/media/1154-oneday-enterpriseapplication-agendasmall1.png)](/media/1153-oneday-enterpriseapplication-agenda.pdf \"OneDay-EnterpriseApplication-Agenda.pdf\")\n\nDi seguito i dettagli delle sessioni.\n"
+  },
+  {
+    "file": "src/data/events/2019/2019-09-20-grpc-and-c-optimising-night.md",
+    "data": {
+      "title": "gRPC and c# Optimising Night",
+      "description": "Un punto fermo per tutti gli sviluppatori e appassionati che vogliono condividere la loro conoscenza e passione per la tecnologia.",
+      "date": "2019-09-20",
+      "eventType": "Evento serale",
+      "venue": {
+        "name": "Training Center - Banchina dell'Azoto 15",
+        "url": "https://goo.gl/maps/TsUuEDT75SC2",
+        "online": false
+      },
+      "sessions": [
+        {
+          "time": "19:30 - 20:00",
+          "title": "Registrazione",
+          "speakers": []
+        },
+        {
+          "time": "20:00 - 21:15",
+          "title": "Alla scoperta di gRPC",
+          "speakers": [
+            {
+              "person": "andrea-dottor"
+            }
+          ],
+          "description": "In ASP.NET Core 3.0 è stato introdotto il supporto a gRPC, una framework altamente performante per fare Remote Procedure Call (RPC). Leggero e molto efficiente, supportato da molti linguaggi, supporto ad una comunicazione bidirezionale, riduzione del consumo di banda...solo questi solo alcuni dei vantaggi che descrivono gRPC, e che durante la sessione cercheremo di capire se siano reali o meno.Fatto sta che è una tecnologia assolutamente da conoscere e sfruttare nello sviluppo di app moderno, e non solamente in ambito web."
+        },
+        {
+          "time": "21:30 - 22:45",
+          "title": "Optimising Code Using Span<T>",
+          "speakers": [
+            {
+              "person": "mirco-vanini"
+            }
+          ],
+          "description": "Span<T> è un nuovo tipo introdotto con C # 7.2 e supportato nel runtime .NET Core 2.1. Esiste un’implementazione .NET Standard ma è in .NET Core dove sono state apportate modifiche al runtime per supportare la migliore versione possibile nota anche come “span veloce”.Questo nuovo tipologia fornisce accesso type-safe ad un’area contigua di memoria, localizzata nell’heap, nello stack o addirittura formata da memoria non gestita.In questa sessione vedremmo come utilizzare al meglio questi nuovi tipi per ottenere prestazioni ottimali dal nostro codice."
+        }
+      ],
+      "materials": [
+        {
+          "label": "download",
+          "url": "https://drive.google.com/open?id=1RzzUx9oikAuRSXCLmZ9rilkrbiTn6p9K"
+        }
+      ],
+      "sourceUrl": "https://www.xedotnet.org/eventi/grpc-and-c-optimising-night/",
+      "draft": false
+    },
+    "body": "\n\n**E' possibile scaricare il materiale al seguente link**: [download](https://drive.google.com/open?id=1RzzUx9oikAuRSXCLmZ9rilkrbiTn6p9K)\n"
+  },
+  {
+    "file": "src/data/events/2018/2018-03-23-power-bi-deep-learning-night.md",
+    "data": {
+      "title": "Power BI & Deep-learning Night",
+      "description": "Power BI & Deep-learning Night:",
+      "date": "2018-03-23",
+      "eventType": "Evento serale",
+      "venue": {
+        "name": "Training Center - Banchina dell'Azoto 15",
+        "url": "https://goo.gl/maps/TsUuEDT75SC2",
+        "online": false
+      },
+      "sessions": [
+        {
+          "time": "20:00 - 21:30",
+          "title": "Power BI: Dal dato grezzo al modello di analisi",
+          "speakers": [
+            {
+              "person": "marco-pozzan"
+            }
+          ],
+          "description": "Avrete probabilmente visto molti scenari in cui viene utilizzato Power BI. Tuttavia la maggior parte delle demo si basano su scenari in cui tutto funziona con un drag and drop dei campi del modello. Ma cosa succede quando il dato non è perfetto o il vostro problema di business è più complesso? In questa sessione, si vedranno come risolvere le problematiche che inevitabilmente si andrà in contro quando si torna al lavoro. Questa sessione vi darà la possibilità di vedere come si modellano i dati per risolvere i problemi del mondo reale con Power BI."
+        },
+        {
+          "time": "21:45 - 23:00",
+          "title": "Introduzione al deep-learning",
+          "speakers": [
+            {
+              "person": "pietro-lovato"
+            }
+          ],
+          "description": "Sempre più spesso si sente parlare di Intelligenza Artificiale, di Machine Learning, di Deep Learning, presentati come i nuovi settori in cui investire. Cercheremo di fare chiarezza tra questi termini così usati (e a volte abusati), cercando di comprenderne i principi, le potenzialità, e i limiti. Vedremo poi in concreto cosa succede all'interno di una particolare classe di questi algoritmi, denominati “reti neurali”, e come sia possibile intervenire nel codice per customizzare e migliorare la propria soluzione, prendendo in esame un caso di studio reale nell'ambito dell'elaborazione delle immagini."
+        }
+      ],
+      "materials": [
+        {
+          "label": "download",
+          "url": "https://drive.google.com/open?id=1Qz_3VoFv8_RS28rgVzlJO4K91hlS54WK"
+        }
+      ],
+      "sourceUrl": "https://www.xedotnet.org/eventi/power-bi-deep-learning-night/",
+      "draft": false
+    },
+    "body": "\n\n**E' possibile scaricare il materiale al seguente link**: [download](https://drive.google.com/open?id=1Qz_3VoFv8_RS28rgVzlJO4K91hlS54WK)\n"
+  },
+  {
+    "file": "src/data/events/2018/2018-09-15-one-day-good-code.md",
+    "data": {
+      "title": "One Day - Good code",
+      "description": "Arriva il nostro main event del semestre: XE One Day - Good code. Assieme ai nostri ospiti e speaker d’eccezione Pietro Brambati (Cloud Solution Architect at Microsoft), Aldo Donetti (EMEA Senior Regional Program Manager at Microsoft), Gianluca Hotz (Microsoft MVP Data Platform) trascorreremo mezza ",
+      "date": "2018-09-15",
+      "eventType": "Giornata",
+      "venue": {
+        "name": "Osteria del Frate dalla Manica Larga",
+        "url": "https://goo.gl/maps/TwPW6M4G4DQ2",
+        "online": false
+      },
+      "sessions": [
+        {
+          "time": "14:00 - 14:30",
+          "title": "Intro",
+          "speakers": []
+        },
+        {
+          "time": "14:30 - 15:15",
+          "title": "Community e Documentazione",
+          "speakers": [
+            {
+              "person": "aldo-donetti"
+            }
+          ],
+          "description": "Faremo il punto su una importante area di investimento di Microsoft – la Documentazione e il suo nuovo portale docs.microsoft.com – come veicolo di conoscenza e formazione attiva. Vedremo come le radicali trasformazioni dell’approccio documentale influiscano in modo sostanziale sul rapporto con le Community tecniche, per il beneficio di tutti."
+        },
+        {
+          "time": "15:25 - 16:25",
+          "title": "(Track 1) Adaptive Code: Agile Coding With Design Patterns and Solid Principle",
+          "speakers": [
+            {
+              "person": "mirco-vanini"
+            }
+          ],
+          "description": "Tutti noi scriviamo codice per soddisfare dei requisiti funzionali che purtroppo cambiano, anche radicalmente, durante la fase di sviluppo.In questa sessione scopriremo come è possibile creare codice che soddisfi nuovi requisiti e scenari imprevisti senza riscritture significative,come sia possibile progettare del codice che può evolvere rapidamente e facilmente, con meno errori, senza impedire il cambiamento.Si affronteranno temi come l’inversione di dipendenza, creazione di astrazioni riutilizzabili, i principi SOLID: singola responsabilità, aperto / chiuso, sostituzione di Liskov, segregazione delle interfacce e inversione delle dipendenze."
+        },
+        {
+          "time": "15:25 - 16:25",
+          "title": "(Track 2) Applicazioni Enterprise in Angular ovvero come gestire la complessità con un moderno framework javascript e sopravvivere.",
+          "speakers": [
+            {
+              "person": "paolo-galfione"
+            }
+          ],
+          "description": "Con il termine Enterprise Application ci si riferisce a una piattaforma software troppo grande e troppo complessa per l'uso individuale o di piccole imprese. Questo tipo di applicazioni sono quasi impossibili da definire a priori in termini di estensione funzionale in quanto le esigenze delle aziende sono in continua trasformazione.Come fare allora a creare un’architettura front-end in grado di crescere ed adattarsi al mutare delle esigenze tenendo nel contempo a bada complessità e caos? Una delle risposte possibili oggi è rappresentata da Angular, la soluzione di Google per la creazione dei SPA.Nel talk parleremo di:• Angular – vantaggi e sacrifici di metodo e liturgia• Come organizzare architetture aperte e modulari• Sviluppare per componenti dividendo UX, UI e Semantica• Componenti stateful e stateless, una questione di fili e lampadine• Il Santo Graal dello Stato dell’Applicazione• Test automatici? SI! Ma con saggezza"
+        },
+        {
+          "time": "16:45 - 17:45",
+          "title": "(Track 1) Best practice on modernizing .NET application with Windows Containers",
+          "speakers": [
+            {
+              "person": "pietro-brambati"
+            }
+          ],
+          "description": "In questa sessione vedremo qual è il miglior approccio per rendere più moderne “vecchie” applicazioni .NET, al fine di sfruttare al meglio le nuove tecnologie per container(Docker) e orchestratori (Kubernetes, Service Fabric, etc.), il tutto con un’ ottica orientata al Cloud e alle metodologie DevOps."
+        },
+        {
+          "time": "16:45 - 17:45",
+          "title": "(Track 2) Dependency Injection questa sconosciuta",
+          "speakers": [
+            {
+              "person": "andrea-dottor"
+            }
+          ],
+          "description": "L'uscita di ASP.NET Core ha portato a una maggiore diffusione dell'utilizzo della DI (Dependency Injection) ma spesso senza che lo sviluppatore sappia la sua reale utilità o potenzialità.Dependency Injection, uno dei design pattern della programmazione OOP. Una best-practice dello sviluppo che può portare alla semplificazione del codice scritto, facilitare il disacoppiamento, e migliorare la testabilità.In questa sessione vedremo cos'è la DI e come utilizzarla intelligentemente all'interno dei nostri progetti."
+        },
+        {
+          "time": "18:00 - 19:00",
+          "title": "(Track 1) Best practices on SQL Server",
+          "speakers": [
+            {
+              "person": "gianluca-hotz"
+            }
+          ],
+          "description": "SQL Server come ogni RDBMS ha un grado di complessità notevole dovuto alla sua natura di gestore generico di dati che deve essere in grado di rispondere a interrogazioni di complessità arbitraria nel modo più efficiente possibile. In generale, non esiste la bacchetta magica per aumentare le prestazioni ma una serie di best practice che possono aiutare molto. Scopo di questa sessione è di contestualizzare alcune delle pratiche più importanti da seguire per ottenere prestazioni ottimali."
+        },
+        {
+          "time": "18:00 - 19:00",
+          "title": "(Track 2) TypeScript Advanced Type Patterns",
+          "speakers": [
+            {
+              "person": "daniele-morosinotto"
+            }
+          ],
+          "description": "Molti programmatori approcciano a TypeScript perché fornisce loro il type-check e la type-inference familiare a chi programma in .NET - infatti TS permette di avere il giusto livello di controllo sopra ad un linguaggio dynamic-typed come JavaScript, ma non tutti sanno che il type system di TypeScript non è uguale a quello di C# o Java!In questa sessione faremo un excursus del type-system di TypeScript: capiremo perché è definito structural typed e come differisce dal classico nominal type system, vedremo poi la capacità di TS di modellare tipi sfruttando le logiche di composizione (tipi algebrici union e intersection types) per finire con le ultime novità sui conditional types.Verranno mostrati alcuni Pattern di programmazione Funzionale corredati da esempi di DTDD (Data-Type Driven Design) che ci aiuteranno a capire meglio queste funzionalità e come sfruttarle per scrivere del buon codice!"
+        },
+        {
+          "time": "19:00 - 20:00",
+          "title": "Ask the expert",
+          "speakers": ["XE"],
+          "description": "Durante la giornata raccoglieremo le domande e le più interessanti verranno discusse con gli speaker in questa sessione in attesa di goderci una buona cena in compagnia."
+        }
+      ],
+      "materials": [
+        {
+          "label": "download",
+          "url": "https://drive.google.com/open?id=1csLBDTapV14HTUnM-H-KOUffWpPq3g_6"
+        }
+      ],
+      "sourceUrl": "https://www.xedotnet.org/eventi/one-day-good-code/",
+      "draft": false
+    },
+    "body": "\n\nArriva il nostro main event del semestre: **XE One Day - Good code**. Assieme ai nostri ospiti e speaker d’eccezione **Pietro Brambati** (Cloud Solution Architect at Microsoft), **Aldo Donetti** (EMEA Senior Regional Program Manager at Microsoft), **Gianluca Hotz** (Microsoft MVP Data Platform) trascorreremo mezza giornata all'insegna del buon codice.\n\nLa giornata inizierà con la keynote comune per poi dividersi in due track e concludersi con una sessione durante la quale i nostri speaker risponderanno alle domande più interessanti conivolgendo tutti i partecipanti.  \n\nCome sempre, al termine delle sessioni verrano estratti dei gadget per i partecipanti.\n\nLa partecipazione alla conferenza è (come al solito) gratuita.\n\nPer chi vorrà, l'evento proseguirà con la cena, che si terrà nella stessa location ([Osteria del Frate dalla Manica Larga](https://www.osteriadelfrate.it/)), una trattoria con cucina casereccia che lavora solo con materie prime di alta qualità. Il menù prevede antipasto di salumi tipici, un primo, un secondo a base di carne, contorni, dolce, vino e bevande comprese.  \nXE contribuirà a coprire parte del costo per cui il prezzo finale sarà di soli €22,00 a persona: un'occasione di cui approfittare!\n\n**E' possibile scaricare il materiale al seguante link**: [download](https://drive.google.com/open?id=1csLBDTapV14HTUnM-H-KOUffWpPq3g_6)\n"
+  },
+  {
+    "file": "src/data/events/2018/2018-09-15-one-day-real-app.md",
+    "data": {
+      "title": "One Day - Good code",
+      "description": "Arriva il nostro main event del semestre: XE One Day - Good code. Assieme ai nostri ospiti e speaker d’eccezione Pietro Brambati (Cloud Solution Architect at Microsoft), Aldo Donetti (EMEA Senior Regional Program Manager at Microsoft), Gianluca Hotz (Microsoft MVP Data Platform) trascorreremo mezza ",
+      "date": "2018-09-15",
+      "eventType": "Giornata",
+      "venue": {
+        "name": "Osteria del Frate dalla Manica Larga",
+        "url": "https://goo.gl/maps/TwPW6M4G4DQ2",
+        "online": false
+      },
+      "sessions": [
+        {
+          "time": "14:00 - 14:30",
+          "title": "Intro",
+          "speakers": []
+        },
+        {
+          "time": "14:30 - 15:15",
+          "title": "Community e Documentazione",
+          "speakers": [
+            {
+              "person": "aldo-donetti"
+            }
+          ],
+          "description": "Faremo il punto su una importante area di investimento di Microsoft – la Documentazione e il suo nuovo portale docs.microsoft.com – come veicolo di conoscenza e formazione attiva. Vedremo come le radicali trasformazioni dell’approccio documentale influiscano in modo sostanziale sul rapporto con le Community tecniche, per il beneficio di tutti."
+        },
+        {
+          "time": "15:25 - 16:25",
+          "title": "(Track 1) Adaptive Code: Agile Coding With Design Patterns and Solid Principle",
+          "speakers": [
+            {
+              "person": "mirco-vanini"
+            }
+          ],
+          "description": "Tutti noi scriviamo codice per soddisfare dei requisiti funzionali che purtroppo cambiano, anche radicalmente, durante la fase di sviluppo.In questa sessione scopriremo come è possibile creare codice che soddisfi nuovi requisiti e scenari imprevisti senza riscritture significative,come sia possibile progettare del codice che può evolvere rapidamente e facilmente, con meno errori, senza impedire il cambiamento.Si affronteranno temi come l’inversione di dipendenza, creazione di astrazioni riutilizzabili, i principi SOLID: singola responsabilità, aperto / chiuso, sostituzione di Liskov, segregazione delle interfacce e inversione delle dipendenze."
+        },
+        {
+          "time": "15:25 - 16:25",
+          "title": "(Track 2) Applicazioni Enterprise in Angular ovvero come gestire la complessità con un moderno framework javascript e sopravvivere.",
+          "speakers": [
+            {
+              "person": "paolo-galfione"
+            }
+          ],
+          "description": "Con il termine Enterprise Application ci si riferisce a una piattaforma software troppo grande e troppo complessa per l'uso individuale o di piccole imprese. Questo tipo di applicazioni sono quasi impossibili da definire a priori in termini di estensione funzionale in quanto le esigenze delle aziende sono in continua trasformazione.Come fare allora a creare un’architettura front-end in grado di crescere ed adattarsi al mutare delle esigenze tenendo nel contempo a bada complessità e caos? Una delle risposte possibili oggi è rappresentata da Angular, la soluzione di Google per la creazione dei SPA.Nel talk parleremo di:• Angular – vantaggi e sacrifici di metodo e liturgia• Come organizzare architetture aperte e modulari• Sviluppare per componenti dividendo UX, UI e Semantica• Componenti stateful e stateless, una questione di fili e lampadine• Il Santo Graal dello Stato dell’Applicazione• Test automatici? SI! Ma con saggezza"
+        },
+        {
+          "time": "16:45 - 17:45",
+          "title": "(Track 1) Best practice on modernizing .NET application with Windows Containers",
+          "speakers": [
+            {
+              "person": "pietro-brambati"
+            }
+          ],
+          "description": "In questa sessione vedremo qual è il miglior approccio per rendere più moderne “vecchie” applicazioni .NET, al fine di sfruttare al meglio le nuove tecnologie per container(Docker) e orchestratori (Kubernetes, Service Fabric, etc.), il tutto con un’ ottica orientata al Cloud e alle metodologie DevOps."
+        },
+        {
+          "time": "16:45 - 17:45",
+          "title": "(Track 2) Dependency Injection questa sconosciuta",
+          "speakers": [
+            {
+              "person": "andrea-dottor"
+            }
+          ],
+          "description": "L'uscita di ASP.NET Core ha portato a una maggiore diffusione dell'utilizzo della DI (Dependency Injection) ma spesso senza che lo sviluppatore sappia la sua reale utilità o potenzialità.Dependency Injection, uno dei design pattern della programmazione OOP. Una best-practice dello sviluppo che può portare alla semplificazione del codice scritto, facilitare il disacoppiamento, e migliorare la testabilità.In questa sessione vedremo cos'è la DI e come utilizzarla intelligentemente all'interno dei nostri progetti."
+        },
+        {
+          "time": "18:00 - 19:00",
+          "title": "(Track 1) Best practices on SQL Server",
+          "speakers": [
+            {
+              "person": "gianluca-hotz"
+            }
+          ],
+          "description": "SQL Server come ogni RDBMS ha un grado di complessità notevole dovuto alla sua natura di gestore generico di dati che deve essere in grado di rispondere a interrogazioni di complessità arbitraria nel modo più efficiente possibile. In generale, non esiste la bacchetta magica per aumentare le prestazioni ma una serie di best practice che possono aiutare molto. Scopo di questa sessione è di contestualizzare alcune delle pratiche più importanti da seguire per ottenere prestazioni ottimali."
+        },
+        {
+          "time": "18:00 - 19:00",
+          "title": "(Track 2) TypeScript Advanced Type Patterns",
+          "speakers": [
+            {
+              "person": "daniele-morosinotto"
+            }
+          ],
+          "description": "Molti programmatori approcciano a TypeScript perché fornisce loro il type-check e la type-inference familiare a chi programma in .NET - infatti TS permette di avere il giusto livello di controllo sopra ad un linguaggio dynamic-typed come JavaScript, ma non tutti sanno che il type system di TypeScript non è uguale a quello di C# o Java!In questa sessione faremo un excursus del type-system di TypeScript: capiremo perché è definito structural typed e come differisce dal classico nominal type system, vedremo poi la capacità di TS di modellare tipi sfruttando le logiche di composizione (tipi algebrici union e intersection types) per finire con le ultime novità sui conditional types.Verranno mostrati alcuni Pattern di programmazione Funzionale corredati da esempi di DTDD (Data-Type Driven Design) che ci aiuteranno a capire meglio queste funzionalità e come sfruttarle per scrivere del buon codice!"
+        },
+        {
+          "time": "19:00 - 20:00",
+          "title": "Ask the expert",
+          "speakers": ["XE"],
+          "description": "Durante la giornata raccoglieremo le domande e le più interessanti verranno discusse con gli speaker in questa sessione in attesa di goderci una buona cena in compagnia."
+        }
+      ],
+      "materials": [
+        {
+          "label": "download",
+          "url": "https://drive.google.com/open?id=1csLBDTapV14HTUnM-H-KOUffWpPq3g_6"
+        }
+      ],
+      "sourceUrl": "https://www.xedotnet.org/eventi/one-day-real-app/",
+      "draft": false
+    },
+    "body": "\n\nArriva il nostro main event del semestre: **XE One Day - Good code**. Assieme ai nostri ospiti e speaker d’eccezione **Pietro Brambati** (Cloud Solution Architect at Microsoft), **Aldo Donetti** (EMEA Senior Regional Program Manager at Microsoft), **Gianluca Hotz** (Microsoft MVP Data Platform) trascorreremo mezza giornata all'insegna del buon codice.\n\nLa giornata inizierà con la keynote comune per poi dividersi in due track e concludersi con una sessione durante la quale i nostri speaker risponderanno alle domande più interessanti conivolgendo tutti i partecipanti.  \n\nCome sempre, al termine delle sessioni verrano estratti dei gadget per i partecipanti.\n\nLa partecipazione alla conferenza è (come al solito) gratuita.\n\nPer chi vorrà, l'evento proseguirà con la cena, che si terrà nella stessa location ([Osteria del Frate dalla Manica Larga](https://www.osteriadelfrate.it/)), una trattoria con cucina casereccia che lavora solo con materie prime di alta qualità. Il menù prevede antipasto di salumi tipici, un primo, un secondo a base di carne, contorni, dolce, vino e bevande comprese.  \nXE contribuirà a coprire parte del costo per cui il prezzo finale sarà di soli €22,00 a persona: un'occasione di cui approfittare!\n\n**E' possibile scaricare il materiale al seguante link**: [download](https://drive.google.com/open?id=1csLBDTapV14HTUnM-H-KOUffWpPq3g_6)\n"
+  },
+  {
+    "file": "src/data/events/2017/2017-02-17-aspnet-core-vs-nodejs.md",
+    "data": {
+      "title": "XE Community Meeting - ASP.NET Core vs Node.JS",
+      "description": "Un punto fermo per tutti gli sviluppatori e appassionati che vogliono condividere la loro conoscenza e passione per la tecnologia.",
+      "date": "2017-02-17",
+      "eventType": "Evento serale",
+      "venue": {
+        "name": "Training Center - Banchina dell'Azoto 15",
+        "url": "https://goo.gl/maps/TsUuEDT75SC2",
+        "online": false
+      },
+      "sessions": [
+        {
+          "time": "20:00 - 23:00",
+          "title": "ASP.NET Core",
+          "speakers": [
+            {
+              "person": "andrea-dottor"
+            }
+          ]
+        },
+        {
+          "time": "20:00 - 23:00",
+          "title": "Node.JS",
+          "speakers": [
+            {
+              "person": "daniele-morosinotto"
+            }
+          ]
+        }
+      ],
+      "materials": [
+        {
+          "label": "https://github.com/andreadottor/XE_AspNetCore",
+          "url": "https://github.com/andreadottor/XE_AspNetCore"
+        },
+        {
+          "label": "https://github.com/dmorosinotto/XE_Nodejs",
+          "url": "https://github.com/dmorosinotto/XE_Nodejs"
+        }
+      ],
+      "sourceUrl": "https://www.xedotnet.org/eventi/aspnet-core-vs-nodejs/",
+      "draft": false
+    },
+    "body": "\n\nUna serata dedicata al confronto tra queste due tecnologie.\n\nPartiremo dalle basi, per capire come muovere i primi passi, aggiungendo man mano complessità, fino ad arrivare all'accesso ai dati.\n\nStep by step, esempio per esempio...\n\n**Il materiale è disponibile al download ai seguenti link:**\n\n-   ASP.NET Core: [https://github.com/andreadottor/XE\\_AspNetCore](https://github.com/andreadottor/XE_AspNetCore)\n-   Node.JS: [https://github.com/dmorosinotto/XE\\_Nodejs](https://github.com/dmorosinotto/XE_Nodejs)\n"
+  },
+  {
+    "file": "src/data/events/2017/2017-03-24-async-night.md",
+    "data": {
+      "title": "XE Community Meeting - Async & Data Night",
+      "description": "Un punto fermo per tutti gli sviluppatori e appassionati che vogliono condividere la loro conoscenza e passione per la tecnologia.",
+      "date": "2017-03-24",
+      "eventType": "Evento serale",
+      "venue": {
+        "name": "Training Center - Banchina dell'Azoto 15",
+        "url": "https://goo.gl/maps/TsUuEDT75SC2",
+        "online": false
+      },
+      "sessions": [
+        {
+          "time": "20:00 - 21:30",
+          "title": "C# Async: surviving in an Async-First Development World",
+          "speakers": [
+            {
+              "person": "mirco-vanini"
+            }
+          ],
+          "description": "Dopo una breve introduzione sui concetti fondamentali relativi alla programmazione asincrona saranno esposti vari tips & trick per la “soppravivenza” del programmatore che adotta questa tecnologia."
+        },
+        {
+          "time": "21:30 - 23:00",
+          "title": "Dapper",
+          "speakers": [
+            {
+              "person": "davide-contin"
+            }
+          ],
+          "description": "Introduzione a Dapper, \"a simple object mapper for .Net\"https://github.com/StackExchange/Dapper"
+        }
+      ],
+      "materials": [
+        {
+          "label": "download",
+          "url": "https://drive.google.com/drive/folders/0B5JUdKPfCebKWkRyd3FlUDNUOVk?resourcekey=0-x_C4e6mav-6OXIn8rjgJZw&usp=sharing"
+        },
+        {
+          "label": "https://github.com/StackExchange/Dapper",
+          "url": "https://github.com/StackExchange/Dapper"
+        }
+      ],
+      "sourceUrl": "https://www.xedotnet.org/eventi/async-night/",
+      "draft": false
+    },
+    "body": "\n\nUna serata tra pattern Async e ORM mapping. Inizieremo con una guida per lo sviluppatore C# che vuole cimentarsi con l'ormai irrinunciabile e onnipresente modello asincrono per poi passare a conoscere un semplice ma molto performante SQL-to-object mapper.\n\n**E' possibile scaricare il materiale al seguente link**: [download](https://drive.google.com/drive/folders/0B5JUdKPfCebKWkRyd3FlUDNUOVk?resourcekey=0-x_C4e6mav-6OXIn8rjgJZw&usp=sharing)\n"
+  },
+  {
+    "file": "src/data/events/2017/2017-04-06-20170406-windows-real-time.md",
+    "data": {
+      "title": "Windows & Real-Time workshop",
+      "description": "Un punto fermo per tutti gli sviluppatori e appassionati che vogliono condividere la loro conoscenza e passione per la tecnologia.",
+      "date": "2017-04-06",
+      "eventType": "Giornata",
+      "venue": {
+        "name": "Training Center - Banchina dell'Azoto 15",
+        "url": "https://goo.gl/maps/TsUuEDT75SC2",
+        "online": false
+      },
+      "sessions": [
+        {
+          "time": "09:00 - 09:30",
+          "title": "Registrazione",
+          "speakers": []
+        },
+        {
+          "time": "09:30 - 10:00",
+          "title": "Benvenuto",
+          "speakers": [],
+          "description": "BEPS EngineeringAVNET EmbeddedIntervalZeroSpeaker:"
+        },
+        {
+          "time": "10:00 - 11:00",
+          "title": "Windows 10 IoT (dalla versione Core all’Enterprise)",
+          "speakers": [],
+          "description": "Beppe e Mirco presentano la versione Windows 10 IoT in tutte le sue sfaccettature: dalla versione Core a quella Enterprise, discendente diretta delle versioni Windows 8.1 Industry. Questa sessione ha lo scopo, inoltre, di illustrare i principali servizi Azure dedicati al mondo IoT, in particolare si fornirà una breve overview di Azure IoT Suite.Speaker:"
+        },
+        {
+          "time": "11:00 - 11:15",
+          "title": "Break",
+          "speakers": []
+        },
+        {
+          "time": "11:15 - 12:15",
+          "title": "RTX64 Cos’è e come funziona",
+          "speakers": [],
+          "description": "Beppe farà una breve introduzione per mettere in evidenza le soluzioni Windows 10 IoT per l’industria sia da un punto di vista tecnico che da quello di gestione ed i vantaggi che si possono sfruttare con l’iper e il super ammortamento introdotti nella Legge di Bilancio 2017.La descrizione pubblicitaria di IntervalZero per RTX64 suona come: “RTX64: Windows 10 IoT diventa Real-Time”. Gianluigi spiegherà come RTX64 trasforma Windows 10 in un sistema operativo real-time, quali sono le potenzialità e gli strumenti a disposizione.Speaker:"
+        },
+        {
+          "time": "12:15 - 13:00",
+          "title": "RTX64 Testimonianze d’uso",
+          "speakers": [],
+          "description": "Descrizione di casi reali d’utilizzo di RTX in industria.Speaker:"
+        },
+        {
+          "time": "13:00 - 14:00",
+          "title": "Aperitivo & Networking",
+          "speakers": []
+        }
+      ],
+      "materials": [
+        {
+          "label": "download",
+          "url": "https://drive.google.com/file/d/0B5JUdKPfCebKYnB3MmdnV01rMW8/view?usp=sharing&resourcekey=0-l35JmE3g_CRU7ac_S86P4Q"
+        }
+      ],
+      "sourceUrl": "https://www.xedotnet.org/eventi/20170406-windows-real-time/",
+      "draft": false
+    },
+    "body": "\n\nWindows 10 IoT diventa Real-Time con RTX64\n\nDurante questa giornata potrete scoprire tutte le soluzioni proposte da [**IntervalZero**](https://www.intervalzero.com/products/rtos-platform-vision/) e da [**Microsoft**](https://www.microsoft.com/en-us/WindowsForBusiness/windows-iot) che permettono di sfruttare le **potenzialità dell’uso combinato di Windows 10 IoT e l’estensione RTX/RTX64**, trasformando Windows in un sistema operativo Real-Time senza dover ricorrere né alla compresenza di due sistemi operativi, né all’utilizzo di device Real-Time aggiuntivi.\n\n**E' possibile scaricare il materiale al seguente link**: [download](https://drive.google.com/file/d/0B5JUdKPfCebKYnB3MmdnV01rMW8/view?usp=sharing&resourcekey=0-l35JmE3g_CRU7ac_S86P4Q)\n"
+  },
+  {
+    "file": "src/data/events/2017/2017-06-08-javascript-da-0-a-es6.md",
+    "data": {
+      "title": "Seminario [PARTE 1] - JavaScript da 0 a ES6",
+      "description": "Prima parte del seminario",
+      "date": "2017-06-08",
+      "eventType": "Giornata",
+      "venue": {
+        "name": "Ordine degli Ingegneri di Padova",
+        "url": "https://goo.gl/maps/KdXwS2TqXBB2",
+        "online": false
+      },
+      "sessions": [
+        {
+          "time": "16:00 - 18:00",
+          "title": "Introduzione a JavaScript",
+          "speakers": [
+            {
+              "person": "daniele-morosinotto"
+            }
+          ]
+        },
+        {
+          "time": "18:00 - 20:00",
+          "title": "Pattern comunemente usati in JavaScript",
+          "speakers": [
+            {
+              "person": "daniele-morosinotto"
+            }
+          ]
+        }
+      ],
+      "materials": [
+        {
+          "label": "Slide e codice Andrea Dottor",
+          "url": "https://github.com/andreadottor/XeDemo_PizzeriaAPI"
+        },
+        {
+          "label": "Slide e codice Daniele Morosinotto",
+          "url": "https://github.com/dmorosinotto/LearnJS_INGPD"
+        }
+      ],
+      "sourceUrl": "https://www.xedotnet.org/eventi/javascript-da-0-a-es6/",
+      "draft": false
+    },
+    "body": "\n\nDai suoi natali 21 anni fa JavaScript ne ha fatta di strada. Inizialmente pensato per rendere più dinamiche le pagine HTML (in Netscape Navigator) da parecchio tempo fa capolino anche lato server e, di fatto, per molti sviluppatori più giovani è il nuovo BASIC. E’ compagno inseparabile per tutti i browser, siano essi ospitati nei vostri computer con tastiera e mouse sia in quelli che portate in tasca o al polso. E’ una tecnologia abilitante, che rende possibile il moderno World Wide Web, ed è anche normato nelle specifiche ECMAScript. Nell’ultima parte del seminario sarà esaminata l’ASP.NET WebAPI, framework che rende semplice implementare web service.\n\nDESTINATARI Il seminario – partendo dalle basi di JavaScript – è rivolto a tutti i Professionisti del settore dell’Informazione interessati alla recenti evoluzioni del Web.\n\n**E' possibile scaricare il materiale al seguente link**: [Slide e codice Andrea Dottor](https://github.com/andreadottor/XeDemo_PizzeriaAPI)  \n[Slide e codice Daniele Morosinotto](https://github.com/dmorosinotto/LearnJS_INGPD)\n"
+  },
+  {
+    "file": "src/data/events/2017/2017-07-06-javascript-da-0-a-es6-api-rest.md",
+    "data": {
+      "title": "Seminario [PARTE 2] - JavaScript da 0 a ES6 & API REST",
+      "description": "Seconda parte del seminario",
+      "date": "2017-07-06",
+      "eventType": "Giornata",
+      "venue": {
+        "name": "Ordine degli Ingegneri di Padova",
+        "url": "https://goo.gl/maps/KdXwS2TqXBB2",
+        "online": false
+      },
+      "sessions": [
+        {
+          "time": "16:00 - 18:00",
+          "title": "Novità introdotte in ES6 / ES2015+",
+          "speakers": [
+            {
+              "person": "daniele-morosinotto"
+            }
+          ]
+        },
+        {
+          "time": "18:00 - 20:00",
+          "title": "Creare API pubbliche, come evitare gli errori comuni",
+          "speakers": [
+            {
+              "person": "andrea-dottor"
+            }
+          ]
+        }
+      ],
+      "materials": [
+        {
+          "label": "Slide e codice Andrea Dottor",
+          "url": "https://github.com/andreadottor/XeDemo_PizzeriaAPI"
+        },
+        {
+          "label": "Slide e codice Daniele Morosinotto",
+          "url": "https://github.com/dmorosinotto/LearnJS_INGPD"
+        }
+      ],
+      "sourceUrl": "https://www.xedotnet.org/eventi/javascript-da-0-a-es6-api-rest/",
+      "draft": false
+    },
+    "body": "\n\nDai suoi natali 21 anni fa JavaScript ne ha fatta di strada. Inizialmente pensato per rendere più dinamiche le pagine HTML (in Netscape Navigator) da parecchio tempo fa capolino anche lato server e, di fatto, per molti sviluppatori più giovani è il nuovo BASIC. E’ compagno inseparabile per tutti i browser, siano essi ospitati nei vostri computer con tastiera e mouse sia in quelli che portate in tasca o al polso. E’ una tecnologia abilitante, che rende possibile il moderno World Wide Web, ed è anche normato nelle specifiche ECMAScript. Nell’ultima parte del seminario sarà esaminata l’ASP.NET WebAPI, framework che rende semplice implementare web service.\n\nDESTINATARI Il seminario – partendo dalle basi di JavaScript – è rivolto a tutti i Professionisti del settore dell’Informazione interessati alla recenti evoluzioni del Web.\n\n**E' possibile scaricare il materiale al seguente link**: [Slide e codice Andrea Dottor](https://github.com/andreadottor/XeDemo_PizzeriaAPI)  \n[Slide e codice Daniele Morosinotto](https://github.com/dmorosinotto/LearnJS_INGPD)\n"
+  },
+  {
+    "file": "src/data/events/2017/2017-09-15-privacy-security-night.md",
+    "data": {
+      "title": "XE Community Meeting - Privacy & Security Night",
+      "description": "Il nuovo Regolamento Europeo 2016/679 sulla privacy diventerà definitivamente applicabile in via diretta a partire dal 25 maggio 2018, rivoluzionando molti degli adempimenti e degli assetti organizzativi dell’Aziende, in particolare per i professionisti dell’ICT....",
+      "date": "2017-09-15",
+      "eventType": "Evento serale",
+      "venue": {
+        "name": "DoubleTree by Hilton Hotel Venice - North",
+        "url": "https://goo.gl/maps/y8cTaZQYSSq",
+        "online": false
+      },
+      "sessions": [
+        {
+          "time": "20:00 - 21:20",
+          "title": "Nuovo Regolamento Europeo 2016/679 sulla privacy",
+          "speakers": [
+            {
+              "person": "avv-paolo-vicenzotto"
+            }
+          ],
+          "description": "Il nuovo Regolamento Europeo 2016/679 sulla privacy diventerà definitivamente applicabile in via diretta a partire dal 25 maggio 2018, rivoluzionando molti degli adempimenti e degli assetti organizzativi dell’Aziende, in particolare per i professionisti dell’ICT.Il seminario illustrerà le novità principali della norma, come le modalità di trattamento dei dati, il concetto della privacy by design e privacy by default, l’analisi delle banche dati e dei relativi rischi, il registro dei trattamenti e la nuova figura del “Responsabile della Protezione dei dati” (RDP o DPO) che ciascuna azienda dovrà nominare obbligatoriamente.Inoltre il professionista ICT avrà nuove e particolari responsabilità nella compilazione dei software che trattano dati personali e nella gestione, archivazione e conservazione tramite servizi di providing."
+        },
+        {
+          "time": "21:30 - 22:50",
+          "title": "Sviluppare applicazioni sicure by design",
+          "speakers": [
+            {
+              "person": "raffaele-rialdi"
+            }
+          ],
+          "description": "Negli ultimi anni il numero di attacchi informatici è divenuto più frequente ed ha scosso numerose aziende con risvolti economici non trascurabili. Non meno rilevanti, la nuova categoria di virus chiamata “ransomware” ha acuito i problemi derivanti da una cattiva politica di gestione della sicurezza dei dati.Cosa deve fare l’esercito di architetti e developer? Quali strategie tecniche possono aumentare in modo misurabile il livello di sicurezza di una applicazione? Come si identificano le aree da proteggere in una architettura complessa?Ma la domanda chiave probabilmente è: In vista dalla normativa GDPR del 2018, come può un tecnico dimostrare ad un giudice di aver fatto tutto ciò che era necessario?"
+        }
+      ],
+      "materials": [
+        {
+          "label": "download",
+          "url": "https://drive.google.com/open?id=0B5JUdKPfCebKNVgxQ0IyZnJaVmc"
+        }
+      ],
+      "sourceUrl": "https://www.xedotnet.org/eventi/privacy-security-night/",
+      "draft": false
+    },
+    "body": "\n\n**E' possibile scaricare il materiale al seguente link**: [download](https://drive.google.com/open?id=0B5JUdKPfCebKNVgxQ0IyZnJaVmc)\n"
+  },
+  {
+    "file": "src/data/events/2017/2017-11-18-one-day-performance-optimization.md",
+    "data": {
+      "title": "XE One Day - Performance & Optimization",
+      "description": "Un'intera giornata dedicata ad approfondire",
+      "date": "2017-11-18",
+      "eventType": "Giornata",
+      "venue": {
+        "name": "Holiday Inn Venezia, Venezia Mestre",
+        "url": "https://www.google.it/maps/place/Holiday+Inn+Venice+-+Mestre+Marghera/@45.4743392,12.2127474,17z/data=!3m1!4b1!4m2!3m1!1s0x477eb680674b298d:0x3e77220e14d9b15",
+        "online": false
+      },
+      "sessions": [
+        {
+          "title": "Track 1",
+          "speakers": []
+        },
+        {
+          "title": "SQL Server to the MAX",
+          "speakers": []
+        },
+        {
+          "title": "Debugging Performance Issues Using Visual Studio",
+          "speakers": []
+        },
+        {
+          "title": "ASP.NET, ottimizziamo con la cache",
+          "speakers": []
+        },
+        {
+          "title": "How to rock the stage: public speaking for geeks!",
+          "speakers": []
+        },
+        {
+          "time": "09:30 - 10:30",
+          "title": "SQL Server to the MAX",
+          "speakers": [
+            {
+              "person": "andrea-benedetti"
+            }
+          ]
+        },
+        {
+          "time": "09:30 - 10:30",
+          "title": "Ottimizzare il front-end. Per le prestazioni, per il SEO. - Il caso di studio di un'applicazione web isomorfica",
+          "speakers": [
+            {
+              "person": "andrea-coiutti"
+            }
+          ],
+          "description": "Negli ultimi mesi un'applicazione web complessa ci ha messo di fronte a numerose sfide. Tra tutte, l'elevata aspettativa in termini di interattività da parte dell'utente e, al tempo stesso, l'altissima concorrenza dal punto di vista del SEO. Requisiti apparentemente agli antipodi, e spesso aghi della bilancia, in grado di far pendere la stessa più verso un'approccio maggiormente orientato al client, piuttosto che al server.In questo talk condivideremo esperienze pratiche concrete, dal perchè abbiamo deciso di utilizzare Mithril.js come framework (di cui introdurremo le caratteristiche salienti), alla risoluzione di problematiche comuni quali routing, localizzazione, autenticazione e stato condiviso fra server e client. Allo stesso tempo cercheremo di condividere i principi generali alla base delle nostre scelte, in modo da fornire idee e spunti anche a chi adotta uno stack tecnologico diverso"
+        },
+        {
+          "time": "11:00 - 12:00",
+          "title": "Debugging Performance Issues Using Visual Studio",
+          "speakers": [
+            {
+              "person": "mirco-vanini"
+            }
+          ],
+          "description": "In questa sessione verranno esposti gli strumenti messi a disposizione da Visual Studio per migliorare continuamente le prestazioni delle applicazioni durante il normale sviluppo di tuti i giorni."
+        },
+        {
+          "time": "11:00 - 12:00",
+          "title": "Ottimizzare per ...gli esseri umani - Principi fondamentali di Interaction Design per sviluppatori",
+          "speakers": [
+            {
+              "person": "steve-maraspin"
+            }
+          ],
+          "description": "Ti è mai capitato di non riuscire a inviare una form, per poi scoprire che c'era un messaggio d'errore di cui non ti eri neppure accorto? Ti sei mai trovato di fronte a interfacce che apparivano chiare, e altre che apparivano confuse, senza che ti fosse chiaro cosa fosse a generare simili sensazioni?Se situazioni e domande come queste ti sono familiari, questo talk potrebbe fornirti qualche risposta. E magari anche qualche strumento per rendere più efficaci le interfacce dei sistemi su cui lavori. Passeremo in rassegna i principali elementi di psicologia cognitiva e design, in modo da capire come favorire l'interazione con un sistema digitale. Parleremo anche di User Experience. E capiremo come e perchè UX e UI sono cose diverse. Condivideremo spunti per poter migliorare entrambe."
+        },
+        {
+          "time": "12:10 - 13:10",
+          "title": "ASP.NET, ottimizziamo con la cache",
+          "speakers": [
+            {
+              "person": "andrea-dottor"
+            }
+          ],
+          "description": "Cache, amica e nemica di molti dev.Uno dei modi per incrementare le performance di un'applicativo è l'utilizzo della cache, ma non è tutto oro quel che luccica.In questa sessione vedremo quali tipologie di cache esistono, ed il come poterle utilizzare al meglio. Output cache, cache applicativa, Redis, Memcached...cerchiamo di fare un pò di chiarezza e capiamo i pro e contro delle varie soluzioni."
+        },
+        {
+          "time": "12:10 - 13:10",
+          "title": "Realizzare un sito web in un’ora con Umbraco CMS",
+          "speakers": [
+            {
+              "person": "davide-contin"
+            }
+          ],
+          "description": "A tutti noi è capitato almeno una volta di ricevere una richiesta urgente che \"dobbiamo\" soddisfare. In questi casi, avere a disposizione uno strumento che consenta di fare un buon lavoro in poco tempo ci può risolvere un problema. In questa sessione vedremo come Umbraco ci permetta di ottimizzare i tempi di realizzazione di un sito web."
+        },
+        {
+          "time": "14:45 - 15:45",
+          "title": "How to rock the stage: public speaking for geeks!",
+          "speakers": [
+            {
+              "person": "lorenzo-barbieri"
+            }
+          ]
+        }
+      ],
+      "materials": [
+        {
+          "label": "download",
+          "url": "https://drive.google.com/open?id=12gM5tDMuby81lfPlLdXjQTBY3GG1Jc0t"
+        }
+      ],
+      "sourceUrl": "https://www.xedotnet.org/eventi/one-day-performance-optimization/",
+      "draft": false
+    },
+    "body": "\n\n**E' possibile scaricare il materiale al seguente link**: [download](https://drive.google.com/open?id=12gM5tDMuby81lfPlLdXjQTBY3GG1Jc0t)\n\nArriva il nostro main event del semestre, **XE One Day - Performance & Optimization**. Assieme ai nostri ospiti e speaker d’eccezione **Andrea Benedetti** (Director of Technical Evangelism presso Microsoft) e **Lorenzo Barbieri** (Cloud Solution Architect Microsoft) trascorreremo un’intera giornata dedicata a tecniche e tecnologie per spingere le performance delle nostre applicazioni over the top! Ma non solo: nel pomeriggio vi aspetta l’**Unconference**: una nuova formula per discutere su argomenti specifici direttamente suggeriti da voi, sempe sul tema performance & optimization!\n\nLa giornata inizierà con la keynote comune per poi dividersi in due track: lato “client” vedremo insieme come realizzare un’interfaccia che sia contemporaneamente al top di responsività e ottimizzazione SEO, come migliorarne l’interaction design o ancora come ottimizzare le nostre performance lavorative realizzando un sito Web professionale ready for deployment in un’ora. Lato “server” impareremo come spingere al massimo SQL server, come usare il debugging avanzato di Visual Studio per individuare problemi di performace e infine come ottimizzare l’uso della Cache di ASP.NET.  \n  \nEcco alcune delle sessioni che verranno proposte alla Unconference:\n\n-   Angular 4 e la separazione delle responsabilità.\n-   Customizzare lo scaffolding di ASP.NET MVC, perchè a volte generare è meglio.\n-   Ionic 2 e Visual Studio Code.\n-   Single Sign-On with Identity Server 4.\n-   SLQ server: query/stored \"fatte a mano\" vs ADO.NET vs Entity Framework. Cosa scegliere quando le performance devono essere al top?\n-   Top speed frameworks for GUI: Knockout vs Angular vs React.\n-   Top speed for server side code: .NET Parallel programming.\n-   Come fare DEBUG client-side e server-side con VSCode.\n\n**AGENDA  \n  \n**\n"
+  },
+  {
+    "file": "src/data/events/2017/2017-12-01-electron-night.md",
+    "data": {
+      "title": "XE Community Meeting - Electron & WebAssembly Night",
+      "description": "Un punto fermo per tutti gli sviluppatori e appassionati che vogliono condividere la loro conoscenza e passione per la tecnologia.",
+      "date": "2017-12-01",
+      "eventType": "Evento serale",
+      "venue": {
+        "name": "Training Center - Banchina dell'Azoto 15",
+        "url": "https://goo.gl/maps/TsUuEDT75SC2",
+        "online": false
+      },
+      "sessions": [
+        {
+          "time": "20:00 - 21:20",
+          "title": "Electron everywhere",
+          "speakers": [
+            {
+              "person": "davide-senatore"
+            }
+          ],
+          "description": "Il framework Electron consente di creare applicazioni desktop multipiattaforma con le tecnologie Web che conosciamo e a cui siamo abituati. In questa sessione cercheremo di capire in quali frangenti questa tecnologia ci possa essere d'aiuto."
+        },
+        {
+          "time": "21:30 - 22:50",
+          "title": "WebAssembly: what is it?",
+          "speakers": [
+            {
+              "person": "andrea-agnoletto"
+            }
+          ],
+          "description": "In questa sessione daremo insieme una prima occhiata a quello che potrebbe diventare un \"disruptive change\" nel mondo dello sviluppo Web. Capiremo che cos'è WebAssembly partendo dal basso, cioè dal suo bytecode e dalla sua architettura di base, per poi salire andando ad esplorare le possibili opportunità d'impiego per i linguaggi/framework di alto livello. Vedremo con degli esempi \"live\" installazione ed uso delle principali SDK ad oggi a dispozione in modo da fornire tutti gli strumenti necessari per inziare a cimentarsi con la programmazione nel nuovo mondo di WebAssembly."
+        }
+      ],
+      "materials": [
+        {
+          "label": "download",
+          "url": "https://drive.google.com/drive/folders/1gfv8l8knlGHL4JClLOed7FogGfkJQ1uh?usp=sharing"
+        }
+      ],
+      "sourceUrl": "https://www.xedotnet.org/eventi/electron-night/",
+      "draft": false
+    },
+    "body": "\n\n**E' possibile scaricare il materiale al seguente link**: [download](https://drive.google.com/drive/folders/1gfv8l8knlGHL4JClLOed7FogGfkJQ1uh?usp=sharing)\n"
+  },
+  {
+    "file": "src/data/events/2016/2016-03-11-web-api-ionic.md",
+    "data": {
+      "title": "XE Community Meeting - Web API & Ionic",
+      "description": "Un punto fermo per tutti gli sviluppatori e appassionati che vogliono condividere la loro conoscenza e passione per la tecnologia.",
+      "date": "2016-03-11",
+      "eventType": "Evento serale",
+      "venue": {
+        "name": "Hotel Crystal - Preganziol (TV)",
+        "url": "https://www.google.it/maps/place/Hotel+Ristorante+Crystal/@45.6119086,12.2338245,17z/data=!4m6!1m3!3m2!1s0x47794a1245f0694b:0x49d0b6fa12234c20!2sHotel+Ristorante+Crystal!3m1!1s0x47794a1245f0694b:0x49d0b6fa12234c20",
+        "online": false
+      },
+      "sessions": [
+        {
+          "time": "20:00 - 20:30",
+          "title": "Intro",
+          "speakers": [],
+          "description": "Presentazione di tutte le novità che stiamo introducendo a XE"
+        },
+        {
+          "time": "20:30 - 21:30",
+          "title": "Creare API pubbliche, come evitare gli errori comuni",
+          "speakers": [
+            {
+              "person": "andrea-dottor"
+            }
+          ],
+          "description": "Cerchiamo di capire cosa vuol dire creare delle API pubbliche. Cerchiamo di capire cosa offre ad oggi ASP.NET, e come utilizzare al meglio la tecnologia. L'intenzione è di andare in dettaglio su problematiche spesso sottovalutate: serve sempre ASP.NET Web API? E' meglio WCF? Quali problematiche possono capitare? Come faccio il versionamento? Quali oggetti/classi espongo? E la documentazione?"
+        },
+        {
+          "time": "21:45 - 22:45",
+          "title": "Practical Ionic",
+          "speakers": [
+            {
+              "person": "davide-senatore"
+            }
+          ],
+          "description": "In questa sessione vedremo come impiegare Ionic Framework per interfacciarsi al Device Mobile e consumare in modo efficiente API remote. Impareremo quali sono le strategie più importanti quando si interagisce con servizi remoti e quali siano le best practices per interagire con l'utente. Vedremo inoltre quali strumenti mette a disposizione Ionic per implementare i pattern più interessanti tipo loading spinner, pull and refresh e infinite scrolling."
+        }
+      ],
+      "materials": [
+        {
+          "label": "download",
+          "url": "https://drive.google.com/folderview?id=0B5JUdKPfCebKZS1QVHRZU3lMb2M&usp=sharing"
+        }
+      ],
+      "sourceUrl": "https://www.xedotnet.org/eventi/web-api-ionic/",
+      "draft": false
+    },
+    "body": "\n\nQuesta prima serata dell'anno sarà dedicata alle linee guida da seguire durante lo sviluppo di API pubbliche, ed al loro consumo in ambito mobile e web.\n\n**E' possibile scaricare il materiale al seguante link**: [download](https://drive.google.com/folderview?id=0B5JUdKPfCebKZS1QVHRZU3lMb2M&usp=sharing)\n"
+  },
+  {
+    "file": "src/data/events/2016/2016-04-22-lab-git-e-github-2.md",
+    "data": {
+      "title": "XE LAB - Git e Github (presso HUNEXT a Preganziol)",
+      "description": "Un punto fermo per tutti gli sviluppatori e appassionati che vogliono condividere la loro conoscenza e passione per la tecnologia.",
+      "date": "2016-04-22",
+      "eventType": "Lab",
+      "venue": {
+        "name": "Hunext - Casier (TV)",
+        "url": "https://goo.gl/maps/JMkQdgXzqZpiL67o8",
+        "online": false
+      },
+      "sessions": [
+        {
+          "time": "20:00 - 23:00",
+          "title": "Learn GIT and How to Contribute",
+          "speakers": [
+            {
+              "person": "daniele-morosinotto"
+            }
+          ],
+          "description": "Partendo dalle basi di GIT svolgeremo una serie di esercizi pratici che ci serviranno a conoscere i principali comandi di GIT. Proveremo assieme i più comuni flussi di sviluppo del codice: creeremo la nostra \"repo\" con le prime \"commit\" e ovviamente impareremo a risolvendo gli eventuali \"merge conflict\". Ci sposteremo poi online per provare a condividere il nostro progetto e a creare la nostra prima \"pull request\". Capiremo insieme perché questo strumento non sia più un semplice sistema di gestione del codice, ma grazie a GitHub, abbia assunto ormai una connotazione \"social\" abilitando la collaborazione di più persone, diventando il fulcro per tutto il mondo Open Source.Prerequisiti necessari per partecipare al Lab su GIT:"
+        }
+      ],
+      "materials": [
+        {
+          "label": "https://git-scm.com/downloads",
+          "url": "https://git-scm.com/downloads"
+        },
+        {
+          "label": "https://github.com/join",
+          "url": "https://github.com/join"
+        },
+        {
+          "label": "https://code.visualstudio.com/#alt-downloads",
+          "url": "https://code.visualstudio.com/#alt-downloads"
+        }
+      ],
+      "sourceUrl": "https://www.xedotnet.org/eventi/lab-git-e-github-2/",
+      "draft": false
+    },
+    "body": "\n\nQuesto laboratorio sarà un introduzione pratica all'utilizzo di GIT e GitHub per sperimentare insieme come muovere i primi passi con questi strumenti.\n\nL'evento viene fatto in contemporanea nelle due sale,  collegate in streaming, così da rendere completamente dinamica la serata.\n"
+  },
+  {
+    "file": "src/data/events/2016/2016-04-22-lab-git-e-github.md",
+    "data": {
+      "title": "XE LAB - Git e Github (presso QWERTY Studio a Fiesso d'Artico)",
+      "description": "Un punto fermo per tutti gli sviluppatori e appassionati che vogliono condividere la loro conoscenza e passione per la tecnologia.",
+      "date": "2016-04-22",
+      "eventType": "Lab",
+      "venue": {
+        "name": "QWERTY studio - Fiesso d'Artico (VE)",
+        "url": "https://goo.gl/maps/ctaN4Vr949m",
+        "online": false
+      },
+      "sessions": [
+        {
+          "time": "20:00 - 23:00",
+          "title": "Learn GIT and How to Contribute",
+          "speakers": [
+            {
+              "person": "davide-contin"
+            }
+          ],
+          "description": "Partendo dalle basi di GIT svolgeremo una serie di esercizi pratici che ci serviranno a conoscere i principali comandi di GIT. Proveremo assieme i più comuni flussi di sviluppo del codice: creeremo la nostra \"repo\" con le prime \"commit\" e ovviamente impareremo a risolvendo gli eventuali \"merge conflict\". Ci sposteremo poi online per provare a condividere il nostro progetto e a creare la nostra prima \"pull request\". Capiremo insieme perché questo strumento non sia più un semplice sistema di gestione del codice, ma grazie a GitHub, abbia assunto ormai una connotazione \"social\" abilitando la collaborazione di più persone, diventando il fulcro per tutto il mondo Open Source.Prerequisiti necessari per partecipare al Lab su GIT:"
+        }
+      ],
+      "materials": [
+        {
+          "label": "https://git-scm.com/downloads",
+          "url": "https://git-scm.com/downloads"
+        },
+        {
+          "label": "https://github.com/join",
+          "url": "https://github.com/join"
+        },
+        {
+          "label": "https://code.visualstudio.com/#alt-downloads",
+          "url": "https://code.visualstudio.com/#alt-downloads"
+        }
+      ],
+      "sourceUrl": "https://www.xedotnet.org/eventi/lab-git-e-github/",
+      "draft": false
+    },
+    "body": "\n\nQuesto laboratorio sarà un introduzione pratica all'utilizzo di GIT e GitHub per sperimentare insieme come muovere i primi passi con questi strumenti.\n\nL'evento viene fatto in contemporanea nelle due sale,  collegate in streaming, così da rendere completamente dinamica la serata.\n"
+  },
+  {
+    "file": "src/data/events/2016/2016-05-20-lab-windows-10-iot-core.md",
+    "data": {
+      "title": "XE LAB - Windows 10 IoT core",
+      "description": "Un punto fermo per tutti gli sviluppatori e appassionati che vogliono condividere la loro conoscenza e passione per la tecnologia.",
+      "date": "2016-05-20",
+      "eventType": "Lab",
+      "venue": {
+        "name": "Hotel Crystal - Preganziol (TV)",
+        "url": "https://www.google.it/maps/place/Hotel+Ristorante+Crystal/@45.6119086,12.2338245,17z/data=!4m6!1m3!3m2!1s0x47794a1245f0694b:0x49d0b6fa12234c20!2sHotel+Ristorante+Crystal!3m1!1s0x47794a1245f0694b:0x49d0b6fa12234c20",
+        "online": false
+      },
+      "sessions": [
+        {
+          "time": "20:00 - 23:00",
+          "title": "LAB Windows 10 IoT core",
+          "speakers": [
+            {
+              "person": "mirco-vanini"
+            }
+          ],
+          "description": "Questo laboratorio sarà un introduzione pratica all'utilizzo di Windows 10 IoT Core, nel suo porting verso la Raspberry PI 2, per sperimentare assieme come interagire con la scheda ed i vari sensori / mondo esterno. Per partecipare al laboratorio è necessario venire muniti di portatile con installati i seguenti programmi/ambienti, in dettaglio:PC con Windows 10Visual Studio 2015, Community edition o superiore- ricordarsi di selezionare gli strumenti di sviluppo UWP durante il setupVisual Studio 2015 Update 2 with Windows developer tools 1.3.1 Windows IoT Core Project Templates (https://visualstudiogallery.msdn.microsoft.com/55b357e1-a533-43ad-82a5-a88ac4b01dec?SRC=VSIDE)Windows 10 IoT Core (Raspberry Pi 2) (https://ms-iot.github.io/content/en-US/Downloads.htm)Se siete windows insider scaricate la versione 14262 che contiene il remote controlScaricare l'utility dhcpserver (http://www.dhcpserver.de/)Cavo di rete ethernet normaleUSB To Ethernet Adapter (se il vostro portatile non ha la porta Ethernet)Scheda Raspberry PI 2 o 3MicroSD da 8 GBAlimentatore scheda Raspberry"
+        }
+      ],
+      "materials": [
+        {
+          "label": "download",
+          "url": "https://drive.google.com/folderview?id=0B5JUdKPfCebKQ0h5YTI3S2ctdW8&usp=sharing"
+        },
+        {
+          "label": "https://ms-iot.github.io/content/en-US/Downloads.htm",
+          "url": "https://ms-iot.github.io/content/en-US/Downloads.htm"
+        }
+      ],
+      "sourceUrl": "https://www.xedotnet.org/eventi/lab-windows-10-iot-core/",
+      "draft": false
+    },
+    "body": "\n\nHai mai pensato di poter usare le tue competenze informatiche usando input e output diversi dalla tastiera e il video?  \nTi piacerebbe provare ad usare schede/controllori LED e altri sensori, ma non ci hai mai provato?  \nVieni al Lab IoT, ti insegneremo a muovere i primi passi con Windows IoT Core usando una RaspberryPi2 per acquisire segnali dal mondo esterno e far comunicare queste schede con il cloud...\n\n**E' possibile scaricare il materiale al seguante link**: [download](https://drive.google.com/folderview?id=0B5JUdKPfCebKQ0h5YTI3S2ctdW8&usp=sharing)\n"
+  },
+  {
+    "file": "src/data/events/2016/2016-09-16-ui-night-bootstrap-vs-angular-material.md",
+    "data": {
+      "title": "XE Community Meeting - UI Night - Bootstrap vs Angular Material",
+      "description": "Un punto fermo per tutti gli sviluppatori e appassionati che vogliono condividere la loro conoscenza e passione per la tecnologia.",
+      "date": "2016-09-16",
+      "eventType": "Evento serale",
+      "venue": {
+        "name": "Hotel Crystal - Preganziol (TV)",
+        "url": "https://www.google.it/maps/place/Hotel+Ristorante+Crystal/@45.6119086,12.2338245,17z/data=!4m6!1m3!3m2!1s0x47794a1245f0694b:0x49d0b6fa12234c20!2sHotel+Ristorante+Crystal!3m1!1s0x47794a1245f0694b:0x49d0b6fa12234c20",
+        "online": false
+      },
+      "sessions": [
+        {
+          "time": "20:00 - 21:15",
+          "title": "Bootstrap",
+          "speakers": [
+            {
+              "person": "andrea-dottor"
+            }
+          ],
+          "description": "Bootstrap, il più popolare framework per lo sviluppo di front-end application. In questa sessione scopriremo come utilizzarlo al meglio, e come sfruttarlo per realizzare interfacce responsive all'apparenza complesse. Una serata dove parole come Less, Sass, Bower acquisteranno significato e valore."
+        },
+        {
+          "time": "21:30 - 22:45",
+          "title": "Angular Material",
+          "speakers": [
+            {
+              "person": "davide-senatore"
+            }
+          ],
+          "description": "Angular Material è l'implementazione delle linee guida di Material Design di Google. Grazie a questa libreria, è possibile creare applicazioni web moderne, responsive e basate su standard.Utilizzando Angular come strato di logica ed integrandosi con web service REST è possibile riutilizzare pattern ben conosciuti per realizzare applicazioni per desktop, tablet e smartphone.In questa sessione conosceremo la filosofia di Material Design e comprenderemo come la libreria Angular Material possa dare un contributo di produttività ai nostri progetti."
+        }
+      ],
+      "materials": [
+        {
+          "label": "download",
+          "url": "https://drive.google.com/drive/folders/0B5JUdKPfCebKSXFHUFVjNVpPemc?usp=sharing"
+        }
+      ],
+      "sourceUrl": "https://www.xedotnet.org/eventi/ui-night-bootstrap-vs-angular-material/",
+      "draft": false
+    },
+    "body": "\n\nUn reale e pratico confronto tra due dei più popolari UI Component framework. Una battaglia a colpi di stili, html e direttive\n\n**E' possibile scaricare il materiale al seguante link**: [download](https://drive.google.com/drive/folders/0B5JUdKPfCebKSXFHUFVjNVpPemc?usp=sharing)\n"
+  },
+  {
+    "file": "src/data/events/2016/2016-11-18-debug-night.md",
+    "data": {
+      "title": "XE Community Meeting - Debug Night",
+      "description": "Un punto fermo per tutti gli sviluppatori e appassionati che vogliono condividere la loro conoscenza e passione per la tecnologia.",
+      "date": "2016-11-18",
+      "eventType": "Evento serale",
+      "venue": {
+        "name": "Training Center - Banchina dell'Azoto 15",
+        "url": "https://goo.gl/maps/TsUuEDT75SC2",
+        "online": false
+      },
+      "sessions": [
+        {
+          "time": "20:00 - 21:15",
+          "title": "Debugger Tips and Tricks for .NET Developers with Microsoft Visual Studio 2015",
+          "speakers": [
+            {
+              "person": "mirco-vanini"
+            }
+          ],
+          "description": "Una parte considerevole della giornata di un sviluppatore è spesa in azioni di debug e test. In questa sessione vedremmo come ottenere il meglio dagli strumenti di debug e di diagnostica messi a disposizione da Visual Studio 2015."
+        },
+        {
+          "time": "21:30 - 22:45",
+          "title": "Debugger Tips and Tricks for Fast SQL Developers",
+          "speakers": [
+            {
+              "person": "emanuele-zanchettin"
+            }
+          ],
+          "description": "Un tema sempre scottante: intercettare gli errori e monitorare le prestazioni del proprio database. In questa sessione si vuole presentare il set di base degli strumenti \"molto utili\" e introdurre il concetto di analisi prestazionale: dalla \"cura\" nelle emergenze alla \"prevenzione\" delle problematiche. Alcuni esempi pratici per capire cosa e come fare nelle diverse situazioni che potrebbero verificarsi proprio domani (se non oggi stesso) sul database della tua applicazione."
+        }
+      ],
+      "materials": [
+        {
+          "label": "download",
+          "url": "https://drive.google.com/open?id=0B5JUdKPfCebKLXBMVU5FSmM4ZmM"
+        }
+      ],
+      "sourceUrl": "https://www.xedotnet.org/eventi/debug-night/",
+      "draft": false
+    },
+    "body": "\n\n**E' possibile scaricare il materiale al seguente link**: [download](https://drive.google.com/open?id=0B5JUdKPfCebKLXBMVU5FSmM4ZmM)\n"
+  },
+  {
+    "file": "src/data/events/2015/2015-11-27-tech-pub-aspnet-5-real-case.md",
+    "data": {
+      "title": "Tech-Pub: ASP.NET 5 Real Case",
+      "description": "Un punto fermo per tutti gli sviluppatori e appassionati che vogliono condividere la loro conoscenza e passione per la tecnologia.",
+      "date": "2015-11-27",
+      "venue": {
+        "name": "SAGARI VIDEO PUB - Villorba (TV)",
+        "url": "https://www.google.it/maps?ion=1&espv=2&bav=on.2,or.r_cp.&bvm=bv.114195076,d.ZWU&biw=1920&bih=995&dpr=1&q=Sagari+video+pub+Via+Marconi+53/A+-+31020+villorba+treviso&um=1&ie=UTF-8&sa=X&ved=0ahUKEwjW4bqFzvXKAhVDqQ4KHbyKCUIQ_AUIBigB",
+        "online": false
+      },
+      "sessions": [
+        {
+          "time": "20:00 - 22:00",
+          "title": "Moving to ASP.NET 5: a real case of MVC application migration",
+          "speakers": [
+            {
+              "person": "andrea-agnoletto"
+            }
+          ],
+          "description": "In questa sessione partiremo da una reale applicazione ASP.NET MVC 5 (Framework .NET 4.5.1), il Portale EASTIN (www.eastin.eu), e percorreremo insieme passo per passo l’intero processo per migrarla ad un’applicazione ASP.NET 5 MVC 6. In particolare saranno messe in luce criticità e best-practices che riguardano la migrazione dei principali elementi di un’applicazione Web MVC: configurazione e routing, DAL e Services porting (Web services e WCF), server side “facilities” (Dependency Injection, Session, Cache), authentication, Razor UI e infine deployment su IIS. Impareremo insieme come evitare gli errori più comuni nell’approcciare la migrazione e come sfruttare al meglio le nuove potenzialità offerte da ASP.NET 5."
+        }
+      ],
+      "materials": [
+        {
+          "label": "download",
+          "url": "https://drive.google.com/folderview?id=0B5JUdKPfCebKQXlBUzJFX044ZjA&usp=sharing"
+        }
+      ],
+      "sourceUrl": "https://www.xedotnet.org/eventi/tech-pub-aspnet-5-real-case/",
+      "draft": false
+    },
+    "body": "\n\nUn nuovo formato di eventi per XeDotNet.  \nUna sola presentazione seguita da discussioni e domande libere sull'argomento...ed il tutto accompagnato da buona birra.  \nUno stile più informale per condividere la conoscenza e passare una serata in compagnia.\n\n**E' possibile scaricare il materiale al seguante link**: [download](https://drive.google.com/folderview?id=0B5JUdKPfCebKQXlBUzJFX044ZjA&usp=sharing)\n"
+  }
+]

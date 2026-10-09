@@ -13,24 +13,20 @@ sessions:
     speakers:
       - person: mauro-rainis
     description: I db relazionali non sono sempre la soluzione ottimale per la gestione di serie temporali di dati. Analizzeremo perchè e quando un db TimeSeries potrebbe essere una scelta migliore, vedremo poi installazione e utilizzo di InfluxDb e del suo "TICK" stack.
+    materials:
+      - label: Slide
+        url: https://www.slideshare.net/MauroRainis1/time-seriesdb-influx
   - time: 21:45 - 23:00
     title: How to search...better!
     speakers:
       - person: alessandro-melchiori
     description: Elasticsearch e' uno dei progetti piu' popolari su Github con circa 400 contributors, piu' di 3,000 forks e decine di migliaia di commits. Ma cos'e' e a "cosa serve" ElasticSearch? Come "funziona"?
-materials:
-  - label: https://www.slideshare.net/melkio/how-to-searchbetter
-    url: https://www.slideshare.net/melkio/how-to-searchbetter
-  - label: https://www.slideshare.net/MauroRainis1/time-seriesdb-influx
-    url: https://www.slideshare.net/MauroRainis1/time-seriesdb-influx
+    materials:
+      - label: Slide
+        url: https://www.slideshare.net/melkio/how-to-searchbetter
+materials: []
 sourceUrl: https://www.xedotnet.org/eventi/data-night-influxdb-elastic-search/
 draft: false
 ---
-
-Le slide della sessione di Alessandro Melchiori su ElasticSearch sono disponibili a questo li:  
-[https://www.slideshare.net/melkio/how-to-searchbetter](https://www.slideshare.net/melkio/how-to-searchbetter)
-
-Le slide della sessione di Mauro Rainis su Influx DB sono disponibili a questo li:  
-[https://www.slideshare.net/MauroRainis1/time-seriesdb-influx](https://www.slideshare.net/MauroRainis1/time-seriesdb-influx)
 
 In questa serata dedicata ai dati i nostri speaker ci parleranno di "Time series database" e "Search & Analytics".

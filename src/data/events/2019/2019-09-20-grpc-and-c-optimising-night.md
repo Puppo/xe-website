@@ -22,10 +22,8 @@ sessions:
       - person: mirco-vanini
     description: "Span<T> è un nuovo tipo introdotto con C # 7.2 e supportato nel runtime .NET Core 2.1. Esiste un’implementazione .NET Standard ma è in .NET Core dove sono state apportate modifiche al runtime per supportare la migliore versione possibile nota anche come “span veloce”.Questo nuovo tipologia fornisce accesso type-safe ad un’area contigua di memoria, localizzata nell’heap, nello stack o addirittura formata da memoria non gestita.In questa sessione vedremmo come utilizzare al meglio questi nuovi tipi per ottenere prestazioni ottimali dal nostro codice."
 materials:
-  - label: download
+  - label: Materiali
     url: https://drive.google.com/open?id=1RzzUx9oikAuRSXCLmZ9rilkrbiTn6p9K
 sourceUrl: https://www.xedotnet.org/eventi/grpc-and-c-optimising-night/
 draft: false
 ---
-
-**E' possibile scaricare il materiale al seguente link**: [download](https://drive.google.com/open?id=1RzzUx9oikAuRSXCLmZ9rilkrbiTn6p9K)

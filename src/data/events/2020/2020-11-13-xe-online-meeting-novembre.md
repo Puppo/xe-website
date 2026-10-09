@@ -24,7 +24,7 @@ sessions:
     speakers:
       - person: marco-bortolin
 materials:
-  - label: download
+  - label: Materiali
     url: https://drive.google.com/drive/folders/19ljtf3IQ-XedD2u4HGWf_NjlZ2hcZdA2?usp=sharing
 sourceUrl: https://www.xedotnet.org/eventi/xe-online-meeting-novembre/
 draft: false
@@ -34,5 +34,3 @@ Durante la .Net Conf 2020 (10-12 Novembre) ci sarà il lancio ufficiale di .Net 
 Questa serata sarà quindi il momento ideale per riassumere le novità in arrivo e approfondire le tematiche più interessanti.
 
 Come in tutti i nostri eventi online, ci sarà ampio spazio per le domande e il confronto.
-
-**E' possibile scaricare il materiale al seguante link**: [download](https://drive.google.com/drive/folders/19ljtf3IQ-XedD2u4HGWf_NjlZ2hcZdA2?usp=sharing)

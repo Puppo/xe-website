@@ -19,14 +19,15 @@ sessions:
       - person: davide-contin
     description: Introduzione a Dapper, "a simple object mapper for .Net"https://github.com/StackExchange/Dapper
 materials:
-  - label: download
+  - label: Materiali
     url: https://drive.google.com/drive/folders/0B5JUdKPfCebKWkRyd3FlUDNUOVk?resourcekey=0-x_C4e6mav-6OXIn8rjgJZw&usp=sharing
-  - label: https://github.com/StackExchange/Dapper
-    url: https://github.com/StackExchange/Dapper
 sourceUrl: https://www.xedotnet.org/eventi/async-night/
 draft: false
 ---
 
 Una serata tra pattern Async e ORM mapping. Inizieremo con una guida per lo sviluppatore C# che vuole cimentarsi con l'ormai irrinunciabile e onnipresente modello asincrono per poi passare a conoscere un semplice ma molto performante SQL-to-object mapper.
 
-**E' possibile scaricare il materiale al seguente link**: [download](https://drive.google.com/drive/folders/0B5JUdKPfCebKWkRyd3FlUDNUOVk?resourcekey=0-x_C4e6mav-6OXIn8rjgJZw&usp=sharing)
+## Riferimenti — Dapper
+
+Introduzione a Dapper, "a simple object mapper for .Net"\
+[https://github.com/StackExchange/Dapper](https://github.com/StackExchange/Dapper)

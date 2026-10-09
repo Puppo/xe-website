@@ -7,7 +7,90 @@ venue:
   name: Consorzio Universitario di Pordenone
   url: https://goo.gl/maps/1fnjgfHPhTk
   online: false
-sessions: []
+sessions:
+  - title: Keynote
+    speakers: []
+    time: 09:00
+  - title: ASP.NET Core - dove siamo arrivati
+    speakers:
+      - person: andrea-dottor
+    time: 09:30
+  - title: AI on The Edge
+    speakers:
+      - person: marco-minerva
+    time: 09:30
+  - title: Visual Studio Performance Tools
+    speakers:
+      - person: andrea-tosato
+    time: 09:30
+  - title: Coffee Break
+    speakers: []
+    time: 10:30
+  - title: ASP.NET Core SignalR
+    speakers:
+      - person: emanuele-bartolesi
+    time: 11:00
+  - title: Machine Learning in ML.NET
+    speakers:
+      - person: marco-zamana
+    time: 11:00
+  - title: Visual Studio for IoT Solutions
+    speakers:
+      - person: alessio-biasiutti
+    time: 11:00
+  - title: The "Blazor effect".
+    speakers:
+      - person: andrea-agnoletto
+    time: 12:10
+  - title: A quick tour around Azure Dev Spaces
+    speakers:
+      - person: alessandro-melchiori
+    time: 12:10
+  - title: "Sync workitems between multiple Team Projects: the good, the bad, the ugly..."
+    speakers:
+      - person: lorenzo-barbieri
+    time: 12:10
+  - title: Pizza Time
+    speakers: []
+    time: 13:10
+  - title: "C#: dove siamo"
+    speakers:
+      - person: marco-parenzan
+    time: 14:10
+  - title: Debugger Tips and Tricks for .NET Developers with Microsoft Visual Studio 2017
+    speakers:
+      - person: mirco-vanini
+    time: 14:10
+  - title: Crea, condividi e usa codice utile con NuGet
+    speakers:
+      - person: gaetano-paterno
+    time: 14:10
+  - title: ASP.NET Core Razor Pages
+    speakers:
+      - person: andrea-dottor
+    time: 15:20
+  - title: Sviluppare librerie cross-platform con .NET Standard
+    speakers:
+      - person: marco-minerva
+    time: 15:20
+  - title: UN NUOVO MODO DI COLLABORARE GRAZIE A LIVE SHARE
+    speakers:
+      - person: daniele-morosinotto
+      - person: davide-contin
+    time: 15:20
+  - title: "Public speaking for geeks: how to rock the stage!"
+    speakers:
+      - person: lorenzo-barbieri
+    time: 16:30
+  - title: Continuous everything with Visual Studio App Center
+    speakers:
+      - person: riccardo-cappello
+      - person: marco-leoncini
+    time: 16:30
+  - title: Visual Studio for Mac
+    speakers:
+      - person: marco-bortolin
+    time: 16:30
 materials: []
 registration:
   url: https://sessionize.com/api/v2/9d71mlcv/view/gridtable

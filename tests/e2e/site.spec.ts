@@ -6,6 +6,7 @@ const representativePages = [
   '/eventi/',
   '/eventi/2025/',
   '/eventi/tech-pub-gennaio-2025/',
+  '/eventi/one-day-app-modernization/',
   '/soci/',
   '/chi-siamo/',
   '/contatti/',
@@ -468,5 +469,37 @@ test('gli URL storici dei soci raggiungono i profili in kebab case', async ({
     expect(catalog).not.toEqual(
       expect.arrayContaining([expect.objectContaining({ slug: alias })]),
     );
+  }
+});
+
+test('One Day App modernization mostra tutti i dieci speaker recuperati', async ({
+  page,
+}) => {
+  await page.goto('/eventi/one-day-app-modernization/');
+  const speakers = page.locator('.session-speakers li');
+  await expect(speakers).toHaveCount(10);
+  await expect(
+    page.getByRole('heading', { name: 'Modernize your community' }),
+  ).toBeVisible();
+  const davide = page.getByRole('link', { name: 'Davide Contin' });
+  await expect(davide).toHaveAttribute(
+    'href',
+    'https://www.linkedin.com/in/davide-contin-62516611',
+  );
+  await expect(davide.locator('.speaker-photo')).toHaveCount(1);
+  const massimo = speakers.filter({ hasText: 'Massimo Bonanni' });
+  await expect(massimo.locator('.speaker-placeholder')).toHaveText('MB');
+  await expect(massimo.locator('a')).toHaveCount(0);
+  for (const name of [
+    'Gianluca Sartori',
+    'Luca Del Puppo',
+    'Alessandro Melchiori',
+    'Daniele Morosinotto',
+    'Andrea Dottor',
+    'Mirco Vanini',
+    'Marco Bortolin',
+    'Giorgio Boa',
+  ]) {
+    await expect(speakers.filter({ hasText: name })).toHaveCount(1);
   }
 });

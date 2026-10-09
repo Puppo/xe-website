@@ -11,31 +11,31 @@ sessions:
     title: Blazor
     speakers:
       - person: andrea-dottor
-    description: Link al repository con il codice della Demo e le slides:https://github.com/andreadottor/XE.Dottor.Demo.BlazorWebApp
+    materials:
+      - label: Slide e codice
+        url: https://github.com/andreadottor/XE.Dottor.Demo.BlazorWebApp
   - time: 21:00 - 22:30
     title: Angular
     speakers:
       - person: alice-capponi
-    description: Link al codice della Demo:https://github.com/Alyyc85/xe-post-app
+    materials:
+      - label: Codice
+        url: https://github.com/Alyyc85/xe-post-app
   - time: 21:00 - 22:30
     title: Vue.js
     speakers:
       - person: daniele-morosinotto
-    description: Link al repository con il codice della Demo e le slides:https://github.com/dmorosinotto/XE_FrameworkSPA_Vue
+    materials:
+      - label: Slide e codice
+        url: https://github.com/dmorosinotto/XE_FrameworkSPA_Vue
   - time: 21:00 - 22:30
     title: React
     speakers:
       - person: enrico-giacomazzi
-    description: Link al codice della Demo:https://github.com/enricogiacomazzi/xe_confronto_spa_react
-materials:
-  - label: https://github.com/andreadottor/XE.Dottor.Demo.BlazorWebApp
-    url: https://github.com/andreadottor/XE.Dottor.Demo.BlazorWebApp
-  - label: https://github.com/Alyyc85/xe-post-app
-    url: https://github.com/Alyyc85/xe-post-app
-  - label: https://github.com/dmorosinotto/XE_FrameworkSPA_Vue
-    url: https://github.com/dmorosinotto/XE_FrameworkSPA_Vue
-  - label: https://github.com/enricogiacomazzi/xe_confronto_spa_react
-    url: https://github.com/enricogiacomazzi/xe_confronto_spa_react
+    materials:
+      - label: Codice
+        url: https://github.com/enricogiacomazzi/xe_confronto_spa_react
+materials: []
 sourceUrl: https://www.xedotnet.org/eventi/online-meeting-spa-framework-a-confronto/
 draft: false
 ---

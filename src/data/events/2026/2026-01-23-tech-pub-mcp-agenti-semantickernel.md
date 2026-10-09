@@ -33,5 +33,3 @@ Un incontro informale dove tecnologia e convivialità si incontrano.
 Scopri come estendere LLM con .NET e OpenAPI, orchestrare agenti con il .NET Agent Framework e creare workflow AI-assisted con GitHub Copilot e MCP.
 
 Talk pratici, demo live… e una buona birra per accompagnare il networking!
-
--   **Il materiale è disponibile al seguente link:** [Slide](https://drive.google.com/drive/folders/1bwW6Dkv5yZHL4V3npKUH8YSpGPBxWHAm?usp=sharing)

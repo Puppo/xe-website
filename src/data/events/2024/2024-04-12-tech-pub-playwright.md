@@ -16,9 +16,10 @@ sessions:
     title: Playwright visto da due mondi paralleli - parte 2
     speakers:
       - person: luca-del-puppo
-materials:
-  - label: Slide Luca Del Puppo
-    url: https://slides.com/puppo92/write-one-time-test-everywhere-with-playwright/fullscreen
+    materials:
+      - label: Slide
+        url: https://slides.com/puppo92/write-one-time-test-everywhere-with-playwright/fullscreen
+materials: []
 sourceUrl: https://www.xedotnet.org/eventi/tech-pub-playwright/
 draft: false
 ---
@@ -28,5 +29,3 @@ Uno stile più informale per condividere la conoscenza e passare una serata in c
 
 _Non funziona su Firefox, non funziona su Safari, va in crash su Chrome (ok, quest'ultima è impossibile ;)). Ma quante volte la tua nuova funzionalità ha creato problemi su almeno uno di questi browser? O quante volte il codice ha iniziato a incepparsi a causa di modifiche impreviste? Certo, eliminare tutti i bug è impossibile, ma prevenirli è parte del nostro lavoro.  
 Esploriamo insieme come creare test end-to-end (e2e) grazie all’utilizzo di Playwright e vediamolo applicato ai mondi .NET e JavaScript/TypeScript._
-
--   **Il materiale è disponibile al seguente link:** [Slide Luca Del Puppo](https://slides.com/puppo92/write-one-time-test-everywhere-with-playwright/fullscreen)

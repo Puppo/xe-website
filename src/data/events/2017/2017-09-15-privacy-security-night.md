@@ -19,10 +19,8 @@ sessions:
       - person: raffaele-rialdi
     description: "Negli ultimi anni il numero di attacchi informatici è divenuto più frequente ed ha scosso numerose aziende con risvolti economici non trascurabili. Non meno rilevanti, la nuova categoria di virus chiamata “ransomware” ha acuito i problemi derivanti da una cattiva politica di gestione della sicurezza dei dati.Cosa deve fare l’esercito di architetti e developer? Quali strategie tecniche possono aumentare in modo misurabile il livello di sicurezza di una applicazione? Come si identificano le aree da proteggere in una architettura complessa?Ma la domanda chiave probabilmente è: In vista dalla normativa GDPR del 2018, come può un tecnico dimostrare ad un giudice di aver fatto tutto ciò che era necessario?"
 materials:
-  - label: download
+  - label: Materiali
     url: https://drive.google.com/open?id=0B5JUdKPfCebKNVgxQ0IyZnJaVmc
 sourceUrl: https://www.xedotnet.org/eventi/privacy-security-night/
 draft: false
 ---
-
-**E' possibile scaricare il materiale al seguente link**: [download](https://drive.google.com/open?id=0B5JUdKPfCebKNVgxQ0IyZnJaVmc)

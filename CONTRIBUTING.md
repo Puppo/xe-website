@@ -110,6 +110,54 @@ npm run migrate -- --membership-year=2026
 
 Questo comando scarica e riscrive molti contenuti, incluso l’elenco dell’anno indicato. Non usarlo per il normale aggiornamento annuale dei soci; eseguirlo solo per una migrazione completa autorizzata. Senza un anno valido il comando termina prima di scaricare o scrivere file.
 
+## Recupero delle sessioni e degli speaker storici
+
+Per verificare l’archivio senza scrivere file:
+
+```sh
+npm run enrich:speakers
+```
+
+Il comando confronta ogni evento con `sourceUrl`, legge le righe dell’agenda legacy e gli embed o collegamenti Sessionize, scaricando HTML senza eseguire JavaScript. L’agenda completa ha precedenza sugli elenchi espliciti di materiali o ospiti; i nomi citati incidentalmente nel testo non diventano speaker. Le fonti non disponibili e le agende esterne non supportate vengono segnalate e i dati esistenti sono conservati.
+
+Dopo aver esaminato il rapporto, applicare le correzioni:
+
+```sh
+npm run enrich:speakers -- --write
+npm run schemas
+npm run build
+npm run check:build
+```
+
+La scrittura aggiunge le sessioni e le associazioni mancanti, conservando il corpo Markdown e i metadati editoriali. I nomi sono confrontati con i profili ignorando maiuscole, accenti e spazi ripetuti; più profili con lo stesso nome normalizzato richiedono una correzione esplicita nel contenuto. Non applicare corrispondenze approssimative: verificare la fonte e usare direttamente `person: slug` per le eccezioni di grafia. Le organizzazioni (`XE`, `1nn0va`) restano testo. Per persone confermate senza profilo viene creato un profilo minimo con la fonte, senza aggiungerle all’albo soci; una foto assente usa le iniziali. I profili esistenti non vengono riscritti se non richiedono aggiornamenti. Una seconda esecuzione sulle stesse fonti non produce ulteriori modifiche.
+
+L’audit del recupero iniziale è in [Verifica speaker dell’archivio](docs/speaker-audit-2026-10-07.md). Questo flusso non richiede la migrazione completa.
+
+## Materiali delle sessioni
+
+Inserire slide, codice e demo specifici di un talk in `sessions[].materials`, con `label` e `url`. La pagina li mostra sotto il talk in **Programma**. Usare etichette comprensibili, per esempio `Slide`, `Codice`, `Demo` o `Slide e codice`. Il campo è facoltativo e ha valore predefinito `[]`.
+
+L’elenco `materials` dell’evento contiene le risorse condivise, come una cartella con il materiale di più talk, e quelle che la fonte non permette di attribuire. Evitare di ripetere gli stessi collegamenti nel corpo Markdown. Prerequisiti di installazione e riferimenti a progetti rimangono nel loro contesto esplicativo.
+
+Per verificare o riparare l’archivio senza una migrazione completa:
+
+```sh
+npm run enrich:materials
+npm run enrich:materials -- --write
+npm run schemas
+npm test
+npm run build
+npm run check:build
+```
+
+La prima esecuzione è una simulazione e non scrive file. Il comando usa le righe dell’agenda e gli elenchi espliciti della fonte per attribuire le risorse; un nome deve identificare un solo talk. Le associazioni curate già presenti sono conservate. Le cartelle condivise non vengono esplorate. Le attribuzioni ambigue, i collegamenti senza etichetta e le fonti non disponibili sono segnalati nel rapporto in italiano. Una fonte non disponibile non cancella dati esistenti.
+
+La scrittura modifica soltanto i materiali, i blocchi dedicati ai download e gli inviti al download nelle descrizioni delle sessioni. Conserva prosa, URL, agenda scaricabile, ordine, orari e riferimenti agli speaker. Una seconda esecuzione sulle stesse fonti non produce modifiche. La migrazione completa riutilizza la stessa estrazione, senza raccogliere automaticamente ogni link a GitHub o ogni URL che contiene “download”.
+
+I JSON WebMCP includono `sessions[].materials`; il campo `materials` dei JSON rimane l’elenco aggregato senza URL ripetuti, per compatibilità con i consumatori esistenti. La descrizione testuale associa ogni materiale al suo talk.
+
+L’audit iniziale dei 45 eventi è in [Verifica materiali dell’archivio](docs/material-audit-2026-10-07.md).
+
 ## Testing and verification
 
 Run the smallest relevant check while iterating, then the full set for the area you changed.
