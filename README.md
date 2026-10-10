@@ -32,4 +32,7 @@ Configure the public address with `SITE_URL`, including any subdirectory; for ex
 
 For the annual membership update, follow [Gestione annuale dei soci](CONTRIBUTING.md#gestione-annuale-dei-soci).
 
+I contratti, la disponibilità e le verifiche degli strumenti per agenti nel browser
+sono descritti in [Strumenti WebMCP](docs/webmcp/README.md).
+
 Schemas are defined in `src/content-schemas.ts` and connected to the content collections in `src/content.config.ts`. An invalid entry causes the build to fail. The JSON Schemas in `schemas/` are regenerated automatically before each build; editor completion mappings are configured in `.vscode/settings.json`.

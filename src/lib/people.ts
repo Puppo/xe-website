@@ -216,6 +216,7 @@ function toDetails(
   const biography = (person.body ?? '').trim();
   return {
     biography: markdownExcerpt(biography, BIOGRAPHY_EXCERPT_LENGTH),
+    fullBiography: markdownExcerpt(biography, biography.length),
     excerpt: markdownExcerpt(biography),
     externalLinks: person.data.links,
     name: person.data.name,

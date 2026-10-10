@@ -6,36 +6,19 @@ import {
 
 export const EVENT_CATALOG_PAGE_SIZE = 5;
 export const MEMBER_CATALOG_PAGE_SIZE = 5;
-export const WEBMCP_OUTPUT_CHARACTER_LIMIT = 1500;
-
-const jsonRequests = new Map<string, Promise<unknown>>();
-
-/** Fetch a generated WebMCP JSON file once, retrying automatically after errors. */
-export function fetchWebMcpJson<T>(
-  url: string,
-  isExpected: (value: unknown) => value is T,
-): Promise<T> {
-  let request = jsonRequests.get(url);
-  if (!request) {
-    request = fetch(url).then(async (response) => {
-      if (!response.ok) {
-        throw new Error('I dati WebMCP non sono disponibili.');
-      }
-      const value: unknown = await response.json();
-      if (!isExpected(value)) {
-        throw new TypeError('I dati WebMCP non sono validi.');
-      }
-      return value;
-    });
-    jsonRequests.set(url, request);
-    void request.catch(() => {
-      if (jsonRequests.get(url) === request) {
-        jsonRequests.delete(url);
-      }
-    });
-  }
-  return request as Promise<T>;
-}
+export { WEBMCP_OUTPUT_CHARACTER_LIMIT } from './webmcp-pagination';
+export {
+  fetchWebMcpJson,
+  registerWebMcpTools,
+  fillControl,
+  requiredString,
+} from './webmcp-runtime';
+import {
+  describeWithinBudget,
+  paginateItems,
+  truncate,
+  WEBMCP_OUTPUT_CHARACTER_LIMIT,
+} from './webmcp-pagination';
 
 export type EventPeriod = 'all' | 'past' | 'upcoming';
 
@@ -94,7 +77,15 @@ export interface WebMcpEventDetails {
   endDate?: string;
   eventType?: string;
   materials: { label: string; url: string }[];
-  registration: { message: string; url?: string };
+  registration: {
+    message: string;
+    url?: string;
+    startDate?: string;
+    endDate?: string;
+    sourceUrl?: string;
+  };
+  sourceDate?: string;
+  sourceEndDate?: string;
   sessions: {
     materials?: EventMaterial[];
     speakers: string[];
@@ -136,6 +127,7 @@ export interface WebMcpMemberSummary {
 
 export interface WebMcpMemberDetails {
   biography: string;
+  fullBiography?: string;
   excerpt: string;
   externalLinks: { label: string; url: string }[];
   name: string;
@@ -152,14 +144,9 @@ export interface MemberCatalogInput {
   role?: MemberRole | 'both';
 }
 
-function truncate(value: string, maximum: number): string {
-  if (value.length <= maximum) {
-    return value;
-  }
-  return `${value.slice(0, Math.max(0, maximum - 1)).trimEnd()}…`;
-}
-
 function fold(value: string): string {
+  if (typeof value !== 'string')
+    throw new TypeError('Il testo di ricerca deve essere una stringa.');
   return value
     .normalize('NFD')
     .replaceAll(/[\u0300-\u036f]/g, '')
@@ -195,6 +182,12 @@ export function listEvents(
       ))
   ) {
     throw new TypeError('Indica almeno un relatore non vuoto.');
+  }
+  if (
+    input.period !== undefined &&
+    !['all', 'past', 'upcoming'].includes(input.period)
+  ) {
+    throw new TypeError('Scegli un periodo valido: all, past o upcoming.');
   }
   const offset = input.offset ?? 0,
     period = input.period ?? 'all',
@@ -261,26 +254,35 @@ export function listEvents(
             .some((value) => fold(value).includes(query)))
       );
     }),
-    events = matches
-      .slice(offset, offset + EVENT_CATALOG_PAGE_SIZE)
-      .map((event) => ({
-        date: event.date,
-        description: truncate(event.description, 120),
-        endDate: event.endDate,
-        eventType: event.eventType,
-        slug: event.slug,
-        speakers: event.speakers,
-        status: event.status,
-        title: event.title,
-        url: event.url,
-        venue: event.venue,
-      })),
-    nextOffset =
-      offset + EVENT_CATALOG_PAGE_SIZE < matches.length
-        ? offset + EVENT_CATALOG_PAGE_SIZE
-        : null;
-
-  return { events, nextOffset, offset, total: matches.length };
+    summaries = matches.map((event) => ({
+      date: event.date,
+      description: truncate(event.description, 120),
+      endDate: event.endDate,
+      eventType: event.eventType ? truncate(event.eventType, 60) : undefined,
+      slug: event.slug,
+      speakers: event.speakers?.slice(0, 3).map((name) => truncate(name, 80)),
+      speakerCount: event.speakers?.length ?? 0,
+      status: event.status,
+      title: truncate(event.title, 160),
+      url: event.url,
+      venue: event.venue ? truncate(event.venue, 80) : undefined,
+      truncated:
+        event.description.length > 120 ||
+        event.title.length > 160 ||
+        (event.speakers?.length ?? 0) > 3 ||
+        (event.speakers?.some((name) => name.length > 80) ?? false) ||
+        (event.eventType?.length ?? 0) > 60 ||
+        (event.venue?.length ?? 0) > 80,
+    }));
+  return paginateItems(summaries, offset, (events, nextOffset) => ({
+    events,
+    nextOffset,
+    offset,
+    total: matches.length,
+    ...(matches.length === 0
+      ? { suggestion: 'Prova un testo più breve o amplia i filtri.' }
+      : {}),
+  }));
 }
 
 export function eventForSlug<T extends WebMcpEventSummary>(
@@ -299,28 +301,45 @@ export function eventForSlug<T extends WebMcpEventSummary>(
   return event;
 }
 
+export function currentRegistration(
+  event: {
+    date: string;
+    endDate?: string;
+    status: 'scheduled' | 'cancelled';
+    registration: { startDate?: string; endDate?: string; url?: string };
+  },
+  now = new Date(),
+) {
+  const registrationEvent = {
+    data: {
+      date: new Date(event.date),
+      endDate: event.endDate ? new Date(event.endDate) : undefined,
+      status: event.status,
+      registration: {
+        startDate: event.registration.startDate
+          ? new Date(event.registration.startDate)
+          : undefined,
+        endDate: event.registration.endDate
+          ? new Date(event.registration.endDate)
+          : undefined,
+      },
+    },
+  };
+  const state = registrationState(registrationEvent, now);
+  return {
+    ...event.registration,
+    message: registrationMessage(registrationEvent, now),
+    state,
+    url: state === 'open' ? event.registration.url : undefined,
+  };
+}
+
 export function getEvent(
   catalog: WebMcpFullEvent[],
   slug: unknown,
   now = new Date(),
 ) {
-  const event = eventForSlug(catalog, slug),
-    registrationEvent = {
-      data: {
-        date: new Date(event.date),
-        endDate: event.endDate ? new Date(event.endDate) : undefined,
-        status: event.status,
-        registration: {
-          startDate: event.registration.startDate
-            ? new Date(event.registration.startDate)
-            : undefined,
-          endDate: event.registration.endDate
-            ? new Date(event.registration.endDate)
-            : undefined,
-        },
-      },
-    },
-    state = registrationState(registrationEvent, now);
+  const event = eventForSlug(catalog, slug);
   return {
     ...event,
     period: isPastEventDate(
@@ -330,12 +349,7 @@ export function getEvent(
     )
       ? 'past'
       : 'upcoming',
-    registration: {
-      ...event.registration,
-      message: registrationMessage(registrationEvent, now),
-      state,
-      url: state === 'open' ? event.registration.url : undefined,
-    },
+    registration: currentRegistration(event, now),
   };
 }
 
@@ -345,7 +359,11 @@ export function listMembers(
 ) {
   const offset = input.offset ?? 0,
     role = input.role ?? 'both',
-    query = input.query?.trim().toLocaleLowerCase('it-IT');
+    query = input.query === undefined ? undefined : fold(input.query);
+
+  if (!['both', 'member', 'speaker'].includes(role)) {
+    throw new TypeError('Scegli un ruolo valido: member, speaker o both.');
+  }
 
   if (!Number.isInteger(offset) || offset < 0) {
     throw new TypeError(
@@ -362,27 +380,30 @@ export function listMembers(
       }
       return [member.name, member.title, member.excerpt]
         .filter((value): value is string => Boolean(value))
-        .some((value) => value.toLocaleLowerCase('it-IT').includes(query));
+        .some((value) => fold(value).includes(query));
     }),
-    members = matches
-      .slice(offset, offset + MEMBER_CATALOG_PAGE_SIZE)
-      .map(
-        ({
-          roles: _roles,
-          hasImage: _hasImage,
-          hasBiography: _hasBiography,
-          ...member
-        }) => ({
-          ...member,
-          excerpt: truncate(member.excerpt, 120),
-        }),
-      ),
-    nextOffset =
-      offset + MEMBER_CATALOG_PAGE_SIZE < matches.length
-        ? offset + MEMBER_CATALOG_PAGE_SIZE
-        : null;
-
-  return { members, nextOffset, offset, total: matches.length };
+    summaries = matches.map((member) => ({
+      slug: member.slug,
+      name: truncate(member.name, 120),
+      title: member.title ? truncate(member.title, 120) : undefined,
+      excerpt: truncate(member.excerpt, 120),
+      roles: member.roles,
+      url: member.url,
+      linkCount: member.externalLinks.length,
+      truncated:
+        member.name.length > 120 ||
+        (member.title?.length ?? 0) > 120 ||
+        member.excerpt.length > 120,
+    }));
+  return paginateItems(summaries, offset, (members, nextOffset) => ({
+    members,
+    nextOffset,
+    offset,
+    total: matches.length,
+    ...(matches.length === 0
+      ? { suggestion: 'Prova un nome più breve o rimuovi il filtro sul ruolo.' }
+      : {}),
+  }));
 }
 
 export function memberForSlug(
@@ -411,8 +432,8 @@ export function describeMember(
     },
     roles = member.roles.map((role) => roleLabels[role]).join(' e '),
     lines = [
-      `Nome: ${member.name}`,
-      member.title ? `Titolo: ${member.title}` : undefined,
+      `Nome: ${truncate(member.name, 120)}`,
+      member.title ? `Titolo: ${truncate(member.title, 120)}` : undefined,
       `Ruolo: ${roles}`,
       member.profileUrl ? `Profilo esterno: ${member.profileUrl}` : undefined,
       `Pagina: ${member.url}`,
@@ -429,33 +450,41 @@ export function describeMember(
     }
   }
 
-  let result = lines.join('\n'),
-    omitted = 0;
-  for (const line of optionalLines) {
-    if (`${result}\n${line}`.length <= maximum - 40) {
-      result += `\n${line}`;
-    } else {
-      omitted += 1;
-    }
-  }
-  if (omitted > 0) {
-    result += `\n… ${omitted} dettagli omessi; consulta la pagina del socio.`;
-  }
-  return truncate(result, maximum);
+  return describeWithinBudget(
+    lines,
+    optionalLines,
+    'consulta la pagina del socio.',
+    maximum,
+  );
 }
 
 export function describeEvent(
   event: WebMcpEventDetails,
   maximum = WEBMCP_OUTPUT_CHARACTER_LIMIT,
+  now = new Date(),
 ): string {
+  const registration = event.sourceDate
+    ? currentRegistration(
+        {
+          date: event.sourceDate,
+          endDate: event.sourceEndDate,
+          status: event.status,
+          registration: {
+            ...event.registration,
+            url: event.registration.sourceUrl,
+          },
+        },
+        now,
+      )
+    : event.registration;
   const lines = [
-      `Titolo: ${event.title}`,
+      `Titolo: ${truncate(event.title, 160)}`,
       `Stato: ${event.status === 'cancelled' ? 'annullato' : 'programmato'}`,
       `Data: ${event.date}${event.endDate ? ` – ${event.endDate}` : ''}`,
       event.eventType ? `Tipo: ${event.eventType}` : undefined,
-      event.venue ? `Luogo: ${event.venue}` : undefined,
+      event.venue ? `Luogo: ${truncate(event.venue, 80)}` : undefined,
       `Descrizione: ${truncate(event.description, 360)}`,
-      `Iscrizione: ${truncate(event.registration.message, 240)}${event.registration.url ? ` ${event.registration.url}` : ''}`,
+      `Iscrizione: ${truncate(registration.message, 240)}${registration.url ? ` ${registration.url}` : ''}`,
       `URL: ${event.url}`,
     ].filter((line): line is string => Boolean(line)),
     optionalLines: string[] = [];
@@ -488,55 +517,12 @@ export function describeEvent(
     }
   }
 
-  let result = lines.join('\n'),
-    omitted = 0;
-  for (const line of optionalLines) {
-    if (`${result}\n${line}`.length <= maximum - 40) {
-      result += `\n${line}`;
-    } else {
-      omitted += 1;
-    }
-  }
-  if (omitted > 0) {
-    result += `\n… ${omitted} dettagli omessi; consulta la pagina dell’evento.`;
-  }
-  return truncate(result, maximum);
-}
-
-export function registerWebMcpTools(tools: WebMCP.ModelContextTool[]): void {
-  if (!('modelContext' in document) || !document.modelContext?.registerTool) {
-    return;
-  }
-
-  const controller = new AbortController();
-  for (const tool of tools) {
-    void document.modelContext
-      .registerTool(tool, { signal: controller.signal })
-      .catch(() => undefined);
-  }
-  window.addEventListener('pagehide', () => controller.abort(), { once: true });
-}
-
-export function fillControl(
-  control: HTMLInputElement | HTMLTextAreaElement,
-  value: string,
-): void {
-  control.value = value;
-  // Native HTML5 form validation reacts to both `input` and `change`,
-  // So framework-specific synthetic events are unnecessary.
-  control.dispatchEvent(new Event('input', { bubbles: true }));
-  control.dispatchEvent(new Event('change', { bubbles: true }));
-}
-
-export function requiredString(
-  input: Record<string, unknown>,
-  key: string,
-): string {
-  const value = input[key];
-  if (typeof value !== 'string' || value.trim() === '') {
-    throw new TypeError(`Il parametro “${key}” è obbligatorio.`);
-  }
-  return value.trim();
+  return describeWithinBudget(
+    lines,
+    optionalLines,
+    'consulta la pagina dell’evento.',
+    maximum,
+  );
 }
 
 /**

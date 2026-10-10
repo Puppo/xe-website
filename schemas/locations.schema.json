@@ -40,5 +40,5 @@
     ]
   },
   "$id": "https://www.xedotnet.org/schemas/locations.schema.json",
-  "title": "Località aggregate XeDotNet"
+  "title": "XeDotNet location collection"
 }

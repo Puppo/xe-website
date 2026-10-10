@@ -53,5 +53,5 @@
   ],
   "additionalProperties": false,
   "$id": "https://www.xedotnet.org/schemas/person.schema.json",
-  "title": "Profilo pubblico XeDotNet"
+  "title": "XeDotNet public profile"
 }

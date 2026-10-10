@@ -45,7 +45,7 @@ Never commit `.env`, credentials, tokens, or private form endpoints.
 
 ## Content and domain rules
 
-- Keep user-facing copy, metadata, test descriptions, and domain vocabulary in Italian unless a requested change explicitly requires another language.
+- Keep website content, public website metadata, domain vocabulary, and website-facing WebMCP descriptions and responses in Italian. Use English for source code, identifiers, comments, diagnostics, test descriptions, CI names and messages, developer documentation, commit messages, and pull request descriptions. Evaluation case names and agent instructions are code-related text; simulated website user requests and website tool payloads remain Italian.
 - Use the terms in `CONTEXT.md`. In particular, preserve the distinction between scheduled and cancelled events and derive registration availability from its inclusive date interval rather than a manually maintained status.
 - Event Markdown lives at `src/data/events/<year>/<date>-<slug>.md`; people and page Markdown live under `src/data/people/` and `src/data/pages/`; shared structured data lives in `src/data/*.json`.
 - Annual membership comes from `src/data/memberships/YYYY.json`, never people frontmatter or the current date. People profiles must not contain `roles`; derive speaker status only from explicit person references in non-draft events, including historical, future, and cancelled events. Legacy speaker strings are display text. Keep historical lists and profiles; see [Gestione annuale dei soci](CONTRIBUTING.md#gestione-annuale-dei-soci). Regenerate editor schemas after adding profiles.
@@ -160,6 +160,16 @@ Apply these change-specific expectations:
 - URL, base-path, sitemap, canonical, or deployment changes: test with an explicit `SITE_URL` that includes a subpath as well as the default root deployment.
 
 Before handing off a normal change, run at least `npm test`, `npm run build`, and `npm run check:build`. Run the Chromium Playwright suite for any browser-visible change. Report any check that could not be run and the concrete environmental reason.
+
+### Model-backed WebMCP evaluations
+
+- Run model-backed evaluations in a separate CI job by default, using a configured provider or a runner with sufficient resources. This policy applies to LLM inference, not the deterministic Vitest, Playwright, accessibility, or native WebMCP checks above.
+- Do not automatically run local LLM inference on devices with 4 GB RAM or less, or on machines experiencing memory pressure or lacking enough available RAM/VRAM for the model and context. A Raspberry Pi 5 with 4 GB RAM should defer these evaluations to CI. A missing GPU alone does not disqualify a CPU runner with adequate RAM and an acceptable execution-time budget.
+- Local inference requires an explicit user request and a resource assessment: available memory after other workloads, model and context requirements, concurrency, and a bounded runtime. If capacity cannot be established, defer to CI and report the evaluation as pending. Keep complete prompts and evaluation cases; do not truncate or weaken them to fit the device.
+- Do not install or start an inference server, download model weights, or enlarge swap to enable local evaluations unless explicitly requested. Keep model inference separate from builds and browser tests on constrained machines.
+- CI evaluations should pin the model and evaluation runner, cache model weights where applicable, serialize requests, and set a job timeout. Report provider/setup failures separately from model-selection failures. Never report a deferred or unreachable-provider evaluation as passed.
+- The optional runner is Promptfoo with a local Ollama provider and deterministic schema/trajectory assertions. Keep the six conversation fixtures complete; generation or step limits must fail incomplete cases rather than mark them successful. Do not add model inference to `npm test`, builds, or browser tests.
+- Use the fixtures and provider instructions in [docs/webmcp/README.md](docs/webmcp/README.md). A CI preference does not mean a model-evaluation job is already configured; verify the workflow and provider before claiming that CI covers it.
 
 ## Change discipline
 

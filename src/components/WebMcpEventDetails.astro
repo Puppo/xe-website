@@ -15,8 +15,9 @@ const detailsUrl = withBase(`/webmcp/events/${Astro.props.slug}.json`);
     describeEvent,
     fetchWebMcpJson,
     registerWebMcpTools,
-    type WebMcpEventDetails,
   } from '../lib/webmcp';
+
+  import { isEventDetails } from '../lib/webmcp-data';
 
   const detailsElement = document.querySelector<HTMLElement>(
       '[data-webmcp-event-details]',
@@ -29,21 +30,21 @@ const detailsUrl = withBase(`/webmcp/events/${Astro.props.slug}.json`);
         name: 'describe_event',
         title: 'Descrivi questo evento XE',
         description:
-          'Restituisce una descrizione compatta dell’evento XE aperto, con programma, relatori, iscrizione e materiali.',
+          'Descrive l’evento XE aperto e le iscrizioni attuali. Usa questo strumento quando l’utente chiede informazioni su questa pagina.',
         inputSchema: {
           type: 'object',
           properties: {},
           additionalProperties: false,
         },
-        async execute() {
+        async execute(_input, { signal }) {
           const details = await fetchWebMcpJson(
             detailsUrl,
-            (value): value is WebMcpEventDetails =>
-              typeof value === 'object' && value !== null && 'title' in value,
+            isEventDetails,
+            signal,
           );
           return describeEvent(details);
         },
-        annotations: { readOnlyHint: true },
+        annotations: { readOnlyHint: true, untrustedContentHint: true },
       },
     ]);
   }
