@@ -126,9 +126,14 @@ OLLAMA_HOST=http://127.0.0.1:11434 OLLAMA_MODEL=qwen3:4b npm run eval:webmcp:oll
 Sono accettati sia l’origine del server sia il suffisso `/v1`. Non servono chiavi
 cloud. Il comando non installa Ollama, non avvia server e non scarica pesi.
 Su una macchina con RAM sufficiente, configurare il processo **server** con
-`OLLAMA_CONTEXT_LENGTH=8192`, `OLLAMA_NUM_PARALLEL=1` e
+`OLLAMA_GO_TEMPLATE=false`, `OLLAMA_CONTEXT_LENGTH=8192`, `OLLAMA_NUM_PARALLEL=1` e
 `OLLAMA_MAX_LOADED_MODELS=1` prima di avviarlo. Queste variabili nel client non
-modificano un server già avviato. Il provider imposta inoltre esplicitamente `num_ctx: 8192`,
+modificano un server già avviato. Con Ollama 0.40.2, il modello fissato usa il template GGUF originale:
+`OLLAMA_GO_TEMPLATE=false` va impostata sul server. Il template Go predefinito
+può omettere chiamate dalla cronologia quando l’assistente restituisce anche
+testo, e nelle prove ha prodotto reasoning nonostante `think: false`.
+Il cambio di template conserva prompt, fixture e schemi completi.
+Il provider imposta inoltre esplicitamente `num_ctx: 8192`,
 `num_predict: 1024`, `think: false`, temperatura e seed zero in ogni richiesta.
 Ogni richiesta di inferenza ha un timeout di 120 secondi; ogni conversazione
 consente al massimo quattro richieste. Raggiungere il limite di token o di passi
@@ -188,7 +193,7 @@ l’avvio manuale; il pulsante **Run workflow** compare quando il file è su `ma
 Il job usa `ubuntu-24.04`, installa Ollama **0.40.2** verificando il checksum
 dell’archivio ufficiale, scarica Qwen3 4B e verifica il digest fissato in
 `ollama.json`. Richiede almeno 6 GiB di RAM libera prima dell’installazione;
-configura 8K token, una richiesta parallela e un solo modello caricato. La cache
+usa il template GGUF del modello, 8K token, una richiesta parallela e un solo modello caricato. La cache
 usa il digest dei pesi; i rapporti e i log sono conservati sette giorni anche
 in caso di errore. Il job ha un limite di 25 minuti, comprendente preparazione,
 inferenza (massimo 15 minuti) e caricamento dei rapporti.

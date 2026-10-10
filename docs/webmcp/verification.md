@@ -58,8 +58,23 @@ di 15 minuti senza completare casi. Non è stata dichiarata riuscita.
 Il profilo Promptfoo disabilita esplicitamente il thinking e limita ogni
 richiesta a 1.024 token generati e 120 secondi, mantenendo tutti i prompt,
 le fixture e gli otto strumenti della homepage. I limiti raggiunti fanno fallire
-il caso, senza accettare risultati parziali. L’esecuzione aggiornata in CI
-rimane da verificare dopo la pubblicazione del commit.
+il caso, senza accettare risultati parziali. Il primo run Promptfoo
+[38058199926](https://github.com/Puppo/xe-website/actions/runs/38058199926) ha
+completato sei casi in 11 minuti e 9 secondi: newsletter riuscita, retry del
+catalogo non eseguito dal modello e quattro timeout di richiesta. I rapporti
+JSON/HTML e i log sono stati caricati e il wrapper ha restituito codice **2**.
+Tutti i job del workflow Checks sono riusciti, inclusa la suite browser.
+
+Le trascrizioni mostrano reasoning anche con `think: false`; i log confermano
+il template Go. Il template pubblicato usa il testo dell’assistente in
+alternativa alle sue chiamate, perdendo queste ultime quando entrambi esistono.
+La CI ora imposta `OLLAMA_GO_TEMPLATE=false` per usare il template GGUF originale,
+conservando tutti i messaggi e lasciando inalterate fixture e assertion. La
+correzione va verificata nel nuovo run; non si dichiara riuscita la qualità del
+modello sulla base delle prove simulate.
+
+Riferimenti per il renderer: [configurazione Ollama 0.40.2](https://github.com/ollama/ollama/blob/v0.40.2/envconfig/config.go),
+[template del modello](https://ollama.com/library/qwen3:4b/blobs/ae370d884f10).
 
 L’ambiente locale da 4 GB non è stato modificato per ospitare un modello:
 nessun server avviato né pesi scaricati. Il comando per una macchina adeguata
