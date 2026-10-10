@@ -7,7 +7,7 @@ Chromium 156.0.8078.4, and Lighthouse 13.5.0.
 
 | Check | Recorded result |
 | --- | --- |
-| `npm test -- --maxWorkers=2` before the continuation regression cases | 170 tests passed across 20 files |
+| `npm test -- --maxWorkers=2` | 173 tests passed across 20 files |
 | `npm run lint` | No errors; existing nonblocking warnings remain |
 | `npm run format:check` | Passed |
 | `npm run build` | No Astro/TypeScript errors, warnings, or hints; 187 documents generated |
@@ -68,8 +68,13 @@ submission and consent. No expected call, fixture-specific tool name, slug, or
 offset is inserted into the prompt. All six cases, eight homepage tools, generation
 limits, and strict schema/trajectory assertions remain. Regression coverage
 checks the three existing histories and rejects premature completion.
-The resulting model behavior must be verified by a fresh CI run; protocol mocks
-alone do not establish that this policy fixes model selection.
+The first policy run [38084695385](https://github.com/Puppo/xe-website/actions/runs/38084695385)
+completed in **3 minutes 26 seconds** with **5 passes, 1 assertion failure, and
+no provider errors**. Both pagination cases passed. The retry case announced a
+retry without executing a call, and the unchanged assertion rejected it. The
+policy now requires the next response to execute that retry and inspect its
+result before answering. Real-model behavior is checked separately in CI;
+protocol mocks alone do not establish model-selection quality.
 
 The baseline [Checks run](https://github.com/Puppo/xe-website/actions/runs/38060174480)
 passed every job, including Chromium and mobile browser coverage.
