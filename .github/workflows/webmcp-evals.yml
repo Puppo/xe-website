@@ -1,6 +1,18 @@
 name: Valutazioni WebMCP (Ollama locale)
 
 on:
+  pull_request:
+    paths:
+      - '.github/workflows/webmcp-evals.yml'
+      - 'docs/webmcp/**'
+      - 'scripts/*webmcp*.mjs'
+      - 'scripts/lib/webmcp-evals.mjs'
+      - 'src/lib/webmcp*.ts'
+      - 'src/components/WebMcp*.astro'
+      - 'src/components/NewsletterForm.astro'
+      - 'src/pages/contatti/index.astro'
+      - 'tests/*webmcp*.test.ts'
+      - 'tests/e2e/*webmcp*.spec.ts'
   workflow_dispatch:
 
 permissions:

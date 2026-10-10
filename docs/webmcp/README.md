@@ -161,10 +161,13 @@ riutilizzabile in CI con un server Ollama nello stesso runner.
 
 ### CI con Ollama locale al runner
 
-Il workflow manuale [webmcp-evals.yml](../../.github/workflows/webmcp-evals.yml)
-compare come **Valutazioni WebMCP (Ollama locale)** nella scheda Actions dopo
-che il file è stato pubblicato sul repository. Avviarlo con **Run workflow**.
-Non parte automaticamente per ogni PR e non modifica i controlli obbligatori.
+Il workflow [webmcp-evals.yml](../../.github/workflows/webmcp-evals.yml)
+compare come **Valutazioni WebMCP (Ollama locale)** nella scheda Actions.
+Si avvia sulle PR, anche draft, che modificano strumenti, fixture o runner
+WebMCP. Non parte sulle PR prive di modifiche a questi percorsi e non modifica
+i controlli obbligatori. Il trigger PR consente di provare il nuovo workflow
+prima del merge. Dopo la registrazione del workflow è disponibile anche
+l’avvio manuale; il pulsante **Run workflow** compare quando il file è su `main`.
 
 Il job usa `ubuntu-24.04`, installa Ollama **0.40.2** verificando il checksum
 dell’archivio ufficiale, scarica Qwen3 4B e verifica il digest fissato in

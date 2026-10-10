@@ -57,7 +57,8 @@ ospitare un modello. Il comando per una macchina adeguata è nel
 [README WebMCP](README.md#valutazioni-con-ollama).
 I rapporti generati risiedono nella directory ignorata `.evals/`.
 
-Il workflow CI manuale installa Ollama nel runner e verifica versione, checksum,
+Il workflow CI installa Ollama nel runner e verifica versione, checksum,
 RAM disponibile e digest dei pesi. È stato controllato staticamente; la sua
-esecuzione con un modello reale resta da avviare dopo la pubblicazione del
-commit. Non è stata dichiarata riuscita una valutazione con modello.
+esecuzione con un modello reale parte sulle PR che modificano WebMCP,
+comprese le draft, dopo la pubblicazione del commit. Non è stata dichiarata
+riuscita una valutazione con modello.
