@@ -168,6 +168,7 @@ Before handing off a normal change, run at least `npm test`, `npm run build`, an
 - Local inference requires an explicit user request and a resource assessment: available memory after other workloads, model and context requirements, concurrency, and a bounded runtime. If capacity cannot be established, defer to CI and report the evaluation as pending. Keep complete prompts and evaluation cases; do not truncate or weaken them to fit the device.
 - Do not install or start an inference server, download model weights, or enlarge swap to enable local evaluations unless explicitly requested. Keep model inference separate from builds and browser tests on constrained machines.
 - CI evaluations should pin the model and evaluation runner, cache model weights where applicable, serialize requests, and set a job timeout. Report provider/setup failures separately from model-selection failures. Never report a deferred or unreachable-provider evaluation as passed.
+- The optional runner is Promptfoo with a local Ollama provider and deterministic schema/trajectory assertions. Keep the six conversation fixtures complete; generation or step limits must fail incomplete cases rather than mark them successful. Do not add model inference to `npm test`, builds, or browser tests.
 - Use the fixtures and provider instructions in [docs/webmcp/README.md](docs/webmcp/README.md). A CI preference does not mean a model-evaluation job is already configured; verify the workflow and provider before claiming that CI covers it.
 
 ## Change discipline

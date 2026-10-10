@@ -5,7 +5,7 @@ Chromium 156.0.8078.4 e Lighthouse 13.5.0.
 
 | Controllo | Risultato |
 | --- | --- |
-| `npm test -- --maxWorkers=2` | 162 test superati in 19 file |
+| `npm test -- --maxWorkers=2` | 169 test superati in 20 file |
 | `npm run lint` | Nessun errore; rimangono avvisi non bloccanti |
 | `npm run format:check` | Superato |
 | `npm run build` | Nessun errore, avviso o hint Astro/TypeScript; 187 documenti generati |
@@ -37,28 +37,31 @@ ripristinato prima delle verifiche finali.
 
 ## Valutazioni con modello
 
-La suite locale comprende sei casi e usa `webmcp-evals@0.0.4` tramite il backend
-SDK compatibile con l’API chat di Ollama. Le prove iniziali sui quattro casi
-originali hanno incontrato `ECONNREFUSED 127.0.0.1:11434`. Il nuovo comando
-`npm run eval:webmcp:ollama` ha confermato l’assenza del server e termina con
-codice **2**, senza avviare inferenza o scaricare modelli.
+La suite comprende sei casi e usa **Promptfoo 0.124.1**, con un provider
+personalizzato per l’API nativa Ollama. Le assertion deterministiche verificano
+schema, strumenti, ordine, argomenti e completamento della conversazione.
+I test unitari verificano catalogo, fixture, offset, rapporti, conversazioni,
+isolamento dello stato, errori HTTP, annullamento e limiti di generazione.
 
-Otto test deterministici verificano catalogo, fixture, offset e controllo del
-rapporto, inclusi errori del provider, selezioni errate e risultati incompleti.
-Una prova di integrazione con un’API Ollama simulata ha esercitato il wrapper e
-la CLI reale: sei conversazioni, tredici richieste chat, rapporti JSON e HTML,
-e codice zero per le traiettorie simulate corrette. Questa prova dimostra il
+La CLI reale Promptfoo è stata provata contro un’API Ollama simulata:
+sei conversazioni, tredici richieste chat, rapporti JSON e HTML e codice **0**
+per le traiettorie corrette. Le prove di mutazione hanno confermato codice **1**
+per un argomento incompatibile con lo schema e per una risposta conclusiva
+interrotta dal limite di generazione; HTTP 503 produce codice **2** con errori
+del provider distinti dalle assertion fallite. Questa integrazione dimostra il
 funzionamento del protocollo e del runner, **non** la scelta degli strumenti
 con un modello reale.
 
-L’inferenza resta **non eseguita**: non sono disponibili misure di consumo,
-durata o qualità della selezione. L’ambiente da 4 GB non è stato modificato per
-ospitare un modello. Il comando per una macchina adeguata è nel
-[README WebMCP](README.md#valutazioni-con-ollama).
-I rapporti generati risiedono nella directory ignorata `.evals/`.
+La prima esecuzione CI con il runner precedente ha verificato installazione
+Ollama, download, cache e digest di Qwen3 4B, ma l’inferenza ha raggiunto il timeout
+di 15 minuti senza completare casi. Non è stata dichiarata riuscita.
+Il profilo Promptfoo disabilita esplicitamente il thinking e limita ogni
+richiesta a 1.024 token generati e 120 secondi, mantenendo tutti i prompt,
+le fixture e gli otto strumenti della homepage. I limiti raggiunti fanno fallire
+il caso, senza accettare risultati parziali. L’esecuzione aggiornata in CI
+rimane da verificare dopo la pubblicazione del commit.
 
-Il workflow CI installa Ollama nel runner e verifica versione, checksum,
-RAM disponibile e digest dei pesi. È stato controllato staticamente; la sua
-esecuzione con un modello reale parte sulle PR che modificano WebMCP,
-comprese le draft, dopo la pubblicazione del commit. Non è stata dichiarata
-riuscita una valutazione con modello.
+L’ambiente locale da 4 GB non è stato modificato per ospitare un modello:
+nessun server avviato né pesi scaricati. Il comando per una macchina adeguata
+è nel [README WebMCP](README.md#valutazioni-con-ollama).
+I rapporti generati risiedono nella directory ignorata `.evals/`.

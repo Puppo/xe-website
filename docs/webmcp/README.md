@@ -128,8 +128,12 @@ cloud. Il comando non installa Ollama, non avvia server e non scarica pesi.
 Su una macchina con RAM sufficiente, configurare il processo **server** con
 `OLLAMA_CONTEXT_LENGTH=8192`, `OLLAMA_NUM_PARALLEL=1` e
 `OLLAMA_MAX_LOADED_MODELS=1` prima di avviarlo. Queste variabili nel client non
-modificano un server già avviato. La durata massima del runner è 15 minuti; le
-richieste iniziali di controllo hanno un timeout di 10 secondi ciascuna.
+modificano un server già avviato. Il provider imposta inoltre esplicitamente `num_ctx: 8192`,
+`num_predict: 1024`, `think: false`, temperatura e seed zero in ogni richiesta.
+Ogni richiesta di inferenza ha un timeout di 120 secondi; ogni conversazione
+consente al massimo quattro richieste. Raggiungere il limite di token o di passi
+fa fallire il caso, senza accettare una traiettoria parziale. La durata massima
+del runner è 15 minuti; i controlli iniziali hanno timeout di 10 secondi.
 
 La suite comprende sei conversazioni: ricerca e lettura di un profilo, ricerca
 materiali, continuazione di una biografia, nuovo tentativo dopo un errore
@@ -139,19 +143,31 @@ offset coerenti. Il catalogo offerto al modello contiene tutti gli otto strument
 della homepage, selezionati dall’inventario generale `schema.json`. Playwright
 verifica separatamente la disponibilità degli strumenti nelle altre pagine.
 
-Il wrapper esegue `webmcp-evals@0.0.4` tramite l’SDK selezionato dal backend
-`vercel`, che comunica con l’API compatibile OpenAI di Ollama locale. Non usa
-un servizio Vercel. Nella versione 0.0.4 il backend diretto `-b ollama` non
-esegue correttamente le traiettorie con più chiamate e risultati strutturati.
-Il percorso SDK mantiene quelle conversazioni e limita ogni caso a quattro passi.
+Il wrapper esegue **Promptfoo 0.124.1** tramite `npx`, soltanto quando viene
+richiesta una valutazione. Non aggiunge il framework alle dipendenze installate
+dal normale `npm ci`. La configurazione è in
+[`promptfooconfig.mjs`](promptfooconfig.mjs); riutilizza integralmente i sei casi
+di `evals.json`, senza duplicarli o inserirne gli esiti attesi nel prompt.
+
+Un provider JavaScript usa l’API nativa `/api/chat` di Ollama. Restituisce ogni
+risultato simulato al modello e continua fino alla risposta conclusiva. Le
+assertion verificano lo schema JSON di **tutte** le chiamate e la traiettoria
+completa: strumenti, ordine, argomenti e assenza di chiamate superflue. I pattern
+previsti dalle fixture restano supportati. Non viene usato un secondo modello
+per giudicare le risposte: la valutazione riguarda la scelta degli strumenti,
+non la qualità del testo finale. Nessuna funzione del sito viene realmente
+eseguita; invio e consenso restano manuali.
 
 Ogni esecuzione crea una directory separata `.evals/ollama-*/`, ignorata da Git,
-con catalogo, modello e digest dei pesi, rapporti JSON e HTML. Il controllo del
-rapporto verifica tutti i casi e i passi, oltre agli esiti: il codice di uscita
-è **0** solo per una suite completa riuscita, **1** per una selezione errata,
-**2** per problemi di configurazione, provider, runner, timeout o rapporto.
-La CLI originale può terminare con zero anche in presenza di errori: il wrapper
-non considera quel codice da solo una prova di successo.
+con catalogo, impostazioni, modello e digest dei pesi, rapporti JSON e HTML e
+trascrizioni complete nei metadati. Cache di risposte, condivisione e telemetria
+di Promptfoo sono disabilitate. Il controllo del rapporto verifica che tutti i
+casi compaiano esattamente una volta e che esiti e contatori siano coerenti.
+Il codice di uscita è **0** solo per una suite completa riuscita, **1** per
+assertion fallite (incluse traiettorie parziali), **2** per problemi di
+configurazione, provider, runner, timeout o rapporto. Il wrapper confronta
+anche il codice della CLI con il rapporto; i guasti del provider mantengono
+una traccia parziale e vengono distinti dagli errori di selezione.
 
 `npm test` verifica il controllo dei rapporti e le fixture senza caricare modelli.
 L’inferenza resta separata da build e test browser. Su Raspberry Pi 5 da 4 GB
@@ -162,7 +178,7 @@ riutilizzabile in CI con un server Ollama nello stesso runner.
 ### CI con Ollama locale al runner
 
 Il workflow [webmcp-evals.yml](../../.github/workflows/webmcp-evals.yml)
-compare come **Valutazioni WebMCP (Ollama locale)** nella scheda Actions.
+compare come **Valutazioni WebMCP (Promptfoo e Ollama)** nella scheda Actions.
 Si avvia sulle PR, anche draft, che modificano strumenti, fixture o runner
 WebMCP. Non parte sulle PR prive di modifiche a questi percorsi e non modifica
 i controlli obbligatori. Il trigger PR consente di provare il nuovo workflow
@@ -179,8 +195,10 @@ inferenza (massimo 15 minuti) e caricamento dei rapporti.
 
 L’inferenza avviene solo nel runner, senza provider cloud o segreti. Il primo
 avvio deve scaricare circa 1,4 GB per Ollama e 2,5 GB per il modello. Le risorse
-e la durata vanno confermate nella prima esecuzione CI: questo workflow non è
-stato eseguito durante la verifica locale.
+e la durata vanno misurate nel runner. La prima esecuzione del runner precedente
+ha superato preparazione e download, ma l’inferenza ha raggiunto il timeout di
+15 minuti. Il profilo Promptfoo introduce i limiti per richiesta e generazione
+sopra descritti; consultare il rapporto di verifica per l’esito più recente.
 
 Per aggiornare i pesi, modificare consapevolmente modello e digest nella
 configurazione; un tag aggiornato che non corrisponde al digest fissato causa
@@ -196,7 +214,10 @@ La durata dipende da CPU/GPU, contesto e numero di invocazioni; non è un benchm
 
 Riferimenti: [modello Qwen3 4B](https://ollama.com/library/qwen3:4b),
 [memoria e parallelismo di Ollama](https://docs.ollama.com/faq),
-[CLI ufficiale delle valutazioni](https://github.com/googlechromelabs/webmcp-tools/tree/main/webmcp-evals).
+[provider personalizzati Promptfoo](https://www.promptfoo.dev/docs/providers/custom-api/),
+[assertion JavaScript](https://www.promptfoo.dev/docs/configuration/expected-outputs/javascript/),
+[CLI Promptfoo](https://www.promptfoo.dev/docs/usage/command-line/),
+[API chat Ollama](https://docs.ollama.com/api/chat).
 
 Riferimenti CI: [rilascio Ollama 0.40.2](https://github.com/ollama/ollama/releases/tag/v0.40.2),
 [runner GitHub Actions](https://docs.github.com/en/actions/reference/runners/github-hosted-runners).

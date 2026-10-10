@@ -20,20 +20,21 @@ const cases = [
     expectedCall: [{ functionName: 'search_event_materials' }],
   },
 ];
-const row = (name: string, stepIndex: number, outcome = 'pass') => ({
-  test: { name },
-  runIndex: 1,
-  stepIndex,
-  outcome,
+const row = (testIdx: number, outcome = 'pass') => ({
+  testIdx,
+  promptIdx: 0,
+  testCase: { description: cases[testIdx].name },
+  success: outcome === 'pass',
+  failureReason: outcome === 'pass' ? 0 : outcome === 'fail' ? 1 : 2,
 });
-const report = (
-  results = [row('Profilo', 1), row('Profilo', 2), row('Materiali', 1)],
-) => ({
+const report = (results = [row(0), row(1)]) => ({
   results: {
-    testCount: 2,
-    passCount: results.filter((entry) => entry.outcome === 'pass').length,
-    failCount: results.filter((entry) => entry.outcome === 'fail').length,
-    errorCount: results.filter((entry) => entry.outcome === 'error').length,
+    version: 3,
+    stats: {
+      successes: results.filter((entry) => entry.success).length,
+      failures: results.filter((entry) => entry.failureReason === 1).length,
+      errors: results.filter((entry) => entry.failureReason === 2).length,
+    },
     results,
   },
 });
@@ -55,48 +56,30 @@ describe('valutazioni WebMCP con Ollama locale', () => {
 
   it('fallisce per errori del provider anche se la CLI termina con zero', () => {
     expect(
-      checkEvaluationReport(
-        report([row('Profilo', 1, 'error'), row('Materiali', 1, 'error')]),
-        cases,
-      ),
+      checkEvaluationReport(report([row(0, 'error'), row(1, 'error')]), cases),
     ).toMatchObject({ exitCode: 2 });
   });
 
   it('distingue una selezione errata da un errore del provider', () => {
     expect(
-      checkEvaluationReport(
-        report([
-          row('Profilo', 1, 'fail'),
-          row('Profilo', 2),
-          row('Materiali', 1),
-        ]),
-        cases,
-      ),
+      checkEvaluationReport(report([row(0, 'fail'), row(1)]), cases),
     ).toMatchObject({ exitCode: 1 });
   });
 
-  it('rifiuta casi mancanti, passi duplicati e contatori incoerenti', () => {
-    expect(() =>
-      checkEvaluationReport(
-        report([row('Profilo', 1), row('Profilo', 2)]),
-        cases,
-      ),
-    ).toThrow();
-    expect(() =>
-      checkEvaluationReport(
-        report([row('Profilo', 1), row('Profilo', 1), row('Materiali', 1)]),
-        cases,
-      ),
-    ).toThrow();
+  it('rifiuta casi mancanti, duplicati, esiti e contatori incoerenti', () => {
+    for (const results of [
+      [row(0)],
+      [row(0), row(0)],
+      [],
+      [{ ...row(0), failureReason: 2 }, row(1)],
+      [{ ...row(0), promptIdx: 1 }, row(1)],
+    ]) {
+      expect(() => checkEvaluationReport(report(results), cases)).toThrow();
+    }
     const inconsistent = report();
-    inconsistent.results.passCount = 100;
+    inconsistent.results.stats.successes = 100;
     expect(() => checkEvaluationReport(inconsistent, cases)).toThrow();
-    expect(() =>
-      checkEvaluationReport(
-        report([row('Profilo', 1), row('Materiali', 1)]),
-        cases,
-      ),
-    ).toThrow();
+    expect(() => checkEvaluationReport(report(), [])).toThrow();
   });
 
   it('normalizza gli endpoint e rifiuta credenziali e percorsi inattesi', () => {

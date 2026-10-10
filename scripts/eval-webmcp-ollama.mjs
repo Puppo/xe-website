@@ -1,5 +1,5 @@
 import { spawn } from 'node:child_process';
-import { mkdir, mkdtemp, readFile, readdir, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
@@ -79,8 +79,8 @@ function runCli(args, env, timeoutMs) {
       clean();
       if (timedOut)
         reject(new Error('Valutazione interrotta: timeout di 15 minuti.'));
-      else if (code === 0) {
-        resolve();
+      else if (code === 0 || code === 100) {
+        resolve(code);
       } else {
         reject(new Error(`Runner terminato con codice ${code}.`));
       }
@@ -91,7 +91,7 @@ function runCli(args, env, timeoutMs) {
 async function main() {
   const config = await readJson('docs/webmcp/ollama.json');
   const model = process.env.OLLAMA_MODEL || config.model;
-  const { base, chat } = ollamaEndpoints(
+  const { base } = ollamaEndpoints(
     process.env.OLLAMA_HOST || 'http://127.0.0.1:11434',
   );
   const tags = await serverJson(base, '/api/tags');
@@ -118,6 +118,7 @@ async function main() {
     join(output, 'environment.json'),
     JSON.stringify(
       {
+        runner: 'promptfoo',
         ...config,
         model,
         digest: installed.digest,
@@ -131,41 +132,44 @@ async function main() {
   console.log(
     `Ollama locale: ${model}; casi seriali: ${cases.length}; rapporti: ${output}`,
   );
-  await runCli(
+  const cliCode = await runCli(
     [
       '--yes',
-      `webmcp-evals@${config.runnerVersion}`,
-      'local',
-      '-b',
-      'vercel',
-      '-m',
-      `ollama:${model}`,
-      '--max-steps',
-      String(config.maxSteps),
-      '-t',
-      toolFile,
-      '-e',
-      'docs/webmcp/evals.json',
-      '-o',
-      output,
-      '--reporter',
-      'console',
-      'json',
-      'html',
+      `promptfoo@${config.runnerVersion}`,
+      'eval',
+      '--config',
+      'docs/webmcp/promptfooconfig.mjs',
+      '--output',
+      join(output, 'report.json'),
+      join(output, 'report.html'),
+      '--max-concurrency',
+      '1',
+      '--no-cache',
+      '--no-write',
+      '--no-share',
+      '--no-progress-bar',
+      '--no-table',
     ],
-    { ...process.env, OLLAMA_HOST: chat, PUPPETEER_SKIP_DOWNLOAD: '1' },
+    {
+      ...process.env,
+      OLLAMA_HOST: base,
+      OLLAMA_MODEL: model,
+      PROMPTFOO_CONFIG_DIR: join(output, 'promptfoo'),
+      PROMPTFOO_DISABLE_TELEMETRY: '1',
+      PROMPTFOO_DISABLE_UPDATE: '1',
+      PROMPTFOO_PASS_RATE_THRESHOLD: '100',
+      PROMPTFOO_FAILED_TEST_EXIT_CODE: '100',
+    },
     config.timeoutMs,
   );
-
-  const reports = (await readdir(output)).filter((file) =>
-    /^report-\d+\.json$/u.test(file),
+  const report = JSON.parse(
+    await readFile(join(output, 'report.json'), 'utf8'),
   );
-  if (reports.length !== 1)
-    throw new Error('Il runner non ha prodotto un unico rapporto JSON.');
-  const report = JSON.parse(await readFile(join(output, reports[0]), 'utf8'));
   const checked = checkEvaluationReport(report, cases);
+  if ((cliCode === 0) !== (checked.exitCode === 0))
+    throw new Error('Codice del runner incoerente con il rapporto.');
   console.log(
-    `Passi riusciti: ${checked.counts.pass}; selezioni errate: ${checked.counts.fail}; errori di esecuzione/provider: ${checked.counts.error}.`,
+    `Casi riusciti: ${checked.counts.pass}; selezioni errate: ${checked.counts.fail}; errori di esecuzione/provider: ${checked.counts.error}.`,
   );
   process.exitCode = checked.exitCode;
 }

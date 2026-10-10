@@ -48,50 +48,42 @@ export function checkEvaluationReport(report, cases) {
   const summary = report?.results;
   if (
     cases.length === 0 ||
-    summary?.testCount !== cases.length ||
-    !Array.isArray(summary.results)
+    summary?.version !== 3 ||
+    !Array.isArray(summary.results) ||
+    summary.results.length !== cases.length
   ) {
     throw new Error(
       'Rapporto mancante, incompleto o incompatibile con la suite.',
     );
   }
-  const groups = new Map(cases.map((test) => [test.name, []]));
+  const seen = new Set();
   const counts = { pass: 0, fail: 0, error: 0 };
   for (const result of summary.results) {
-    const group = groups.get(result.test?.name);
+    const { testIdx, promptIdx, success, failureReason } = result;
     if (
-      !group ||
-      result.runIndex !== 1 ||
-      !Object.hasOwn(counts, result.outcome)
+      !Number.isInteger(testIdx) ||
+      !cases[testIdx] ||
+      seen.has(testIdx) ||
+      promptIdx !== 0 ||
+      result.testCase?.description !== cases[testIdx].name ||
+      ![0, 1, 2].includes(failureReason) ||
+      success !== (failureReason === 0)
     ) {
       throw new Error(
         'Il rapporto contiene casi, esiti o esecuzioni non previsti.',
       );
     }
-    group.push(result);
-    counts[result.outcome]++;
+    seen.add(testIdx);
+    counts[
+      failureReason === 0 ? 'pass' : failureReason === 1 ? 'fail' : 'error'
+    ]++;
   }
-  for (const [outcome, count] of Object.entries(counts)) {
-    if (summary[`${outcome}Count`] !== count)
-      throw new Error('Contatori del rapporto incoerenti.');
+  if (
+    summary.stats?.successes !== counts.pass ||
+    summary.stats?.failures !== counts.fail ||
+    summary.stats?.errors !== counts.error
+  ) {
+    throw new Error('Contatori del rapporto incoerenti.');
   }
-  for (const test of cases) {
-    const rows = groups.get(test.name);
-    if (
-      rows.length === 0 ||
-      rows.some((entry, index) => entry.stepIndex !== index + 1)
-    ) {
-      throw new Error(`Caso incompleto o passi duplicati: ${test.name}`);
-    }
-    if (
-      rows.every((entry) => entry.outcome === 'pass') &&
-      rows.length !== test.expectedCall.length
-    ) {
-      throw new Error(`Traiettoria incompleta: ${test.name}`);
-    }
-  }
-  return {
-    exitCode: counts.error ? 2 : counts.fail ? 1 : 0,
-    counts,
-  };
+  return { exitCode: counts.error ? 2 : counts.fail ? 1 : 0, counts };
 }

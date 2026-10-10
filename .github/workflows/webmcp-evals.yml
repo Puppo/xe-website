@@ -1,4 +1,4 @@
-name: Valutazioni WebMCP (Ollama locale)
+name: Valutazioni WebMCP (Promptfoo e Ollama)
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
       - '.github/workflows/webmcp-evals.yml'
       - 'docs/webmcp/**'
       - 'scripts/*webmcp*.mjs'
-      - 'scripts/lib/webmcp-evals.mjs'
+      - 'scripts/lib/webmcp-*.mjs'
       - 'src/lib/webmcp*.ts'
       - 'src/components/WebMcp*.astro'
       - 'src/components/NewsletterForm.astro'

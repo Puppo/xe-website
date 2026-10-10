@@ -1,8 +1,12 @@
 {
-  "runnerVersion": "0.0.4",
+  "runnerVersion": "0.124.1",
   "model": "qwen3:4b",
   "modelDigest": "359d7dd4bcdab3d86b87d73ac27966f4dbb9f5efdfcc75d34a8764a09474fae7",
   "maxSteps": 4,
+  "requestTimeoutMs": 120000,
+  "generationTokens": 1024,
+  "contextTokens": 8192,
+  "think": false,
   "timeoutMs": 900000,
   "page": "/",
   "tools": [
