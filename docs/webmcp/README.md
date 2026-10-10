@@ -133,7 +133,9 @@ returns mock tool results to the model, and continues until a final response.
 
 The shared English agent instructions define general task completion: follow
 `nextOffset` to finish a requested full read, retry a retryable read failure once,
-and preserve manual sending and consent. They apply to every case, including
+and preserve manual sending and consent. Searches are explicitly read operations;
+the agent emits tool calls without prose while operations remain. They apply to
+every case, including
 preseeded conversation histories, and contain no fixture-specific tool names,
 slugs, offsets, or expected calls. User requests, website tool descriptions, and
 mock website payloads remain Italian. This policy is part of the evaluated agent,
@@ -145,7 +147,9 @@ remain supported. No second model judges prose; the suite measures tool selectio
 not final answer quality. No real website tool executes during these evaluations.
 
 Each run creates an ignored `.evals/ollama-*/` directory with tools, settings,
-model metadata and digest, JSON/HTML reports, and full transcripts. Response
+model metadata and digest, JSON/HTML reports, full transcripts, and generated
+token traces (when supplied by Ollama). Token traces help distinguish model
+omissions from native parser losses and never substitute for parsed calls. Response
 caching, sharing, and Promptfoo telemetry are disabled. Report validation requires
 each case exactly once and consistent outcomes and counters. Exit codes are **0**
 for a complete pass, **1** for assertion failures (including partial trajectories),

@@ -69,6 +69,33 @@ const completion = (name?: string, args = {}) =>
   );
 
 describe('Promptfoo conversations with Ollama', () => {
+  it('retains generated tokens when the native response has no parsed tool call', async () => {
+    const generated = '<tool_call>{"name":"list_members"}</tool_call>';
+    const fetcher = vi.fn().mockResolvedValue(
+      Response.json({
+        done: true,
+        done_reason: 'stop',
+        message: { role: 'assistant', content: '' },
+        logprobs: [{ token: generated }],
+      }),
+    );
+    const response = await new WebMcpOllamaProvider(
+      { config },
+      fetcher,
+    ).callApi(JSON.stringify(messages), context);
+    expect(JSON.parse(fetcher.mock.calls[0][1].body).logprobs).toBe(true);
+    expect(response.metadata.generations).toEqual([
+      { text: generated, doneReason: 'stop' },
+    ]);
+    expect(response.output).toEqual([]);
+    expect(
+      assertTrajectory(response.output, {
+        ...context,
+        providerResponse: response,
+      }).pass,
+    ).toBe(false);
+  });
+
   it.each(continuationCases)(
     'keeps the original goal and rejects premature completion: $name',
     async (testCase) => {
