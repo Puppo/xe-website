@@ -5,25 +5,63 @@ on:
     types: [opened, reopened, synchronize]
 
 permissions:
-  contents: write
-  pull-requests: write
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: dependabot-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
 
 jobs:
   auto-merge:
     if: >-
       github.event.pull_request.user.login == 'dependabot[bot]' &&
-      github.repository == 'Puppo/xe-website'
+      github.repository == 'Puppo/xe-website' &&
+      github.event.pull_request.head.repo.full_name == 'Puppo/xe-website' &&
+      github.event.pull_request.base.ref == 'main'
     runs-on: ubuntu-latest
     steps:
       - name: Read Dependabot metadata
         id: metadata
         uses: dependabot/fetch-metadata@25dd0e34f4fe68f24cc83900b1fe3fe149efef98 # v3.1.0
 
-      - name: Enable auto-merge
+      # This privileged job must never check out or execute pull-request code.
+      - name: Approve and enable auto-merge
         if: >-
           steps.metadata.outputs.update-type == 'version-update:semver-patch' ||
           steps.metadata.outputs.update-type == 'version-update:semver-minor'
-        run: gh pr merge --auto --squash "$PR_URL"
+        shell: bash
+        run: |
+          if [[ -z "$GH_TOKEN" ]]; then
+            echo '::error::Configure the DEPENDABOT_AUTOMERGE_TOKEN repository Actions secret with a token from @Puppo.'
+            exit 1
+          fi
+
+          if ! token_owner=$(gh api user --jq .login); then
+            echo '::error::DEPENDABOT_AUTOMERGE_TOKEN is invalid or expired. Rotate the token as described in CONTRIBUTING.md.'
+            exit 1
+          fi
+          if [[ "$token_owner" != 'Puppo' ]]; then
+            echo '::error::DEPENDABOT_AUTOMERGE_TOKEN must belong to the required code owner @Puppo.'
+            exit 1
+          fi
+
+          current_head=$(gh api "repos/$GH_REPO/pulls/$PR_NUMBER" --jq .head.sha)
+          if [[ "$current_head" != "$PR_HEAD_SHA" ]]; then
+            echo 'The pull request changed; its synchronize workflow will evaluate the new commit.'
+            exit 0
+          fi
+
+          gh api "repos/$GH_REPO/pulls/$PR_NUMBER/reviews" \
+            --method POST \
+            --raw-field commit_id="$PR_HEAD_SHA" \
+            --raw-field event=APPROVE \
+            --raw-field body='Approvazione automatica di un aggiornamento Dependabot minor o patch; il merge richiede tutti i controlli CI.' \
+            --silent
+          gh pr merge --auto --squash --match-head-commit "$PR_HEAD_SHA" "$PR_URL"
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.DEPENDABOT_AUTOMERGE_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
           PR_URL: ${{ github.event.pull_request.html_url }}
