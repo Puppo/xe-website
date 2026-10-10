@@ -2,7 +2,11 @@ import { expect, test } from '@playwright/test';
 import type { Page } from '@playwright/test';
 
 interface RegisteredTool {
-  annotations?: { readOnlyHint?: boolean };
+  annotations?: { readOnlyHint?: boolean; untrustedContentHint?: boolean };
+  description: string;
+  inputSchema: {
+    properties?: Record<string, { description?: string; pattern?: string }>;
+  };
   execute: (
     input: Record<string, unknown>,
     options: { signal: AbortSignal },
@@ -14,8 +18,12 @@ async function mockWebMcp(page: Page) {
   await page.addInitScript(() => {
     const tools: unknown[] = [],
       context = {
-        registerTool(tool: unknown) {
+        registerTool(tool: unknown, { signal }: { signal: AbortSignal }) {
           tools.push(tool);
+          signal.addEventListener('abort', () => {
+            const index = tools.indexOf(tool);
+            if (index !== -1) tools.splice(index, 1);
+          });
           return Promise.resolve();
         },
       };
@@ -48,6 +56,26 @@ async function waitForTool(page: Page, name: string) {
   await expect
     .poll(async () => (await toolNames(page)).includes(name))
     .toBe(true);
+}
+
+async function invokeTool(
+  page: Page,
+  name: string,
+  input: Record<string, unknown> = {},
+) {
+  await waitForTool(page, name);
+  return page.evaluate(
+    async ({ name: toolName, input: argumentsInput }) => {
+      const tool = (
+        window as unknown as { webMcpTools: RegisteredTool[] }
+      ).webMcpTools.find((candidate) => candidate.name === toolName);
+      if (!tool) throw new Error(`Strumento mancante: ${toolName}`);
+      return tool.execute(argumentsInput, {
+        signal: new AbortController().signal,
+      });
+    },
+    { name, input },
+  );
 }
 
 test('gli strumenti catalogo cercano e aprono gli eventi', async ({ page }) => {
@@ -291,21 +319,17 @@ test('un errore di rete WebMCP può essere riprovato', async ({ page }) => {
       const tool = (
         window as unknown as { webMcpTools: RegisteredTool[] }
       ).webMcpTools.find((candidate) => candidate.name === 'list_events');
-      try {
-        await tool?.execute({}, { signal: new AbortController().signal });
-        return 'ok';
-      } catch {
-        return 'error';
-      }
+      return tool?.execute({}, { signal: new AbortController().signal });
     });
-  expect(await invoke()).toBe('error');
-  expect(await invoke()).toBe('ok');
+  expect(await invoke()).toMatchObject({
+    code: 'DATA_UNAVAILABLE',
+    retryable: true,
+  });
+  expect(await invoke()).toMatchObject({ offset: 0 });
   expect(requests).toBe(2);
 });
 
-test('la home registra il catalogo soci dopo la sezione community', async ({
-  page,
-}) => {
+test('la home registra una sola copia del catalogo soci', async ({ page }) => {
   await mockWebMcp(page);
   await page.goto('/');
   await waitForTool(page, 'list_members');
@@ -343,13 +367,12 @@ test('aprire un socio annullato durante il caricamento non naviga', async ({
   const originalUrl = page.url();
 
   await page.route('**/webmcp/members.json', async (route) => {
-    const response = await route.fetch();
     await page.evaluate(() => {
       (
         window as unknown as { memberInvocation: AbortController }
       ).memberInvocation.abort();
     });
-    await route.fulfill({ response });
+    await route.abort('aborted');
   });
 
   const result = await page.evaluate(async () => {
@@ -415,7 +438,17 @@ test('tutti gli eventi e i dettagli sono disponibili da ogni pagina', async ({
         { slug: 'tech-pub-gennaio-2025' },
         { signal: new AbortController().signal },
       );
+      const body = await details?.execute(
+        { slug: 'tech-pub-gennaio-2025', section: 'body' },
+        { signal: new AbortController().signal },
+      );
+      const sessions = await details?.execute(
+        { slug: 'tech-pub-gennaio-2025', section: 'sessions' },
+        { signal: new AbortController().signal },
+      );
       return {
+        body: body as { text: string },
+        sessions: sessions as { sessions: { speakers: string[] }[] },
         past: past as { total: number; events: { slug: string }[] },
         event: event as {
           title: string;
@@ -430,9 +463,9 @@ test('tutti gli eventi e i dettagli sono disponibili da ogni pagina', async ({
     );
     expect(result.event.title).toContain('Tech-Pub');
     expect(
-      result.event.sessions.flatMap((session) => session.speakers),
+      result.sessions.sessions.flatMap((session) => session.speakers),
     ).toContain('Emanuele Furlan');
-    expect(result.event.body.length).toBeGreaterThan(0);
+    expect(result.body.text.length).toBeGreaterThan(0);
   }
 });
 
@@ -465,26 +498,21 @@ test('la newsletter rifiuta email non valide senza inviare il modulo', async ({
     });
   });
 
-  const errorMessage = await page.evaluate(() => {
+  const errorMessage = await page.evaluate(async () => {
     const tool = (
       window as unknown as { webMcpTools: RegisteredTool[] }
     ).webMcpTools.find(
       (candidate) => candidate.name === 'prepare_newsletter_subscription',
     );
-    try {
-      tool?.execute(
-        { email: 'not-an-email' },
-        { signal: new AbortController().signal },
-      );
-      return null;
-    } catch (error) {
-      return error instanceof Error ? error.message : String(error);
-    }
+    const result = await tool?.execute(
+      { email: 'not-an-email' },
+      { signal: new AbortController().signal },
+    );
+    return (result as { error: string }).error;
   });
   expect(errorMessage).toMatch(/email/i);
 
-  await expect(page.locator('#newsletter-email')).toHaveValue('not-an-email');
-  await expect(page.locator('#newsletter-email')).toBeFocused();
+  await expect(page.locator('#newsletter-email')).toHaveValue('');
   expect(
     await page.evaluate(
       () =>
@@ -517,21 +545,17 @@ test('il contatto rifiuta dati non validi senza inviare il modulo', async ({
     });
   });
 
-  const errorMessage = await page.evaluate(() => {
+  const errorMessage = await page.evaluate(async () => {
     const tool = (
       window as unknown as { webMcpTools: RegisteredTool[] }
     ).webMcpTools.find(
       (candidate) => candidate.name === 'prepare_contact_message',
     );
-    try {
-      tool?.execute(
-        { email: 'bad', message: 'ok', name: '' },
-        { signal: new AbortController().signal },
-      );
-      return null;
-    } catch (error) {
-      return error instanceof Error ? error.message : String(error);
-    }
+    const result = await tool?.execute(
+      { email: 'bad', message: 'ok', name: '' },
+      { signal: new AbortController().signal },
+    );
+    return (result as { error: string }).error;
   });
   expect(errorMessage).toMatch(/name|email/i);
 
@@ -542,4 +566,202 @@ test('il contatto rifiuta dati non validi senza inviare il modulo', async ({
       () => (window as unknown as { contactSubmits: number }).contactSubmits,
     ),
   ).toBe(0);
+});
+
+test('profili e materiali sono disponibili da ogni pagina senza navigare', async ({
+  page,
+}) => {
+  await mockWebMcp(page);
+  for (const path of ['/contatti/', '/chi-siamo/', '/privacy-policy/']) {
+    await page.goto(path);
+    const originalUrl = page.url();
+    const members = (await invokeTool(page, 'list_members', {
+      query: 'Emanuele Furlan',
+    })) as { members: { slug: string }[] };
+    expect(members.members.map(({ slug }) => slug)).toContain(
+      'emanuele-furlan',
+    );
+    const profile = await invokeTool(page, 'get_member', {
+      slug: 'emanuele-furlan',
+    });
+    expect(profile).toMatchObject({
+      name: 'Emanuele Furlan',
+      roles: expect.arrayContaining(['member']),
+    });
+    const links = await invokeTool(page, 'get_member', {
+      slug: 'emanuele-furlan',
+      section: 'links',
+    });
+    expect(links).toHaveProperty('links');
+    const materials = (await invokeTool(page, 'search_event_materials', {
+      eventSlug: 'one-day-app-modernization',
+    })) as { materials: { url: string; sessions: string[] }[]; total: number };
+    expect(materials.total).toBe(12);
+    expect(materials.materials.length).toBeGreaterThan(0);
+    expect(materials.materials.every((item) => item.sessions.length > 0)).toBe(
+      true,
+    );
+    for (const value of [members, profile, links, materials])
+      expect(JSON.stringify(value).length).toBeLessThanOrEqual(1500);
+    expect(page.url()).toBe(originalUrl);
+    const names = await toolNames(page);
+    expect(new Set(names).size).toBe(names.length);
+  }
+});
+
+test('i metadati distinguono query, navigazione e preparazione', async ({
+  page,
+}) => {
+  await mockWebMcp(page);
+  await page.goto('/eventi/tech-pub-gennaio-2025/');
+  await waitForTool(page, 'describe_event');
+  const tools = await page.evaluate(() =>
+    (window as unknown as { webMcpTools: RegisteredTool[] }).webMcpTools.map(
+      ({ name, annotations, description, inputSchema }) => ({
+        name,
+        annotations,
+        description,
+        inputSchema,
+      }),
+    ),
+  );
+  for (const tool of tools) {
+    expect(tool.description.length).toBeLessThanOrEqual(500);
+    if (tool.name.startsWith('open_') || tool.name.startsWith('prepare_')) {
+      expect(tool.annotations?.readOnlyHint).toBeUndefined();
+    } else {
+      expect(tool.annotations).toMatchObject({
+        readOnlyHint: true,
+        untrustedContentHint: true,
+      });
+    }
+    for (const property of Object.values(tool.inputSchema.properties ?? {})) {
+      expect(property.description?.length ?? 0).toBeLessThanOrEqual(150);
+      if (property.pattern)
+        expect(new RegExp(property.pattern, 'u').test('2026-10-10')).toBe(true);
+    }
+  }
+});
+
+test('una bozza newsletter viene conservata e blocca la navigazione', async ({
+  page,
+}) => {
+  await mockWebMcp(page);
+  await page.goto('/');
+  await page.locator('#newsletter-email').fill('bozza@example.com');
+  expect(
+    await invokeTool(page, 'prepare_newsletter_subscription', {
+      email: 'altro@example.com',
+    }),
+  ).toMatchObject({ code: 'DRAFT_CONFLICT' });
+  await expect(page.locator('#newsletter-email')).toHaveValue(
+    'bozza@example.com',
+  );
+  for (const [name, slug] of [
+    ['open_event', 'tech-pub-gennaio-2025'],
+    ['open_member', 'emanuele-furlan'],
+  ]) {
+    expect(await invokeTool(page, name, { slug })).toMatchObject({
+      code: 'UNSAVED_CHANGES',
+    });
+    expect(new URL(page.url()).pathname).toBe('/');
+  }
+  expect(
+    await invokeTool(page, 'prepare_newsletter_subscription', {
+      email: 'bozza@example.com',
+    }),
+  ).toMatchObject({ status: 'requires_user_action' });
+});
+
+test('un errore di validazione preserva tutti i campi e il consenso', async ({
+  page,
+}) => {
+  await mockWebMcp(page);
+  await page.goto('/contatti/');
+  if ((await page.locator('[data-contact-form]').count()) === 0) return;
+  await page.locator('#name').fill('Bozza');
+  await page.locator('#message').fill('Messaggio già scritto.');
+  await page.locator('#privacy').check();
+  const result = await invokeTool(page, 'prepare_contact_message', {
+    name: 'Nome diverso',
+    email: 'valido@example.com',
+    message: 'x'.repeat(5001),
+  });
+  // A draft conflict or length validation both leave the complete draft unchanged.
+  expect(result).toHaveProperty('error');
+  await expect(page.locator('#name')).toHaveValue('Bozza');
+  await expect(page.locator('#email')).toHaveValue('');
+  await expect(page.locator('#message')).toHaveValue('Messaggio già scritto.');
+  await expect(page.locator('#privacy')).toBeChecked();
+});
+
+test('il ritorno da pagehide ripristina tutti gli strumenti una volta', async ({
+  page,
+}) => {
+  await mockWebMcp(page);
+  await page.goto('/');
+  await waitForTool(page, 'get_member');
+  await waitForTool(page, 'prepare_newsletter_subscription');
+  const before = (await toolNames(page)).sort();
+  const restored = await page.evaluate(() => {
+    window.dispatchEvent(
+      new PageTransitionEvent('pagehide', { persisted: true }),
+    );
+    const tools = (window as unknown as { webMcpTools: RegisteredTool[] })
+      .webMcpTools;
+    const hiddenCount = tools.length;
+    window.dispatchEvent(
+      new PageTransitionEvent('pageshow', { persisted: true }),
+    );
+    window.dispatchEvent(
+      new PageTransitionEvent('pageshow', { persisted: true }),
+    );
+    return { hiddenCount, names: tools.map((tool) => tool.name).sort() };
+  });
+  expect(restored.hiddenCount).toBe(0);
+  expect(restored.names).toEqual(before);
+  expect(await invokeTool(page, 'list_members')).toHaveProperty('members');
+});
+
+test('il caricamento di un catalogo con struttura errata restituisce un errore', async ({
+  page,
+}) => {
+  await mockWebMcp(page);
+  await page.route('**/webmcp/events.json', (route) =>
+    route.fulfill({ json: [{}] }),
+  );
+  await page.goto('/');
+  expect(await invokeTool(page, 'list_events')).toMatchObject({
+    code: 'INVALID_DATA',
+    retryable: false,
+  });
+});
+
+test('la preparazione del contatto rifiuta limiti superati prima di cambiare i campi', async ({
+  page,
+}) => {
+  await mockWebMcp(page);
+  await page.goto('/contatti/');
+  if ((await page.locator('[data-contact-form]').count()) === 0) return;
+  expect(
+    await invokeTool(page, 'prepare_contact_message', {
+      name: 'Persona',
+      email: 'persona@example.com',
+      message: 'x'.repeat(5001),
+    }),
+  ).toMatchObject({ code: 'INVALID_INPUT' });
+  for (const selector of ['#name', '#email', '#message'])
+    await expect(page.locator(selector)).toHaveValue('');
+  await page.locator('#privacy').check();
+  expect(
+    await invokeTool(page, 'prepare_contact_message', {
+      name: 'Persona',
+      email: 'persona@example.com',
+      message: 'Un messaggio valido.',
+    }),
+  ).toMatchObject({ status: 'requires_user_action' });
+  await expect(page.locator('#privacy')).toBeChecked();
+  await expect(
+    page.getByRole('button', { name: 'Invia il messaggio' }),
+  ).toBeFocused();
 });

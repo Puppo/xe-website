@@ -1,0 +1,18 @@
+{
+  "runnerVersion": "0.0.4",
+  "model": "qwen3:4b",
+  "modelDigest": "359d7dd4bcdab3d86b87d73ac27966f4dbb9f5efdfcc75d34a8764a09474fae7",
+  "maxSteps": 4,
+  "timeoutMs": 900000,
+  "page": "/",
+  "tools": [
+    "list_events",
+    "get_event",
+    "open_event",
+    "search_event_materials",
+    "list_members",
+    "get_member",
+    "open_member",
+    "prepare_newsletter_subscription"
+  ]
+}

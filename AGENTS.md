@@ -161,6 +161,15 @@ Apply these change-specific expectations:
 
 Before handing off a normal change, run at least `npm test`, `npm run build`, and `npm run check:build`. Run the Chromium Playwright suite for any browser-visible change. Report any check that could not be run and the concrete environmental reason.
 
+### Model-backed WebMCP evaluations
+
+- Run model-backed evaluations in a separate CI job by default, using a configured provider or a runner with sufficient resources. This policy applies to LLM inference, not the deterministic Vitest, Playwright, accessibility, or native WebMCP checks above.
+- Do not automatically run local LLM inference on devices with 4 GB RAM or less, or on machines experiencing memory pressure or lacking enough available RAM/VRAM for the model and context. A Raspberry Pi 5 with 4 GB RAM should defer these evaluations to CI. A missing GPU alone does not disqualify a CPU runner with adequate RAM and an acceptable execution-time budget.
+- Local inference requires an explicit user request and a resource assessment: available memory after other workloads, model and context requirements, concurrency, and a bounded runtime. If capacity cannot be established, defer to CI and report the evaluation as pending. Keep complete prompts and evaluation cases; do not truncate or weaken them to fit the device.
+- Do not install or start an inference server, download model weights, or enlarge swap to enable local evaluations unless explicitly requested. Keep model inference separate from builds and browser tests on constrained machines.
+- CI evaluations should pin the model and evaluation runner, cache model weights where applicable, serialize requests, and set a job timeout. Report provider/setup failures separately from model-selection failures. Never report a deferred or unreachable-provider evaluation as passed.
+- Use the fixtures and provider instructions in [docs/webmcp/README.md](docs/webmcp/README.md). A CI preference does not mean a model-evaluation job is already configured; verify the workflow and provider before claiming that CI covers it.
+
 ## Change discipline
 
 - Keep changes scoped to the request and preserve unrelated work in the worktree.

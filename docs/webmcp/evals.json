@@ -1,0 +1,258 @@
+[
+  {
+    "name": "Trova una persona e leggi il suo profilo",
+    "messages": [
+      {
+        "role": "user",
+        "type": "message",
+        "content": "Trova Emanuele Furlan e raccontami il suo profilo."
+      }
+    ],
+    "expectedCall": [
+      {
+        "functionName": "list_members",
+        "arguments": {
+          "query": "Emanuele Furlan"
+        },
+        "mockOutput": {
+          "members": [
+            {
+              "slug": "emanuele-furlan",
+              "name": "Emanuele Furlan"
+            }
+          ],
+          "offset": 0,
+          "total": 1,
+          "nextOffset": null
+        }
+      },
+      {
+        "functionName": "get_member",
+        "arguments": {
+          "slug": "emanuele-furlan"
+        },
+        "mockOutput": {
+          "slug": "emanuele-furlan",
+          "name": "Emanuele Furlan",
+          "url": "https://www.xedotnet.org/soci/emanuele-furlan/",
+          "biography": "Sviluppatore e relatore della community XE.",
+          "biographyLength": 41,
+          "roles": ["member", "speaker"]
+        }
+      }
+    ]
+  },
+  {
+    "name": "Cerca materiali per argomento senza aprirli",
+    "messages": [
+      {
+        "role": "user",
+        "type": "message",
+        "content": "Trova i materiali di App modernization."
+      }
+    ],
+    "expectedCall": [
+      {
+        "functionName": "search_event_materials",
+        "arguments": {
+          "query": {
+            "$pattern": "[Aa]pp.*modernization|modernizzazione"
+          }
+        },
+        "mockOutput": {
+          "materials": [
+            {
+              "label": "Slide",
+              "url": "https://example.com/app-modernization/slides",
+              "eventSlug": "one-day-app-modernization",
+              "eventTitle": "App modernization",
+              "sessions": ["Modernizzare le applicazioni"]
+            }
+          ],
+          "offset": 0,
+          "total": 1,
+          "nextOffset": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Continua la lettura di una biografia lunga",
+    "messages": [
+      {
+        "role": "user",
+        "type": "message",
+        "content": "Leggi tutta la biografia di Emanuele Furlan."
+      },
+      {
+        "role": "model",
+        "type": "functioncall",
+        "name": "get_member",
+        "arguments": {
+          "slug": "emanuele-furlan",
+          "section": "biography"
+        }
+      },
+      {
+        "role": "user",
+        "type": "functionresponse",
+        "name": "get_member",
+        "response": {
+          "result": {
+            "slug": "emanuele-furlan",
+            "section": "biography",
+            "text": "Prima parte.",
+            "offset": 0,
+            "total": 26,
+            "nextOffset": 12
+          }
+        }
+      }
+    ],
+    "expectedCall": [
+      {
+        "functionName": "get_member",
+        "arguments": {
+          "slug": "emanuele-furlan",
+          "section": "biography",
+          "offset": 12
+        },
+        "mockOutput": {
+          "slug": "emanuele-furlan",
+          "section": "biography",
+          "text": "Seconda parte.",
+          "offset": 12,
+          "total": 26,
+          "nextOffset": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Riprova dopo un errore temporaneo del catalogo",
+    "messages": [
+      {
+        "role": "user",
+        "type": "message",
+        "content": "Trova i materiali di App modernization."
+      },
+      {
+        "role": "model",
+        "type": "functioncall",
+        "name": "search_event_materials",
+        "arguments": {
+          "query": "App modernization"
+        }
+      },
+      {
+        "role": "user",
+        "type": "functionresponse",
+        "name": "search_event_materials",
+        "response": {
+          "result": {
+            "error": "Catalogo temporaneamente non disponibile. Riprova.",
+            "code": "DATA_UNAVAILABLE",
+            "retryable": true
+          }
+        }
+      }
+    ],
+    "expectedCall": [
+      {
+        "functionName": "search_event_materials",
+        "arguments": {
+          "query": "App modernization"
+        },
+        "mockOutput": {
+          "materials": [
+            {
+              "label": "Slide",
+              "url": "https://example.com/app-modernization/slides",
+              "eventSlug": "one-day-app-modernization",
+              "eventTitle": "App modernization",
+              "sessions": ["Modernizzare le applicazioni"]
+            }
+          ],
+          "offset": 0,
+          "total": 1,
+          "nextOffset": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Continua il contenuto di un evento senza navigare",
+    "messages": [
+      {
+        "role": "user",
+        "type": "message",
+        "content": "Leggi tutto il contenuto dell’evento App modernization."
+      },
+      {
+        "role": "model",
+        "type": "functioncall",
+        "name": "get_event",
+        "arguments": {
+          "slug": "one-day-app-modernization",
+          "section": "body"
+        }
+      },
+      {
+        "role": "user",
+        "type": "functionresponse",
+        "name": "get_event",
+        "response": {
+          "result": {
+            "slug": "one-day-app-modernization",
+            "section": "body",
+            "text": "Prima parte.",
+            "offset": 0,
+            "total": 26,
+            "nextOffset": 12
+          }
+        }
+      }
+    ],
+    "expectedCall": [
+      {
+        "functionName": "get_event",
+        "arguments": {
+          "slug": "one-day-app-modernization",
+          "section": "body",
+          "offset": 12
+        },
+        "mockOutput": {
+          "slug": "one-day-app-modernization",
+          "section": "body",
+          "text": "Seconda parte.",
+          "offset": 12,
+          "total": 26,
+          "nextOffset": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Prepara la newsletter lasciando l’invio manuale",
+    "messages": [
+      {
+        "role": "user",
+        "type": "message",
+        "content": "Prepara l’iscrizione alla newsletter per prova@example.com; controllerò e invierò io il modulo."
+      }
+    ],
+    "expectedCall": [
+      {
+        "functionName": "prepare_newsletter_subscription",
+        "arguments": {
+          "email": "prova@example.com"
+        },
+        "mockOutput": {
+          "status": "requires_user_action",
+          "email": "prova@example.com",
+          "message": "Controlla il modulo e invialo manualmente."
+        }
+      }
+    ]
+  }
+]

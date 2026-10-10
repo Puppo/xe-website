@@ -1,0 +1,287 @@
+{
+  "tools": [
+    {
+      "name": "list_events",
+      "title": "Cerca eventi XE",
+      "description": "Cerca gli eventi pubblicati da XeDotNet, anche passati e annullati. Usa questo strumento per trovare incontri per argomento, periodo o relatore.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Testo da cercare in titolo, descrizione, tipo, luogo e relatori."
+          },
+          "dateFrom": {
+            "type": "string",
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+            "description": "Primo giorno incluso, nel formato YYYY-MM-DD."
+          },
+          "dateTo": {
+            "type": "string",
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+            "description": "Ultimo giorno incluso, nel formato YYYY-MM-DD."
+          },
+          "title": {
+            "type": "string",
+            "description": "Testo da cercare solo nel titolo."
+          },
+          "description": {
+            "type": "string",
+            "description": "Testo da cercare solo nella descrizione."
+          },
+          "speakers": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "description": "Uno o più nomi di relatori; basta una corrispondenza."
+          },
+          "year": {
+            "type": "integer",
+            "description": "Anno solare degli eventi da mostrare."
+          },
+          "period": {
+            "type": "string",
+            "enum": ["all", "upcoming", "past"],
+            "description": "Periodo: tutti, futuri o passati."
+          },
+          "offset": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Indice da cui continuare una ricerca precedente."
+          }
+        },
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "untrustedContentHint": true
+      }
+    },
+    {
+      "name": "get_event",
+      "title": "Dettagli di un evento XE",
+      "description": "Legge un evento XE e la disponibilità attuale delle iscrizioni. Usa questo strumento per approfondire un evento trovato o leggere contenuto, programma e materiali.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "slug": {
+            "type": "string",
+            "description": "Slug esatto restituito dalla ricerca degli eventi."
+          },
+          "section": {
+            "type": "string",
+            "enum": ["overview", "body", "sessions", "materials"],
+            "description": "Panoramica, contenuto, programma o materiali. La panoramica è la sezione iniziale."
+          },
+          "offset": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Posizione da cui continuare: caratteri per il contenuto, elementi per le altre sezioni."
+          }
+        },
+        "required": ["slug"],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "untrustedContentHint": true
+      }
+    },
+    {
+      "name": "open_event",
+      "title": "Apri un evento XE",
+      "description": "Apre la pagina di un evento XE. Usa questo strumento quando l’utente vuole vedere l’evento nel browser.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "slug": {
+            "type": "string",
+            "description": "Slug esatto restituito da list_events."
+          }
+        },
+        "required": ["slug"],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "search_event_materials",
+      "title": "Cerca materiali degli eventi XE",
+      "description": "Trova slide e risorse degli eventi XE. Usa questo strumento per cercare materiali per argomento o leggere quelli di un evento specifico.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Argomento cercato nei materiali, negli eventi e nelle sessioni."
+          },
+          "eventSlug": {
+            "type": "string",
+            "description": "Slug dell’evento a cui limitare la ricerca."
+          },
+          "offset": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Indice da cui continuare la ricerca."
+          }
+        },
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "untrustedContentHint": true
+      }
+    },
+    {
+      "name": "list_members",
+      "title": "Cerca soci XE",
+      "description": "Cerca i soci attuali pubblicati da XeDotNet. Usa questo strumento per trovare una persona per nome, attività o ruolo.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Testo da cercare nel nome, nel titolo o nella biografia."
+          },
+          "role": {
+            "type": "string",
+            "enum": ["member", "speaker", "both"],
+            "description": "Soci, relatori tra i soci, oppure entrambi."
+          },
+          "offset": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Indice da cui continuare una ricerca precedente."
+          }
+        },
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "untrustedContentHint": true
+      }
+    },
+    {
+      "name": "get_member",
+      "title": "Leggi un profilo XE",
+      "description": "Legge il profilo di un socio XE. Usa questo strumento per approfondire biografia, ruoli e collegamenti di una persona trovata.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "slug": {
+            "type": "string",
+            "description": "Slug esatto restituito dalla ricerca dei soci."
+          },
+          "section": {
+            "type": "string",
+            "enum": ["overview", "biography", "links"],
+            "description": "Panoramica, biografia o collegamenti. La panoramica è la sezione iniziale."
+          },
+          "offset": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Posizione da cui continuare: caratteri per la biografia, elementi per i collegamenti."
+          }
+        },
+        "required": ["slug"],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "untrustedContentHint": true
+      }
+    },
+    {
+      "name": "open_member",
+      "title": "Apri un socio XE",
+      "description": "Apre la pagina di un socio XE. Usa questo strumento quando l’utente vuole vedere il profilo nel browser.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "slug": {
+            "type": "string",
+            "description": "Slug esatto restituito dalla ricerca dei soci."
+          }
+        },
+        "required": ["slug"],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "describe_event",
+      "title": "Descrivi questo evento XE",
+      "description": "Descrive l’evento XE aperto e le iscrizioni attuali. Usa questo strumento quando l’utente chiede informazioni su questa pagina.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "untrustedContentHint": true
+      }
+    },
+    {
+      "name": "describe_member",
+      "title": "Descrivi questo socio XE",
+      "description": "Descrive il socio XE aperto, con ruolo, biografia e collegamenti. Usa questo strumento quando l’utente chiede informazioni su questa persona.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "untrustedContentHint": true
+      }
+    },
+    {
+      "name": "prepare_newsletter_subscription",
+      "title": "Prepara l’iscrizione alla newsletter",
+      "description": "Prepara il modulo newsletter XE per la revisione e l’invio manuale. Usa questo strumento quando l’utente vuole iscriversi agli aggiornamenti.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "maxLength": 254,
+            "description": "Indirizzo email da iscrivere alla newsletter."
+          }
+        },
+        "required": ["email"],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "prepare_contact_message",
+      "title": "Prepara un messaggio per lo staff XE",
+      "description": "Prepara il modulo contatti XE per la revisione dell’utente. Usa questo strumento quando l’utente vuole scrivere allo staff; consenso e invio restano manuali.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 80,
+            "description": "Nome della persona che desidera essere ricontattata."
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "maxLength": 120,
+            "description": "Indirizzo email al quale rispondere."
+          },
+          "message": {
+            "type": "string",
+            "maxLength": 5000,
+            "description": "Messaggio da mostrare allo staff XE."
+          }
+        },
+        "required": ["name", "email", "message"],
+        "additionalProperties": false
+      }
+    }
+  ]
+}

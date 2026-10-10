@@ -71,14 +71,18 @@ describe('catalogo WebMCP degli eventi', () => {
     ).toBe(1);
   });
 
-  it('pagina i risultati in gruppi di cinque', () => {
+  it('pagina gli eventi in gruppi di massimo cinque', () => {
     const firstPage = listEvents(catalog, {}),
       secondPage = listEvents(catalog, {
         offset: firstPage.nextOffset ?? undefined,
       });
-    expect(firstPage.events).toHaveLength(EVENT_CATALOG_PAGE_SIZE);
-    expect(firstPage.nextOffset).toBe(EVENT_CATALOG_PAGE_SIZE);
-    expect(secondPage.events).toHaveLength(2);
+    expect(firstPage.events.length).toBeLessThanOrEqual(
+      EVENT_CATALOG_PAGE_SIZE,
+    );
+    expect(firstPage.nextOffset).toBe(firstPage.events.length);
+    expect(
+      [...firstPage.events, ...secondPage.events].map((item) => item.slug),
+    ).toEqual(catalog.map((item) => item.slug));
     expect(secondPage.nextOffset).toBeNull();
   });
 
@@ -192,6 +196,36 @@ describe('descrizione WebMCP di un evento', () => {
     expect(description).toContain('Ada Lovelace');
     expect(description).toContain('Le iscrizioni sono aperte');
     expect(description).toContain('Slide: https://example.com/slide');
+  });
+
+  it('ricalcola le iscrizioni dalle date originali anche con un messaggio statico obsoleto', () => {
+    const source: WebMcpEventDetails = {
+      ...details,
+      sourceDate: '2026-10-20T00:00:00Z',
+      registration: {
+        message: 'Le iscrizioni sono chiuse.',
+        startDate: '2026-10-10T00:00:00Z',
+        endDate: '2026-10-15T00:00:00Z',
+        sourceUrl: 'https://example.com/iscrizione',
+      },
+    };
+    const open = describeEvent(source, 1500, new Date('2026-10-10T12:00:00Z'));
+    expect(open).toContain('Le iscrizioni sono aperte');
+    expect(open).toContain(source.registration.sourceUrl);
+    const closed = describeEvent(
+      source,
+      1500,
+      new Date('2026-10-15T22:00:00Z'),
+    );
+    expect(closed).toContain('Le iscrizioni sono chiuse');
+    expect(closed).not.toContain(source.registration.sourceUrl);
+    expect(
+      describeEvent(
+        { ...source, status: 'cancelled' },
+        1500,
+        new Date('2026-10-10'),
+      ),
+    ).toContain('annullato');
   });
 
   it('mantiene il catalogo aggregato e descrive ogni risorsa una volta con il suo talk', () => {

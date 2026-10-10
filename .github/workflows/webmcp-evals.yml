@@ -1,0 +1,98 @@
+name: Valutazioni WebMCP (Ollama locale)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: webmcp-ollama-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  ollama:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      OLLAMA_HOST: http://127.0.0.1:11434
+      OLLAMA_CONTEXT_LENGTH: '8192'
+      OLLAMA_NUM_PARALLEL: '1'
+      OLLAMA_MAX_LOADED_MODELS: '1'
+      OLLAMA_VERSION: '0.40.2'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: package.json
+          cache: npm
+      - run: npm ci
+      - name: Configura modello e percorsi
+        run: |
+          available_kib=$(awk '/^MemAvailable:/ {print $2}' /proc/meminfo)
+          if test "$available_kib" -lt 6291456; then
+            echo 'RAM disponibile insufficiente: servono almeno 6 GiB liberi per questa configurazione.' >&2
+            exit 2
+          fi
+          node --input-type=module <<'JS' >> "$GITHUB_ENV"
+          import { readFileSync } from 'node:fs';
+          const config = JSON.parse(readFileSync('docs/webmcp/ollama.json', 'utf8'));
+          console.log(`OLLAMA_MODEL=${config.model}`);
+          console.log(`OLLAMA_MODEL_DIGEST=${config.modelDigest}`);
+          JS
+          echo "OLLAMA_MODELS=$RUNNER_TEMP/ollama-models" >> "$GITHUB_ENV"
+          mkdir -p .evals "$RUNNER_TEMP/ollama"
+      - name: Installa Ollama con versione e checksum fissati
+        run: |
+          curl --fail --location --retry 3 --max-time 300 \
+            "https://github.com/ollama/ollama/releases/download/v${OLLAMA_VERSION}/ollama-linux-amd64.tar.zst" \
+            --output "$RUNNER_TEMP/ollama.tar.zst"
+          echo "726bee78706c281b0eeef00746efe51a044d71c592c3f0b195820707f31fdf04  $RUNNER_TEMP/ollama.tar.zst" | sha256sum --check
+          tar --zstd -xf "$RUNNER_TEMP/ollama.tar.zst" -C "$RUNNER_TEMP/ollama"
+          rm "$RUNNER_TEMP/ollama.tar.zst"
+          echo "$RUNNER_TEMP/ollama/bin" >> "$GITHUB_PATH"
+      - uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        id: model-cache
+        with:
+          path: ${{ env.OLLAMA_MODELS }}
+          key: ollama-model-${{ runner.os }}-${{ env.OLLAMA_MODEL_DIGEST }}
+      - name: Avvia il server locale e prepara il modello
+        timeout-minutes: 8
+        run: |
+          nohup ollama serve > .evals/ollama-server.log 2>&1 &
+          echo "$!" > "$RUNNER_TEMP/ollama.pid"
+          for attempt in {1..30}; do
+            if curl --fail --silent --max-time 2 "$OLLAMA_HOST/api/tags" > /dev/null; then
+              break
+            fi
+            sleep 1
+          done
+          curl --fail --silent --max-time 2 "$OLLAMA_HOST/api/tags" > /dev/null
+          ollama pull "$OLLAMA_MODEL"
+          node --input-type=module <<'JS'
+          import { installedModel } from './scripts/lib/webmcp-evals.mjs';
+          const response = await fetch(`${process.env.OLLAMA_HOST}/api/tags`, { signal: AbortSignal.timeout(10000) });
+          if (!response.ok) throw new Error(`Ollama: HTTP ${response.status}`);
+          installedModel(await response.json(), process.env.OLLAMA_MODEL, process.env.OLLAMA_MODEL_DIGEST);
+          JS
+      - uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        if: steps.model-cache.outputs.cache-hit != 'true'
+        with:
+          path: ${{ env.OLLAMA_MODELS }}
+          key: ${{ steps.model-cache.outputs.cache-primary-key }}
+      - name: Valuta le conversazioni
+        run: npm run eval:webmcp:ollama
+      - name: Arresta il server
+        if: always()
+        run: |
+          if test -f "$RUNNER_TEMP/ollama.pid"; then
+            kill "$(cat "$RUNNER_TEMP/ollama.pid")" || true
+          fi
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: webmcp-ollama-reports
+          path: .evals/
+          include-hidden-files: true
+          retention-days: 7
+          if-no-files-found: warn

@@ -31,6 +31,8 @@ export const GET: APIRoute = async ({ params, site }) => {
     pageUrl = new URL(withBase(`/eventi/${eventSlug(event)}/`), site).href,
     details: WebMcpEventDetails = {
       date: formatEventDate(event.data.date),
+      sourceDate: event.data.date.toISOString(),
+      sourceEndDate: event.data.endDate?.toISOString(),
       description: event.data.description,
       endDate: event.data.endDate
         ? formatEventDate(event.data.endDate)
@@ -39,6 +41,9 @@ export const GET: APIRoute = async ({ params, site }) => {
       materials: eventMaterials(event.data),
       registration: {
         message: registrationMessage(event),
+        startDate: event.data.registration.startDate?.toISOString(),
+        endDate: event.data.registration.endDate?.toISOString(),
+        sourceUrl: event.data.registration.url,
         url:
           registrationState(event) === 'open'
             ? event.data.registration.url
