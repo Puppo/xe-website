@@ -147,9 +147,7 @@ remain supported. No second model judges prose; the suite measures tool selectio
 not final answer quality. No real website tool executes during these evaluations.
 
 Each run creates an ignored `.evals/ollama-*/` directory with tools, settings,
-model metadata and digest, JSON/HTML reports, full transcripts, and generated
-token traces (when supplied by Ollama). Token traces help distinguish model
-omissions from native parser losses and never substitute for parsed calls. Response
+model metadata and digest, JSON/HTML reports, and full transcripts. Response
 caching, sharing, and Promptfoo telemetry are disabled. Report validation requires
 each case exactly once and consistent outcomes and counters. Exit codes are **0**
 for a complete pass, **1** for assertion failures (including partial trajectories),

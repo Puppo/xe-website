@@ -7,7 +7,7 @@ Chromium 156.0.8078.4, and Lighthouse 13.5.0.
 
 | Check | Recorded result |
 | --- | --- |
-| `npm test -- --maxWorkers=2` | 174 tests passed across 20 files |
+| `npm test -- --maxWorkers=2` | 173 tests passed across 20 files |
 | `npm run lint` | No errors; existing nonblocking warnings remain |
 | `npm run format:check` | Passed |
 | `npm run build` | No Astro/TypeScript errors, warnings, or hints; 187 documents generated |
@@ -77,10 +77,12 @@ result before answering. The next run [38085103152](https://github.com/Puppo/xe-
 still scored 5/6: the same retry announcement consumed only 15 generated tokens,
 which points to early model completion. The policy now explicitly classifies
 searches as read operations and requires tool-only messages while work remains.
-Reports additionally retain native generated-token traces to help distinguish
-model omissions from parser losses, without recovering calls or bypassing
-assertions. Real-model behavior is checked separately in CI; protocol mocks
-alone do not establish model-selection quality.
+A diagnostic attempt [38085625868](https://github.com/Puppo/xe-website/actions/runs/38085625868)
+was rejected before inference: this GGUF backend does not support `logprobs`
+with tools and its internal streaming path, even with client `stream: false`.
+The unsupported option was removed; no token-trace support is claimed.
+Real-model behavior is checked separately in CI; protocol mocks alone do not
+establish model-selection quality.
 
 The baseline [Checks run](https://github.com/Puppo/xe-website/actions/runs/38060174480)
 passed every job, including Chromium and mobile browser coverage.

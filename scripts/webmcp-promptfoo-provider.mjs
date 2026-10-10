@@ -54,17 +54,10 @@ export default class WebMcpOllamaProvider {
     const messages = [{ role: 'system', content: instructions }];
     const toolCalls = [];
     const output = [];
-    const generations = [];
     const tokenUsage = { prompt: 0, completion: 0, total: 0, numRequests: 0 };
     let stopReason = 'max_steps';
     let text = '';
-    const metadata = () => ({
-      toolCalls,
-      messages,
-      generations,
-      stopReason,
-      text,
-    });
+    const metadata = () => ({ toolCalls, messages, stopReason, text });
     try {
       messages.push(...historyMessages(JSON.parse(prompt)));
       const expected = JSON.parse(context.vars.expectedCall);
@@ -80,7 +73,6 @@ export default class WebMcpOllamaProvider {
             messages,
             tools: this.config.tools,
             stream: false,
-            logprobs: true,
             think: this.config.think,
             options: {
               temperature: 0,
@@ -105,10 +97,6 @@ export default class WebMcpOllamaProvider {
         tokenUsage.prompt += completion.prompt_eval_count || 0;
         tokenUsage.completion += completion.eval_count || 0;
         tokenUsage.total = tokenUsage.prompt + tokenUsage.completion;
-        generations.push({
-          text: completion.logprobs?.map((entry) => entry.token).join(''),
-          doneReason: completion.done_reason,
-        });
         const { message } = completion;
         messages.push(message);
         text = message.content || '';
