@@ -9,7 +9,7 @@ export function ollamaEndpoints(host) {
     !['/', '/v1', '/v1/'].includes(url.pathname)
   ) {
     throw new Error(
-      'OLLAMA_HOST deve indicare un server Ollama senza credenziali, query o percorsi diversi da /v1.',
+      'OLLAMA_HOST must identify an Ollama server without credentials, queries, or paths other than /v1.',
     );
   }
   return { base: url.origin, chat: `${url.origin}/v1` };
@@ -17,12 +17,12 @@ export function ollamaEndpoints(host) {
 
 export function pageTools(schema, names) {
   if (names.length === 0 || new Set(names).size !== names.length) {
-    throw new Error('Il catalogo della pagina è vuoto o contiene duplicati.');
+    throw new Error('The page catalog is empty or contains duplicates.');
   }
   return {
     tools: names.map((name) => {
       const tool = schema.tools.find((candidate) => candidate.name === name);
-      if (!tool) throw new Error(`Strumento assente dal catalogo: ${name}`);
+      if (!tool) throw new Error(`Tool missing from catalog: ${name}`);
       return tool;
     }),
   };
@@ -34,11 +34,11 @@ export function installedModel(tags, model, digest) {
   );
   if (!installed)
     throw new Error(
-      `Modello ${model} non presente sul server. Nessun download automatico.`,
+      `Model ${model} is not installed on the server. No automatic download.`,
     );
   if (digest && installed.digest !== digest) {
     throw new Error(
-      `Digest del modello ${model} diverso da quello previsto. Verifica i pesi prima della valutazione.`,
+      `Model ${model} digest differs from expectations. Verify the weights before evaluation.`,
     );
   }
   return installed;
@@ -46,7 +46,7 @@ export function installedModel(tags, model, digest) {
 
 export function checkModelSupport(details, model, think) {
   if (!details.capabilities?.includes('tools'))
-    throw new Error(`Il modello ${model} non supporta gli strumenti.`);
+    throw new Error(`Model ${model} does not support tools.`);
   if (
     think === false &&
     (details.model_info?.['general.finetune'] === 'Thinking' ||
@@ -54,7 +54,7 @@ export function checkModelSupport(details, model, think) {
         !details.thinking.values.includes(false)))
   ) {
     throw new Error(
-      `Il modello ${model} richiede thinking; scegli un modello Instruct o un profilo compatibile.`,
+      `Model ${model} requires thinking; choose an Instruct model or a compatible profile.`,
     );
   }
 }
@@ -68,7 +68,7 @@ export function checkEvaluationReport(report, cases) {
     summary.results.length !== cases.length
   ) {
     throw new Error(
-      'Rapporto mancante, incompleto o incompatibile con la suite.',
+      'Report is missing, incomplete, or incompatible with the suite.',
     );
   }
   const seen = new Set();
@@ -85,7 +85,7 @@ export function checkEvaluationReport(report, cases) {
       success !== (failureReason === 0)
     ) {
       throw new Error(
-        'Il rapporto contiene casi, esiti o esecuzioni non previsti.',
+        'Report contains unexpected cases, outcomes, or executions.',
       );
     }
     seen.add(testIdx);
@@ -98,7 +98,7 @@ export function checkEvaluationReport(report, cases) {
     summary.stats?.failures !== counts.fail ||
     summary.stats?.errors !== counts.error
   ) {
-    throw new Error('Contatori del rapporto incoerenti.');
+    throw new Error('Inconsistent report counters.');
   }
   return { exitCode: counts.error ? 2 : counts.fail ? 1 : 0, counts };
 }

@@ -1,4 +1,4 @@
-name: Valutazioni WebMCP (Promptfoo e Ollama)
+name: WebMCP evaluations (Promptfoo and Ollama)
 
 on:
   pull_request:
@@ -29,7 +29,7 @@ jobs:
     env:
       OLLAMA_HOST: http://127.0.0.1:11434
       OLLAMA_CONTEXT_LENGTH: '8192'
-      # Il template GGUF conserva chiamate e contenuto insieme e rispetta think:false.
+      # The GGUF template preserves tool calls alongside content and respects think:false.
       OLLAMA_GO_TEMPLATE: 'false'
       OLLAMA_NUM_PARALLEL: '1'
       OLLAMA_MAX_LOADED_MODELS: '1'
@@ -41,11 +41,11 @@ jobs:
           node-version-file: package.json
           cache: npm
       - run: npm ci
-      - name: Configura modello e percorsi
+      - name: Configure model and paths
         run: |
           available_kib=$(awk '/^MemAvailable:/ {print $2}' /proc/meminfo)
           if test "$available_kib" -lt 6291456; then
-            echo 'RAM disponibile insufficiente: servono almeno 6 GiB liberi per questa configurazione.' >&2
+            echo 'Insufficient available RAM: this configuration requires at least 6 GiB free.' >&2
             exit 2
           fi
           node --input-type=module <<'JS' >> "$GITHUB_ENV"
@@ -56,7 +56,7 @@ jobs:
           JS
           echo "OLLAMA_MODELS=$RUNNER_TEMP/ollama-models" >> "$GITHUB_ENV"
           mkdir -p .evals "$RUNNER_TEMP/ollama"
-      - name: Installa Ollama con versione e checksum fissati
+      - name: Install Ollama with a pinned version and checksum
         run: |
           curl --fail --location --retry 3 --max-time 300 \
             "https://github.com/ollama/ollama/releases/download/v${OLLAMA_VERSION}/ollama-linux-amd64.tar.zst" \
@@ -70,7 +70,7 @@ jobs:
         with:
           path: ${{ env.OLLAMA_MODELS }}
           key: ollama-model-${{ runner.os }}-${{ env.OLLAMA_MODEL_DIGEST }}
-      - name: Avvia il server locale e prepara il modello
+      - name: Start the local server and prepare the model
         timeout-minutes: 8
         run: |
           nohup ollama serve > .evals/ollama-server.log 2>&1 &
@@ -94,9 +94,9 @@ jobs:
         with:
           path: ${{ env.OLLAMA_MODELS }}
           key: ${{ steps.model-cache.outputs.cache-primary-key }}
-      - name: Valuta le conversazioni
+      - name: Evaluate conversations
         run: npm run eval:webmcp:ollama
-      - name: Arresta il server
+      - name: Stop the server
         if: always()
         run: |
           if test -f "$RUNNER_TEMP/ollama.pid"; then

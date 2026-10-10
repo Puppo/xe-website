@@ -6,7 +6,7 @@ import {
 
 afterEach(() => vi.unstubAllGlobals());
 
-describe('esecuzione e ciclo di vita WebMCP', () => {
+describe('WebMCP execution and lifecycle', () => {
   function setup() {
     const window = new EventTarget();
     const active = new Map<string, WebMCP.ModelContextTool>();
@@ -26,7 +26,7 @@ describe('esecuzione e ciclo di vita WebMCP', () => {
     return { window, active, registerTool };
   }
 
-  it('restituisce errori utilizzabili e conserva l’annullamento nativo', async () => {
+  it('returns actionable errors and preserves native cancellation', async () => {
     const { active } = setup();
     registerWebMcpTools([
       {
@@ -52,7 +52,7 @@ describe('esecuzione e ciclo di vita WebMCP', () => {
     );
   });
 
-  it('ripristina gli strumenti una sola volta dopo il ritorno dalla cache', async () => {
+  it('restores tools exactly once after returning from the cache', async () => {
     const { window, active, registerTool } = setup();
     registerWebMcpTools([
       { name: 'test', description: 'Prova', execute: () => 'ok' },
@@ -69,7 +69,7 @@ describe('esecuzione e ciclo di vita WebMCP', () => {
     expect(registerTool).toHaveBeenCalledTimes(2);
   });
 
-  it('limita anche le risposte di strumenti registrati direttamente', async () => {
+  it('also bounds responses from directly registered tools', async () => {
     const { active } = setup();
     registerWebMcpTools([
       { name: 'test', description: 'Prova', execute: () => 'x'.repeat(2000) },
@@ -81,7 +81,7 @@ describe('esecuzione e ciclo di vita WebMCP', () => {
     ).toMatchObject({ code: 'OUTPUT_TOO_LARGE' });
   });
 
-  it('mantiene entro il limite anche messaggi di errore con escape lunghi', async () => {
+  it('bounds error messages with long escaped text', async () => {
     const { active } = setup();
     registerWebMcpTools([
       {
@@ -99,7 +99,7 @@ describe('esecuzione e ciclo di vita WebMCP', () => {
     expect(result).toMatchObject({ retryable: false });
   });
 
-  it('segnala errori di registrazione senza includere argomenti o dati personali', async () => {
+  it('reports registration errors without arguments or personal data', async () => {
     const { registerTool } = setup();
     const warning = vi
       .spyOn(console, 'warn')
@@ -116,11 +116,11 @@ describe('esecuzione e ciclo di vita WebMCP', () => {
   });
 });
 
-describe('caricamento JSON annullabile', () => {
+describe('abortable JSON loading', () => {
   const isString = (value: unknown): value is string =>
     typeof value === 'string';
 
-  it('dà precedenza all’annullamento anche quando arriva un errore HTTP', async () => {
+  it('prioritizes cancellation even when an HTTP error arrives', async () => {
     const controller = new AbortController();
     vi.stubGlobal(
       'fetch',
@@ -134,7 +134,7 @@ describe('caricamento JSON annullabile', () => {
     ).rejects.toBe('annullato');
   });
 
-  it('non memorizza errori e riusa solo risposte valide', async () => {
+  it('does not cache failures and reuses only valid responses', async () => {
     const fetch = vi
       .fn()
       .mockResolvedValueOnce(new Response('', { status: 503 }))
@@ -148,7 +148,7 @@ describe('caricamento JSON annullabile', () => {
     expect(fetch).toHaveBeenCalledTimes(2);
   });
 
-  it('annulla una richiesta senza interrompere un’altra invocazione', async () => {
+  it('aborts one request without interrupting another invocation', async () => {
     vi.stubGlobal(
       'fetch',
       vi.fn(

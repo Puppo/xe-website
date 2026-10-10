@@ -45,7 +45,7 @@ Never commit `.env`, credentials, tokens, or private form endpoints.
 
 ## Content and domain rules
 
-- Keep user-facing copy, metadata, test descriptions, and domain vocabulary in Italian unless a requested change explicitly requires another language.
+- Keep website content, public website metadata, domain vocabulary, and website-facing WebMCP descriptions and responses in Italian. Use English for source code, identifiers, comments, diagnostics, test descriptions, CI names and messages, developer documentation, commit messages, and pull request descriptions. Evaluation case names and agent instructions are code-related text; simulated website user requests and website tool payloads remain Italian.
 - Use the terms in `CONTEXT.md`. In particular, preserve the distinction between scheduled and cancelled events and derive registration availability from its inclusive date interval rather than a manually maintained status.
 - Event Markdown lives at `src/data/events/<year>/<date>-<slug>.md`; people and page Markdown live under `src/data/people/` and `src/data/pages/`; shared structured data lives in `src/data/*.json`.
 - Annual membership comes from `src/data/memberships/YYYY.json`, never people frontmatter or the current date. People profiles must not contain `roles`; derive speaker status only from explicit person references in non-draft events, including historical, future, and cancelled events. Legacy speaker strings are display text. Keep historical lists and profiles; see [Gestione annuale dei soci](CONTRIBUTING.md#gestione-annuale-dei-soci). Regenerate editor schemas after adding profiles.

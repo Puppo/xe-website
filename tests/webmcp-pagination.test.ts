@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { paginateItems, paginateText } from '../src/lib/webmcp-pagination';
 
-describe('paginazione WebMCP entro il limite serializzato', () => {
-  it('riduce la pagina senza perdere elementi o modificare gli URL', () => {
+describe('WebMCP pagination within the serialized budget', () => {
+  it('reduces page size without losing items or changing URLs', () => {
     const items = Array.from({ length: 9 }, (_, index) => ({
       id: index,
       url: `https://example.com/${index}?text=${'x'.repeat(350)}`,
@@ -27,7 +27,7 @@ describe('paginazione WebMCP entro il limite serializzato', () => {
     expect(seen).toEqual(items);
   });
 
-  it('ricostruisce esattamente il testo con escape e caratteri Unicode', () => {
+  it('reconstructs escaped and Unicode text exactly', () => {
     const text = '"\\\n😀è'.repeat(1000);
     let offset = 0;
     let restored = '';
@@ -42,7 +42,7 @@ describe('paginazione WebMCP entro il limite serializzato', () => {
     expect(restored).toBe(text);
   });
 
-  it('rifiuta un singolo elemento troppo grande e offset non validi', () => {
+  it('rejects oversized individual items and invalid offsets', () => {
     expect(() =>
       paginateItems(['x'.repeat(2000)], 0, (items) => ({ items })),
     ).toThrow(/pagina|dimensione/iu);

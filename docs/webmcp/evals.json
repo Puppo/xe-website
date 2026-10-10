@@ -1,6 +1,6 @@
 [
   {
-    "name": "Trova una persona e leggi il suo profilo",
+    "name": "Find a person and read their profile",
     "messages": [
       {
         "role": "user",
@@ -43,7 +43,7 @@
     ]
   },
   {
-    "name": "Cerca materiali per argomento senza aprirli",
+    "name": "Find materials by topic without opening them",
     "messages": [
       {
         "role": "user",
@@ -77,7 +77,7 @@
     ]
   },
   {
-    "name": "Continua la lettura di una biografia lunga",
+    "name": "Continue reading a long biography",
     "messages": [
       {
         "role": "user",
@@ -129,7 +129,7 @@
     ]
   },
   {
-    "name": "Riprova dopo un errore temporaneo del catalogo",
+    "name": "Retry after a transient catalog error",
     "messages": [
       {
         "role": "user",
@@ -181,7 +181,7 @@
     ]
   },
   {
-    "name": "Continua il contenuto di un evento senza navigare",
+    "name": "Continue event content without navigation",
     "messages": [
       {
         "role": "user",
@@ -233,7 +233,7 @@
     ]
   },
   {
-    "name": "Prepara la newsletter lasciando l’invio manuale",
+    "name": "Prepare the newsletter with manual submission",
     "messages": [
       {
         "role": "user",

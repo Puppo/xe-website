@@ -10,14 +10,14 @@ import {
 
 const cases = [
   {
-    name: 'Profilo',
+    name: 'Profile',
     expectedCall: [
       { functionName: 'list_members' },
       { functionName: 'get_member' },
     ],
   },
   {
-    name: 'Materiali',
+    name: 'Materials',
     expectedCall: [{ functionName: 'search_event_materials' }],
   },
 ];
@@ -40,16 +40,14 @@ const report = (results = [row(0), row(1)]) => ({
   },
 });
 
-describe('valutazioni WebMCP con Ollama locale', () => {
-  it('rifiuta un modello assente o pesi diversi da quelli fissati in CI', () => {
-    const tags = { models: [{ name: 'qwen3:4b', digest: 'corretto' }] };
-    expect(installedModel(tags, 'qwen3:4b', 'corretto')).toEqual(
-      tags.models[0],
-    );
-    expect(() => installedModel(tags, 'qwen3:4b', 'diverso')).toThrow();
-    expect(() => installedModel(tags, 'inesistente', undefined)).toThrow();
+describe('WebMCP evaluations with local Ollama', () => {
+  it('rejects missing models and weights that differ from the CI pin', () => {
+    const tags = { models: [{ name: 'qwen3:4b', digest: 'correct' }] };
+    expect(installedModel(tags, 'qwen3:4b', 'correct')).toEqual(tags.models[0]);
+    expect(() => installedModel(tags, 'qwen3:4b', 'different')).toThrow();
+    expect(() => installedModel(tags, 'missing', undefined)).toThrow();
   });
-  it('rifiuta thinking obbligatorio quando il profilo richiede think:false', () => {
+  it('rejects mandatory thinking when the profile requires think:false', () => {
     const capable = { capabilities: ['tools'] };
     expect(() => checkModelSupport(capable, 'instruct', false)).not.toThrow();
     expect(() =>
@@ -69,7 +67,7 @@ describe('valutazioni WebMCP con Ollama locale', () => {
     expect(() =>
       checkModelSupport(
         { ...capable, thinking: { values: [false, true] } },
-        'ibrido',
+        'hybrid',
         false,
       ),
     ).not.toThrow();
@@ -81,29 +79,29 @@ describe('valutazioni WebMCP con Ollama locale', () => {
       ),
     ).not.toThrow();
     expect(() =>
-      checkModelSupport({ capabilities: [] }, 'senza strumenti', false),
+      checkModelSupport({ capabilities: [] }, 'without tools', false),
     ).toThrow();
   });
 
-  it('accetta soltanto un rapporto completo e riuscito', () => {
+  it('accepts only a complete successful report', () => {
     expect(checkEvaluationReport(report(), cases)).toMatchObject({
       exitCode: 0,
     });
   });
 
-  it('fallisce per errori del provider anche se la CLI termina con zero', () => {
+  it('fails on provider errors even if the CLI exits with zero', () => {
     expect(
       checkEvaluationReport(report([row(0, 'error'), row(1, 'error')]), cases),
     ).toMatchObject({ exitCode: 2 });
   });
 
-  it('distingue una selezione errata da un errore del provider', () => {
+  it('distinguishes incorrect selection from provider errors', () => {
     expect(
       checkEvaluationReport(report([row(0, 'fail'), row(1)]), cases),
     ).toMatchObject({ exitCode: 1 });
   });
 
-  it('rifiuta casi mancanti, duplicati, esiti e contatori incoerenti', () => {
+  it('rejects missing or duplicate cases and inconsistent outcomes or counters', () => {
     for (const results of [
       [row(0)],
       [row(0), row(0)],
@@ -119,7 +117,7 @@ describe('valutazioni WebMCP con Ollama locale', () => {
     expect(() => checkEvaluationReport(report(), [])).toThrow();
   });
 
-  it('normalizza gli endpoint e rifiuta credenziali e percorsi inattesi', () => {
+  it('normalizes endpoints and rejects credentials or unexpected paths', () => {
     expect(ollamaEndpoints('http://127.0.0.1:11434/v1/')).toEqual({
       base: 'http://127.0.0.1:11434',
       chat: 'http://127.0.0.1:11434/v1',
@@ -130,7 +128,7 @@ describe('valutazioni WebMCP con Ollama locale', () => {
     ).toThrow();
   });
 
-  it('offre il catalogo completo della pagina e rifiuta strumenti inesistenti', () => {
+  it('offers the complete page catalog and rejects unknown tools', () => {
     const schema = JSON.parse(
       readFileSync(
         new URL('../docs/webmcp/schema.json', import.meta.url),
@@ -149,11 +147,11 @@ describe('valutazioni WebMCP con Ollama locale', () => {
       ),
     ).toEqual(config.tools);
     expect(config.tools).toHaveLength(8);
-    expect(() => pageTools(schema, ['inesistente'])).toThrow();
+    expect(() => pageTools(schema, ['missing'])).toThrow();
     expect(() => pageTools(schema, ['get_member', 'get_member'])).toThrow();
   });
 
-  it('mantiene risposte simulate complete e offset coerenti nelle conversazioni', () => {
+  it('preserves complete mock responses and consistent conversation offsets', () => {
     const fixtures = JSON.parse(
       readFileSync(
         new URL('../docs/webmcp/evals.json', import.meta.url),

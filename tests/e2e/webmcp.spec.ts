@@ -69,7 +69,7 @@ async function invokeTool(
       const tool = (
         window as unknown as { webMcpTools: RegisteredTool[] }
       ).webMcpTools.find((candidate) => candidate.name === toolName);
-      if (!tool) throw new Error(`Strumento mancante: ${toolName}`);
+      if (!tool) throw new Error(`Missing tool: ${toolName}`);
       return tool.execute(argumentsInput, {
         signal: new AbortController().signal,
       });
@@ -78,7 +78,7 @@ async function invokeTool(
   );
 }
 
-test('gli strumenti catalogo cercano e aprono gli eventi', async ({ page }) => {
+test('catalog tools search and open events', async ({ page }) => {
   const catalogRequests: string[] = [];
   page.on('request', (request) => {
     if (request.url().includes('/webmcp/events.json')) {
@@ -119,7 +119,7 @@ test('gli strumenti catalogo cercano e aprono gli eventi', async ({ page }) => {
   ]);
 });
 
-test('la pagina evento espone una descrizione compatta', async ({ page }) => {
+test('event pages expose a compact description', async ({ page }) => {
   const detailRequests: string[] = [];
   page.on('request', (request) => {
     if (request.url().includes('/webmcp/events/tech-pub-gennaio-2025.json')) {
@@ -143,7 +143,9 @@ test('la pagina evento espone una descrizione compatta', async ({ page }) => {
   expect(detailRequests).toHaveLength(1);
 });
 
-test('la newsletter viene compilata ma non inviata', async ({ page }) => {
+test('newsletter preparation fills the form without submitting', async ({
+  page,
+}) => {
   await mockWebMcp(page);
   await page.goto('/');
   await waitForTool(page, 'prepare_newsletter_subscription');
@@ -184,7 +186,7 @@ test('la newsletter viene compilata ma non inviata', async ({ page }) => {
   ).toBe(0);
 });
 
-test('il contatto è disponibile solo con il modulo configurato e non viene inviato', async ({
+test('contact preparation is available only with a configured form and does not submit', async ({
   page,
 }) => {
   await mockWebMcp(page);
@@ -240,9 +242,7 @@ test('il contatto è disponibile solo con il modulo configurato e non viene invi
   ).toBe(0);
 });
 
-test('gli strumenti del catalogo soci cercano e aprono i profili', async ({
-  page,
-}) => {
+test('member catalog tools search and open profiles', async ({ page }) => {
   await mockWebMcp(page);
   await page.goto('/soci/');
   await waitForTool(page, 'list_members');
@@ -274,9 +274,7 @@ test('gli strumenti del catalogo soci cercano e aprono i profili', async ({
   ]);
 });
 
-test('la pagina del socio espone una descrizione compatta', async ({
-  page,
-}) => {
+test('member pages expose a compact description', async ({ page }) => {
   const detailRequests: string[] = [];
   page.on('request', (request) => {
     if (request.url().includes('/webmcp/members/emanuele-furlan.json')) {
@@ -300,7 +298,7 @@ test('la pagina del socio espone una descrizione compatta', async ({
   expect(detailRequests).toHaveLength(1);
 });
 
-test('un errore di rete WebMCP può essere riprovato', async ({ page }) => {
+test('a WebMCP network error can be retried', async ({ page }) => {
   let requests = 0;
   await page.route('**/webmcp/events.json', async (route) => {
     requests += 1;
@@ -329,7 +327,7 @@ test('un errore di rete WebMCP può essere riprovato', async ({ page }) => {
   expect(requests).toBe(2);
 });
 
-test('la home registra una sola copia del catalogo soci', async ({ page }) => {
+test('home registers exactly one member catalog', async ({ page }) => {
   await mockWebMcp(page);
   await page.goto('/');
   await waitForTool(page, 'list_members');
@@ -337,9 +335,7 @@ test('la home registra una sola copia del catalogo soci', async ({ page }) => {
   await waitForTool(page, 'prepare_newsletter_subscription');
 });
 
-test('la pagina evento permette di aprire il profilo del relatore', async ({
-  page,
-}) => {
+test('event pages can open speaker profiles', async ({ page }) => {
   await mockWebMcp(page);
   await page.goto('/eventi/tech-pub-gennaio-2025/');
   await waitForTool(page, 'list_members');
@@ -358,7 +354,7 @@ test('la pagina evento permette di aprire il profilo del relatore', async ({
   ]);
 });
 
-test('aprire un socio annullato durante il caricamento non naviga', async ({
+test('opening a member does not navigate when loading is cancelled', async ({
   page,
 }) => {
   await mockWebMcp(page);
@@ -384,7 +380,7 @@ test('aprire un socio annullato durante il caricamento non naviga', async ({
       window as unknown as { webMcpTools: RegisteredTool[] }
     ).webMcpTools.find((candidate) => candidate.name === 'open_member');
     if (!tool) {
-      throw new Error('Lo strumento open_member non è disponibile.');
+      throw new Error('The open_member tool is unavailable.');
     }
     try {
       await tool.execute(
@@ -401,7 +397,7 @@ test('aprire un socio annullato durante il caricamento non naviga', async ({
   expect(page.url()).toBe(originalUrl);
 });
 
-test('tutti gli eventi e i dettagli sono disponibili da ogni pagina', async ({
+test('all events and details are available from every page', async ({
   page,
 }) => {
   await mockWebMcp(page);
@@ -469,7 +465,7 @@ test('tutti gli eventi e i dettagli sono disponibili da ogni pagina', async ({
   }
 });
 
-test('le pagine funzionano senza supporto WebMCP', async ({ page }) => {
+test('pages work without WebMCP support', async ({ page }) => {
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
   await page.goto('/eventi/tech-pub-gennaio-2025/');
@@ -479,7 +475,7 @@ test('le pagine funzionano senza supporto WebMCP', async ({ page }) => {
   expect(errors).toEqual([]);
 });
 
-test('la newsletter rifiuta email non valide senza inviare il modulo', async ({
+test('newsletter preparation rejects invalid email without submitting', async ({
   page,
 }) => {
   await mockWebMcp(page);
@@ -521,7 +517,7 @@ test('la newsletter rifiuta email non valide senza inviare il modulo', async ({
   ).toBe(0);
 });
 
-test('il contatto rifiuta dati non validi senza inviare il modulo', async ({
+test('contact preparation rejects invalid data without submitting', async ({
   page,
 }) => {
   await mockWebMcp(page);
@@ -568,7 +564,7 @@ test('il contatto rifiuta dati non validi senza inviare il modulo', async ({
   ).toBe(0);
 });
 
-test('profili e materiali sono disponibili da ogni pagina senza navigare', async ({
+test('profiles and materials are available sitewide without navigation', async ({
   page,
 }) => {
   await mockWebMcp(page);
@@ -609,7 +605,7 @@ test('profili e materiali sono disponibili da ogni pagina senza navigare', async
   }
 });
 
-test('i metadati distinguono query, navigazione e preparazione', async ({
+test('metadata distinguishes queries, navigation and preparation', async ({
   page,
 }) => {
   await mockWebMcp(page);
@@ -643,7 +639,7 @@ test('i metadati distinguono query, navigazione e preparazione', async ({
   }
 });
 
-test('una bozza newsletter viene conservata e blocca la navigazione', async ({
+test('a newsletter draft is preserved and blocks navigation', async ({
   page,
 }) => {
   await mockWebMcp(page);
@@ -673,7 +669,7 @@ test('una bozza newsletter viene conservata e blocca la navigazione', async ({
   ).toMatchObject({ status: 'requires_user_action' });
 });
 
-test('un errore di validazione preserva tutti i campi e il consenso', async ({
+test('validation failures preserve all fields and consent', async ({
   page,
 }) => {
   await mockWebMcp(page);
@@ -695,7 +691,7 @@ test('un errore di validazione preserva tutti i campi e il consenso', async ({
   await expect(page.locator('#privacy')).toBeChecked();
 });
 
-test('il ritorno da pagehide ripristina tutti gli strumenti una volta', async ({
+test('returning from pagehide restores all tools exactly once', async ({
   page,
 }) => {
   await mockWebMcp(page);
@@ -723,7 +719,7 @@ test('il ritorno da pagehide ripristina tutti gli strumenti una volta', async ({
   expect(await invokeTool(page, 'list_members')).toHaveProperty('members');
 });
 
-test('il caricamento di un catalogo con struttura errata restituisce un errore', async ({
+test('loading a malformed catalog returns a structured error', async ({
   page,
 }) => {
   await mockWebMcp(page);
@@ -737,7 +733,7 @@ test('il caricamento di un catalogo con struttura errata restituisce un errore',
   });
 });
 
-test('la preparazione del contatto rifiuta limiti superati prima di cambiare i campi', async ({
+test('contact preparation rejects exceeded limits before changing fields', async ({
   page,
 }) => {
   await mockWebMcp(page);

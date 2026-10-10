@@ -25,35 +25,35 @@ function matches(expected, actual) {
 export function assertTrajectory(output, context) {
   const fail = (reason) => ({ pass: false, score: 0, reason });
   if (context.providerResponse?.metadata?.stopReason !== 'completed')
-    return fail('Conversazione non conclusa entro i limiti configurati.');
+    return fail('Conversation did not finish within the configured limits.');
   const expected = JSON.parse(context.vars.expectedCall);
-  // Le assertion function di Promptfoo ricevono gli oggetti come testo JSON.
+  // Promptfoo function assertions receive objects as JSON text.
   let calls = output;
   if (typeof output === 'string') {
     try {
       calls = JSON.parse(output);
     } catch {
-      return fail('Risposta non serializzata come JSON valido.');
+      return fail('Response is not serialized as valid JSON.');
     }
   }
   if (!Array.isArray(calls) || calls.length !== expected.length)
-    return fail('Numero di chiamate diverso dalla traiettoria prevista.');
+    return fail('Call count differs from the expected trajectory.');
   for (const [index, call] of calls.entries()) {
     const entry = expected[index];
     if (call.function?.name !== entry.functionName)
-      return fail(`Passo ${index + 1}: strumento o ordine errato.`);
+      return fail(`Step ${index + 1}: incorrect tool or order.`);
     let args;
     try {
       args = JSON.parse(call.function.arguments);
     } catch {
-      return fail(`Passo ${index + 1}: argomenti JSON non validi.`);
+      return fail(`Step ${index + 1}: invalid JSON arguments.`);
     }
     if (!matches(entry.arguments, args))
-      return fail(`Passo ${index + 1}: argomenti diversi da quelli attesi.`);
+      return fail(`Step ${index + 1}: arguments differ from expectations.`);
   }
   return {
     pass: true,
     score: 1,
-    reason: 'Traiettoria completa con strumenti, ordine e argomenti corretti.',
+    reason: 'Complete trajectory with correct tools, order, and arguments.',
   };
 }

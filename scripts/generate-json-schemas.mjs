@@ -19,22 +19,22 @@ const root = join(import.meta.dirname, '..'),
     .map((filename) => personIdFromFilename(filename))
     .sort(),
   schemas = {
-    'event.schema.json': ['Evento XeDotNet', eventInputSchema],
+    'event.schema.json': ['XeDotNet event', eventInputSchema],
     'locations.schema.json': [
-      'Località aggregate XeDotNet',
+      'XeDotNet location collection',
       z.array(locationSchema.extend({ id })),
     ],
     'partners.schema.json': [
-      'Partner XeDotNet',
+      'XeDotNet partners',
       z.array(partnerSchema.extend({ id })),
     ],
     'membership.schema.json': [
-      'Soci per anno associativo XeDotNet',
+      'XeDotNet annual membership',
       createMembershipSchema(z.enum(personIds)),
     ],
-    'person.schema.json': ['Profilo pubblico XeDotNet', personSchema],
+    'person.schema.json': ['XeDotNet public profile', personSchema],
     'site.schema.json': [
-      'Configurazione XeDotNet',
+      'XeDotNet configuration',
       z.array(siteSchema.extend({ id })),
     ],
   };
@@ -54,4 +54,6 @@ for (const [filename, [title, schema]] of Object.entries(schemas)) {
   );
 }
 
-console.log(`Generati ${Object.keys(schemas).length} JSON Schema in schemas/.`);
+console.log(
+  `Generated ${Object.keys(schemas).length} JSON Schemas in schemas/.`,
+);

@@ -42,8 +42,8 @@ const catalog: WebMcpEventSummary[] = Array.from(
   }),
 );
 
-describe('catalogo WebMCP degli eventi', () => {
-  it('filtra per testo, anno e periodo senza perdere gli eventi annullati', () => {
+describe('WebMCP event catalog', () => {
+  it('filters by text, year and period without losing cancelled events', () => {
     expect(listEvents(catalog, { query: 'WebMCP' }).events).toHaveLength(1);
     expect(listEvents(catalog, { year: 2025 }).total).toBe(3);
     const past = listEvents(
@@ -71,7 +71,7 @@ describe('catalogo WebMCP degli eventi', () => {
     ).toBe(1);
   });
 
-  it('pagina gli eventi in gruppi di massimo cinque', () => {
+  it('paginates events with at most five items per page', () => {
     const firstPage = listEvents(catalog, {}),
       secondPage = listEvents(catalog, {
         offset: firstPage.nextOffset ?? undefined,
@@ -86,18 +86,18 @@ describe('catalogo WebMCP degli eventi', () => {
     expect(secondPage.nextOffset).toBeNull();
   });
 
-  it('rifiuta offset e anni non validi', () => {
+  it('rejects invalid offsets and years', () => {
     expect(() => listEvents(catalog, { offset: -1 })).toThrow(/offset/i);
     expect(() => listEvents(catalog, { year: 2026.5 })).toThrow(/anno/i);
   });
 
-  it('rifiuta uno slug non presente nel catalogo', () => {
+  it('rejects slugs missing from the catalog', () => {
     expect(() => eventForSlug(catalog, 'evento-sconosciuto')).toThrow(
       /non trovato/iu,
     );
   });
 
-  it('combina intervallo sovrapposto, titolo, descrizione e relatori', () => {
+  it('combines overlapping intervals, title, description and speakers', () => {
     const result = listEvents(catalog, {
       dateFrom: '2026-01-12',
       dateTo: '2026-01-15',
@@ -113,7 +113,7 @@ describe('catalogo WebMCP degli eventi', () => {
     expect(listEvents(catalog, { query: 'gianni rosa' }).total).toBe(1);
   });
 
-  it('rifiuta date impossibili, intervalli invertiti e relatori vuoti', () => {
+  it('rejects impossible dates, reversed intervals and empty speaker filters', () => {
     expect(() => listEvents(catalog, { dateFrom: '2026-02-30' })).toThrow(
       /valida/iu,
     );
@@ -126,10 +126,10 @@ describe('catalogo WebMCP degli eventi', () => {
     );
   });
 
-  it('restituisce i dettagli completi e aggiorna la disponibilità delle iscrizioni', () => {
+  it('returns complete details and updates registration availability', () => {
     const [first] = catalog;
     if (!first) {
-      throw new Error('Il catalogo di prova è vuoto.');
+      throw new Error('The test catalog is empty.');
     }
     const event: WebMcpFullEvent = {
       ...first,
@@ -167,7 +167,7 @@ describe('catalogo WebMCP degli eventi', () => {
   });
 });
 
-describe('descrizione WebMCP di un evento', () => {
+describe('WebMCP event description', () => {
   const details: WebMcpEventDetails = {
     date: 'venerdì 18 settembre 2026',
     description: 'Una serata della community dedicata agli agenti.',
@@ -190,7 +190,7 @@ describe('descrizione WebMCP di un evento', () => {
     venue: 'Treviso',
   };
 
-  it('include dettagli, relatori, iscrizione e materiali', () => {
+  it('includes details, speakers, registration and materials', () => {
     const description = describeEvent(details);
     expect(description).toContain('WebMCP per le community');
     expect(description).toContain('Ada Lovelace');
@@ -198,7 +198,7 @@ describe('descrizione WebMCP di un evento', () => {
     expect(description).toContain('Slide: https://example.com/slide');
   });
 
-  it('ricalcola le iscrizioni dalle date originali anche con un messaggio statico obsoleto', () => {
+  it('recalculates registration from original dates despite stale static messages', () => {
     const source: WebMcpEventDetails = {
       ...details,
       sourceDate: '2026-10-20T00:00:00Z',
@@ -228,7 +228,7 @@ describe('descrizione WebMCP di un evento', () => {
     ).toContain('annullato');
   });
 
-  it('mantiene il catalogo aggregato e descrive ogni risorsa una volta con il suo talk', () => {
+  it('preserves the aggregated catalog and describes each resource once with its session', () => {
     const slide = details.materials[0],
       shared = {
         label: 'Cartella comune',
@@ -254,7 +254,7 @@ describe('descrizione WebMCP di un evento', () => {
     ).toEqual([slide]);
   });
 
-  it('rispetta il limite e segnala i dettagli omessi', () => {
+  it('respects the budget and flags omitted details', () => {
     const description = describeEvent(
       {
         ...details,
@@ -271,7 +271,7 @@ describe('descrizione WebMCP di un evento', () => {
     expect(description).toContain('dettagli omessi');
   });
 
-  it('omette effettivamente delle sessioni quando il programma è molto lungo', () => {
+  it('omits sessions when the program is too long', () => {
     const sessions = Array.from({ length: 50 }, (_, index) => ({
         speakers: [`Relatore ${index}`],
         title: `Sessione unica numero ${index}`,
@@ -313,22 +313,22 @@ const memberCatalog: WebMcpMemberSummary[] = Array.from(
   }),
 );
 
-describe('catalogo WebMCP dei soci', () => {
-  it('filtra per testo su nome, titolo ed estratto', () => {
+describe('WebMCP member catalog', () => {
+  it('filters text across names, titles and excerpts', () => {
     const result = listMembers(memberCatalog, { query: 'accessibilità' });
     expect(result.total).toBe(1);
     expect(result.members).toHaveLength(1);
     expect(result.members[0]?.name).toBe('Socio 0');
   });
 
-  it('filtra per ruolo e mantiene tutti i soci con entrambi i ruoli', () => {
+  it('filters by role and includes members with both roles', () => {
     const speakers = listMembers(memberCatalog, { role: 'speaker' });
     expect(speakers.total).toBe(MEMBER_CATALOG_PAGE_SIZE + 2);
     const onlyMembers = listMembers(memberCatalog, { role: 'member' });
     expect(onlyMembers.total).toBe(MEMBER_CATALOG_PAGE_SIZE + 1);
   });
 
-  it('pagina i risultati in gruppi di cinque', () => {
+  it('paginates results in groups of five', () => {
     const firstPage = listMembers(memberCatalog, {}),
       secondPage = listMembers(memberCatalog, {
         offset: firstPage.nextOffset ?? undefined,
@@ -339,7 +339,7 @@ describe('catalogo WebMCP dei soci', () => {
     expect(secondPage.nextOffset).toBeNull();
   });
 
-  it('tronca l’estratto a 120 caratteri nella pagina corrente', () => {
+  it('truncates excerpts to 120 characters in the current page', () => {
     const first = memberCatalog[0];
     if (!first) {
       throw new Error('Catalog fixture is empty');
@@ -349,22 +349,22 @@ describe('catalogo WebMCP dei soci', () => {
     expect(result.members[0]?.excerpt.length).toBeLessThanOrEqual(121);
   });
 
-  it('rifiuta offset non validi', () => {
+  it('rejects invalid offsets', () => {
     expect(() => listMembers(memberCatalog, { offset: -1 })).toThrow(/offset/i);
   });
 
-  it('rifiuta uno slug non presente nel catalogo', () => {
+  it('rejects slugs missing from the catalog', () => {
     expect(() => memberForSlug(memberCatalog, 'socio-sconosciuto')).toThrow(
       /non trovato/iu,
     );
   });
 
-  it('rifiuta uno slug che non è una stringa', () => {
+  it('rejects non-string slugs', () => {
     expect(() => memberForSlug(memberCatalog, 42)).toThrow(/slug.*socio/i);
   });
 });
 
-describe('descrizione WebMCP di un socio', () => {
+describe('WebMCP member description', () => {
   const details: WebMcpMemberDetails = {
     biography: 'Esperto di accessibilità, speaker e membro della community.',
     excerpt: 'Esperto di accessibilità e community building.',
@@ -377,7 +377,7 @@ describe('descrizione WebMCP di un socio', () => {
     url: 'https://www.xedotnet.org/soci/ada-community/',
   };
 
-  it('include ruoli, biografia, titolo, link e profilo esterno', () => {
+  it('includes roles, biography, title, links and external profile', () => {
     const description = describeMember(details);
     expect(description).toContain('Ada Community');
     expect(description).toContain('Accessibility Lead');
@@ -389,7 +389,7 @@ describe('descrizione WebMCP di un socio', () => {
     );
   });
 
-  it('rispetta il limite e segnala i dettagli omessi', () => {
+  it('respects the budget and flags omitted details', () => {
     const biography = 'Biografia '.repeat(500).trim(),
       externalLinks = Array.from({ length: 200 }, (_, index) => ({
         label: `Link ${index}`,
@@ -405,7 +405,7 @@ describe('descrizione WebMCP di un socio', () => {
     expect(description).toContain('dettagli omessi');
   });
 
-  it('descrive correttamente un socio che è solo relatore', () => {
+  it('correctly describes a person who is only a speaker', () => {
     const description = describeMember({
       ...details,
       roles: ['speaker'],

@@ -45,8 +45,8 @@ const member: WebMcpMemberDetails = {
   url: 'https://example.com/soci/ada/',
 };
 
-describe('sezioni e ricerca WebMCP', () => {
-  it('riassume l’evento e pagina il contenuto senza perdere il testo', () => {
+describe('WebMCP sections and search', () => {
+  it('summarizes events and paginates the body without losing text', () => {
     const overview = eventResponse(
       [event],
       { slug: 'test' },
@@ -65,7 +65,7 @@ describe('sezioni e ricerca WebMCP', () => {
         offset,
       });
       expect(JSON.stringify(page).length).toBeLessThanOrEqual(1500);
-      if (!('text' in page)) throw new Error('Manca il testo.');
+      if (!('text' in page)) throw new Error('Missing text.');
       text += page.text;
       if (page.nextOffset === null) break;
       offset = page.nextOffset;
@@ -76,7 +76,7 @@ describe('sezioni e ricerca WebMCP', () => {
     ).toMatchObject({ total: 2 });
   });
 
-  it('legge biografia e link senza cambiare pagina', () => {
+  it('reads biographies and links without navigation', () => {
     expect(memberResponse(member, {})).toMatchObject({
       slug: 'ada',
       roles: ['member', 'speaker'],
@@ -92,7 +92,7 @@ describe('sezioni e ricerca WebMCP', () => {
     );
   });
 
-  it('trova materiali per contesto e conserva le sessioni deduplicando gli URL', () => {
+  it('finds materials by context and preserves sessions while deduplicating URLs', () => {
     const result = searchEventMaterials([event], { query: 'modernizzazione' });
     expect(result.total).toBe(1);
     expect(result.materials[0]).toMatchObject({
@@ -110,7 +110,7 @@ describe('sezioni e ricerca WebMCP', () => {
   });
 });
 
-it('ricostruisce biografie complete e collezioni di link senza salti', () => {
+it('reconstructs full biographies and link collections without gaps', () => {
   const fullBiography = '"\\\n😀 Biografia completa '.repeat(300);
   const externalLinks = Array.from({ length: 12 }, (_, index) => ({
     label: `Collegamento ${index}`,
@@ -121,7 +121,7 @@ it('ricostruisce biografie complete e collezioni di link senza salti', () => {
   let text = '';
   for (;;) {
     const page = memberResponse(profile, { section: 'biography', offset });
-    if (!('text' in page)) throw new Error('Manca il testo.');
+    if (!('text' in page)) throw new Error('Missing text.');
     expect(JSON.stringify(page).length).toBeLessThanOrEqual(1500);
     text += page.text;
     if (page.nextOffset === null) break;
@@ -132,7 +132,7 @@ it('ricostruisce biografie complete e collezioni di link senza salti', () => {
   const links: typeof externalLinks = [];
   for (;;) {
     const page = memberResponse(profile, { section: 'links', offset });
-    if (!('links' in page)) throw new Error('Mancano i link.');
+    if (!('links' in page)) throw new Error('Missing links.');
     expect(JSON.stringify(page).length).toBeLessThanOrEqual(1500);
     links.push(...page.links);
     if (page.nextOffset === null) break;
@@ -141,7 +141,7 @@ it('ricostruisce biografie complete e collezioni di link senza salti', () => {
   expect(links).toEqual(externalLinks);
 });
 
-it('pagina programmi lunghi e segnala elementi che non possono entrare', () => {
+it('paginates long programs and reports items that cannot fit', () => {
   const sessions = Array.from({ length: 12 }, (_, index) => ({
     title: `Sessione ${index}`,
     description: '"Descrizione"\n'.repeat(25),
@@ -155,7 +155,7 @@ it('pagina programmi lunghi e segnala elementi che non possono entrare', () => {
       section: 'sessions',
       offset,
     });
-    if (!('sessions' in page)) throw new Error('Manca il programma.');
+    if (!('sessions' in page)) throw new Error('Missing program.');
     expect(JSON.stringify(page).length).toBeLessThanOrEqual(1500);
     seen.push(
       ...page.sessions.map((session) => ({
@@ -193,7 +193,7 @@ it('pagina programmi lunghi e segnala elementi che non possono entrare', () => {
   ).toThrow(/limite/iu);
 });
 
-it('pagina materiali conservando gli URL e le associazioni tra eventi', () => {
+it('paginates materials while preserving URLs and event associations', () => {
   const catalog = Array.from({ length: 12 }, (_, index) => ({
     ...event,
     slug: `evento-${index}`,

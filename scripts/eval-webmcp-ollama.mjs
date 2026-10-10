@@ -25,7 +25,7 @@ async function serverJson(base, path, body) {
     });
   } catch (error) {
     throw new Error(
-      `Ollama non raggiungibile a ${base}: ${error.message}. Verifica OLLAMA_HOST e il server già avviato su una macchina adeguata.`,
+      `Ollama is unreachable at ${base}: ${error.message}. Check OLLAMA_HOST and the running server on a sufficiently capable machine.`,
       { cause: error },
     );
   }
@@ -78,12 +78,11 @@ function runCli(args, env, timeoutMs) {
     });
     child.once('close', (code) => {
       clean();
-      if (timedOut)
-        reject(new Error('Valutazione interrotta: timeout di 15 minuti.'));
+      if (timedOut) reject(new Error('Evaluation stopped: 15-minute timeout.'));
       else if (code === 0 || code === 100) {
         resolve(code);
       } else {
-        reject(new Error(`Runner terminato con codice ${code}.`));
+        reject(new Error(`Runner exited with code ${code}.`));
       }
     });
   });
@@ -135,7 +134,7 @@ async function main() {
     ),
   );
   console.log(
-    `Ollama locale: ${model}; casi seriali: ${cases.length}; rapporti: ${output}`,
+    `Local Ollama: ${model}; sequential cases: ${cases.length}; reports: ${output}`,
   );
   const cliCode = await runCli(
     [
@@ -172,9 +171,9 @@ async function main() {
   );
   const checked = checkEvaluationReport(report, cases);
   if ((cliCode === 0) !== (checked.exitCode === 0))
-    throw new Error('Codice del runner incoerente con il rapporto.');
+    throw new Error('Runner exit code is inconsistent with the report.');
   console.log(
-    `Casi riusciti: ${checked.counts.pass}; selezioni errate: ${checked.counts.fail}; errori di esecuzione/provider: ${checked.counts.error}.`,
+    `Passed cases: ${checked.counts.pass}; assertion failures: ${checked.counts.fail}; execution/provider errors: ${checked.counts.error}.`,
   );
   process.exitCode = checked.exitCode;
 }
@@ -183,7 +182,7 @@ try {
   await main();
 } catch (error) {
   console.error(
-    `Valutazione non completata (configurazione/provider/runner): ${error.message}`,
+    `Evaluation did not complete (configuration/provider/runner): ${error.message}`,
   );
   process.exitCode = 2;
 }

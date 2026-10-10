@@ -10,7 +10,7 @@ const cases = readJson('evals.json');
 const schema = pageTools(readJson('schema.json'), config.tools);
 
 export default {
-  description: 'Conversazioni WebMCP di XeDotNet con Ollama locale',
+  description: 'XeDotNet WebMCP conversations with local Ollama',
   prompts: ['{{messages}}'],
   providers: [
     {

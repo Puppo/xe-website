@@ -29,7 +29,7 @@ async function executeNative(
         (item) => item.name === toolName,
       );
       if (!context || !tool)
-        throw new Error(`Strumento nativo mancante: ${toolName}`);
+        throw new Error(`Missing native tool: ${toolName}`);
       return context.executeTool(tool, argumentsInput);
     },
     { name, input },
@@ -60,7 +60,7 @@ async function navigateNative(
   ]);
 }
 
-test('Chrome scopre ed esegue gli strumenti nativi nelle diverse pagine', async ({
+test('Chrome discovers and executes native tools across pages', async ({
   page,
 }) => {
   const warnings: string[] = [];
@@ -106,7 +106,7 @@ test('Chrome scopre ed esegue gli strumenti nativi nelle diverse pagine', async 
   expect(warnings).toEqual([]);
 });
 
-test('la cronologia ripristina la scoperta nativa senza duplicati', async ({
+test('history restores native discovery without duplicates', async ({
   page,
 }) => {
   await page.goto(`${basePath}/`);
@@ -138,7 +138,7 @@ test('la cronologia ripristina la scoperta nativa senza duplicati', async ({
   await expect.poll(() => nativeNames(page)).toContain('get_member');
 });
 
-test('la navigazione nativa rimane nell’origine e nel percorso di base attivi', async ({
+test('native navigation stays within the active origin and base path', async ({
   page,
 }) => {
   await page.goto(`${basePath}/`);
