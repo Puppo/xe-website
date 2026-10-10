@@ -5,7 +5,7 @@ Chromium 156.0.8078.4 e Lighthouse 13.5.0.
 
 | Controllo | Risultato |
 | --- | --- |
-| `npm test -- --maxWorkers=2` | 169 test superati in 20 file |
+| `npm test -- --maxWorkers=2` | 170 test superati in 20 file |
 | `npm run lint` | Nessun errore; rimangono avvisi non bloccanti |
 | `npm run format:check` | Superato |
 | `npm run build` | Nessun errore, avviso o hint Astro/TypeScript; 187 documenti generati |
@@ -69,12 +69,21 @@ Le trascrizioni mostrano reasoning anche con `think: false`; i log confermano
 il template Go. Il template pubblicato usa il testo dell’assistente in
 alternativa alle sue chiamate, perdendo queste ultime quando entrambi esistono.
 La CI ora imposta `OLLAMA_GO_TEMPLATE=false` per usare il template GGUF originale,
-conservando tutti i messaggi e lasciando inalterate fixture e assertion. La
-correzione va verificata nel nuovo run; non si dichiara riuscita la qualità del
-modello sulla base delle prove simulate.
+conservando tutti i messaggi e lasciando inalterate fixture e assertion.
+
+L’ispezione dei metadati GGUF ha poi identificato `general.finetune: Thinking`
+e `general.name: Qwen3 4B Thinking 2507`: il modello fissato non supporta la
+modalità senza thinking. Il secondo run è stato interrotto per evitare di
+ripetere la configurazione incompatibile. Il profilo ora seleziona esplicitamente
+`qwen3:4b-instruct`, con un nuovo digest del manifest ufficiale; il preflight
+rifiuta i modelli con thinking obbligatorio se richiesto `think: false`.
+Fixture, schemi, assertion e limiti rimangono gli stessi. Questa correzione
+va verificata nel prossimo run; non si dichiara riuscita la qualità del modello
+sulla base delle prove simulate.
 
 Riferimenti per il renderer: [configurazione Ollama 0.40.2](https://github.com/ollama/ollama/blob/v0.40.2/envconfig/config.go),
-[template del modello](https://ollama.com/library/qwen3:4b/blobs/ae370d884f10).
+[template del modello](https://ollama.com/library/qwen3:4b/blobs/ae370d884f10),
+[modalità Thinking/Instruct Qwen3](https://github.com/QwenLM/Qwen3/blob/main/docs/source/getting_started/quickstart.md).
 
 L’ambiente locale da 4 GB non è stato modificato per ospitare un modello:
 nessun server avviato né pesi scaricati. Il comando per una macchina adeguata

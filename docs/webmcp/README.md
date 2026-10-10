@@ -115,12 +115,12 @@ con supporto agli strumenti già scaricato:
 npm run eval:webmcp:ollama
 ```
 
-Il modello predefinito è `qwen3:4b`; la configurazione del runner è in
+Il modello predefinito è `qwen3:4b-instruct`; la configurazione del runner è in
 [`ollama.json`](ollama.json). Per scegliere un altro modello già presente o un
 server Ollama nella rete locale:
 
 ```sh
-OLLAMA_HOST=http://127.0.0.1:11434 OLLAMA_MODEL=qwen3:4b npm run eval:webmcp:ollama
+OLLAMA_HOST=http://127.0.0.1:11434 OLLAMA_MODEL=qwen3:4b-instruct npm run eval:webmcp:ollama
 ```
 
 Sono accettati sia l’origine del server sia il suffisso `/v1`. Non servono chiavi
@@ -128,11 +128,18 @@ cloud. Il comando non installa Ollama, non avvia server e non scarica pesi.
 Su una macchina con RAM sufficiente, configurare il processo **server** con
 `OLLAMA_GO_TEMPLATE=false`, `OLLAMA_CONTEXT_LENGTH=8192`, `OLLAMA_NUM_PARALLEL=1` e
 `OLLAMA_MAX_LOADED_MODELS=1` prima di avviarlo. Queste variabili nel client non
-modificano un server già avviato. Con Ollama 0.40.2, il modello fissato usa il template GGUF originale:
+modificano un server già avviato.
+
+Con Ollama 0.40.2, il modello fissato usa il template GGUF originale:
 `OLLAMA_GO_TEMPLATE=false` va impostata sul server. Il template Go predefinito
 può omettere chiamate dalla cronologia quando l’assistente restituisce anche
-testo, e nelle prove ha prodotto reasoning nonostante `think: false`.
-Il cambio di template conserva prompt, fixture e schemi completi.
+testo.
+Il cambio di template conserva prompt, fixture e schemi completi. Il profilo
+usa **Qwen3 4B Instruct 2507**, con digest fissato: il tag `qwen3:4b` verificato
+in CI contiene invece Thinking 2507, che non consente di disabilitare thinking.
+La preparazione rifiuta un modello con thinking obbligatorio quando il profilo
+richiede `think: false`, prima di avviare la CLI.
+
 Il provider imposta inoltre esplicitamente `num_ctx: 8192`,
 `num_predict: 1024`, `think: false`, temperatura e seed zero in ogni richiesta.
 Ogni richiesta di inferenza ha un timeout di 120 secondi; ogni conversazione
@@ -191,7 +198,7 @@ prima del merge. Dopo la registrazione del workflow è disponibile anche
 l’avvio manuale; il pulsante **Run workflow** compare quando il file è su `main`.
 
 Il job usa `ubuntu-24.04`, installa Ollama **0.40.2** verificando il checksum
-dell’archivio ufficiale, scarica Qwen3 4B e verifica il digest fissato in
+dell’archivio ufficiale, scarica Qwen3 4B Instruct e verifica il digest fissato in
 `ollama.json`. Richiede almeno 6 GiB di RAM libera prima dell’installazione;
 usa il template GGUF del modello, 8K token, una richiesta parallela e un solo modello caricato. La cache
 usa il digest dei pesi; i rapporti e i log sono conservati sette giorni anche
@@ -217,7 +224,7 @@ di 8K token e una sola richiesta parallela limitano la memoria. Il job CI separa
 usa cache del modello e un timeout di 15 minuti per l’inferenza.
 La durata dipende da CPU/GPU, contesto e numero di invocazioni; non è un benchmark.
 
-Riferimenti: [modello Qwen3 4B](https://ollama.com/library/qwen3:4b),
+Riferimenti: [modello Qwen3 4B](https://ollama.com/library/qwen3:4b-instruct),
 [memoria e parallelismo di Ollama](https://docs.ollama.com/faq),
 [provider personalizzati Promptfoo](https://www.promptfoo.dev/docs/providers/custom-api/),
 [assertion JavaScript](https://www.promptfoo.dev/docs/configuration/expected-outputs/javascript/),

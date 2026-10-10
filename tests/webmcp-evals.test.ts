@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import {
   checkEvaluationReport,
+  checkModelSupport,
   installedModel,
   ollamaEndpoints,
   pageTools,
@@ -48,6 +49,42 @@ describe('valutazioni WebMCP con Ollama locale', () => {
     expect(() => installedModel(tags, 'qwen3:4b', 'diverso')).toThrow();
     expect(() => installedModel(tags, 'inesistente', undefined)).toThrow();
   });
+  it('rifiuta thinking obbligatorio quando il profilo richiede think:false', () => {
+    const capable = { capabilities: ['tools'] };
+    expect(() => checkModelSupport(capable, 'instruct', false)).not.toThrow();
+    expect(() =>
+      checkModelSupport(
+        { ...capable, model_info: { 'general.finetune': 'Thinking' } },
+        'thinking',
+        false,
+      ),
+    ).toThrow('thinking');
+    expect(() =>
+      checkModelSupport(
+        { ...capable, thinking: { values: [true] } },
+        'thinking',
+        false,
+      ),
+    ).toThrow('thinking');
+    expect(() =>
+      checkModelSupport(
+        { ...capable, thinking: { values: [false, true] } },
+        'ibrido',
+        false,
+      ),
+    ).not.toThrow();
+    expect(() =>
+      checkModelSupport(
+        { ...capable, thinking: { values: [true] } },
+        'thinking',
+        true,
+      ),
+    ).not.toThrow();
+    expect(() =>
+      checkModelSupport({ capabilities: [] }, 'senza strumenti', false),
+    ).toThrow();
+  });
+
   it('accetta soltanto un rapporto completo e riuscito', () => {
     expect(checkEvaluationReport(report(), cases)).toMatchObject({
       exitCode: 0,

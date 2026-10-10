@@ -44,6 +44,21 @@ export function installedModel(tags, model, digest) {
   return installed;
 }
 
+export function checkModelSupport(details, model, think) {
+  if (!details.capabilities?.includes('tools'))
+    throw new Error(`Il modello ${model} non supporta gli strumenti.`);
+  if (
+    think === false &&
+    (details.model_info?.['general.finetune'] === 'Thinking' ||
+      (Array.isArray(details.thinking?.values) &&
+        !details.thinking.values.includes(false)))
+  ) {
+    throw new Error(
+      `Il modello ${model} richiede thinking; scegli un modello Instruct o un profilo compatibile.`,
+    );
+  }
+}
+
 export function checkEvaluationReport(report, cases) {
   const summary = report?.results;
   if (

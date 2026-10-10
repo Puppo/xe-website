@@ -1,7 +1,7 @@
 {
   "runnerVersion": "0.124.1",
-  "model": "qwen3:4b",
-  "modelDigest": "359d7dd4bcdab3d86b87d73ac27966f4dbb9f5efdfcc75d34a8764a09474fae7",
+  "model": "qwen3:4b-instruct",
+  "modelDigest": "0edcdef34593eac1aa2be9c7d06c432dcf81945adca5eca2f27662c18f168ba0",
   "maxSteps": 4,
   "requestTimeoutMs": 120000,
   "generationTokens": 1024,

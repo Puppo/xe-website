@@ -4,6 +4,7 @@ import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
   checkEvaluationReport,
+  checkModelSupport,
   installedModel,
   ollamaEndpoints,
   pageTools,
@@ -101,8 +102,7 @@ async function main() {
     process.env.OLLAMA_MODEL_DIGEST,
   );
   const details = await serverJson(base, '/api/show', { model });
-  if (!details.capabilities?.includes('tools'))
-    throw new Error(`Il modello ${model} non supporta gli strumenti.`);
+  checkModelSupport(details, model, config.think);
 
   const cases = await readJson('docs/webmcp/evals.json');
   const schema = pageTools(
@@ -122,6 +122,11 @@ async function main() {
         ...config,
         model,
         digest: installed.digest,
+        modelMetadata: {
+          name: details.model_info?.['general.name'],
+          finetune: details.model_info?.['general.finetune'],
+          thinking: details.thinking,
+        },
         host: base,
         startedAt: new Date().toISOString(),
       },
