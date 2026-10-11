@@ -1,3 +1,26 @@
+import { readFileSync } from 'node:fs';
+
+export function evaluationModel(config, env = process.env) {
+  const model = env.OLLAMA_MODEL || config.model;
+  const digest =
+    env.OLLAMA_MODEL_DIGEST ||
+    (model === config.model ? config.modelDigest : undefined);
+  return { model, digest };
+}
+
+export function loadEvaluationSuite(name = 'regression') {
+  const files = { regression: 'evals.json', heldout: 'evals-heldout.json' };
+  if (!Object.hasOwn(files, name))
+    throw new Error(`Unknown evaluation suite: ${name}`);
+  const cases = JSON.parse(
+    readFileSync(
+      new URL(`../../docs/webmcp/${files[name]}`, import.meta.url),
+      'utf8',
+    ),
+  );
+  return { name, cases };
+}
+
 export function ollamaEndpoints(host) {
   const url = new URL(host);
   if (

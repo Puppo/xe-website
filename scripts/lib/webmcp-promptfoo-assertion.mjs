@@ -14,12 +14,49 @@ function matches(expected, actual) {
     return (
       actual !== null &&
       typeof actual === 'object' &&
+      !Array.isArray(actual) &&
+      Object.keys(expected).length === Object.keys(actual).length &&
       Object.entries(expected).every(([key, value]) =>
         matches(value, actual[key]),
       )
     );
   }
   return expected === actual;
+}
+
+export function matchesArguments(functionName, expected, actual) {
+  if (
+    !expected ||
+    !actual ||
+    typeof expected !== 'object' ||
+    typeof actual !== 'object' ||
+    Array.isArray(expected) ||
+    Array.isArray(actual)
+  )
+    return false;
+  // Only normalize defaults implemented by the website's read tools.
+  const defaults = {
+    ...([
+      'list_events',
+      'list_members',
+      'search_event_materials',
+      'get_event',
+      'get_member',
+    ].includes(functionName)
+      ? { offset: 0 }
+      : {}),
+    ...(['get_event', 'get_member'].includes(functionName)
+      ? { section: 'overview' }
+      : {}),
+  };
+  const normalize = (args) =>
+    Object.fromEntries(
+      Object.entries(args).filter(
+        ([key, value]) =>
+          !Object.hasOwn(defaults, key) || value !== defaults[key],
+      ),
+    );
+  return matches(normalize(expected), normalize(actual));
 }
 
 export function assertTrajectory(output, context) {
@@ -48,8 +85,29 @@ export function assertTrajectory(output, context) {
     } catch {
       return fail(`Step ${index + 1}: invalid JSON arguments.`);
     }
-    if (!matches(entry.arguments, args))
+    if (!matchesArguments(entry.functionName, entry.arguments, args))
       return fail(`Step ${index + 1}: arguments differ from expectations.`);
+    if (entry.dependsOn !== undefined) {
+      const executed = context.providerResponse?.metadata?.toolCalls;
+      const step = executed?.[index]?.step;
+      if (
+        !Array.isArray(entry.dependsOn) ||
+        !Number.isInteger(step) ||
+        step < 0 ||
+        !entry.dependsOn.every(
+          (dependency) =>
+            Number.isInteger(dependency) &&
+            dependency >= 0 &&
+            dependency < index &&
+            Number.isInteger(executed?.[dependency]?.step) &&
+            executed[dependency].step >= 0 &&
+            executed[dependency].step < step,
+        )
+      )
+        return fail(
+          `Step ${index + 1}: prerequisite results were not received before this call.`,
+        );
+    }
   }
   return {
     pass: true,

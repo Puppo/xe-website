@@ -5,7 +5,9 @@ import { fileURLToPath } from 'node:url';
 import {
   checkEvaluationReport,
   checkModelSupport,
+  evaluationModel,
   installedModel,
+  loadEvaluationSuite,
   ollamaEndpoints,
   pageTools,
 } from './lib/webmcp-evals.mjs';
@@ -90,20 +92,18 @@ function runCli(args, env, timeoutMs) {
 
 async function main() {
   const config = await readJson('docs/webmcp/ollama.json');
-  const model = process.env.OLLAMA_MODEL || config.model;
+  const { name: suite, cases } = loadEvaluationSuite(
+    process.env.WEBMCP_EVAL_SUITE || 'regression',
+  );
+  const { model, digest } = evaluationModel(config);
   const { base } = ollamaEndpoints(
     process.env.OLLAMA_HOST || 'http://127.0.0.1:11434',
   );
   const tags = await serverJson(base, '/api/tags');
-  const installed = installedModel(
-    tags,
-    model,
-    process.env.OLLAMA_MODEL_DIGEST,
-  );
+  const installed = installedModel(tags, model, digest);
   const details = await serverJson(base, '/api/show', { model });
   checkModelSupport(details, model, config.think);
 
-  const cases = await readJson('docs/webmcp/evals.json');
   const schema = pageTools(
     await readJson('docs/webmcp/schema.json'),
     config.tools,
@@ -118,6 +118,7 @@ async function main() {
     JSON.stringify(
       {
         runner: 'promptfoo',
+        suite,
         ...config,
         model,
         digest: installed.digest,
@@ -134,7 +135,7 @@ async function main() {
     ),
   );
   console.log(
-    `Local Ollama: ${model}; sequential cases: ${cases.length}; reports: ${output}`,
+    `Local Ollama: ${model}; suite: ${suite}; sequential cases: ${cases.length}; reports: ${output}`,
   );
   const cliCode = await runCli(
     [
@@ -158,6 +159,7 @@ async function main() {
       ...process.env,
       OLLAMA_HOST: base,
       OLLAMA_MODEL: model,
+      WEBMCP_EVAL_SUITE: suite,
       PROMPTFOO_CONFIG_DIR: join(output, 'promptfoo'),
       PROMPTFOO_DISABLE_TELEMETRY: '1',
       PROMPTFOO_DISABLE_UPDATE: '1',

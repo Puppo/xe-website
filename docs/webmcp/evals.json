@@ -28,6 +28,7 @@
       },
       {
         "functionName": "get_member",
+        "dependsOn": [0],
         "arguments": {
           "slug": "emanuele-furlan"
         },

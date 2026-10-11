@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
 import WebMcpOllamaProvider from '../scripts/webmcp-promptfoo-provider.mjs';
 import { assertTrajectory } from '../scripts/lib/webmcp-promptfoo-assertion.mjs';
+import { loadEvaluationSuite } from '../scripts/lib/webmcp-evals.mjs';
 
 const tools = ['list_members', 'get_member'].map((name) => ({
   type: 'function',
@@ -69,6 +70,45 @@ const completion = (name?: string, args = {}) =>
   );
 
 describe('Promptfoo conversations with Ollama', () => {
+  it.each(['regression', 'heldout'])(
+    'accepts complete known-good %s trajectories',
+    async (suite) => {
+      for (const testCase of loadEvaluationSuite(suite).cases) {
+        const fetcher = vi.fn();
+        for (const call of testCase.expectedCall) {
+          const args = call.arguments.query?.$pattern
+            ? { ...call.arguments, query: 'App modernization' }
+            : call.arguments;
+          fetcher.mockResolvedValueOnce(completion(call.functionName, args));
+        }
+        fetcher.mockResolvedValueOnce(completion());
+        const fixtureContext = {
+          vars: { expectedCall: JSON.stringify(testCase.expectedCall) },
+        };
+        const response = await new WebMcpOllamaProvider(
+          { config },
+          fetcher,
+        ).callApi(JSON.stringify(testCase.messages), fixtureContext);
+        expect(
+          assertTrajectory(response.output, {
+            ...fixtureContext,
+            providerResponse: response,
+          }).pass,
+          testCase.name,
+        ).toBe(true);
+        expect(
+          response.metadata.toolCalls.map(
+            (call: { result: unknown }) => call.result,
+          ),
+        ).toEqual(
+          testCase.expectedCall.map(
+            (call: { mockOutput: unknown }) => call.mockOutput,
+          ),
+        );
+      }
+    },
+  );
+
   it.each(continuationCases)(
     'keeps the original goal and rejects premature completion: $name',
     async (testCase) => {

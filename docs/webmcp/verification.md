@@ -35,6 +35,57 @@ the original code was restored before final verification.
 
 ## Model evaluation protocol
 
+### Evaluation review follow-up (October 11, 2026)
+
+The earlier six-case results below predate stricter argument matching and causal
+trajectory checks. Extra non-default arguments now fail and cannot obtain a
+successful mock response intended for different arguments. Discovery and
+continuation prerequisites are recorded with `dependsOn` and checked across model
+turns; independent calls can still be batched. Deterministic regression tests
+cover the former false passes and accepted controls.
+
+Six new synthetic cases in `evals-heldout.json` run separately from development
+regressions in CI. They cover unseen names/topics, multi-page continuation,
+material pagination, an exhausted retry, and a non-retryable failure. The agent
+instructions and model settings have not been tuned against these cases. Real
+model evaluation of both suites with the strengthened assertions is pending;
+fixture and simulated-provider checks do not establish model quality.
+
+Local follow-up checks: **187 unit tests passed**, both Promptfoo configurations
+validated with pinned version **0.124.1**, and lint and formatting checks passed
+(lint retains nonblocking numeric-literal and other warnings). Astro check reported
+zero errors, warnings, or hints, and the production build completed with 187 pages.
+The real Promptfoo assertion API accepted all 12 known-good fixture conversations
+and a documented-default control, and rejected five deliberate bad controls:
+extra arguments, dependent batching, a wrong query, invalid schema data, and
+missing prerequisite evidence. All **18 calibration controls** matched their
+expected outcomes; `.evals/eval-fix-controls.json` retains the local results.
+
+### Docker setup follow-up (October 11, 2026)
+
+Local development and CI now share the official Ollama 0.40.2 Compose image,
+pinned by its multi-platform registry digest. CPU, NVIDIA GPU, and CI cache
+configurations validated offline with Docker Compose **5.6.0**. Inspection of the
+merged CI configuration confirmed the loopback-only API port, health check,
+persistent parent volume, and model-only cache mount. The image index supports
+Linux AMD64 and ARM64. The evaluation workflow passed **actionlint 1.7.12**.
+
+**195 unit tests passed across 22 files**, including explicit weight preparation,
+default model pinning, alternate-model overrides, wrong-digest rejection, remote
+host rejection, and setup failures. The preparation CLI returned setup exit **2**
+when Docker was missing. Lint completed without errors (nonblocking warnings
+remain), formatting passed, and the production build generated 187 pages with
+zero Astro/TypeScript diagnostics. Generated-link validation passed for all
+187 documents.
+
+Docker Engine is unavailable in this environment. Container startup, GPU access,
+and actual model evaluation with the new Docker setup remain pending on CI or a
+capable host. No inference server was started, container image pulled, or model
+weights downloaded locally. Offline configuration and mocked preparation checks
+do not establish a runtime or model-quality pass.
+
+### Historical model and protocol results
+
 Six cases use **Promptfoo 0.124.1** with a custom native Ollama provider.
 Deterministic assertions check schema, tools, order, arguments, and completion.
 Unit coverage checks catalogs, fixtures, offsets, reports, conversation histories,

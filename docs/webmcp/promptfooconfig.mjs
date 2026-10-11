@@ -1,16 +1,22 @@
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { ollamaEndpoints, pageTools } from '../../scripts/lib/webmcp-evals.mjs';
+import {
+  loadEvaluationSuite,
+  ollamaEndpoints,
+  pageTools,
+} from '../../scripts/lib/webmcp-evals.mjs';
 import { assertTrajectory } from '../../scripts/lib/webmcp-promptfoo-assertion.mjs';
 
 const readJson = (name) =>
   JSON.parse(readFileSync(new URL(name, import.meta.url), 'utf8'));
 const config = readJson('ollama.json');
-const cases = readJson('evals.json');
+const { name: suite, cases } = loadEvaluationSuite(
+  process.env.WEBMCP_EVAL_SUITE || 'regression',
+);
 const schema = pageTools(readJson('schema.json'), config.tools);
 
 export default {
-  description: 'XeDotNet WebMCP conversations with local Ollama',
+  description: `XeDotNet WebMCP ${suite} conversations with local Ollama`,
   prompts: ['{{messages}}'],
   providers: [
     {
@@ -35,12 +41,15 @@ export default {
   evaluateOptions: { maxConcurrency: 1 },
   tests: cases.map((test) => ({
     description: test.name,
+    metadata: { suite },
     vars: {
       messages: JSON.stringify(test.messages),
       expectedCall: JSON.stringify(test.expectedCall),
     },
     assert: [
-      { type: 'is-valid-openai-tools-call', metric: 'schema' },
+      ...(test.expectedCall.length > 0
+        ? [{ type: 'is-valid-openai-tools-call', metric: 'schema' }]
+        : []),
       { type: 'javascript', value: assertTrajectory, metric: 'trajectory' },
     ],
   })),

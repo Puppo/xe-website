@@ -1,3 +1,5 @@
+import { matchesArguments } from './lib/webmcp-promptfoo-assertion.mjs';
+
 const instructions = `You are an assistant for the XeDotNet website. Respond to the user in Italian.
 Use the available tools for website data and complete the user's requested task before giving a final answer. Avoid unnecessary calls or navigation.
 While any tool operation remains, respond only with tool calls. Save all natural-language explanations for the final answer after receiving the required results.
@@ -61,7 +63,7 @@ export default class WebMcpOllamaProvider {
     try {
       messages.push(...historyMessages(JSON.parse(prompt)));
       const expected = JSON.parse(context.vars.expectedCall);
-      const consumed = new Set();
+      const consumed = new Map();
       for (let step = 0; step < this.config.maxSteps; step++) {
         tokenUsage.numRequests++;
         const response = await this.fetcher(`${this.config.base}/api/chat`, {
@@ -128,20 +130,27 @@ export default class WebMcpOllamaProvider {
           });
           const match = expected.findIndex(
             (entry, index) =>
-              !consumed.has(index) && entry.functionName === name,
+              !consumed.has(index) &&
+              entry.functionName === name &&
+              matchesArguments(name, entry.arguments, args) &&
+              (entry.dependsOn ?? []).every(
+                (dependency) =>
+                  consumed.has(dependency) && consumed.get(dependency) < step,
+              ),
           );
-          if (match !== -1) consumed.add(match);
+          if (match !== -1) consumed.set(match, step);
           const result =
             match === -1
               ? {
-                  error: 'No mock response available for this call.',
+                  error:
+                    'Nessuna risposta simulata disponibile per questa chiamata e i suoi prerequisiti.',
                   code: 'MOCK_UNAVAILABLE',
                   retryable: false,
                 }
               : expected[match].mockOutput;
           if (result === undefined)
             throw new Error('Missing mock response in fixture.');
-          toolCalls.push({ functionName: name, arguments: args, result });
+          toolCalls.push({ functionName: name, arguments: args, result, step });
           messages.push({
             role: 'tool',
             tool_name: name,

@@ -73,7 +73,8 @@ unknown event filters return an error.
 
 See the [verification report](verification.md) for results and limitations.
 `schema.json` snapshots native component definitions. `evals.json` supplies six
-conversation fixtures. Model evaluations complement Vitest, Playwright, and
+development regression fixtures, and `evals-heldout.json` supplies six separate
+held-out conversations. Model evaluations complement Vitest, Playwright, and
 native checks; they do not replace them.
 
 In Chrome with WebMCP enabled, inspect **Application → WebMCP**, check available
@@ -92,6 +93,20 @@ model supporting tools:
 ```sh
 npm run eval:webmcp:ollama
 ```
+
+The default suite is `regression`. Run the frozen held-out suite separately:
+
+```sh
+WEBMCP_EVAL_SUITE=heldout npm run eval:webmcp:ollama
+```
+
+Tune prompts only against the regression suite. Freeze the prompt, model, and
+settings before running held-out evaluations. If a held-out failure is used for
+tuning, promote that case to regression coverage and author a replacement before
+claiming held-out quality. Synthetic held-out data tests unseen names and topics,
+two remaining text pages with different offsets, material pagination, exhausted
+retries, and non-retryable failures. The historical six-case pass does not
+establish a pass on the new suite or the strengthened assertions.
 
 Defaults are in [ollama.json](ollama.json). Select another installed model or a
 server on your local network with:
@@ -141,12 +156,20 @@ mock website payloads remain Italian. This policy is part of the evaluated agent
 not a guarantee that an arbitrary browser agent will follow the same workflow.
 
 Deterministic assertions check every call's JSON Schema and the complete ordered
-trajectory, including arguments and absence of extra calls. Fixture regex patterns
-remain supported. No second model judges prose; the suite measures tool selection,
+trajectory, including arguments and absence of extra calls. Argument matching
+rejects extra fields except documented read defaults (`offset: 0` and, for detail
+tools, `section: "overview"`). Mock dispatch uses the same argument matcher, so an
+incorrect lookup receives an error rather than the expected successful result.
+Fixture regex patterns remain supported. `dependsOn` lists zero-based indices of
+earlier expected calls whose results must have arrived in a prior model turn;
+discovery and continuation calls cannot guess prerequisite results in the same
+turn. Independent calls may be batched. A case expecting no calls uses the
+trajectory assertion alone, requiring a completed response with an empty trace.
+No second model judges prose; the suite measures tool selection,
 not final answer quality. No real website tool executes during these evaluations.
 
-Each run creates an ignored `.evals/ollama-*/` directory with tools, settings,
-model metadata and digest, JSON/HTML reports, and full transcripts. Response
+Each run creates an ignored `.evals/ollama-*/` directory with its suite name,
+tools, settings, model metadata and digest, JSON/HTML reports, and full transcripts. Response
 caching, sharing, and Promptfoo telemetry are disabled. Report validation requires
 each case exactly once and consistent outcomes and counters. Exit codes are **0**
 for a complete pass, **1** for assertion failures (including partial trajectories),
@@ -157,29 +180,93 @@ retain partial traces and remain distinct from incorrect model selections.
 On a Raspberry Pi 5 with 4 GB RAM, defer inference to CI or a capable machine under
 [AGENTS.md](../../AGENTS.md#model-backed-webmcp-evaluations).
 
-### CI with runner-local Ollama
+### Optional local Docker setup
+
+Install Docker Engine or Docker Desktop with Docker Compose **2.30 or newer**. Assess
+available RAM/VRAM after other workloads, the 8K context, and runtime before
+starting inference. For the default CPU configuration, require at least **6 GiB
+available RAM**, including sufficient memory allocated to Docker Desktop's VM.
+This is an initial capacity guard; monitor actual usage on the chosen machine.
+Do not run local inference on a 4 GB machine or under memory pressure.
+
+From the repository root, run:
+
+```sh
+npm run eval:webmcp:docker:config
+npm run eval:webmcp:docker:up
+npm run eval:webmcp:docker:pull
+npm run eval:webmcp:ollama
+WEBMCP_EVAL_SUITE=heldout npm run eval:webmcp:ollama
+```
+
+The first command validates configuration without starting a container. `up`
+downloads the pinned official image when needed, starts Ollama, and waits up to
+60 seconds for its health check. `pull` explicitly downloads the selected model
+(with a ten-minute limit) and verifies the manifest digest before evaluation.
+Neither setup command runs inference. The evaluation runner uses the host Node.js
+installation and keeps its existing 15-minute runtime limit.
+
+[compose.ollama.yml](compose.ollama.yml) pins **Ollama 0.40.2** by a multi-platform
+image digest for Linux AMD64 and ARM64. It configures the GGUF template, 8K context,
+one parallel request, and one loaded model. The API binds only to
+`http://127.0.0.1:11434`; stop any native Ollama service using that port first.
+Weights persist in the `xe-webmcp-evals_ollama-data` named volume between runs.
+
+For an NVIDIA GPU with Docker GPU support and the NVIDIA Container Toolkit, use
+`npm run eval:webmcp:docker:up:gpu` in place of `up`. The
+[NVIDIA override](compose.ollama.nvidia.yml) requires Compose **2.30 or newer**.
+On macOS, Docker Desktop does not expose Apple GPU acceleration to Ollama; prefer
+native Ollama when GPU acceleration is needed, with the server variables above.
+The base Docker setup supports CPU inference with sufficient resources.
+
+Inspect logs and stop the container with:
+
+```sh
+npm run eval:webmcp:docker:logs
+npm run eval:webmcp:docker:down
+```
+
+Stopping retains downloaded weights. To experiment with another model, set
+`OLLAMA_MODEL` consistently for `docker:pull` and the evaluation command; set
+`OLLAMA_MODEL_DIGEST` as well to enforce an explicit pin. Docker preparation
+requires the local loopback endpoint; remote servers remain supported by the
+evaluation runner and need their own model preparation. The default model's
+digest is always enforced, including native local evaluations. Changing its tag
+and digest requires an intentional update to `ollama.json`; update the Compose
+image version and digest together when upgrading the server.
+
+This setup is optional. Normal dependency installation, unit tests, builds, and
+browser tests do not start Docker or model inference.
+
+### CI with Docker Ollama
 
 [webmcp-evals.yml](../../.github/workflows/webmcp-evals.yml) is named
 **WebMCP evaluations (Promptfoo and Ollama)**. It runs on relevant PRs, including
 drafts, and supports manual dispatch once registered on `main`. It does not run
 on unrelated path changes or alter existing required checks.
 
-The separate `ubuntu-24.04` job requires at least **6 GiB available RAM**, installs
-Ollama **0.40.2** with a verified archive checksum, and pulls Qwen3 4B Instruct with
+Two separate `ubuntu-24.04` matrix jobs run `regression` and `heldout` with
+`fail-fast: false`, their own 30-minute budgets, and distinct report artifacts.
+Both suites require every case to pass; one failing job does not cancel the other.
+Each job requires at least **6 GiB available RAM**, starts the same pinned
+Compose image as local development, and pulls Qwen3 4B Instruct with
 the manifest digest pinned in `ollama.json`. It uses the GGUF template, an 8K context,
 one parallel request, and one loaded model. The weight cache key includes the
-digest. Reports and server logs are retained for seven days even on failure.
-The 25-minute job budget includes setup, up to 15 minutes of inference, and upload.
+digest. The [CI override](compose.ollama.ci.yml) mounts the runner's model-cache
+directory at `/root/.ollama/models`, leaving server identity files outside the
+cache. It uses the same explicit preparation and digest check as local setup.
+Reports and server logs are retained for seven days even on failure, and the
+container is stopped after collecting logs. The 30-minute job budget includes
+up to ten minutes of server/model setup, 15 minutes of inference, and upload.
 
 Inference stays on the runner without cloud providers or secrets. A cold run
-downloads about 1.4 GB for Ollama and 2.5 GB for the model. Timing and memory depend
+downloads the container image and model weights. Timing and memory depend
 on the chosen CPU/GPU, context, and invocation count; see the verification report
 for measured CI results. As an initial estimate, allow 4–6 GB free for the model
 and context in addition to the test process, then measure on the chosen machine.
 
-Update model and digest together deliberately. A changed tag with a mismatched
-digest fails setup rather than silently changing the evaluated model. Local
-`OLLAMA_MODEL_DIGEST` optionally enforces the same check.
+Update model and digest together deliberately. A changed default tag with a
+mismatched digest fails setup rather than silently changing the evaluated model.
 
 References: [Ollama model](https://ollama.com/library/qwen3:4b-instruct),
 [Ollama memory and parallelism](https://docs.ollama.com/faq),
@@ -187,5 +274,6 @@ References: [Ollama model](https://ollama.com/library/qwen3:4b-instruct),
 [JavaScript assertions](https://www.promptfoo.dev/docs/configuration/expected-outputs/javascript/),
 [Promptfoo CLI](https://www.promptfoo.dev/docs/usage/command-line/),
 [Ollama chat API](https://docs.ollama.com/api/chat),
-[Ollama 0.40.2](https://github.com/ollama/ollama/releases/tag/v0.40.2), and
+[Ollama 0.40.2](https://github.com/ollama/ollama/releases/tag/v0.40.2),
+[Ollama Docker setup](https://docs.ollama.com/docker), and
 [GitHub-hosted runners](https://docs.github.com/en/actions/reference/runners/github-hosted-runners).

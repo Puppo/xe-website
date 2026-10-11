@@ -3,7 +3,9 @@ import { describe, expect, it } from 'vitest';
 import {
   checkEvaluationReport,
   checkModelSupport,
+  evaluationModel,
   installedModel,
+  loadEvaluationSuite,
   ollamaEndpoints,
   pageTools,
 } from '../scripts/lib/webmcp-evals.mjs';
@@ -41,6 +43,45 @@ const report = (results = [row(0), row(1)]) => ({
 });
 
 describe('WebMCP evaluations with local Ollama', () => {
+  it('pins the default model locally and allows explicit experiment overrides', () => {
+    const config = { model: 'default:model', modelDigest: 'default-digest' };
+    expect(evaluationModel(config, {})).toEqual({
+      model: config.model,
+      digest: config.modelDigest,
+    });
+    expect(evaluationModel(config, { OLLAMA_MODEL: config.model }).digest).toBe(
+      config.modelDigest,
+    );
+    expect(
+      evaluationModel(config, { OLLAMA_MODEL: 'experiment:model' }),
+    ).toEqual({
+      model: 'experiment:model',
+      digest: undefined,
+    });
+    expect(
+      evaluationModel(config, {
+        OLLAMA_MODEL: 'experiment:model',
+        OLLAMA_MODEL_DIGEST: 'experiment-digest',
+      }).digest,
+    ).toBe('experiment-digest');
+  });
+
+  it('keeps development and held-out suites separate and rejects unknown selections', () => {
+    const regression = loadEvaluationSuite('regression');
+    const heldout = loadEvaluationSuite('heldout');
+    expect(regression.cases).toHaveLength(6);
+    expect(heldout.cases).toHaveLength(6);
+    expect(regression.name).toBe('regression');
+    expect(heldout.name).toBe('heldout');
+    const developmentNames = new Set(
+      regression.cases.map((entry: { name: string }) => entry.name),
+    );
+    for (const entry of heldout.cases)
+      expect(developmentNames.has(entry.name)).toBe(false);
+    expect(() => loadEvaluationSuite('unknown')).toThrow('suite');
+    expect(() => loadEvaluationSuite('__proto__')).toThrow('suite');
+  });
+
   it('rejects missing models and weights that differ from the CI pin', () => {
     const tags = { models: [{ name: 'qwen3:4b', digest: 'correct' }] };
     expect(installedModel(tags, 'qwen3:4b', 'correct')).toEqual(tags.models[0]);
@@ -152,11 +193,8 @@ describe('WebMCP evaluations with local Ollama', () => {
   });
 
   it('preserves complete mock responses and consistent conversation offsets', () => {
-    const fixtures = JSON.parse(
-      readFileSync(
-        new URL('../docs/webmcp/evals.json', import.meta.url),
-        'utf8',
-      ),
+    const fixtures = ['regression', 'heldout'].flatMap(
+      (suite) => loadEvaluationSuite(suite).cases,
     );
     for (const test of fixtures) {
       for (const call of test.expectedCall) {
@@ -164,6 +202,16 @@ describe('WebMCP evaluations with local Ollama', () => {
         expect(JSON.stringify(call.mockOutput).length).toBeLessThanOrEqual(
           1500,
         );
+        if (typeof call.mockOutput.text === 'string') {
+          expect(call.mockOutput.offset).toBe(call.arguments.offset ?? 0);
+          expect(call.mockOutput.nextOffset ?? call.mockOutput.total).toBe(
+            call.mockOutput.offset + call.mockOutput.text.length,
+          );
+        }
+        for (const dependency of call.dependsOn ?? []) {
+          expect(dependency).toBeGreaterThanOrEqual(0);
+          expect(dependency).toBeLessThan(test.expectedCall.indexOf(call));
+        }
       }
       for (const message of test.messages) {
         const result = message.response?.result;

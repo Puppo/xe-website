@@ -21,7 +21,13 @@
     "test": "vitest run",
     "test:e2e": "playwright test",
     "prepare": "lefthook install || true",
-    "eval:webmcp:ollama": "node scripts/eval-webmcp-ollama.mjs"
+    "eval:webmcp:ollama": "node scripts/eval-webmcp-ollama.mjs",
+    "eval:webmcp:docker:up": "docker compose -f docs/webmcp/compose.ollama.yml up -d --wait --wait-timeout 60",
+    "eval:webmcp:docker:up:gpu": "docker compose -f docs/webmcp/compose.ollama.yml -f docs/webmcp/compose.ollama.nvidia.yml up -d --wait --wait-timeout 60",
+    "eval:webmcp:docker:pull": "node scripts/prepare-webmcp-ollama-docker.mjs",
+    "eval:webmcp:docker:down": "docker compose -f docs/webmcp/compose.ollama.yml down",
+    "eval:webmcp:docker:logs": "docker compose -f docs/webmcp/compose.ollama.yml logs --no-color",
+    "eval:webmcp:docker:config": "docker compose -f docs/webmcp/compose.ollama.yml config --quiet"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
