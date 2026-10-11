@@ -5,7 +5,6 @@ dist/
 playwright-report/
 test-results/
 coverage/
-.evals/
 .env
 core.*
 .lefthook-local/
