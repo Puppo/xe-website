@@ -20,7 +20,8 @@
     "schemas": "node scripts/generate-json-schemas.mjs",
     "test": "vitest run",
     "test:e2e": "playwright test",
-    "prepare": "lefthook install || true"
+    "prepare": "lefthook install || true",
+    "eval:webmcp:ollama": "node scripts/eval-webmcp-ollama.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
