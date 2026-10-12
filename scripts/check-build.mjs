@@ -33,22 +33,20 @@ function inspectUrl(value, file, attribute) {
   try {
     url = new URL(value, `${site}${base}`);
   } catch {
-    errors.push(`${file}: ${attribute} non valido: ${value}`);
+    errors.push(`${file}: invalid ${attribute}: ${value}`);
     return;
   }
   if (url.origin !== site) {
     return;
   }
   if (!url.pathname.startsWith(base)) {
-    errors.push(
-      `${file}: ${attribute} esce dal percorso base ${base}: ${value}`,
-    );
+    errors.push(`${file}: ${attribute} leaves the base path ${base}: ${value}`);
     return;
   }
   const target = outputPath(url.pathname);
   if (!existsSync(target)) {
     errors.push(
-      `${file}: destinazione mancante per ${attribute}=${value} (${target})`,
+      `${file}: missing destination for ${attribute}=${value} (${target})`,
     );
   }
 }
@@ -66,7 +64,7 @@ for (const file of htmlFiles) {
 const robots = readFileSync('dist/robots.txt', 'utf8'),
   expectedSitemap = `${site}${base}sitemap-index.xml`;
 if (!robots.includes(expectedSitemap)) {
-  errors.push(`robots.txt non contiene ${expectedSitemap}`);
+  errors.push(`robots.txt does not contain ${expectedSitemap}`);
 }
 
 for (const file of globSync('dist/sitemap*.xml')) {
@@ -77,10 +75,10 @@ for (const file of globSync('dist/sitemap*.xml')) {
   for (const location of locations) {
     const url = new URL(location);
     if (url.origin !== site || !url.pathname.startsWith(base)) {
-      errors.push(`${file}: URL fuori da ${site}${base}: ${location}`);
+      errors.push(`${file}: URL outside ${site}${base}: ${location}`);
     }
     if (isSitemapExcluded(url.pathname, base)) {
-      errors.push(`${file}: URL escluso presente in sitemap: ${location}`);
+      errors.push(`${file}: excluded URL present in sitemap: ${location}`);
     }
   }
 }
@@ -89,16 +87,16 @@ const graziePath = join('dist', 'grazie', 'index.html');
 if (existsSync(graziePath)) {
   const grazie = readFileSync(graziePath, 'utf8');
   if (!grazie.includes('content="noindex, nofollow"')) {
-    errors.push('dist/grazie/index.html non contiene il meta noindex');
+    errors.push('dist/grazie/index.html does not contain the noindex metadata');
   }
 }
 
 if (errors.length > 0) {
   console.error(errors.slice(0, 30).join('\n'));
   if (errors.length > 30) {
-    console.error(`...e altri ${errors.length - 30} errori.`);
+    console.error(`...and ${errors.length - 30} more errors.`);
   }
   process.exit(1);
 }
 
-console.log(`Verificati ${htmlFiles.length} documenti per ${site}${base}`);
+console.log(`Verified ${htmlFiles.length} documents for ${site}${base}`);

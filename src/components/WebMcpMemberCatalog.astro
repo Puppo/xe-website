@@ -1,114 +1,76 @@
----
-import type { WebMcpMemberSummary } from '../lib/webmcp';
-import { withBase } from '../lib/urls';
-
-interface Props {
-  members: WebMcpMemberSummary[];
-}
-
-const catalogUrl = withBase('/webmcp/members.json');
-const allowedSlugs = JSON.stringify(Astro.props.members.map(({ slug }) => slug));
----
-
-<span hidden data-webmcp-member-catalog data-url={catalogUrl} data-allowed-slugs={allowedSlugs}></span>
-
 <script>
+  import { withBase } from '../lib/urls';
   import {
     fetchWebMcpJson,
     listMembers,
     memberForSlug,
     registerWebMcpTools,
-    type WebMcpMemberSummary,
   } from '../lib/webmcp';
-  const catalogElement = document.querySelector<HTMLElement>(
-      '[data-webmcp-member-catalog]',
-    ),
-    catalogUrl = catalogElement?.dataset.url,
-    allowedSlugs = (() => {
-      try {
-        const value: unknown = JSON.parse(catalogElement?.dataset.allowedSlugs ?? '');
-        return Array.isArray(value) && value.every((slug) => typeof slug === 'string')
-          ? value as string[]
-          : undefined;
-      } catch {
-        return undefined;
-      }
-    })(),
-    loadCatalog = () => {
-      if (!catalogUrl) {
-        throw new Error('Il catalogo dei soci non è disponibile.');
-      }
-      return fetchWebMcpJson(catalogUrl, (value): value is WebMcpMemberSummary[] => Array.isArray(value));
-    },
-    listSchema = {
-      type: 'object',
-      properties: {
-        query: {
-          type: 'string',
-          description:
-            'Testo da cercare nel nome, nel titolo o nell’estratto della biografia.',
-        },
-        role: {
-          type: 'string',
-          enum: ['member', 'speaker', 'both'],
-          description:
-            'Ruolo da filtrare. "both" include soci e relatori insieme.',
-        },
-        offset: {
-          type: 'integer',
-          minimum: 0,
-          description: 'Indice da cui continuare una ricerca precedente.',
-        },
-      },
-      additionalProperties: false,
-    } as const,
-    openSchema = {
-      type: 'object',
-      properties: {
-        slug: {
-          type: 'string',
-          description: 'Slug esatto restituito da list_members.',
-        },
-      },
-      required: ['slug'],
-      additionalProperties: false,
-    } as const;
+  import { isMemberCatalog, isMemberDetails } from '../lib/webmcp-data';
+  import { memberResponse } from '../lib/webmcp-queries';
+  import { assertNoUnsavedForms } from '../lib/webmcp-runtime';
 
-  if (catalogUrl && allowedSlugs) {
-    registerWebMcpTools([
-      {
-        name: 'list_members',
-        title: 'Cerca soci XE',
-        description:
-          'Cerca i soci pubblicati da XeDotNet. Restituisce fino a cinque risultati alla volta con `nextOffset`; quando `nextOffset` è `null` la ricerca è terminata.',
-        inputSchema: listSchema,
-        async execute(input) {
-          const catalog = await loadCatalog();
-          return listMembers(
-            catalog.filter((member) => allowedSlugs.includes(member.slug)),
-            input,
-          );
-        },
-        annotations: { readOnlyHint: true },
-      },
-      {
-        name: 'open_member',
-        title: 'Apri un socio XE',
-        description:
-          'Apre nel browser la pagina del socio restituito da list_members.',
-        inputSchema: openSchema,
-        async execute({ slug }, { signal }) {
-          signal.throwIfAborted();
-          const catalog = (await loadCatalog()).filter((member) =>
-            allowedSlugs.includes(member.slug),
-          );
-          signal.throwIfAborted();
-          const member = memberForSlug(catalog, slug);
-          window.location.assign(member.url);
-          return `Navigazione verso “${member.name}”.`;
-        },
-        annotations: { readOnlyHint: true },
-      },
-    ]);
+  function loadCatalog(signal: AbortSignal) {
+    return fetchWebMcpJson(withBase('/webmcp/members.json'), isMemberCatalog, signal);
   }
+  const slugProperty = { type: 'string', description: 'Slug esatto restituito dalla ricerca dei soci.' } as const;
+
+  registerWebMcpTools([
+    {
+      name: 'list_members',
+      title: 'Cerca soci XE',
+      description: 'Cerca i soci attuali pubblicati da XeDotNet. Usa questo strumento per trovare una persona per nome, attività o ruolo.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          query: { type: 'string', description: 'Testo da cercare nel nome, nel titolo o nella biografia.' },
+          role: { type: 'string', enum: ['member', 'speaker', 'both'], description: 'Soci, relatori tra i soci, oppure entrambi.' },
+          offset: { type: 'integer', minimum: 0, description: 'Indice da cui continuare una ricerca precedente.' },
+        },
+        additionalProperties: false,
+      },
+      async execute(input, { signal }) {
+        return listMembers(await loadCatalog(signal), input);
+      },
+      annotations: { readOnlyHint: true, untrustedContentHint: true },
+    },
+    {
+      name: 'get_member',
+      title: 'Leggi un profilo XE',
+      description: 'Legge il profilo di un socio XE. Usa questo strumento per approfondire biografia, ruoli e collegamenti di una persona trovata.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          slug: slugProperty,
+          section: { type: 'string', enum: ['overview', 'biography', 'links'], description: 'Panoramica, biografia o collegamenti. La panoramica è la sezione iniziale.' },
+          offset: { type: 'integer', minimum: 0, description: 'Posizione da cui continuare: caratteri per la biografia, elementi per i collegamenti.' },
+        },
+        required: ['slug'],
+        additionalProperties: false,
+      },
+      async execute(input, { signal }) {
+        const member = memberForSlug(await loadCatalog(signal), input.slug);
+        const details = await fetchWebMcpJson(withBase(`/webmcp/members/${member.slug}.json`), isMemberDetails, signal);
+        return memberResponse(details, input);
+      },
+      annotations: { readOnlyHint: true, untrustedContentHint: true },
+    },
+    {
+      name: 'open_member',
+      title: 'Apri un socio XE',
+      description: 'Apre la pagina di un socio XE. Usa questo strumento quando l’utente vuole vedere il profilo nel browser.',
+      inputSchema: {
+        type: 'object', properties: { slug: slugProperty }, required: ['slug'], additionalProperties: false,
+      },
+      async execute({ slug }, { signal }) {
+        assertNoUnsavedForms();
+        const member = memberForSlug(await loadCatalog(signal), slug);
+        signal.throwIfAborted();
+        assertNoUnsavedForms();
+        // Stay on the active deployment, including local and preview origins.
+        window.location.assign(new URL(member.url).pathname);
+        return { status: 'navigating' };
+      },
+    },
+  ]);
 </script>

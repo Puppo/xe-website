@@ -3,17 +3,17 @@
   import {
     fetchWebMcpJson,
     eventForSlug,
-    getEvent,
     listEvents,
     registerWebMcpTools,
     type WebMcpFullEvent,
   } from '../lib/webmcp';
 
-  function isEventCatalog(value: unknown): value is WebMcpFullEvent[] {
-    return Array.isArray(value);
-  }
-  function loadCatalog(): Promise<WebMcpFullEvent[]> {
-    return fetchWebMcpJson(withBase('/webmcp/events.json'), isEventCatalog);
+  import { isEventCatalog } from '../lib/webmcp-data';
+  import { eventResponse, searchEventMaterials } from '../lib/webmcp-queries';
+  import { assertNoUnsavedForms } from '../lib/webmcp-runtime';
+
+  function loadCatalog(signal: AbortSignal): Promise<WebMcpFullEvent[]> {
+    return fetchWebMcpJson(withBase('/webmcp/events.json'), isEventCatalog, signal);
   }
 
   registerWebMcpTools([
@@ -21,13 +21,13 @@
       name: 'list_events',
       title: 'Cerca eventi XE',
       description:
-        'Cerca tutti gli eventi pubblicati da XeDotNet, anche passati e annullati. Restituisce fino a cinque risultati alla volta con nextOffset; usa get_event con uno slug per leggere i dettagli completi.',
+        'Cerca gli eventi pubblicati da XeDotNet, anche passati e annullati. Usa questo strumento per trovare incontri per argomento, periodo o relatore.',
       inputSchema: {
         type: 'object',
         properties: {
           query: { type: 'string', description: 'Testo da cercare in titolo, descrizione, tipo, luogo e relatori.' },
-          dateFrom: { type: 'string', pattern: '^\\d{4}-\\d{2}-\\d{2}$', description: 'Primo giorno incluso, nel formato YYYY-MM-DD.' },
-          dateTo: { type: 'string', pattern: '^\\d{4}-\\d{2}-\\d{2}$', description: 'Ultimo giorno incluso, nel formato YYYY-MM-DD.' },
+          dateFrom: { type: 'string', pattern: '^[0-9]{4}-[0-9]{2}-[0-9]{2}$', description: 'Primo giorno incluso, nel formato YYYY-MM-DD.' },
+          dateTo: { type: 'string', pattern: '^[0-9]{4}-[0-9]{2}-[0-9]{2}$', description: 'Ultimo giorno incluso, nel formato YYYY-MM-DD.' },
           title: { type: 'string', description: 'Testo da cercare solo nel titolo.' },
           description: { type: 'string', description: 'Testo da cercare solo nella descrizione.' },
           speakers: { type: 'array', minItems: 1, items: { type: 'string', minLength: 1 }, description: 'Uno o più nomi di relatori; basta una corrispondenza.' },
@@ -37,43 +37,68 @@
         },
         additionalProperties: false,
       },
-      async execute(input) {
-        return listEvents(await loadCatalog(), input);
+      async execute(input, { signal }) {
+        return listEvents(await loadCatalog(signal), input);
       },
-      annotations: { readOnlyHint: true },
+      annotations: { readOnlyHint: true, untrustedContentHint: true },
     },
     {
       name: 'get_event',
       title: 'Dettagli di un evento XE',
       description:
-        'Restituisce tutti i dettagli di un evento pubblicato da XeDotNet, inclusi programma, relatori, contenuto, materiali e disponibilità attuale delle iscrizioni.',
+        'Legge un evento XE e la disponibilità attuale delle iscrizioni. Usa questo strumento per approfondire un evento trovato o leggere contenuto, programma e materiali.',
       inputSchema: {
         type: 'object',
-        properties: { slug: { type: 'string', description: 'Slug esatto restituito da list_events.' } },
+        properties: {
+          slug: { type: 'string', description: 'Slug esatto restituito dalla ricerca degli eventi.' },
+          section: { type: 'string', enum: ['overview', 'body', 'sessions', 'materials'], description: 'Panoramica, contenuto, programma o materiali. La panoramica è la sezione iniziale.' },
+          offset: { type: 'integer', minimum: 0, description: 'Posizione da cui continuare: caratteri per il contenuto, elementi per le altre sezioni.' },
+        },
         required: ['slug'],
         additionalProperties: false,
       },
-      async execute({ slug }) {
-        return getEvent(await loadCatalog(), slug);
+      async execute(input, { signal }) {
+        return eventResponse(await loadCatalog(signal), input);
       },
-      annotations: { readOnlyHint: true },
+      annotations: { readOnlyHint: true, untrustedContentHint: true },
     },
     {
       name: 'open_event',
       title: 'Apri un evento XE',
-      description: 'Apre nel browser la pagina di un evento restituito da list_events.',
+      description: 'Apre la pagina di un evento XE. Usa questo strumento quando l’utente vuole vedere l’evento nel browser.',
       inputSchema: {
         type: 'object',
         properties: { slug: { type: 'string', description: 'Slug esatto restituito da list_events.' } },
         required: ['slug'],
         additionalProperties: false,
       },
-      async execute({ slug }) {
-        const event = eventForSlug(await loadCatalog(), slug);
-        window.location.assign(event.url);
-        return `Navigazione verso “${event.title}”.`;
+      async execute({ slug }, { signal }) {
+        assertNoUnsavedForms();
+        const event = eventForSlug(await loadCatalog(signal), slug);
+        signal.throwIfAborted();
+        assertNoUnsavedForms();
+        // Stay on the active deployment, including local and preview origins.
+        window.location.assign(new URL(event.url).pathname);
+        return { status: 'navigating' };
       },
-      annotations: { readOnlyHint: true },
+    },
+    {
+      name: 'search_event_materials',
+      title: 'Cerca materiali degli eventi XE',
+      description: 'Trova slide e risorse degli eventi XE. Usa questo strumento per cercare materiali per argomento o leggere quelli di un evento specifico.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          query: { type: 'string', description: 'Argomento cercato nei materiali, negli eventi e nelle sessioni.' },
+          eventSlug: { type: 'string', description: 'Slug dell’evento a cui limitare la ricerca.' },
+          offset: { type: 'integer', minimum: 0, description: 'Indice da cui continuare la ricerca.' },
+        },
+        additionalProperties: false,
+      },
+      async execute(input, { signal }) {
+        return searchEventMaterials(await loadCatalog(signal), input);
+      },
+      annotations: { readOnlyHint: true, untrustedContentHint: true },
     },
   ]);
 </script>

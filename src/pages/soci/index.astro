@@ -1,19 +1,16 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import WebMcpMemberCatalog from '../../components/WebMcpMemberCatalog.astro';
-import { currentMembers, groupByInitial, memberSummaries } from '../../lib/people';
+import { currentMembers, groupByInitial } from '../../lib/people';
 import { loadPeopleContext } from '../../lib/people-content';
 import { initials } from '../../lib/text';
 import { withBase } from '../../lib/urls';
 
 const { people, context } = await loadPeopleContext();
 const members = currentMembers(people, context).sort((a, b) => a.data.sortName.localeCompare(b.data.sortName, 'it'));
-const bands = groupByInitial(members),
-  memberCatalog = memberSummaries(members, Astro.site, context);
+const bands = groupByInitial(members);
 ---
 
 <BaseLayout title="Soci" description="Le persone che sostengono XeDotNet e rendono possibili le attività della community.">
-  <WebMcpMemberCatalog members={memberCatalog} />
   <header class="page-hero soci-hero">
     <div class="shell">
       <p class="breadcrumbs"><a href={withBase('/')}>Home</a> / Soci</p>

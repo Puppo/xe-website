@@ -5,9 +5,8 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import EventCard from '../components/EventCard.astro';
 import SupportPanel from '../components/SupportPanel.astro';
-import WebMcpMemberCatalog from '../components/WebMcpMemberCatalog.astro';
 import { eventSlug, formatEventDate, isPastEvent, nextScheduledEvent, sortAscending } from '../lib/events';
-import { currentMembers, memberSummaries } from '../lib/people';
+import { currentMembers } from '../lib/people';
 import { loadPeopleContext } from '../lib/people-content';
 
 const events = (await getCollection('events', ({ data }) => !data.draft)).sort(sortAscending),
@@ -16,7 +15,6 @@ const events = (await getCollection('events', ({ data }) => !data.draft)).sort(s
  [site] = await getCollection('site'),
  { people: allPeople, context } = await loadPeopleContext(),
  people = currentMembers(allPeople, context),
- memberCatalog = memberSummaries(people, Astro.site, context),
  partners = (await getCollection('partners')).sort((a, b) => (a.data.order ?? Infinity) - (b.data.order ?? Infinity)),
  partnerGroups = [
    { title: 'Grazie per il supporto alle attività del gruppo', entries: partners.filter((partner) => partner.data.published && partner.data.kind === 'supporter') },
@@ -26,7 +24,6 @@ const events = (await getCollection('events', ({ data }) => !data.draft)).sort(s
 ---
 
 <BaseLayout title={site.data.name} description={site.data.description}>
-  <WebMcpMemberCatalog members={memberCatalog} />
   <section class="hero">
     <div class="shell hero-grid">
       <div class="hero-intro">

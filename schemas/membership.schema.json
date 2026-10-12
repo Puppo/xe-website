@@ -121,5 +121,5 @@
     "members"
   ],
   "$id": "https://www.xedotnet.org/schemas/membership.schema.json",
-  "title": "Soci per anno associativo XeDotNet"
+  "title": "XeDotNet annual membership"
 }

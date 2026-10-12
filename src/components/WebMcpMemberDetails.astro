@@ -15,8 +15,9 @@ const detailsUrl = withBase(`/webmcp/members/${Astro.props.slug}.json`);
     describeMember,
     fetchWebMcpJson,
     registerWebMcpTools,
-    type WebMcpMemberDetails,
   } from '../lib/webmcp';
+
+  import { isMemberDetails } from '../lib/webmcp-data';
 
   const detailsElement = document.querySelector<HTMLElement>(
       '[data-webmcp-member-details]',
@@ -29,21 +30,21 @@ const detailsUrl = withBase(`/webmcp/members/${Astro.props.slug}.json`);
         name: 'describe_member',
         title: 'Descrivi questo socio XE',
         description:
-          'Restituisce una descrizione compatta del socio XE aperto, con ruolo, biografia e collegamenti.',
+          'Descrive il socio XE aperto, con ruolo, biografia e collegamenti. Usa questo strumento quando l’utente chiede informazioni su questa persona.',
         inputSchema: {
           type: 'object',
           properties: {},
           additionalProperties: false,
         },
-        async execute() {
+        async execute(_input, { signal }) {
           const details = await fetchWebMcpJson(
             detailsUrl,
-            (value): value is WebMcpMemberDetails =>
-              typeof value === 'object' && value !== null && 'name' in value,
+            isMemberDetails,
+            signal,
           );
           return describeMember(details);
         },
-        annotations: { readOnlyHint: true },
+        annotations: { readOnlyHint: true, untrustedContentHint: true },
       },
     ]);
   }

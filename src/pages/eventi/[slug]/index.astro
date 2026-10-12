@@ -6,12 +6,11 @@ import type { CollectionEntry } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import EventCard from '../../../components/EventCard.astro';
 import WebMcpEventDetails from '../../../components/WebMcpEventDetails.astro';
-import WebMcpMemberCatalog from '../../../components/WebMcpMemberCatalog.astro';
 import { eventSlug, eventStructuredStatus, eventYear, formatEventDate, isCancelled, registrationMessage, registrationState, sortDescending } from '../../../lib/events';
 import type { EventEntry } from '../../../lib/events';
 import { breadcrumbList } from '../../../lib/structured-data';
 import { initials } from '../../../lib/text';
-import { isCurrentMember, memberSummaries } from '../../../lib/people';
+import { isCurrentMember } from '../../../lib/people';
 import { loadPeopleContext } from '../../../lib/people-content';
 import { eventMaterials } from '../../../lib/webmcp';
 
@@ -109,8 +108,7 @@ const [site] = await getCollection('site'),
   title: event.data.title,
   url: eventPageUrl(event),
   venue: event.data.venue?.name
- } : undefined,
- speakerMemberCatalog = event ? memberSummaries(referencedPeople as CollectionEntry<'people'>[], Astro.site, context) : [];
+ } : undefined;
 ---
 
 {props.kind === 'year' ? (
@@ -121,7 +119,6 @@ const [site] = await getCollection('site'),
 ) : event && Content ? (
   <BaseLayout title={event.data.title} description={event.data.description} image={event.data.image} type="article" structuredData={eventStructuredData}>
     {webMcpEventDetails && <WebMcpEventDetails slug={eventSlug(event)} />}
-    {speakerMemberCatalog.length > 0 && <WebMcpMemberCatalog members={speakerMemberCatalog} />}
     <header class="page-hero">
       <div class="shell">
         <p class="breadcrumbs"><a href={withBase('/')}>Home</a> / <a href={withBase('/eventi/')}>Eventi</a> / <a href={withBase(`/eventi/${eventYear(event)}/`)}>{eventYear(event)}</a> / {event.data.title}</p>

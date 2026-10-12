@@ -29,11 +29,8 @@ const formAction = import.meta.env.PUBLIC_CONTACT_FORM_ACTION;
 </BaseLayout>
 
 <script>
-  import {
-    fillControl,
-    registerWebMcpTools,
-    requiredString,
-  } from '../../lib/webmcp';
+  import { registerWebMcpTools, requiredString } from '../../lib/webmcp';
+  import { prepareForm } from '../../lib/webmcp-runtime';
 
   const form = document.querySelector<HTMLFormElement>('[data-contact-form]'),
     nameInput = form?.querySelector<HTMLInputElement>('[name="name"]'),
@@ -55,7 +52,7 @@ const formAction = import.meta.env.PUBLIC_CONTACT_FORM_ACTION;
         name: 'prepare_contact_message',
         title: 'Prepara un messaggio per lo staff XE',
         description:
-          'Compila nome, email e messaggio nel modulo contatti XE; la privacy e l’invio restano all’utente.',
+          'Prepara il modulo contatti XE per la revisione dell’utente. Usa questo strumento quando l’utente vuole scrivere allo staff; consenso e invio restano manuali.',
         inputSchema: {
           type: 'object',
           properties: {
@@ -79,30 +76,23 @@ const formAction = import.meta.env.PUBLIC_CONTACT_FORM_ACTION;
           required: ['name', 'email', 'message'],
           additionalProperties: false,
         },
-        execute(input) {
-          fillControl(nameInput, requiredString(input, 'name'));
-          fillControl(emailInput, requiredString(input, 'email'));
-          fillControl(messageInput, requiredString(input, 'message'));
-          form.scrollIntoView({ block: 'center' });
-
-          const invalidControl = [nameInput, emailInput, messageInput].find(
-            (control) => !control.checkValidity(),
+        async execute(input, { signal }) {
+          const fields = [
+            { control: nameInput, value: requiredString(input, 'name') },
+            { control: emailInput, value: requiredString(input, 'email') },
+            { control: messageInput, value: requiredString(input, 'message') },
+          ];
+          await prepareForm(
+            form,
+            fields,
+            privacyInput.checked ? submitButton : privacyInput,
+            signal,
           );
-          if (invalidControl) {
-            invalidControl.focus();
-            throw new TypeError(
-              `Il campo “${invalidControl.name}” non è valido. Correggilo e riprova.`,
-            );
-          }
-
-          if (!privacyInput.checked) {
-            privacyInput.focus();
-          } else {
-            submitButton.focus();
-          }
-          return 'Modulo contatti compilato. Controlla i dati, leggi e accetta la privacy, quindi premi “Invia il messaggio”.';
+          return {
+            status: 'requires_user_action',
+            message: 'Modulo contatti compilato. Controlla i dati, leggi e accetta la privacy, quindi premi “Invia il messaggio”.',
+          };
         },
-        annotations: { readOnlyHint: false, consequentialHint: false },
       },
     ]);
   }
