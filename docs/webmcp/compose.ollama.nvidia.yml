@@ -1,0 +1,4 @@
+services:
+  ollama:
+    # Requires Compose 2.30+ and the NVIDIA Container Toolkit.
+    gpus: all

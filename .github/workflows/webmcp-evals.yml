@@ -1,0 +1,98 @@
+name: WebMCP evaluations (Promptfoo and Ollama)
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/webmcp-evals.yml'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'docs/webmcp/**'
+      - 'scripts/*webmcp*.mjs'
+      - 'scripts/lib/webmcp-*.mjs'
+      - 'src/lib/webmcp*.ts'
+      - 'src/components/WebMcp*.astro'
+      - 'src/components/NewsletterForm.astro'
+      - 'src/pages/contatti/index.astro'
+      - 'tests/*webmcp*.test.ts'
+      - 'tests/e2e/*webmcp*.spec.ts'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: webmcp-ollama-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  ollama:
+    name: Ollama (${{ matrix.suite }})
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [regression, heldout]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      WEBMCP_EVAL_SUITE: ${{ matrix.suite }}
+      OLLAMA_HOST: http://127.0.0.1:11434
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: package.json
+          cache: npm
+      - run: npm ci
+      - name: Configure model and paths
+        run: |
+          available_kib=$(awk '/^MemAvailable:/ {print $2}' /proc/meminfo)
+          if test "$available_kib" -lt 6291456; then
+            echo 'Insufficient available RAM: this configuration requires at least 6 GiB free.' >&2
+            exit 2
+          fi
+          node --input-type=module <<'JS' >> "$GITHUB_ENV"
+          import { readFileSync } from 'node:fs';
+          const config = JSON.parse(readFileSync('docs/webmcp/ollama.json', 'utf8'));
+          console.log(`OLLAMA_MODEL=${config.model}`);
+          console.log(`OLLAMA_MODEL_DIGEST=${config.modelDigest}`);
+          JS
+          echo "OLLAMA_MODELS=$RUNNER_TEMP/ollama-models" >> "$GITHUB_ENV"
+          mkdir -p .evals "$RUNNER_TEMP/ollama-models"
+      - name: Verify Docker and the shared Compose configuration
+        run: |
+          docker version
+          docker compose version
+          docker compose -f docs/webmcp/compose.ollama.yml -f docs/webmcp/compose.ollama.ci.yml config --quiet
+      - uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        id: model-cache
+        with:
+          path: ${{ env.OLLAMA_MODELS }}
+          key: ollama-model-${{ runner.os }}-${{ env.OLLAMA_MODEL_DIGEST }}
+      - name: Start the local server and prepare the model
+        timeout-minutes: 10
+        run: |
+          docker compose -f docs/webmcp/compose.ollama.yml -f docs/webmcp/compose.ollama.ci.yml up -d --wait --wait-timeout 60
+          npm run eval:webmcp:docker:pull
+      - uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        if: steps.model-cache.outputs.cache-hit != 'true'
+        with:
+          path: ${{ env.OLLAMA_MODELS }}
+          key: ${{ steps.model-cache.outputs.cache-primary-key }}
+      - name: Evaluate conversations
+        run: npm run eval:webmcp:ollama
+      - name: Collect server logs
+        if: always()
+        run: |
+          mkdir -p .evals
+          npm run eval:webmcp:docker:logs > .evals/ollama-server.log 2>&1 || true
+      - name: Stop the server
+        if: always()
+        run: npm run eval:webmcp:docker:down
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: webmcp-ollama-${{ matrix.suite }}-reports
+          path: .evals/
+          include-hidden-files: true
+          retention-days: 7
+          if-no-files-found: warn

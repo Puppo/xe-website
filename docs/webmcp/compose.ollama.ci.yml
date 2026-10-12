@@ -1,0 +1,7 @@
+services:
+  ollama:
+    volumes:
+      # Cache weights only; the parent named volume retains server identity files.
+      - type: bind
+        source: ${OLLAMA_MODELS:?Set OLLAMA_MODELS to the CI model-cache directory}
+        target: /root/.ollama/models

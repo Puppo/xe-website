@@ -1,0 +1,313 @@
+[
+  {
+    "name": "Discover an unseen member before reading their profile",
+    "messages": [
+      {
+        "role": "user",
+        "type": "message",
+        "content": "Cerca Giulia Bianchi tra i soci e raccontami il suo profilo."
+      }
+    ],
+    "expectedCall": [
+      {
+        "functionName": "list_members",
+        "arguments": {
+          "query": "Giulia Bianchi"
+        },
+        "mockOutput": {
+          "members": [
+            {
+              "slug": "giulia-bianchi-xe",
+              "name": "Giulia Bianchi"
+            }
+          ],
+          "offset": 0,
+          "total": 1,
+          "nextOffset": null
+        }
+      },
+      {
+        "functionName": "get_member",
+        "arguments": {
+          "slug": "giulia-bianchi-xe"
+        },
+        "mockOutput": {
+          "slug": "giulia-bianchi-xe",
+          "section": "overview",
+          "name": "Giulia Bianchi",
+          "url": "https://www.xedotnet.org/soci/giulia-bianchi-xe/",
+          "biography": "Sviluppatrice interessata all’accessibilità.",
+          "roles": ["member"],
+          "linkCount": 0
+        },
+        "dependsOn": [0]
+      }
+    ]
+  },
+  {
+    "name": "Read all materials for an unseen topic across pages",
+    "messages": [
+      {
+        "role": "user",
+        "type": "message",
+        "content": "Trova tutti i materiali sul tema Accessibilità, senza aprire i collegamenti."
+      }
+    ],
+    "expectedCall": [
+      {
+        "functionName": "search_event_materials",
+        "arguments": {
+          "query": "Accessibilità"
+        },
+        "mockOutput": {
+          "materials": [
+            {
+              "label": "Slide",
+              "url": "https://example.com/accessibilita/0",
+              "eventSlug": "accessibilita-web",
+              "eventTitle": "Accessibilità web",
+              "sessions": ["Interfacce accessibili"]
+            }
+          ],
+          "offset": 0,
+          "total": 2,
+          "nextOffset": 1
+        }
+      },
+      {
+        "functionName": "search_event_materials",
+        "arguments": {
+          "query": "Accessibilità",
+          "offset": 1
+        },
+        "mockOutput": {
+          "materials": [
+            {
+              "label": "Esempi",
+              "url": "https://example.com/accessibilita/1",
+              "eventSlug": "accessibilita-web",
+              "eventTitle": "Accessibilità web",
+              "sessions": ["Interfacce accessibili"]
+            }
+          ],
+          "offset": 1,
+          "total": 2,
+          "nextOffset": null
+        },
+        "dependsOn": [0]
+      }
+    ]
+  },
+  {
+    "name": "Continue an unseen biography through two remaining pages",
+    "messages": [
+      {
+        "role": "user",
+        "type": "message",
+        "content": "Leggi tutta la biografia di Giulia Bianchi."
+      },
+      {
+        "role": "model",
+        "type": "functioncall",
+        "name": "get_member",
+        "arguments": {
+          "slug": "giulia-bianchi-xe",
+          "section": "biography"
+        }
+      },
+      {
+        "role": "user",
+        "type": "functionresponse",
+        "name": "get_member",
+        "response": {
+          "result": {
+            "slug": "giulia-bianchi-xe",
+            "section": "biography",
+            "text": "Profilo.",
+            "offset": 0,
+            "total": 30,
+            "nextOffset": 8
+          }
+        }
+      }
+    ],
+    "expectedCall": [
+      {
+        "functionName": "get_member",
+        "arguments": {
+          "slug": "giulia-bianchi-xe",
+          "section": "biography",
+          "offset": 8
+        },
+        "mockOutput": {
+          "slug": "giulia-bianchi-xe",
+          "section": "biography",
+          "text": " Esperienze.",
+          "offset": 8,
+          "total": 30,
+          "nextOffset": 20
+        }
+      },
+      {
+        "functionName": "get_member",
+        "arguments": {
+          "slug": "giulia-bianchi-xe",
+          "section": "biography",
+          "offset": 20
+        },
+        "mockOutput": {
+          "slug": "giulia-bianchi-xe",
+          "section": "biography",
+          "text": " Attività.",
+          "offset": 20,
+          "total": 30,
+          "nextOffset": null
+        },
+        "dependsOn": [0]
+      }
+    ]
+  },
+  {
+    "name": "Continue an unseen event body through two remaining pages",
+    "messages": [
+      {
+        "role": "user",
+        "type": "message",
+        "content": "Leggi tutto il contenuto dell’evento Accessibilità web."
+      },
+      {
+        "role": "model",
+        "type": "functioncall",
+        "name": "get_event",
+        "arguments": {
+          "slug": "accessibilita-web",
+          "section": "body"
+        }
+      },
+      {
+        "role": "user",
+        "type": "functionresponse",
+        "name": "get_event",
+        "response": {
+          "result": {
+            "slug": "accessibilita-web",
+            "section": "body",
+            "text": "Introduzione.",
+            "offset": 0,
+            "total": 43,
+            "nextOffset": 13
+          }
+        }
+      }
+    ],
+    "expectedCall": [
+      {
+        "functionName": "get_event",
+        "arguments": {
+          "slug": "accessibilita-web",
+          "section": "body",
+          "offset": 13
+        },
+        "mockOutput": {
+          "slug": "accessibilita-web",
+          "section": "body",
+          "text": " Approfondimento.",
+          "offset": 13,
+          "total": 43,
+          "nextOffset": 30
+        }
+      },
+      {
+        "functionName": "get_event",
+        "arguments": {
+          "slug": "accessibilita-web",
+          "section": "body",
+          "offset": 30
+        },
+        "mockOutput": {
+          "slug": "accessibilita-web",
+          "section": "body",
+          "text": " Conclusione.",
+          "offset": 30,
+          "total": 43,
+          "nextOffset": null
+        },
+        "dependsOn": [0]
+      }
+    ]
+  },
+  {
+    "name": "Stop after one retry when member discovery still fails",
+    "messages": [
+      {
+        "role": "user",
+        "type": "message",
+        "content": "Cerca Lorenzo Verdi tra i soci."
+      },
+      {
+        "role": "model",
+        "type": "functioncall",
+        "name": "list_members",
+        "arguments": {
+          "query": "Lorenzo Verdi"
+        }
+      },
+      {
+        "role": "user",
+        "type": "functionresponse",
+        "name": "list_members",
+        "response": {
+          "result": {
+            "error": "Elenco dei soci temporaneamente non disponibile.",
+            "code": "DATA_UNAVAILABLE",
+            "retryable": true
+          }
+        }
+      }
+    ],
+    "expectedCall": [
+      {
+        "functionName": "list_members",
+        "arguments": {
+          "query": "Lorenzo Verdi"
+        },
+        "mockOutput": {
+          "error": "La rete non è disponibile.",
+          "code": "NETWORK_ERROR",
+          "retryable": true
+        }
+      }
+    ]
+  },
+  {
+    "name": "Do not retry a non-retryable material catalog failure",
+    "messages": [
+      {
+        "role": "user",
+        "type": "message",
+        "content": "Cerca i materiali sul tema Sicurezza API."
+      },
+      {
+        "role": "model",
+        "type": "functioncall",
+        "name": "search_event_materials",
+        "arguments": {
+          "query": "Sicurezza API"
+        }
+      },
+      {
+        "role": "user",
+        "type": "functionresponse",
+        "name": "search_event_materials",
+        "response": {
+          "result": {
+            "error": "Il catalogo contiene dati non validi.",
+            "code": "INVALID_DATA",
+            "retryable": false
+          }
+        }
+      }
+    ],
+    "expectedCall": []
+  }
+]

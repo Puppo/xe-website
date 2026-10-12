@@ -1,0 +1,22 @@
+{
+  "runnerVersion": "0.124.1",
+  "model": "qwen3:4b-instruct",
+  "modelDigest": "0edcdef34593eac1aa2be9c7d06c432dcf81945adca5eca2f27662c18f168ba0",
+  "maxSteps": 4,
+  "requestTimeoutMs": 120000,
+  "generationTokens": 1024,
+  "contextTokens": 8192,
+  "think": false,
+  "timeoutMs": 900000,
+  "page": "/",
+  "tools": [
+    "list_events",
+    "get_event",
+    "open_event",
+    "search_event_materials",
+    "list_members",
+    "get_member",
+    "open_member",
+    "prepare_newsletter_subscription"
+  ]
+}
