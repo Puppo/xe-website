@@ -84,6 +84,30 @@ capable host. No inference server was started, container image pulled, or model
 weights downloaded locally. Offline configuration and mocked preparation checks
 do not establish a runtime or model-quality pass.
 
+### CI evaluation follow-up (October 12, 2026)
+
+The initial Docker CI run [38160408934](https://github.com/Puppo/xe-website/actions/runs/38160408934)
+scored **5/6 on `regression`** and **4/6 on `heldout`** with zero provider errors:
+
+1. `matchesArguments` normalized `offset: 0` and `section: "overview"` but omitted
+   the runtime defaults `role: "both"` (`list_members`) and `period: "all"`
+   (`list_events`), rejecting member discovery calls that explicitly passed
+   `role: "both"` in both suites.
+2. Held-out case 4 (`Stop after one retry when the event catalog still fails`)
+   executed a second retry when the first retry returned a new `retryable: true`
+   error (`NETWORK_ERROR`), because the system instructions did not explicitly cap
+   retries at two total calls for the same function and arguments or treat a failed
+   second attempt as unrecoverable.
+
+`matchesArguments` now normalizes `role: "both"` for `list_members` and
+`period: "all"` for `list_events` while still rejecting non-default filter values.
+The agent instructions now explicitly allow a retry only when that function and
+arguments have been called once in the conversation and treat a failed second
+attempt as unrecoverable. Per the held-out protocol, `Stop after one retry when the
+event catalog still fails` was promoted to `evals.json` (7 regression cases) and
+replaced in `evals-heldout.json` with `Stop after one retry when member discovery
+still fails`.
+
 ### Historical model and protocol results
 
 Six cases use **Promptfoo 0.124.1** with a custom native Ollama provider.

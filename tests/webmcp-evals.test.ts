@@ -69,7 +69,7 @@ describe('WebMCP evaluations with local Ollama', () => {
   it('keeps development and held-out suites separate and rejects unknown selections', () => {
     const regression = loadEvaluationSuite('regression');
     const heldout = loadEvaluationSuite('heldout');
-    expect(regression.cases).toHaveLength(6);
+    expect(regression.cases).toHaveLength(7);
     expect(heldout.cases).toHaveLength(6);
     expect(regression.name).toBe('regression');
     expect(heldout.name).toBe('heldout');

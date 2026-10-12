@@ -72,8 +72,9 @@ unknown event filters return an error.
 ## Verification
 
 See the [verification report](verification.md) for results and limitations.
-`schema.json` snapshots native component definitions. `evals.json` supplies six
-development regression fixtures, and `evals-heldout.json` supplies six separate
+`schema.json` snapshots native component definitions. `evals.json` supplies seven
+development regression fixtures (the six baseline conversations plus a promoted
+exhausted-retry case), and `evals-heldout.json` supplies six separate
 held-out conversations. Model evaluations complement Vitest, Playwright, and
 native checks; they do not replace them.
 
@@ -134,9 +135,9 @@ allow four requests. Generation or step limits fail the case rather than accepti
 a partial trajectory. Preflight requests time out after 10 seconds; the runner
 has a 15-minute limit.
 
-The six cases cover profile discovery and reading, material search, biography
-continuation, transient-error retry, event-body continuation, and newsletter
-preparation with manual submission. All eight homepage tools are offered from
+The regression suite covers profile discovery and reading, material search, biography
+continuation, transient-error retry, event-body continuation, newsletter
+preparation with manual submission, and exhausted-retry termination. All eight homepage tools are offered from
 `schema.json`; Playwright checks availability on other pages. Mock outputs retain
 complete terminal responses and coherent offsets.
 
@@ -157,8 +158,9 @@ not a guarantee that an arbitrary browser agent will follow the same workflow.
 
 Deterministic assertions check every call's JSON Schema and the complete ordered
 trajectory, including arguments and absence of extra calls. Argument matching
-rejects extra fields except documented read defaults (`offset: 0` and, for detail
-tools, `section: "overview"`). Mock dispatch uses the same argument matcher, so an
+rejects extra fields except documented read defaults (`offset: 0`, `period: "all"`
+for `list_events`, `role: "both"` for `list_members`, and `section: "overview"`
+for detail tools). Mock dispatch uses the same argument matcher, so an
 incorrect lookup receives an error rather than the expected successful result.
 Fixture regex patterns remain supported. `dependsOn` lists zero-based indices of
 earlier expected calls whose results must have arrived in a prior model turn;

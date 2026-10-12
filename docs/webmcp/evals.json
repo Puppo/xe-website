@@ -255,5 +255,48 @@
         }
       }
     ]
+  },
+  {
+    "name": "Stop after one retry when the event catalog still fails",
+    "messages": [
+      {
+        "role": "user",
+        "type": "message",
+        "content": "Trova gli eventi sul tema Accessibilità."
+      },
+      {
+        "role": "model",
+        "type": "functioncall",
+        "name": "list_events",
+        "arguments": {
+          "query": "Accessibilità"
+        }
+      },
+      {
+        "role": "user",
+        "type": "functionresponse",
+        "name": "list_events",
+        "response": {
+          "result": {
+            "error": "Catalogo temporaneamente non disponibile.",
+            "code": "DATA_UNAVAILABLE",
+            "retryable": true
+          }
+        }
+      }
+    ],
+    "expectedCall": [
+      {
+        "functionName": "list_events",
+        "arguments": {
+          "query": "Accessibilità"
+        },
+        "mockOutput": {
+          "error": "La rete non è disponibile.",
+          "code": "NETWORK_ERROR",
+          "retryable": true
+        }
+      }
+    ]
   }
 ]

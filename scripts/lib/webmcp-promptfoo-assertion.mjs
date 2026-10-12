@@ -45,6 +45,8 @@ export function matchesArguments(functionName, expected, actual) {
     ].includes(functionName)
       ? { offset: 0 }
       : {}),
+    ...(functionName === 'list_events' ? { period: 'all' } : {}),
+    ...(functionName === 'list_members' ? { role: 'both' } : {}),
     ...(['get_event', 'get_member'].includes(functionName)
       ? { section: 'overview' }
       : {}),

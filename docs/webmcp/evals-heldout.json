@@ -237,28 +237,28 @@
     ]
   },
   {
-    "name": "Stop after one retry when the event catalog still fails",
+    "name": "Stop after one retry when member discovery still fails",
     "messages": [
       {
         "role": "user",
         "type": "message",
-        "content": "Trova gli eventi sul tema Accessibilità."
+        "content": "Cerca Lorenzo Verdi tra i soci."
       },
       {
         "role": "model",
         "type": "functioncall",
-        "name": "list_events",
+        "name": "list_members",
         "arguments": {
-          "query": "Accessibilità"
+          "query": "Lorenzo Verdi"
         }
       },
       {
         "role": "user",
         "type": "functionresponse",
-        "name": "list_events",
+        "name": "list_members",
         "response": {
           "result": {
-            "error": "Catalogo temporaneamente non disponibile.",
+            "error": "Elenco dei soci temporaneamente non disponibile.",
             "code": "DATA_UNAVAILABLE",
             "retryable": true
           }
@@ -267,9 +267,9 @@
     ],
     "expectedCall": [
       {
-        "functionName": "list_events",
+        "functionName": "list_members",
         "arguments": {
-          "query": "Accessibilità"
+          "query": "Lorenzo Verdi"
         },
         "mockOutput": {
           "error": "La rete non è disponibile.",

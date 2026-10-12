@@ -94,6 +94,11 @@ const incorrectArguments = [
     arguments: { query: 'Ada', offset: 999 },
   },
   {
+    name: 'a non-default member role filter',
+    index: 0,
+    arguments: { query: 'Ada', role: 'speaker' },
+  },
+  {
     name: 'links instead of the profile overview',
     index: 1,
     arguments: { slug: 'ada', section: 'links' },
@@ -130,7 +135,7 @@ describe('WebMCP evaluation argument calibration', () => {
 
   it('accepts explicit runtime defaults in place of omitted arguments', async () => {
     const { grade, response } = await runConversation([
-      [tool('list_members', { query: 'Ada', offset: 0 })],
+      [tool('list_members', { query: 'Ada', role: 'both', offset: 0 })],
       [tool('get_member', { slug: 'ada', section: 'overview', offset: 0 })],
     ]);
     expect(grade.pass).toBe(true);
@@ -139,6 +144,26 @@ describe('WebMCP evaluation argument calibration', () => {
         (call: { result: unknown }) => call.result,
       ),
     ).toEqual(expected.map((entry) => entry.mockOutput));
+    const eventCall: ExpectedCall[] = [
+      {
+        functionName: 'list_events',
+        arguments: { query: 'Accessibilità' },
+        mockOutput: { events: [], offset: 0, total: 0, nextOffset: null },
+      },
+    ];
+    const eventRun = await runConversation(
+      [
+        [
+          tool('list_events', {
+            query: 'Accessibilità',
+            period: 'all',
+            offset: 0,
+          }),
+        ],
+      ],
+      eventCall,
+    );
+    expect(eventRun.grade.pass).toBe(true);
   });
 
   it('accepts omitted runtime defaults when the fixture specifies them', async () => {
@@ -147,6 +172,7 @@ describe('WebMCP evaluation argument calibration', () => {
       arguments: {
         ...entry.arguments,
         offset: 0,
+        ...(entry.functionName === 'list_members' ? { role: 'both' } : {}),
         ...(entry.functionName === 'get_member' ? { section: 'overview' } : {}),
       },
     }));
