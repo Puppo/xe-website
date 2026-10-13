@@ -1,7 +1,7 @@
 name: Dependabot updates
 
 on:
-  pull_request_target:
+  pull_request:
     types: [opened, reopened, synchronize]
 
 permissions:
@@ -33,7 +33,7 @@ jobs:
         shell: bash
         run: |
           if [[ -z "$GH_TOKEN" ]]; then
-            echo '::error::Configure the DEPENDABOT_AUTOMERGE_TOKEN repository Actions secret with a token from a @xedotnet/core-team member.'
+            echo '::error::Configure the DEPENDABOT_AUTOMERGE_TOKEN Dependabot and Actions repository secrets with a token from a @xedotnet/core-team member.'
             exit 1
           fi
 
