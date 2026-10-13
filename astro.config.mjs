@@ -2,12 +2,14 @@ import { defineConfig, svgoOptimizer } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import { unified } from '@astrojs/markdown-remark';
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
-import { deploymentConfig, isSitemapExcluded } from './src/lib/deployment.mjs';
+import {
+  deploymentConfig,
+  isSitemapExcluded,
+  resolveSiteUrl,
+} from './src/lib/deployment.mjs';
 import rehypeBaseUrls from './scripts/rehype-base-urls.mjs';
 
-const deployment = deploymentConfig(
-  process.env.SITE_URL || 'https://www.xedotnet.org/',
-);
+const deployment = deploymentConfig(resolveSiteUrl());
 
 export default defineConfig({
   ...deployment,

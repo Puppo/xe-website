@@ -1,5 +1,20 @@
 import { legacyPersonSlugs } from './person-slugs.mjs';
 
+export const defaultSiteUrl = 'http://xedotnet.org/';
+
+/** Resolve the public deployment URL from environment variables.
+ * Priority: explicit SITE_URL, Netlify DEPLOY_PRIME_URL, Netlify URL, then defaultSiteUrl.
+ * @param {Record<string, string | undefined>} [env]
+ */
+export function resolveSiteUrl(env = process.env) {
+  return (
+    env.SITE_URL?.trim() ||
+    env.DEPLOY_PRIME_URL?.trim() ||
+    env.URL?.trim() ||
+    defaultSiteUrl
+  );
+}
+
 /** Resolve the public origin and base path from one deployment URL.
  * @param {string} value
  */
@@ -16,7 +31,7 @@ export function deploymentConfig(value) {
       'SITE_URL deve essere un URL HTTP(S) senza credenziali, query o frammenti.',
     );
   }
-  return { base: `${url.pathname.replace(/\/+$/, '')}/`, site: url.origin };
+  return { base: `${url.pathname.replace(/\/+$/u, '')}/`, site: url.origin };
 }
 
 /** Prefix site-relative URLs only; preserve external URLs and page anchors.

@@ -20,18 +20,18 @@ Fork PRs do not build automatically. A maintainer approves them by clicking the 
 
 ## Merge automatico degli aggiornamenti Dependabot
 
-Il workflow `Dependabot updates` approva e abilita il merge squash degli aggiornamenti minor e patch di npm e GitHub Actions aperti da Dependabot nello stesso repository verso `main`. Gli aggiornamenti major e i metadati mancanti o non riconosciuti richiedono revisione manuale. L’approvazione automatica è registrata come `@Puppo`, proprietario del codice; GitHub attende il superamento dei controlli obbligatori prima del merge.
+Il workflow `Dependabot updates` approva e abilita il merge squash degli aggiornamenti minor e patch di npm e GitHub Actions aperti da Dependabot nello stesso repository verso `main`. Gli aggiornamenti major e i metadati mancanti o non riconosciuti richiedono revisione manuale. L’approvazione automatica è registrata da un componente del team `@xedotnet/core-team`, proprietario del codice; GitHub attende il superamento dei controlli obbligatori prima del merge.
 
 Configurazione del manutentore:
 
-1. Nella protezione di `main`, mantenere un’approvazione obbligatoria del code owner, invalidare le approvazioni dopo nuovi commit e applicare le regole anche agli amministratori. Rendere obbligatori `test`, `lint`, `build` e `playwright`, tutti associati all’app GitHub Actions. Conservare il merge squash e l’auto-merge del repository.
-2. Da `@Puppo`, creare un personal access token fine-grained limitato a `Puppo/xe-website`, con permessi **Contents: write**, **Pull requests: write** e **Workflows: write** (necessario per aggiornare le GitHub Actions). Impostare una scadenza di 90 giorni e un promemoria prima della scadenza. Il token non necessita di permessi Administration.
+1. Nella protezione di `main`, mantenere un’approvazione obbligatoria del code owner (`@xedotnet/core-team`), invalidare le approvazioni dopo nuovi commit e applicare le regole anche agli amministratori. Rendere obbligatori `test`, `lint`, `build` e `playwright`, tutti associati all’app GitHub Actions. Conservare il merge squash e l’auto-merge del repository.
+2. Da un account appartenente a `@xedotnet/core-team`, creare un personal access token fine-grained limitato a `xedotnet/website`, con permessi **Contents: write**, **Pull requests: write** e **Workflows: write** (necessario per aggiornare le GitHub Actions). Impostare una scadenza di 90 giorni e un promemoria prima della scadenza. Il token non necessita di permessi Administration.
 3. Salvare il token nel secret del repository **Actions** `DEPENDABOT_AUTOMERGE_TOKEN`. Non inserirlo nei file, nei log o nelle conversazioni. Il workflow usa `pull_request_target` dal branch base `main`; non deve mai eseguire checkout, installazioni o codice del branch della PR.
 4. Unire il workflow e configurare la protezione prima di attivare le approvazioni. Per le PR già aperte con auto-merge abilitato dal bot, disabilitare prima l’auto-merge, poi chiuderle e riaprirle: il nuovo workflow abilita l’auto-merge con il token del proprietario, così il merge attiva anche il deploy su GitHub Pages.
 
-Per ruotare il token, crearne uno nuovo con gli stessi permessi, aggiornare il secret Actions e revocare il precedente. Un token assente, scaduto o appartenente a un altro utente fa fallire il workflow con un messaggio esplicito. Dopo la rotazione, chiudere e riaprire una PR idonea per riprovare. I nuovi commit invalidano l’approvazione precedente e sono valutati dal trigger `synchronize`.
+Per ruotare il token, crearne uno nuovo con gli stessi permessi, aggiornare il secret Actions e revocare il precedente. Un token assente o scaduto fa fallire il workflow con un messaggio esplicito. Dopo la rotazione, chiudere e riaprire una PR idonea per riprovare. I nuovi commit invalidano l’approvazione precedente e sono valutati dal trigger `synchronize`.
 
-Verificare che una PR minor o patch riceva l’approvazione di `@Puppo`, attenda tutti e quattro i controlli e, dopo il merge, avvii `Deploy to GitHub Pages`. Una PR major, umana o proveniente da un fork non deve ricevere approvazione automatica. Per interrompere l’automazione, disabilitare `Dependabot updates` e annullare le richieste di auto-merge ancora attive.
+Verificare che una PR minor o patch riceva l’approvazione del code owner, attenda tutti e quattro i controlli e, dopo il merge, avvii `Deploy to GitHub Pages`. Una PR major, umana o proveniente da un fork non deve ricevere approvazione automatica. Per interrompere l’automazione, disabilitare `Dependabot updates` e annullare le richieste di auto-merge ancora attive.
 
 ## Development setup
 

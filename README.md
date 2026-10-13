@@ -20,7 +20,7 @@ The main commands are:
 
 To enable the contact form, copy `.env.example` to `.env` and set `PUBLIC_CONTACT_FORM_ACTION` to the public Formspree endpoint. If the endpoint is not configured, the site displays a working email link instead.
 
-Configure the public address with `SITE_URL`, including any subdirectory; for example, `https://puppo.github.io/xe-website/`. The build uses this single value for assets, navigation, canonical URLs, the sitemap, and `robots.txt`. The GitHub Pages workflow detects the value automatically; the `SITE_URL` repository variable can override it when the domain changes. To switch to the final domain, configure it in the GitHub Pages settings—no code changes are required.
+Configure the public address with `SITE_URL`, including any subdirectory; for example, `https://xedotnet.github.io/website/`. The build uses this single value for assets, navigation, canonical URLs, the sitemap, and `robots.txt`. The GitHub Pages workflow detects the value automatically; the `SITE_URL` repository variable can override it when the domain changes. To switch to the final domain, configure it in the GitHub Pages settings—no code changes are required.
 
 ## Content
 
