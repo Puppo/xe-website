@@ -1,9 +1,13 @@
 import { existsSync, globSync, readFileSync } from 'node:fs';
 import { extname, join } from 'node:path';
 import * as cheerio from 'cheerio';
-import { deploymentConfig, isSitemapExcluded } from '../src/lib/deployment.mjs';
+import {
+  deploymentConfig,
+  isSitemapExcluded,
+  resolveSiteUrl,
+} from '../src/lib/deployment.mjs';
 
-const publicUrl = process.env.SITE_URL || 'https://www.xedotnet.org/',
+const publicUrl = resolveSiteUrl(),
   { site, base } = deploymentConfig(publicUrl),
   errors = [];
 

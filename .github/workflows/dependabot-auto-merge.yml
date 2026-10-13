@@ -16,8 +16,8 @@ jobs:
   auto-merge:
     if: >-
       github.event.pull_request.user.login == 'dependabot[bot]' &&
-      github.repository == 'Puppo/xe-website' &&
-      github.event.pull_request.head.repo.full_name == 'Puppo/xe-website' &&
+      github.repository == 'xedotnet/website' &&
+      github.event.pull_request.head.repo.full_name == 'xedotnet/website' &&
       github.event.pull_request.base.ref == 'main'
     runs-on: ubuntu-latest
     steps:
@@ -33,16 +33,12 @@ jobs:
         shell: bash
         run: |
           if [[ -z "$GH_TOKEN" ]]; then
-            echo '::error::Configure the DEPENDABOT_AUTOMERGE_TOKEN repository Actions secret with a token from @Puppo.'
+            echo '::error::Configure the DEPENDABOT_AUTOMERGE_TOKEN repository Actions secret with a token from a @xedotnet/core-team member.'
             exit 1
           fi
 
-          if ! token_owner=$(gh api user --jq .login); then
+          if ! token_owner=$(gh api user --jq .login) || [[ -z "$token_owner" ]]; then
             echo '::error::DEPENDABOT_AUTOMERGE_TOKEN is invalid or expired. Rotate the token as described in CONTRIBUTING.md.'
-            exit 1
-          fi
-          if [[ "$token_owner" != 'Puppo' ]]; then
-            echo '::error::DEPENDABOT_AUTOMERGE_TOKEN must belong to the required code owner @Puppo.'
             exit 1
           fi
 
