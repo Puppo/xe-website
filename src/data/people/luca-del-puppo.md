@@ -3,8 +3,8 @@ name: Luca Del Puppo
 sortName: Luca Del Puppo
 image: /media/1180-delpuppoluca.png
 links:
-  - label: twitter.com
-    url: https://twitter.com/delpuppoluca
+  - label: x.com
+    url: https://x.com/puppo92
   - label: linkedin.com
     url: https://www.linkedin.com/in/lucadelpuppo/
   - label: Google Developer Expert
