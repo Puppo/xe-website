@@ -1,7 +1,7 @@
 ---
 name: Andrea Dottor
 sortName: Andrea Dottor
-title: Microsoft MVP ASP.NET
+title: Microsoft MVP Developer Technologies
 image: /media/1028-dottor-foto.jpg
 links:
   - label: dottor.net
