@@ -86,6 +86,19 @@ supported. Forms expose imperative preparation tools with manual submission.
 Lighthouse may report forms without declarative tool attributes as informational;
 adding those attributes would expose direct submission beyond this boundary.
 
+### Lighthouse score
+
+`npm run audit:lighthouse` runs Lighthouse 13.5+ on the built site against the
+nine representative pages from `scripts/lighthouse-urls.mjs`, for both mobile
+and desktop presets, and asserts that Performance, Accessibility, Best
+Practices, and SEO stay above the thresholds in `lighthouserc.mjs`. The
+Agentic Browsing category is asserted as a warning, with the headline checks
+on `agent-accessibility-tree`, `webmcp-registered-tools`, and
+`webmcp-schema-validity` failing the build if a tool disappears or stops
+validating. `llms-txt` and `ard-schema` are intentionally skipped (the project
+does not ship an `llms.txt` and does not target Agent Resource Discovery yet);
+remove them from `skipAudits` in `lighthouserc.mjs` when that changes.
+
 ### Evaluations with Ollama
 
 The optional command requires an already running Ollama server and an installed
