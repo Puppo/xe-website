@@ -45,7 +45,7 @@
     "@types/leaflet": "^1.9.21",
     "cheerio": "^1.2.0",
     "lefthook": "^2.2.1",
-    "oxfmt": "^0.72.0",
+    "oxfmt": "^0.73.0",
     "oxlint": "^1.87.0",
     "remark-parse": "^11.0.0",
     "sharp": "^0.35.5",
