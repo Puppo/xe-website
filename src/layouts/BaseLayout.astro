@@ -6,6 +6,8 @@ import Footer from '../components/Footer.astro';
 import WebMcpEventCatalog from '../components/WebMcpEventCatalog.astro';
 import WebMcpMemberCatalog from '../components/WebMcpMemberCatalog.astro';
 import ThemeScript from '../components/ThemeScript.astro';
+import atkinsonRegularWoff2 from '@fontsource/atkinson-hyperlegible-next/files/atkinson-hyperlegible-next-latin-400-normal.woff2?url';
+import manropeBoldWoff2 from '@fontsource/manrope/files/manrope-latin-700-normal.woff2?url';
 import '@fontsource/atkinson-hyperlegible-next/latin-400.css';
 import '@fontsource/atkinson-hyperlegible-next/latin-700.css';
 import '@fontsource/manrope/latin-600.css';
@@ -49,6 +51,8 @@ const defaultImage = '/images/social-card.png',
     <meta name="theme-color" content="#f6f8f9" />
     {(import.meta.env.PUBLIC_NOINDEX || noindex) && <meta name="robots" content="noindex, nofollow" />}
     <ThemeScript />
+    <link rel="preload" as="font" type="font/woff2" href={atkinsonRegularWoff2} crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href={manropeBoldWoff2} crossorigin />
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <link rel="alternate" type="application/rss+xml" title={`Eventi — ${site.data.name}`} href={new URL(withBase('/rss.xml'), Astro.site).href} />

@@ -8,13 +8,13 @@ const config = {
   },
   thresholds: {
     categories: {
-      performance: 0.9,
-      accessibility: 0.95,
-      'best-practices': 0.95,
-      seo: 0.95,
+      performance: 0.98,
+      accessibility: 1,
+      'best-practices': 1,
+      seo: 1,
     },
     warnCategories: {
-      'agentic-browsing': 0.8,
+      'agentic-browsing': 0.98,
     },
     audits: {
       'agent-accessibility-tree': 'error',

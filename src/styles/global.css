@@ -285,6 +285,9 @@ p {
   display: flex;
   align-items: center;
 }
+:root:not([data-js]) .theme-control {
+  display: none;
+}
 .theme-picker {
   display: grid;
   position: relative;
@@ -1393,12 +1396,12 @@ textarea:user-invalid {
     grid-column: 3;
     grid-row: 1;
   }
-  .nav-area:not([data-menu-ready]) {
+  :root:not([data-js]) .nav-area:not([data-menu-ready]) {
     grid-column: 1 / -1;
     grid-row: 2;
     justify-self: stretch;
   }
-  .nav-area[data-menu-ready] .menu-toggle {
+  :is(:root[data-js] .nav-area, .nav-area[data-menu-ready]) .menu-toggle {
     display: inline-grid;
     inline-size: 2.75rem;
     block-size: 2.75rem;
@@ -1409,7 +1412,7 @@ textarea:user-invalid {
     background: var(--canvas);
     color: var(--ink);
   }
-  .nav-area[data-menu-ready] .menu-toggle:hover {
+  :is(:root[data-js] .nav-area, .nav-area[data-menu-ready]) .menu-toggle:hover {
     border-color: var(--red);
     background: var(--tint);
     color: var(--red);
@@ -1419,7 +1422,7 @@ textarea:user-invalid {
     inline-size: 1.35rem;
     block-size: 1.35rem;
   }
-  .nav-area[data-menu-ready] nav {
+  :is(:root[data-js] .nav-area, .nav-area[data-menu-ready]) nav {
     display: none;
     position: fixed;
     z-index: 30;
@@ -1434,14 +1437,14 @@ textarea:user-invalid {
     background: var(--surface);
     box-shadow: var(--shadow);
   }
-  .nav-area[data-menu-ready][data-open] nav {
+  :is(:root[data-js] .nav-area, .nav-area[data-menu-ready])[data-open] nav {
     display: block;
   }
-  .nav-area[data-menu-ready] .nav-list {
+  :is(:root[data-js] .nav-area, .nav-area[data-menu-ready]) .nav-list {
     display: grid;
     gap: 0.15rem;
   }
-  .nav-area[data-menu-ready] .nav-list a {
+  :is(:root[data-js] .nav-area, .nav-area[data-menu-ready]) .nav-list a {
     justify-content: flex-start;
     min-block-size: 3rem;
     padding: 0.75rem 1rem;
