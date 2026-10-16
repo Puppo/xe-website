@@ -87,6 +87,22 @@ for (const file of globSync('dist/sitemap*.xml')) {
   }
 }
 
+const rssPath = join('dist', 'rss.xml');
+if (existsSync(rssPath)) {
+  const rss = readFileSync(rssPath, 'utf8'),
+    rssLinks = [
+      ...[...rss.matchAll(/<link>(.*?)<\/link>/g)].map((match) => match[1]),
+      ...[...rss.matchAll(/<atom:link\s+href="(.*?)"/g)].map(
+        (match) => match[1],
+      ),
+    ];
+  for (const link of rssLinks) {
+    inspectUrl(link, rssPath, 'rss-link');
+  }
+} else {
+  errors.push('dist/rss.xml does not exist');
+}
+
 const graziePath = join('dist', 'grazie', 'index.html');
 if (existsSync(graziePath)) {
   const grazie = readFileSync(graziePath, 'utf8');

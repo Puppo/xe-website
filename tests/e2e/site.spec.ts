@@ -503,3 +503,28 @@ test('One Day App modernization mostra tutti i dieci speaker recuperati', async 
     await expect(speakers.filter({ hasText: name })).toHaveCount(1);
   }
 });
+
+test('la pagina eventi e il footer espongono il collegamento al feed RSS', async ({
+  page,
+  request,
+}) => {
+  await page.goto('/eventi/');
+  const rssHeadingLink = page.locator('.rss-feed-link');
+  await expect(rssHeadingLink).toBeVisible();
+  await expect(rssHeadingLink).toHaveAttribute('href', '/rss.xml');
+  await expect(rssHeadingLink).toContainText('Segui via RSS');
+
+  const footerRssLink = page.locator('.site-footer .footer-rss-link');
+  await expect(footerRssLink).toBeVisible();
+  await expect(footerRssLink).toHaveAttribute('href', '/rss.xml');
+  await expect(footerRssLink).toHaveText('Feed RSS');
+
+  const response = await request.get('/rss.xml');
+  expect(response.ok()).toBe(true);
+  expect(response.headers()['content-type']).toMatch(
+    /application\/(rss\+)?xml/u,
+  );
+  const body = await response.text();
+  expect(body).toContain('<rss version="2.0"');
+  expect(body).toContain('<title>Eventi — XE - Development user group</title>');
+});
