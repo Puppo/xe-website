@@ -95,6 +95,19 @@ if (existsSync(graziePath)) {
   }
 }
 
+const rootLlmsPath = join('dist', 'llms.txt');
+if (!existsSync(rootLlmsPath)) {
+  errors.push('dist/llms.txt is missing');
+}
+for (const file of globSync('dist/**/llms.txt')) {
+  const content = readFileSync(file, 'utf8');
+  for (const match of content.matchAll(
+    /\]\(([^)\s]+)(?:\s+(?:"[^"]*"|'[^']*'|\([^)]*\)))?\s*\)/gu,
+  )) {
+    inspectUrl(match[1], file, 'markdown-link');
+  }
+}
+
 if (errors.length > 0) {
   console.error(errors.slice(0, 30).join('\n'));
   if (errors.length > 30) {

@@ -503,3 +503,58 @@ test('One Day App modernization mostra tutti i dieci speaker recuperati', async 
     await expect(speakers.filter({ hasText: name })).toHaveCount(1);
   }
 });
+
+test('ogni pagina espone il proprio file llms.txt nell’head, nel footer e nell’albero URL', async ({
+  page,
+  request,
+}) => {
+  const cases = [
+    ['/', '/llms.txt', '# XE - Development user group'],
+    ['/chi-siamo/', '/chi-siamo/llms.txt', '# Chi siamo'],
+    ['/eventi/', '/eventi/llms.txt', '# Eventi — XE - Development user group'],
+    [
+      '/eventi/2025/',
+      '/eventi/2025/llms.txt',
+      '# Eventi del 2025 — XE - Development user group',
+    ],
+    [
+      '/eventi/tech-pub-gennaio-2025/',
+      '/eventi/tech-pub-gennaio-2025/llms.txt',
+      '## Posizione nell’albero',
+    ],
+    ['/soci/', '/soci/llms.txt', '## Albo soci'],
+    [
+      '/soci/daniele-morosinotto/',
+      '/soci/daniele-morosinotto/llms.txt',
+      '# Daniele Morosinotto',
+    ],
+    ['/contatti/', '/contatti/llms.txt', '# Contatti'],
+    [
+      '/privacy-policy/',
+      '/privacy-policy/llms.txt',
+      '# Informativa sulla privacy',
+    ],
+    ['/grazie/', '/llms.txt', '# XE - Development user group'],
+    ['/404.html', '/llms.txt', '# XE - Development user group'],
+  ] as const;
+
+  for (const [pagePath, expectedLlmsPath, expectedHeading] of cases) {
+    await page.goto(pagePath);
+    const alternate = page.locator(
+      'head link[rel="alternate"][type="text/plain"]',
+    );
+    await expect(alternate).toHaveAttribute(
+      'href',
+      new RegExp(`${expectedLlmsPath}$`, 'u'),
+    );
+    const footerLink = page
+      .locator('.site-footer .legal-line')
+      .getByRole('link', { name: 'llms.txt' });
+    await expect(footerLink).toHaveAttribute('href', expectedLlmsPath);
+
+    const response = await request.get(expectedLlmsPath);
+    expect(response.ok()).toBe(true);
+    expect(response.headers()['content-type']).toContain('text/plain');
+    expect(await response.text()).toContain(expectedHeading);
+  }
+});
