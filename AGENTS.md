@@ -144,6 +144,9 @@ Useful focused commands:
 npx vitest run tests/events.test.ts
 npx playwright test --project=chromium
 npx playwright test tests/e2e/site.spec.ts --project=chromium
+npm run audit:lighthouse          # mobile + desktop Lighthouse scores; requires Chrome 150+
+npm run audit:lighthouse:mobile   # mobile-only Lighthouse run
+npm run audit:lighthouse:desktop  # desktop-only Lighthouse run
 ```
 
 Install Playwright's Chromium runtime when it is not already available:

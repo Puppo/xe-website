@@ -1,19 +1,8 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
+import { representativePaths } from '../../scripts/lighthouse-urls.mjs';
 
-const representativePages = [
-  '/',
-  '/eventi/',
-  '/eventi/2025/',
-  '/eventi/tech-pub-gennaio-2025/',
-  '/eventi/one-day-app-modernization/',
-  '/soci/',
-  '/chi-siamo/',
-  '/contatti/',
-  '/privacy-policy/',
-  '/grazie/',
-  '/404.html',
-];
+const representativePages = [...representativePaths, '/grazie/', '/404.html'];
 
 for (const path of representativePages) {
   test(`${path} non presenta violazioni axe`, async ({ page }) => {

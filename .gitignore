@@ -6,6 +6,7 @@ playwright-report/
 test-results/
 coverage/
 .evals/
+.lighthouseci/
 .env
 core.*
 .lefthook-local/
