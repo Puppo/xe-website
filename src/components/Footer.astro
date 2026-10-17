@@ -11,8 +11,9 @@ interface Props {
     newsletterHoneypot: string;
     socials: { label: string; url: string }[];
   };
+  llmsHref?: string;
 }
-const { site } = Astro.props;
+const { site, llmsHref = withBase('/llms.txt') } = Astro.props;
 ---
 
 <footer class="site-footer">
@@ -28,6 +29,6 @@ const { site } = Astro.props;
   </div>
   <div class="shell legal-line">
     <p>XeDotNet · {site.address} · CF {site.fiscalCode}</p>
-    <p><a href={withBase('/privacy-policy/')}>Informativa sulla privacy</a> · <a href={`mailto:${site.email}`}>{site.email}</a></p>
+    <p><a href={withBase('/privacy-policy/')}>Informativa sulla privacy</a> · <a href={llmsHref}>llms.txt</a> · <a href={`mailto:${site.email}`}>{site.email}</a></p>
   </div>
 </footer>

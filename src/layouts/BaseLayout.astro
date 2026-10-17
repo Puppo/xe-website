@@ -1,4 +1,5 @@
 ---
+import { llmsTxtPath } from '../lib/llms';
 import { withBase } from '../lib/urls';
 import { getCollection } from 'astro:content';
 import Header from '../components/Header.astro';
@@ -26,6 +27,8 @@ const defaultImage = '/images/social-card.png',
  [site] = await getCollection('site'),
  canonicalPath = Astro.url.pathname === withBase('/404/') ? withBase('/404.html') : Astro.url.pathname,
  canonical = new URL(canonicalPath, Astro.site),
+ llmsPath = llmsTxtPath(Astro.url.pathname, noindex),
+ llmsUrl = new URL(llmsPath, Astro.site).href,
  fullTitle = title === site.data.name ? title : `${title} | ${site.data.name}`,
  fullImage = new URL(withBase(image), Astro.site),
  isDefaultImage = image === defaultImage,
@@ -52,6 +55,7 @@ const defaultImage = '/images/social-card.png',
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <link rel="alternate" type="application/rss+xml" title={`Eventi — ${site.data.name}`} href={new URL(withBase('/rss.xml'), Astro.site).href} />
+    <link rel="alternate" type="text/plain" title={`llms.txt — ${fullTitle}`} href={llmsUrl} />
     <link rel="icon" type="image/png" sizes="32x32" href={withBase('/images/favicon/favicon-32x32.png')} />
     <link rel="icon" type="image/png" sizes="96x96" href={withBase('/images/favicon/favicon-96x96.png')} />
     <link rel="icon" type="image/png" sizes="16x16" href={withBase('/images/favicon/favicon-16x16.png')} />
@@ -83,6 +87,6 @@ const defaultImage = '/images/social-card.png',
     <main id="contenuto" tabindex="-1">
       <slot />
     </main>
-    <Footer site={site.data} />
+    <Footer site={site.data} llmsHref={llmsPath} />
   </body>
 </html>
