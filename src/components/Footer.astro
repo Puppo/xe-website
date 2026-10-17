@@ -22,6 +22,7 @@ const { site } = Astro.props;
       <p>Eventi, incontri e occasioni per crescere insieme come sviluppatori.</p>
       <ul class="inline-list" role="list">
         {site.socials.map((social) => <li><a href={social.url} {...externalLinkProps(social.url, Astro.site?.origin, 'me noreferrer')}>{social.label}{isExternalUrl(social.url, Astro.site?.origin) && <span class="visually-hidden"> (si apre in una nuova scheda)</span>}</a></li>)}
+        <li><a class="footer-rss-link" href={withBase('/rss.xml')} type="application/rss+xml"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a9 9 0 0 1 9 9" /><path d="M4 4a16 16 0 0 1 16 16" /><circle cx="5" cy="19" r="1.5" fill="currentColor" stroke="none" /></svg><span>Feed RSS</span></a></li>
       </ul>
     </div>
     <NewsletterForm action={site.newsletterAction} honeypot={site.newsletterHoneypot} />
